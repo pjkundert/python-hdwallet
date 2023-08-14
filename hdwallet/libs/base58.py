@@ -1,8 +1,9 @@
 #!/usr/bin/env python3
 
 from hashlib import sha256
-
 from Crypto.Hash import keccak
+from typing import List
+
 import six
 
 
@@ -90,3 +91,72 @@ def check_decode(enc):
         raise ValueError("base58 decoding checksum error")
     else:
         return raw
+
+
+def pad(enc: str, pad_len: int) -> str:
+    return enc.rjust(pad_len, __base58_alphabet[0])
+
+
+def encode_monero(data: bytes) -> str:
+    enc = ""
+
+    # Get lengths
+    data_len: int = len(data)
+    block_enc_len: int = 11
+    block_dec_len: int = 8
+
+    block_enc_bytes_lens: List[int] = [
+        0, 2, 3, 5, 6, 7, 9, 10, 11
+    ]
+
+    # Compute total block count and last block length
+    tot_block_cnt, last_block_enc_len = divmod(data_len, block_dec_len)
+
+    # Encode each single block and pad
+    for i in range(tot_block_cnt):
+        block_enc = encode(data[i * block_dec_len:(i + 1) * block_dec_len])
+        enc += pad(block_enc, block_enc_len)
+
+    # Encode last block and pad
+    if last_block_enc_len > 0:
+        block_enc = encode(
+            data[tot_block_cnt * block_dec_len:(tot_block_cnt * block_dec_len) + last_block_enc_len])
+        enc += pad(block_enc, block_enc_bytes_lens[last_block_enc_len])
+
+    return enc
+
+
+def unpad(dec: bytes, unpad_len: int) -> bytes:
+    return dec[len(dec) - unpad_len:len(dec)]
+
+
+def decode_monero(data: str) -> bytes:
+    dec = b""
+
+    # Get lengths
+    data_len: int = len(data)
+    block_enc_len: int = 11
+    block_dec_len: int = 8
+
+    block_enc_bytes_lens: List[int] = [
+        0, 2, 3, 5, 6, 7, 9, 10, 11
+    ]
+
+    # Compute block count and last block length
+    tot_block_cnt, last_block_enc_len = divmod(data_len, block_enc_len)
+
+    # Get last block decoded length
+    last_block_dec_len = block_enc_bytes_lens.index(last_block_enc_len)
+
+    # Decode each single block and unpad
+    for i in range(tot_block_cnt):
+        block_dec = decode(data[(i * block_enc_len):((i + 1) * block_enc_len)])
+        dec += unpad(block_dec, block_dec_len)
+
+    # Decode last block and unpad
+    if last_block_enc_len > 0:
+        block_dec = decode(
+            data[(tot_block_cnt * block_enc_len):((tot_block_cnt * block_enc_len) + last_block_enc_len)])
+        dec += unpad(block_dec, last_block_dec_len)
+
+    return dec
