@@ -53,13 +53,13 @@ def bech32_create_checksum(hrp, data):
     return [(polymod >> 5 * (5 - i)) & 31 for i in range(6)]
 
 
-def bech32_encode(hrp, data):
+def base_bech32_encode(hrp, data):
     """Compute a Bech32 string given HRP and data values."""
     combined = data + bech32_create_checksum(hrp, data)
     return hrp + '1' + ''.join([CHARSET[d] for d in combined])
 
 
-def bech32_decode(bech):
+def base_bech32_decode(bech):
     """Validate a Bech32 string, and determine HRP and data."""
     if ((any(ord(x) < 33 or ord(x) > 126 for x in bech)) or
             (bech.lower() != bech and bech.upper() != bech)):
@@ -100,9 +100,25 @@ def convertbits(data, frombits, tobits, pad=True):
     return ret
 
 
-def decode(hrp, addr):
+def bech32_decode(hrp, addr):
+    """Compute a Bech32 string given HRP and data values."""
+    hrpgot, data = base_bech32_decode(addr)
+    if hrpgot != hrp:
+        return None, None
+    return data[0], convertbits(data, 5, 8, False)
+
+
+def bech32_encode(hrp, witprog):
+    """Compute a Bech32 string given HRP and data values."""
+    ret = base_bech32_encode(hrp, convertbits(witprog, 8, 5))
+    if base_bech32_decode(ret) == (None, None):
+        return None
+    return ret
+
+
+def segwit_decode(hrp, addr):
     """Decode a segwit address."""
-    hrpgot, data = bech32_decode(addr)
+    hrpgot, data = base_bech32_decode(addr)
     if hrpgot != hrp:
         return None, None
     decoded = convertbits(data[1:], 5, 8, False)
@@ -115,9 +131,9 @@ def decode(hrp, addr):
     return data[0], decoded
 
 
-def encode(hrp, witver, witprog):
+def segwit_encode(hrp, witver, witprog):
     """Encode a segwit address."""
-    ret = bech32_encode(hrp, [witver] + convertbits(witprog, 8, 5))
-    if decode(hrp, ret) == (None, None):
+    ret = base_bech32_encode(hrp, [witver] + convertbits(witprog, 8, 5))
+    if segwit_decode(hrp, ret) == (None, None):
         return None
     return ret
