@@ -43,13 +43,19 @@ def bech32_hrp_expand(hrp):
 
 def bech32_verify_checksum(hrp, data):
     """Verify a checksum given HRP and converted data characters."""
-    return bech32_polymod(bech32_hrp_expand(hrp) + data) == 1
+    encoding = (
+        1 if data[0] == 0 else 0x2bc830a3
+    )
+    return bech32_polymod(bech32_hrp_expand(hrp) + data) == encoding
 
 
 def bech32_create_checksum(hrp, data):
     """Compute the checksum values given HRP and data."""
+    encoding = (
+        1 if data[0] == 0 else 0x2bc830a3
+    )
     values = bech32_hrp_expand(hrp) + data
-    polymod = bech32_polymod(values + [0, 0, 0, 0, 0, 0]) ^ 1
+    polymod = bech32_polymod(values + [0, 0, 0, 0, 0, 0]) ^ encoding
     return [(polymod >> 5 * (5 - i)) & 31 for i in range(6)]
 
 
@@ -112,5 +118,28 @@ def bech32_encode(hrp, witprog):
     """Compute a Bech32 string given HRP and data values."""
     ret = base_bech32_encode(hrp, convertbits(witprog, 8, 5))
     if base_bech32_decode(ret) == (None, None):
+        return None
+    return ret
+
+
+def segwit_decode(hrp, addr):
+    """Decode a segwit address."""
+    hrpgot, data = base_bech32_decode(addr)
+    if hrpgot != hrp:
+        return None, None
+    decoded = convertbits(data[1:], 5, 8, False)
+    if decoded is None or len(decoded) < 2 or len(decoded) > 40:
+        return None, None
+    if data[0] > 16:
+        return None, None
+    if data[0] == 0 and len(decoded) != 20 and len(decoded) != 32:
+        return None, None
+    return data[0], decoded
+
+
+def segwit_encode(hrp, witver, witprog):
+    """Encode a segwit address."""
+    ret = base_bech32_encode(hrp, [witver] + convertbits(witprog, 8, 5))
+    if segwit_decode(hrp, ret) == (None, None):
         return None
     return ret
