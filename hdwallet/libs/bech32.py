@@ -66,7 +66,7 @@ def base_bech32_decode(bech):
         return None, None
     bech = bech.lower()
     pos = bech.rfind('1')
-    if pos < 1 or pos + 7 > len(bech) or len(bech) > 90:
+    if pos < 1 or pos + 7 > len(bech):  # or len(bech) > 90:
         return None, None
     if not all(x in CHARSET for x in bech[pos+1:]):
         return None, None
@@ -105,7 +105,7 @@ def bech32_decode(hrp, addr):
     hrpgot, data = base_bech32_decode(addr)
     if hrpgot != hrp:
         return None, None
-    return data[0], convertbits(data, 5, 8, False)
+    return data[0], bytes(bytearray(convertbits(data, 5, 8, False)))
 
 
 def bech32_encode(hrp, witprog):
