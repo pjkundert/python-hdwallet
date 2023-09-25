@@ -1,9 +1,12 @@
 #!/usr/bin/env python3
 
 from typing import (
-    Optional, Union
+    Optional, Union, Tuple
 )
-from Crypto.Hash import SHA512
+from Crypto.Hash import (
+    SHA512, SHA3_256, keccak
+)
+from Crypto.Cipher import ChaCha20_Poly1305
 from Crypto.Protocol.KDF import PBKDF2
 
 import binascii
@@ -14,6 +17,56 @@ from .libs.ripemd160 import ripemd160 as r160
 from .utils import (
     get_bytes, encode, integer_to_bytes
 )
+
+
+def blake2b(data: Union[bytes, str], digest_size: int, key: Union[bytes, str] = b"", salt: Union[bytes, str] = b"") -> bytes:
+    return hashlib.blake2b(
+        encode(data), digest_size=digest_size, key=encode(key), salt=encode(salt)
+    ).digest()
+
+
+def blake2b_32(data: Union[bytes, str], key: Union[bytes, str] = b"", salt: Union[bytes, str] = b"") -> bytes:
+    return blake2b(data=data, digest_size=4, key=key, salt=salt)
+
+
+def blake2b_40(data: Union[bytes, str], key: Union[bytes, str] = b"", salt: Union[bytes, str] = b"") -> bytes:
+    return blake2b(data=data, digest_size=5, key=key, salt=salt)
+
+
+def blake2b_160(data: Union[bytes, str], key: Union[bytes, str] = b"", salt: Union[bytes, str] = b"") -> bytes:
+    return blake2b(data=data, digest_size=20, key=key, salt=salt)
+
+
+def blake2b_224(data: Union[bytes, str], key: Union[bytes, str] = b"", salt: Union[bytes, str] = b"") -> bytes:
+    return blake2b(data=data, digest_size=28, key=key, salt=salt)
+
+
+def blake2b_256(data: Union[bytes, str], key: Union[bytes, str] = b"", salt: Union[bytes, str] = b"") -> bytes:
+    return blake2b(data=data, digest_size=32, key=key, salt=salt)
+
+
+def blake2b_512(data: Union[bytes, str], key: Union[bytes, str] = b"", salt: Union[bytes, str] = b"") -> bytes:
+    return blake2b(data=data, digest_size=64, key=key, salt=salt)
+
+
+def chacha20_poly1305_encrypt(
+    key: Union[bytes, str], nonce: Union[bytes, str], assoc_data: Union[bytes, str], plain_text: Union[bytes, str]
+) -> Tuple[bytes, bytes]:
+    cipher: ChaCha20_Poly1305 = ChaCha20_Poly1305.new(
+        key=encode(key), nonce=encode(nonce)
+    )
+    cipher.update(encode(assoc_data))
+    return cipher.encrypt_and_digest(encode(plain_text))
+
+
+def chacha20_poly1305_decrypt(
+    key: Union[bytes, str], nonce: Union[bytes, str], assoc_data: Union[bytes, str], cipher_text: Union[bytes, str], tag: Union[bytes, str]
+) -> bytes:
+    cipher: ChaCha20_Poly1305 = ChaCha20_Poly1305.new(
+        key=encode(key), nonce=encode(nonce)
+    )
+    cipher.update(encode(assoc_data))
+    return cipher.decrypt_and_verify(encode(cipher_text), encode(tag))
 
 
 def sha256(data: Union[str, bytes]) -> bytes:
@@ -49,15 +102,23 @@ def pbkdf2_hmac_sha512(
     )
 
 
+def kekkak256(data: Union[str, bytes]) -> bytes:
+    return keccak.new(data=encode(data), digest_bits=256).digest()
+
+
 def ripemd160(data: Union[str, bytes]) -> bytes:
-    return (
+    if "ripemd160" in hashlib.algorithms_available:
         hashlib.new("ripemd160", get_bytes(data)).digest()
-        if "ripemd160" in hashlib.algorithms_available else
-        r160(get_bytes(data))
-    )
+    return r160(get_bytes(data))
 
 
 def sha512_256(data: Union[str, bytes]) -> bytes:
     if "sha512_256" in hashlib.algorithms_available:
         return hashlib.new("sha512_256", encode(data)).digest()
     return SHA512.new(encode(data), truncate="256").digest()
+
+
+def sha3_256(data: Union[str, bytes]) -> bytes:
+    if "sha3_256" in hashlib.algorithms_available:
+        return hashlib.new("sha3_256", encode(data)).digest()
+    return SHA3_256.new(encode(data)).digest()
