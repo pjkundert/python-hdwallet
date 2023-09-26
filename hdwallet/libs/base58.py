@@ -8,8 +8,6 @@ import six
 
 
 __base58_alphabet = "123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz"
-__base58_alphabet_bytes = b"123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz"
-__base58_radix = len(__base58_alphabet)
 
 
 def checksum_encode(address, crypto="eth"):
@@ -45,32 +43,32 @@ def ensure_string(data):
     return data
 
 
-def encode(data):
+def encode(data, alphabet=__base58_alphabet):
     enc = ""
     val = string_to_int(data)
-    while val >= __base58_radix:
-        val, mod = divmod(val, __base58_radix)
-        enc = __base58_alphabet[mod] + enc
+    while val >= len(alphabet):
+        val, mod = divmod(val, len(alphabet))
+        enc = alphabet[mod] + enc
     if val:
-        enc = __base58_alphabet[val] + enc
+        enc = alphabet[val] + enc
 
     n = len(data) - len(data.lstrip(b"\0"))
-    return __base58_alphabet[0] * n + enc
+    return alphabet[0] * n + enc
 
 
-def check_encode(raw):
+def check_encode(raw, alphabet=__base58_alphabet):
     chk = sha256(sha256(raw).digest()).digest()[:4]
-    return encode(raw + chk)
+    return encode(raw + chk, alphabet)
 
 
-def decode(data):
+def decode(data, alphabet=__base58_alphabet):
     if bytes != str:
         data = bytes(data, "ascii")
 
     val = 0
     prefix = 0
     for c in data:
-        val = (val * __base58_radix) + __base58_alphabet_bytes.find(c)
+        val = (val * len(alphabet)) + alphabet.encode("utf-8").find(c)
         if val == 0:
             prefix += 1
 
@@ -84,8 +82,8 @@ def decode(data):
     return bytes(dec[::-1])
 
 
-def check_decode(enc):
-    dec = decode(enc)
+def check_decode(enc, alphabet=__base58_alphabet):
+    dec = decode(enc, alphabet)
     raw, chk = dec[:-4], dec[-4:]
     if chk != sha256(sha256(raw).digest()).digest()[:4]:
         raise ValueError("base58 decoding checksum error")
