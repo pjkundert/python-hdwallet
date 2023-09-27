@@ -32,10 +32,8 @@ class AvalancheAddress(IAddress):
         else:
             raise ValueError("Wrong avalanche address type")
 
-        return (
-            cls.address_prefix + CosmosAddress.encode(
-                public_key=public_key, hrp=cls.hrp
-            )
+        return cls.address_prefix + CosmosAddress.encode(
+            public_key=public_key, hrp=cls.hrp
         )
 
     @classmethod
@@ -54,7 +52,7 @@ class AvalancheAddress(IAddress):
 
         prefix_got: str = address[:len(cls.address_prefix)]
         if cls.address_prefix != prefix_got:
-            raise ValueError(f"Invalid prefix (expected {cls.address_prefix!r}, got {prefix_got!r})")
+            raise ValueError(f"Invalid prefix (expected: {cls.address_prefix}, got: {prefix_got})")
         address_no_prefix: str = address[len(cls.address_prefix):]
 
         return CosmosAddress.decode(
