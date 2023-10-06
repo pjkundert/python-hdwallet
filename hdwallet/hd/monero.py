@@ -30,7 +30,7 @@ class Monero:
         self, network_type: Literal["mainnet", "stagenet", "testnet"] = "mainnet"
     ) -> None:
 
-        if network_type not in ["mainnet", "testnet"]:
+        if network_type not in ["mainnet", "stagenet", "testnet"]:
             raise ValueError(f"Invalid network type, (expected: 'mainnet' | 'stagenet' | 'testnet', got: '{network_type}')")
 
         self.network_type = network_type
