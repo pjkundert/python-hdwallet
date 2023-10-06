@@ -28,17 +28,17 @@ class MoneroAddress:
     network_types: Dict[str, Dict[str, Dict[str, int]]] = {
         "mainnet": {
             "version_types": {
-                "network": 0x12, "integrated": 0x13, "sub": 0x2a
+                "standard": 0x12, "integrated": 0x13, "sub-address": 0x2a
             }
         },
         "stagenet": {
             "version_types": {
-                "network": 0x18, "integrated": 0x19, "sub": 0x24
+                "standard": 0x18, "integrated": 0x19, "sub-address": 0x24
             }
         },
         "testnet": {
             "version_types": {
-                "network": 0x35, "integrated": 0x36, "sub": 0x3f
+                "standard": 0x35, "integrated": 0x36, "sub-address": 0x3f
             }
         }
     }
@@ -53,7 +53,7 @@ class MoneroAddress:
         spend_public_key: Union[bytes, str, IPublicKey],
         view_public_key: Union[bytes, str, IPublicKey],
         network_type: Literal["mainnet", "stagenet", "testnet"] = "mainnet",
-        version_type: Literal["network", "integrated", "sub"] = "network",
+        version_type: Literal["standard", "integrated", "sub-address"] = "standard",
         payment_id: Optional[bytes] = None
     ) -> str:
 
@@ -81,7 +81,7 @@ class MoneroAddress:
         cls,
         address: str,
         network_type: Literal["mainnet", "stagenet", "testnet"] = "mainnet",
-        version_type: Literal["network", "integrated", "sub"] = "network",
+        version_type: Literal["standard", "integrated", "sub-address"] = "standard",
         payment_id: Optional[bytes] = None
     ) -> Tuple[str, str]:
 
