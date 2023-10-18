@@ -25,7 +25,7 @@ class ElectrumV2Seed(ISeed):
     def generate(cls, mnemonic: str, passphrase: Optional[str] = None) -> str:
 
         if not ElectrumV2Mnemonic.is_valid(mnemonic=mnemonic):
-            ValueError("Invalid BIP39 mnemonic words")
+            ValueError("Invalid Electrum V2 mnemonic words")
 
         salt: str = unicodedata.normalize("NFKD", (
             (cls.seed_salt_modifier + passphrase) if passphrase else cls.seed_salt_modifier
