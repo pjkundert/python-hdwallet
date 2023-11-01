@@ -12,11 +12,32 @@ from Crypto.Protocol.KDF import PBKDF2
 import binascii
 import crcmod.predefined
 import hashlib
+import hmac
 
 from .libs.ripemd160 import ripemd160 as r160
 from .utils import (
     get_bytes, encode, integer_to_bytes
 )
+
+
+def hmac_sha256(key: Union[bytes, str], data: Union[bytes, str]) -> bytes:
+    if hasattr(hmac, "digest"):
+        return hmac.digest(
+            encode(key), encode(data), "sha256"
+        )
+    return hmac.new(
+        encode(key), encode(data), hashlib.sha256
+    ).digest()
+
+
+def hmac_sha512(key: Union[bytes, str], data: Union[bytes, str]) -> bytes:
+    if hasattr(hmac, "digest"):
+        return hmac.digest(
+            encode(key), encode(data), "sha512"
+        )
+    return hmac.new(
+        encode(key), encode(data), hashlib.sha512
+    ).digest()
 
 
 def blake2b(data: Union[bytes, str], digest_size: int, key: Union[bytes, str] = b"", salt: Union[bytes, str] = b"") -> bytes:
@@ -110,6 +131,10 @@ def ripemd160(data: Union[str, bytes]) -> bytes:
     if "ripemd160" in hashlib.algorithms_available:
         hashlib.new("ripemd160", get_bytes(data)).digest()
     return r160(get_bytes(data))
+
+
+def sha512(data: Union[str, bytes]) -> bytes:
+    return hashlib.sha512(encode(data)).digest()
 
 
 def sha512_256(data: Union[str, bytes]) -> bytes:
