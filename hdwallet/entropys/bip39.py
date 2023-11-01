@@ -6,7 +6,7 @@
 
 from typing import List
 
-from . import IEntropy
+from .ientropy import IEntropy
 
 
 class BIP39_ENTROPY_LENGTHS:

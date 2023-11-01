@@ -6,7 +6,7 @@
 
 from typing import List
 
-from . import IEntropy
+from .ientropy import IEntropy
 
 
 class MONERO_ENTROPY_LENGTHS:

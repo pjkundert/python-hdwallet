@@ -12,7 +12,7 @@ import math
 
 from ...utils import bytes_to_integer
 from ...mnemonics.bip39 import BIP39Mnemonic
-from .. import IEntropy
+from ..ientropy import IEntropy
 
 
 class ELECTRUM_V2_ENTROPY_LENGTHS:
