@@ -40,8 +40,8 @@ class ELECTRUM_V2_MNEMONIC_TYPES:
 
     STANDARD: str = "standard"
     SEGWIT: str = "segwit"
-    STANDARD_2FA: str = "standard_2fa"
-    SEGWIT_2FA: str = "segwit_2fa"
+    STANDARD_2FA: str = "standard-2fa"
+    SEGWIT_2FA: str = "segwit-2fa"
 
 
 class ElectrumV2Mnemonic(IMnemonic):

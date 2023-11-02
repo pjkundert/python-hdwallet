@@ -36,8 +36,8 @@ class BIP39_MNEMONIC_WORDS:
 
 class BIP39_MNEMONIC_LANGUAGES:
 
-    CHINESE_SIMPLIFIED: str = "chinese_simplified"
-    CHINESE_TRADITIONAL: str = "chinese_traditional"
+    CHINESE_SIMPLIFIED: str = "chinese-simplified"
+    CHINESE_TRADITIONAL: str = "chinese-traditional"
     CZECH: str = "czech"
     ENGLISH: str = "english"
     FRENCH: str = "french"

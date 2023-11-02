@@ -31,7 +31,7 @@ class MONERO_MNEMONIC_WORDS:
 
 class MONERO_MNEMONIC_LANGUAGES:
 
-    CHINESE_SIMPLIFIED: str = "chinese_simplified"
+    CHINESE_SIMPLIFIED: str = "chinese-simplified"
     DUTCH: str = "dutch"
     ENGLISH: str = "english"
     FRENCH: str = "french"

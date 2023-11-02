@@ -10,6 +10,9 @@ from .mnemonic import (
     AlgorandMnemonic, ALGORAND_MNEMONIC_WORDS, ALGORAND_MNEMONIC_LANGUAGES
 )
 
+
 __all__: List[str] = [
-    "AlgorandMnemonic", "ALGORAND_MNEMONIC_WORDS", "ALGORAND_MNEMONIC_LANGUAGES"
+    "AlgorandMnemonic",
+    "ALGORAND_MNEMONIC_WORDS",
+    "ALGORAND_MNEMONIC_LANGUAGES"
 ]

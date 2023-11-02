@@ -10,6 +10,9 @@ from .mnemonic import (
     ElectrumV1Mnemonic, ELECTRUM_V1_MNEMONIC_WORDS, ELECTRUM_V1_MNEMONIC_LANGUAGES
 )
 
+
 __all__: List[str] = [
-    "ElectrumV1Mnemonic", "ELECTRUM_V1_MNEMONIC_WORDS", "ELECTRUM_V1_MNEMONIC_LANGUAGES"
+    "ElectrumV1Mnemonic",
+    "ELECTRUM_V1_MNEMONIC_WORDS",
+    "ELECTRUM_V1_MNEMONIC_LANGUAGES"
 ]

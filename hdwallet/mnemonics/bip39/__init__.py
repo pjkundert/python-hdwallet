@@ -10,6 +10,9 @@ from .mnemonic import (
     BIP39Mnemonic, BIP39_MNEMONIC_WORDS, BIP39_MNEMONIC_LANGUAGES
 )
 
+
 __all__: List[str] = [
-    "BIP39Mnemonic", "BIP39_MNEMONIC_WORDS", "BIP39_MNEMONIC_LANGUAGES"
+    "BIP39Mnemonic",
+    "BIP39_MNEMONIC_WORDS",
+    "BIP39_MNEMONIC_LANGUAGES"
 ]
