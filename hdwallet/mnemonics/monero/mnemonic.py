@@ -1,5 +1,9 @@
 #!/usr/bin/env python3
 
+# Copyright © 2020-2023, Meheret Tesfaye Batu <meherett.batu@gmail.com>
+# Distributed under the MIT software license, see the accompanying
+# file COPYING or https://opensource.org/license/mit
+
 from typing import (
     Union, Dict, List
 )
@@ -13,8 +17,8 @@ from ...crypto import crc32
 from ...entropys.monero import (
     MoneroEntropy, MONERO_ENTROPY_LENGTHS
 )
-from ..utils import bytes_chunk_to_words, words_to_bytes_chunk
-from .. import IMnemonic
+from ...utils import bytes_chunk_to_words, words_to_bytes_chunk
+from ..imnemonic import IMnemonic
 
 
 class MONERO_MNEMONIC_WORDS:
@@ -97,11 +101,11 @@ class MoneroMnemonic(IMnemonic):
     }
 
     @classmethod
-    def generate_from_words(cls, words: int, language: str) -> str:
+    def from_words(cls, words: int, language: str) -> str:
         if words not in cls.words:
             raise ValueError(f"Invalid words number for mnemonic (expected {cls.words}, got {words})")
 
-        return cls.generate_from_entropy(
+        return cls.from_entropy(
             entropy=MoneroEntropy.generate(cls.words_to_entropy_length[words]),
             language=language,
             checksum=(
@@ -110,7 +114,7 @@ class MoneroMnemonic(IMnemonic):
         )
 
     @classmethod
-    def generate_from_entropy(cls, entropy: Union[str, bytes], language: str, checksum: bool = False) -> str:
+    def from_entropy(cls, entropy: Union[str, bytes], language: str, checksum: bool = False) -> str:
         return cls.encode(entropy=entropy, language=language, checksum=checksum)
 
     @classmethod
@@ -120,9 +124,8 @@ class MoneroMnemonic(IMnemonic):
         if not MoneroEntropy.is_valid_bytes_length(len(entropy)):
             raise ValueError(f"Wrong entropy length (expected {MoneroEntropy.lengths}, got {len(entropy) * 8})")
 
-        # Consider 4 bytes at a time, 4 bytes represent 3 words
-        mnemonic: list = []
-        words_list: list = cls.get_words_list_by_language(language=language)
+        mnemonic: List[str] = []
+        words_list: List[str] = cls.get_words_list_by_language(language=language)
         if len(words_list) != cls.words_list_number:
             raise ValueError(f"Invalid number of loaded words list (expected {cls.words_list_number}, got {len(words_list)})")
 

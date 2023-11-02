@@ -1,66 +1,32 @@
 #!/usr/bin/env python3
 
-from abc import (
-    ABC, abstractmethod
+# Copyright © 2020-2023, Meheret Tesfaye Batu <meherett.batu@gmail.com>
+# Distributed under the MIT software license, see the accompanying
+# file COPYING or https://opensource.org/license/mit
+
+from typing import List
+
+from .algorand import (
+    AlgorandMnemonic, ALGORAND_MNEMONIC_WORDS, ALGORAND_MNEMONIC_LANGUAGES
 )
-from typing import (
-    Union, Dict, List, Tuple
+from .bip39 import (
+    BIP39Mnemonic, BIP39_MNEMONIC_WORDS, BIP39_MNEMONIC_LANGUAGES
+)
+from .electrum.v1 import (
+    ElectrumV1Mnemonic, ELECTRUM_V1_MNEMONIC_WORDS, ELECTRUM_V1_MNEMONIC_LANGUAGES
+)
+from .electrum.v2 import (
+    ElectrumV2Mnemonic, ELECTRUM_V2_MNEMONIC_WORDS, ELECTRUM_V2_MNEMONIC_LANGUAGES, ELECTRUM_V2_MNEMONIC_TYPES
+)
+from .monero import (
+    MoneroMnemonic, MONERO_MNEMONIC_WORDS, MONERO_MNEMONIC_LANGUAGES
 )
 
-import os
 
-
-class IMnemonic(ABC):
-
-    words: List[int]
-    languages: List[str]
-    wordlist_path: Dict[str, str]
-
-    @classmethod
-    @abstractmethod
-    def encode(cls, entropy: Union[str, bytes], language: str) -> str:
-        pass
-
-    @classmethod
-    @abstractmethod
-    def decode(cls, mnemonic: str) -> bytes:
-        pass
-
-    @staticmethod
-    @abstractmethod
-    def normalize(mnemonic: Union[str, List[str]]) -> List[str]:
-        pass
-
-    @classmethod
-    def get_words_list_by_language(cls, language: str) -> list:
-        with open(os.path.join(os.path.dirname(__file__), cls.wordlist_path[language]), "r", encoding="utf-8") as fin:
-            words_list: list = [
-                word.strip() for word in fin.readlines() if word.strip() != "" and not word.startswith("#")
-            ]
-        return words_list
-
-    @classmethod
-    def find_language(cls, mnemonic: list) -> Union[str, Tuple[List[str], str]]:
-        for language in cls.languages:
-            try:
-                words_list: list = cls.get_words_list_by_language(language=language)
-                words_list_with_index: dict = {
-                    words_list[i]: i for i in range(len(words_list))
-                }
-                for word in mnemonic:
-                    try:
-                        words_list_with_index[word]
-                    except KeyError as ex:
-                        raise ValueError(f"Unable to find word {word}") from ex
-                return words_list, language
-            except ValueError:
-                continue
-        raise ValueError(f"Invalid language for mnemonic '{mnemonic}'")
-
-    @classmethod
-    def is_valid(cls, mnemonic: str) -> bool:
-        try:
-            cls.decode(mnemonic=mnemonic)
-            return True
-        except ValueError:
-            return False
+__all__: List[str] = [
+    "AlgorandMnemonic", "ALGORAND_MNEMONIC_WORDS", "ALGORAND_MNEMONIC_LANGUAGES",
+    "BIP39Mnemonic", "BIP39_MNEMONIC_WORDS", "BIP39_MNEMONIC_LANGUAGES",
+    "ElectrumV1Mnemonic", "ELECTRUM_V1_MNEMONIC_WORDS", "ELECTRUM_V1_MNEMONIC_LANGUAGES",
+    "ElectrumV2Mnemonic", "ELECTRUM_V2_MNEMONIC_WORDS", "ELECTRUM_V2_MNEMONIC_LANGUAGES", "ELECTRUM_V2_MNEMONIC_TYPES",
+    "MoneroMnemonic", "MONERO_MNEMONIC_WORDS", "MONERO_MNEMONIC_LANGUAGES"
+]

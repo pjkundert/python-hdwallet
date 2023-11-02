@@ -1,7 +1,11 @@
 #!/usr/bin/env python3
 
+# Copyright © 2020-2023, Meheret Tesfaye Batu <meherett.batu@gmail.com>
+# Distributed under the MIT software license, see the accompanying
+# file COPYING or https://opensource.org/license/mit
+
 from typing import (
-    Union, Dict, List
+    Union, Dict, List, Optional
 )
 
 import unicodedata
@@ -18,7 +22,7 @@ from ...crypto import sha256
 from ...entropys.bip39 import (
     BIP39Entropy, BIP39_ENTROPY_LENGTHS
 )
-from .. import IMnemonic
+from ..imnemonic import IMnemonic
 
 
 class BIP39_MNEMONIC_WORDS:
@@ -94,16 +98,16 @@ class BIP39Mnemonic(IMnemonic):
     }
 
     @classmethod
-    def generate_from_words(cls, words: int, language: str) -> str:
+    def from_words(cls, words: int, language: str) -> str:
         if words not in cls.words:
             raise ValueError(f"Invalid words number for mnemonic (expected {cls.words}, got {words})")
 
-        return cls.generate_from_entropy(
+        return cls.from_entropy(
             entropy=BIP39Entropy.generate(cls.words_to_entropy_length[words]), language=language
         )
 
     @classmethod
-    def generate_from_entropy(cls, entropy: Union[str, bytes], language: str) -> str:
+    def from_entropy(cls, entropy: Union[str, bytes], language: str) -> str:
         return cls.encode(entropy=entropy, language=language)
 
     @classmethod
@@ -121,8 +125,8 @@ class BIP39Mnemonic(IMnemonic):
         mnemonic_bin: str = entropy_binary_string + entropy_hash_binary_string[:len(entropy) // 4]
 
         # Get mnemonic from entropy
-        mnemonic: list = []
-        words_list: list = cls.get_words_list_by_language(language=language)
+        mnemonic: List[str] = []
+        words_list: List[str] = cls.get_words_list_by_language(language=language)
         if len(words_list) != cls.words_list_number:
             raise ValueError(f"Invalid number of loaded words list (expected {cls.words_list_number}, got {len(words_list)})")
 
@@ -136,19 +140,25 @@ class BIP39Mnemonic(IMnemonic):
         return " ".join(cls.normalize(mnemonic))
 
     @classmethod
-    def decode(cls, mnemonic: str, checksum: bool = False) -> str:
+    def decode(
+        cls, mnemonic: str, checksum: bool = False, words_list: Optional[List[str]] = None, words_list_with_index: Optional[dict] = None
+    ) -> str:
         # Check mnemonic length
         words: list = cls.normalize(mnemonic)
         if len(words) not in cls.words:
             raise ValueError(f"Invalid mnemonic words count (expected {cls.words}, got {len(words)})")
 
-        # Detect language if it was not specified at construction
-        words_list, language = cls.find_language(mnemonic=words)
+        if not words_list or not words_list_with_index:
+            # Detect language if it was not specified at construction
+            words_list, language = cls.find_language(mnemonic=words)
+            if len(words_list) != cls.words_list_number:
+                raise ValueError(f"Invalid number of loaded words list (expected {cls.words_list_number}, got {len(words_list)})")
+            words_list_with_index: dict = {
+                words_list[i]: i for i in range(len(words_list))
+            }
+
         if len(words_list) != cls.words_list_number:
             raise ValueError(f"Invalid number of loaded words list (expected {cls.words_list_number}, got {len(words_list)})")
-        words_list_with_index: dict = {
-            words_list[i]: i for i in range(len(words_list))
-        }
 
         # Get back mnemonic binary string
         mnemonic_bin: str = "".join(map(
@@ -186,6 +196,16 @@ class BIP39Mnemonic(IMnemonic):
                 binary_string_to_bytes(mnemonic_bin, pad_bit_len // 4)
             )
         return bytes_to_string(entropy)
+
+    @classmethod
+    def is_valid(
+        cls, mnemonic: Union[str, List[str]], words_list: Optional[List[str]] = None, words_list_with_index: Optional[dict] = None
+    ) -> bool:
+        try:
+            cls.decode(mnemonic=mnemonic, words_list=words_list, words_list_with_index=words_list_with_index)
+            return True
+        except (ValueError, KeyError):
+            return False
 
     @classmethod
     def normalize(cls, mnemonic: Union[str, List[str]]) -> List[str]:
