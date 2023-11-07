@@ -5,7 +5,7 @@
 # file COPYING or https://opensource.org/license/mit
 
 from ..mnemonics.monero import MoneroMnemonic
-from . import ISeed
+from .iseed import ISeed
 
 
 class MoneroSeed(ISeed):

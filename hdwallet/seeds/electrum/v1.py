@@ -7,7 +7,7 @@
 from ...utils import bytes_to_string, encode
 from ...crypto import sha256
 from ...mnemonics.electrum.v1 import ElectrumV1Mnemonic
-from .. import ISeed
+from ..iseed import ISeed
 
 
 class ElectrumV1Seed(ISeed):

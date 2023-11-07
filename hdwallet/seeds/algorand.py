@@ -5,7 +5,7 @@
 # file COPYING or https://opensource.org/license/mit
 
 from ..mnemonics.algorand import AlgorandMnemonic
-from . import ISeed
+from .iseed import ISeed
 
 
 class AlgorandSeed(ISeed):

@@ -11,7 +11,7 @@ import unicodedata
 from ..utils import bytes_to_string
 from ..crypto import pbkdf2_hmac_sha512
 from ..mnemonics.bip39 import BIP39Mnemonic
-from . import ISeed
+from .iseed import ISeed
 
 
 class BIP39Seed(ISeed):

@@ -11,19 +11,20 @@ import cbor2
 from ..utils import get_bytes, bytes_to_string
 from ..crypto import blake2b_256
 from ..mnemonics.bip39 import BIP39Mnemonic
+from .iseed import ISeed
 
 
-class CardanoSeed:
+class CardanoSeed(ISeed):
 
     @classmethod
-    def generate(cls, mnemonic: str, seed_type: Literal["byron_legacy", "byron_icarus"]) -> str:
+    def generate(cls, mnemonic: str, seed_type: Literal["byron-legacy", "icarus"] = "icarus", **kwargs) -> str:
 
-        if seed_type == "byron_legacy":
+        if seed_type == "byron-legacy":
             return cls.generate_byron_legacy(mnemonic=mnemonic)
         elif seed_type == "icarus":
             return cls.generate_icarus(mnemonic=mnemonic)
         else:
-            expected: tuple = ("byron_legacy", "icarus")
+            expected: tuple = ("byron-legacy", "icarus")
             raise ValueError(f"Invalid seed type (expected: {expected}, got: {seed_type!r})")
 
     @classmethod
