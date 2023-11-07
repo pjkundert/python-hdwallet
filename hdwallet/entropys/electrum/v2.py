@@ -11,7 +11,6 @@ from typing import (
 import math
 
 from ...utils import bytes_to_integer
-from ...mnemonics.bip39 import BIP39Mnemonic
 from ..ientropy import IEntropy
 
 
@@ -31,7 +30,7 @@ class ElectrumV2Entropy(IEntropy):
     @classmethod
     def is_valid_length(cls, length: int) -> bool:
         for _length in cls.lengths:
-            if _length - BIP39Mnemonic.word_bit_length <= length <= _length:
+            if _length - 11 <= length <= _length:
                 return True
         return False
 
