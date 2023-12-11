@@ -6,7 +6,7 @@
 
 from types import SimpleNamespace
 from typing import (
-    Any, Optional, List, Dict
+    Any, Optional, Dict
 )
 
 import inspect
@@ -83,7 +83,7 @@ class Secp65k1Network(NestedNamespace):
 
 class Networks:
 
-    AVAILABLE_NETWORKS: List[Dict[str, Any]]
+    AVAILABLE_NETWORKS: Dict[str, Any]
 
 
 class Cryptocurrency(NestedNamespace):
@@ -97,11 +97,14 @@ class Cryptocurrency(NestedNamespace):
     MESSAGE_PREFIX: Optional[str]
 
     @classmethod
+    def is_network_available(cls, network: str) -> bool:
+        return network in cls.NETWORKS.AVAILABLE_NETWORKS.keys()
+
+    @classmethod
     def get_network(cls, network: str) -> Any:
-        for available_network in cls.NETWORKS.AVAILABLE_NETWORKS:
-            if available_network[network]:
-                return available_network[network]
-        raise NetworkError(f"'{network} network is not available")
+        if not cls.is_network_available(network=network):
+            raise NetworkError(f"'{network} network is not available")
+        return cls.NETWORKS.AVAILABLE_NETWORKS[network]
 
 
 def get_cryptocurrency(symbol: str) -> Cryptocurrency:

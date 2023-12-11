@@ -83,10 +83,10 @@ class Networks(INetworks):
     MAINNET = Mainnet
     TESTNET = Testnet
 
-    AVAILABLE_NETWORKS = [
-        {"mainnet": MAINNET},
-        {"testnet": TESTNET}
-    ]
+    AVAILABLE_NETWORKS = {
+        "mainnet": MAINNET,
+        "testnet": TESTNET
+    }
 
 
 class Bitcoin(Cryptocurrency):
