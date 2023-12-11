@@ -6,7 +6,7 @@
 
 from ..ecc import SLIP10Secp256k1
 from .icryptocurrency import (
-    CoinType, Cryptocurrency, SegwitAddress, Secp65k1Network, ExtendedPrivateKey, ExtendedPublicKey
+    Cryptocurrency, CoinType, TESTNET_COIN_TYPE, SegwitAddress, Secp65k1Network, ExtendedPrivateKey, ExtendedPublicKey
 )
 
 COIN_TYPE = CoinType({
@@ -51,7 +51,7 @@ class Testnet(Secp65k1Network):
         "HRP": "tb",
         "VERSION": 0x00
     })
-    DEFAULT_PATH = f"m/44'/1'/0'/0/0"
+    DEFAULT_PATH = f"m/44'/{TESTNET_COIN_TYPE}/0'/0/0"
     EXTENDED_PRIVATE_KEY = ExtendedPrivateKey({
         "P2PKH": 0x04358394,
         "P2SH": 0x04358394,

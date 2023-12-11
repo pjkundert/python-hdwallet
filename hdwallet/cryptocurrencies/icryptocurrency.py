@@ -35,6 +35,11 @@ class CoinType(NestedNamespace):
         return f"{self.INDEX}'" if self.HARDENED else f"{self.INDEX}"
 
 
+TESTNET_COIN_TYPE = CoinType({
+    "INDEX": 1, "HARDENED": True
+})
+
+
 class SegwitAddress(NestedNamespace):
 
     HRP: Optional[str]
