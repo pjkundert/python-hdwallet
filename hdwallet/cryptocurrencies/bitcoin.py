@@ -6,7 +6,14 @@
 
 from ..ecc import SLIP10Secp256k1
 from .icryptocurrency import (
-    Cryptocurrency, CoinType, TESTNET_COIN_TYPE, SegwitAddress, Secp65k1Network, ExtendedPrivateKey, ExtendedPublicKey
+    Cryptocurrency,
+    CoinType,
+    TESTNET_COIN_TYPE,
+    Networks as INetworks,
+    Secp65k1Network,
+    ExtendedPrivateKey,
+    ExtendedPublicKey,
+    SegwitAddress
 )
 
 COIN_TYPE = CoinType({
@@ -71,10 +78,15 @@ class Testnet(Secp65k1Network):
     WIF_PREFIX = 0xef
 
 
-class Networks:
+class Networks(INetworks):
 
     MAINNET = Mainnet
     TESTNET = Testnet
+
+    AVAILABLE_NETWORKS = [
+        {"mainnet": MAINNET},
+        {"testnet": TESTNET}
+    ]
 
 
 class Bitcoin(Cryptocurrency):

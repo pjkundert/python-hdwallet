@@ -6,13 +6,16 @@
 
 from types import SimpleNamespace
 from typing import (
-    Any, Optional
+    Any, Optional, List, Dict
 )
 
 import inspect
 import sys
 
 from ..ecc import EllipticCurveCryptography
+from ..exceptions import (
+    NetworkError, SymbolError
+)
 
 
 class NestedNamespace(SimpleNamespace):
@@ -36,7 +39,8 @@ class CoinType(NestedNamespace):
 
 
 TESTNET_COIN_TYPE = CoinType({
-    "INDEX": 1, "HARDENED": True
+    "INDEX": 1,
+    "HARDENED": True
 })
 
 
@@ -77,11 +81,16 @@ class Secp65k1Network(NestedNamespace):
     WIF_PREFIX: int
 
 
+class Networks:
+
+    AVAILABLE_NETWORKS: List[Dict[str, Any]]
+
+
 class Cryptocurrency(NestedNamespace):
 
     NAME: str
     SYMBOL: str
-    NETWORKS: Any
+    NETWORKS: Networks
     SOURCE_CODE: Optional[str]
     ECC: EllipticCurveCryptography
     COIN_TYPE: CoinType
@@ -89,7 +98,10 @@ class Cryptocurrency(NestedNamespace):
 
     @classmethod
     def get_network(cls, network: str) -> Any:
-        return getattr(cls.NETWORKS, network)
+        for available_network in cls.NETWORKS.AVAILABLE_NETWORKS:
+            if available_network[network]:
+                return available_network[network]
+        raise NetworkError(f"'{network} network is not available")
 
 
 def get_cryptocurrency(symbol: str) -> Cryptocurrency:
@@ -100,4 +112,4 @@ def get_cryptocurrency(symbol: str) -> Cryptocurrency:
                 if symbol == cryptocurrency.SYMBOL:
                     return cryptocurrency
 
-    raise ValueError(f"Invalid Cryptocurrency '{symbol}' symbol")
+    raise SymbolError(f"Unknown cryptocurrency '{symbol}' symbol")
