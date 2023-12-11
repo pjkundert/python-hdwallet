@@ -9,6 +9,11 @@ from .icryptocurrency import (
     CoinType, Cryptocurrency, SegwitAddress, Secp65k1Network, ExtendedPrivateKey, ExtendedPublicKey
 )
 
+COIN_TYPE = CoinType({
+    "INDEX": 0,
+    "HARDENED": True
+})
+
 
 class Mainnet(Secp65k1Network):
 
@@ -18,7 +23,7 @@ class Mainnet(Secp65k1Network):
         "HRP": "bc",
         "VERSION": 0x00
     })
-    DEFAULT_PATH = f"m/44'/0'/0'/0/0"
+    DEFAULT_PATH = f"m/44'/{COIN_TYPE}/0'/0/0"
     EXTENDED_PRIVATE_KEY = ExtendedPrivateKey({
         "P2PKH": 0x0488ade4,
         "P2SH": 0x0488ade4,
@@ -79,8 +84,5 @@ class Bitcoin(Cryptocurrency):
     SOURCE_CODE = "https://github.com/bitcoin/bitcoin"
     ECC = SLIP10Secp256k1
     NETWORKS = Networks
-    COIN_TYPE = CoinType({
-        "INDEX": 0,
-        "HARDENED": True
-    })
+    COIN_TYPE = COIN_TYPE
     MESSAGE_PREFIX = "\x18Bitcoin Signed Message:\n"

@@ -10,5 +10,5 @@ from .bitcoin import Bitcoin
 
 
 __all__: List[str] = [
-    "Bitcoin"  # Mainnet and Testnet
+    "Bitcoin"
 ]
