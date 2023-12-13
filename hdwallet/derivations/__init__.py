@@ -1,42 +1,24 @@
 #!/usr/bin/env python3
 
-# Copyright © 2023, Meheret Tesfaye Batu <meherett.batu@gmail.com>
+# Copyright © 2020-2023, Meheret Tesfaye Batu <meherett.batu@gmail.com>
 # Distributed under the MIT software license, see the accompanying
 # file COPYING or https://opensource.org/license/mit
 
-from typing import (
-    Optional, List
-)
+from typing import List
 
-from ..utils import (
-    path_to_indexes, indexes_to_path
-)
+from .bip44 import BIP44Derivation
+from .bip49 import BIP49Derivation
+from .bip84 import BIP84Derivation
+from .bip86 import BIP86Derivation
+from .cip1852 import CIP1852Derivation
+from .custom import CustomDerivation
 
 
-class IDerivation:
-
-    _path: str
-    _indexes: List[int]
-
-    def __init__(
-        self, path: Optional[str] = None, indexes: Optional[List[int]] = None
-    ) -> None:
-
-        if (path and not indexes) or path:
-            self._indexes = path_to_indexes(path=path)
-            self._path = path
-        elif (not path and indexes) or indexes:
-            self._path = indexes_to_path(indexes=indexes)
-            self._indexes = indexes
-        else:
-            self._path: str = "m/"
-            self._indexes: List[int] = []
-
-    def __str__(self) -> str:
-        return self._path
-
-    def path(self) -> str:
-        return self._path
-
-    def indexes(self) -> List[int]:
-        return self._indexes
+__all__: List[str] = [
+    "BIP44Derivation",
+    "BIP49Derivation",
+    "BIP84Derivation",
+    "BIP86Derivation",
+    "CIP1852Derivation",
+    "CustomDerivation"
+]
