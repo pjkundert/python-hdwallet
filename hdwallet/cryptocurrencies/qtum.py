@@ -4,25 +4,15 @@
 # Distributed under the MIT software license, see the accompanying
 # file COPYING or https://opensource.org/license/mit
 
+from typing import List
+
 from ..ecc import SLIP10Secp256k1
 from .icryptocurrency import (
-    Cryptocurrency,
-    CoinType,
-    TESTNET_COIN_TYPE,
-    Networks as INetworks,
-    Secp65k1Network,
-    ExtendedPrivateKey,
-    ExtendedPublicKey,
-    SegwitAddress
+    ICryptocurrency, INetworks, INetwork, CoinType, ExtendedPrivateKey, ExtendedPublicKey, SegwitAddress
 )
 
-COIN_TYPE = CoinType({
-    "INDEX": 2301,
-    "HARDENED": True
-})
 
-
-class Mainnet(Secp65k1Network):
+class Mainnet(INetwork):
 
     SCRIPT_ADDRESS_PREFIX = 0x32
     PUBLIC_KEY_ADDRESS_PREFIX = 0x3a
@@ -30,7 +20,6 @@ class Mainnet(Secp65k1Network):
         "HRP": "qc1",
         "VERSION": 0x00
     })
-    DEFAULT_PATH = f"m/44'/{COIN_TYPE}/0'/0/0"
     EXTENDED_PRIVATE_KEY = ExtendedPrivateKey({
         "P2PKH": 0x0488ade4,
         "P2SH": 0x0488ade4,
@@ -50,7 +39,7 @@ class Mainnet(Secp65k1Network):
     WIF_PREFIX = 0x80
 
 
-class Testnet(Secp65k1Network):
+class Testnet(INetwork):
 
     SCRIPT_ADDRESS_PREFIX = 0x6e
     PUBLIC_KEY_ADDRESS_PREFIX = 0x78
@@ -58,7 +47,6 @@ class Testnet(Secp65k1Network):
         "HRP": "tq1",
         "VERSION": 0x00
     })
-    DEFAULT_PATH = f"m/44'/{TESTNET_COIN_TYPE}/0'/0/0"
     EXTENDED_PRIVATE_KEY = ExtendedPrivateKey({
         "P2PKH": 0x04358394,
         "P2SH": 0x04358394,
@@ -83,18 +71,20 @@ class Networks(INetworks):
     MAINNET = Mainnet
     TESTNET = Testnet
 
-    AVAILABLE_NETWORKS = {
-        "mainnet": MAINNET,
-        "testnet": TESTNET
-    }
+    @classmethod
+    def networks(cls) -> List[str]:
+        return ["mainnet", "testnet"]
 
 
-class Qtum(Cryptocurrency):
+class Qtum(ICryptocurrency):
 
     NAME = "Qtum"
     SYMBOL = "QTUM"
     SOURCE_CODE = "https://github.com/qtumproject/qtum"
     ECC = SLIP10Secp256k1
+    COIN_TYPE = CoinType({
+        "INDEX": 2301,
+        "HARDENED": True
+    })
     NETWORKS = Networks
-    COIN_TYPE = COIN_TYPE
     MESSAGE_PREFIX = None

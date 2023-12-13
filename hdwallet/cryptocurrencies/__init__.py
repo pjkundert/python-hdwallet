@@ -7,8 +7,10 @@
 from typing import List
 
 from .bitcoin import Bitcoin
+from .qtum import Qtum
 
 
 __all__: List[str] = [
-    "Bitcoin"
+    "Bitcoin",
+    "Qtum"
 ]

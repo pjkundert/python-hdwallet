@@ -4,29 +4,23 @@
 # Distributed under the MIT software license, see the accompanying
 # file COPYING or https://opensource.org/license/mit
 
-from types import SimpleNamespace
+from abc import (
+    ABC, abstractmethod
+)
+
 from typing import (
-    Any, Optional, Dict
+    Optional, Union, Type, List
 )
 
 import inspect
 import sys
 
 from ..ecc import EllipticCurveCryptography
+from ..derivations.bip44 import BIP44Derivation
+from ..utils import NestedNamespace
 from ..exceptions import (
     NetworkError, SymbolError
 )
-
-
-class NestedNamespace(SimpleNamespace):
-
-    def __init__(self, dictionary, **kwargs):
-        super().__init__(**kwargs)
-        for key, value in dictionary.items():
-            if isinstance(value, dict):
-                self.__setattr__(key, NestedNamespace(value))
-            else:
-                self.__setattr__(key, value)
 
 
 class CoinType(NestedNamespace):
@@ -36,12 +30,6 @@ class CoinType(NestedNamespace):
 
     def __str__(self):
         return f"{self.INDEX}'" if self.HARDENED else f"{self.INDEX}"
-
-
-TESTNET_COIN_TYPE = CoinType({
-    "INDEX": 1,
-    "HARDENED": True
-})
 
 
 class SegwitAddress(NestedNamespace):
@@ -70,48 +58,74 @@ class ExtendedPublicKey(ExtendedKey):
     pass
 
 
-class Secp65k1Network(NestedNamespace):
+class INetwork:
 
     PUBLIC_KEY_ADDRESS_PREFIX: int
     SCRIPT_ADDRESS_PREFIX: int
     SEGWIT_ADDRESS_PREFIX: SegwitAddress
-    DEFAULT_PATH: str
     EXTENDED_PRIVATE_KEY: ExtendedPrivateKey
     EXTENDED_PUBLIC_KEY: ExtendedPublicKey
     WIF_PREFIX: int
 
 
-class Networks:
+class INetworks(ABC):
 
-    AVAILABLE_NETWORKS: Dict[str, Any]
+    @classmethod
+    @abstractmethod
+    def networks(cls) -> List[str]:
+        pass
+
+    @classmethod
+    def is_network(cls, network: str) -> bool:
+        return network in cls.networks()
+
+    @classmethod
+    def get_network(cls, network: str) -> INetwork:
+
+        if not cls.is_network(network=network):
+            raise NetworkError(f"'{network} network is not available")
+
+        return cls.__getattribute__(cls, network.upper())
 
 
-class Cryptocurrency(NestedNamespace):
+class ICryptocurrency:
 
     NAME: str
     SYMBOL: str
-    NETWORKS: Networks
+    NETWORKS: INetworks
     SOURCE_CODE: Optional[str]
     ECC: EllipticCurveCryptography
     COIN_TYPE: CoinType
     MESSAGE_PREFIX: Optional[str]
 
     @classmethod
-    def is_network_available(cls, network: str) -> bool:
-        return network in cls.NETWORKS.AVAILABLE_NETWORKS.keys()
+    def get_default_path(cls, network: Union[str, Type[INetwork]]) -> str:
+        try:
+            if not isinstance(network, str) and issubclass(network, INetwork):
+                network = network.__name__.lower()
+            if not cls.NETWORKS.is_network(network=network):
+                raise NetworkError(
+                    f"Wrong {cls.NAME} network", expected=cls.NETWORKS.networks(), got=network
+                )
 
-    @classmethod
-    def get_network(cls, network: str) -> Any:
-        if not cls.is_network_available(network=network):
-            raise NetworkError(f"'{network} network is not available")
-        return cls.NETWORKS.AVAILABLE_NETWORKS[network]
+            bip44_derivation: BIP44Derivation = BIP44Derivation(
+                account=0, change="external-chain", address=0
+            )
+            bip44_derivation.from_coin_type(
+                coin_type=cls.COIN_TYPE.INDEX if network == "mainnet" else 1
+            )
+            return bip44_derivation.path()
+        except TypeError:
+            raise NetworkError(
+                "Invalid network type", expected=[str, INetwork], got=type(network)
+            )
 
 
-def get_cryptocurrency(symbol: str) -> Cryptocurrency:
+def get_cryptocurrency(symbol: str) -> ICryptocurrency:
 
     for _, cryptocurrency in inspect.getmembers(sys.modules[__name__]):
         if inspect.isclass(cryptocurrency):
-            if issubclass(cryptocurrency, Cryptocurrency) and cryptocurrency != Cryptocurrency:
+            if issubclass(cryptocurrency, ICryptocurrency) and cryptocurrency != ICryptocurrency:
                 if symbol == cryptocurrency.SYMBOL:
                     return cryptocurrency
 
