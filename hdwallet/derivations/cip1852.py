@@ -25,7 +25,7 @@ class CIP1852Derivation(IDerivation):  # https://github.com/cardano-foundation/C
         self,
         coin_type: int = 1815,
         account: int = 0,
-        role: Literal["external-chain", "internal-chain", "staking-key"] = "external-chain",
+        role: str = "external-chain",
         address: int = 0
     ) -> None:
 
@@ -57,7 +57,7 @@ class CIP1852Derivation(IDerivation):  # https://github.com/cardano-foundation/C
         self._path = indexes_to_path(indexes=self._indexes)
         return self
 
-    def from_role(self, role: Literal["external-chain", "internal-chain", "staking-key"]) -> "CIP1852Derivation":
+    def from_role(self, role: str) -> "CIP1852Derivation":
         self._role = (self.role_types[role], False)
         self._indexes[3] = index_tuple_to_integer(index=self._role)
         self._path = indexes_to_path(indexes=self._indexes)

@@ -6,6 +6,7 @@
 
 from typing import List
 
+from .iderivation import IDerivation
 from .bip44 import BIP44Derivation
 from .bip49 import BIP49Derivation
 from .bip84 import BIP84Derivation
@@ -15,6 +16,7 @@ from .custom import CustomDerivation
 
 
 __all__: List[str] = [
+    "IDerivation",
     "BIP44Derivation",
     "BIP49Derivation",
     "BIP84Derivation",

@@ -25,7 +25,7 @@ class BIP44Derivation(IDerivation):  # https://github.com/bitcoin/bips/blob/mast
         self,
         coin_type: int = 0,
         account: int = 0,
-        change: Literal["external-chain", "internal-chain"] = "external-chain",
+        change: str = "external-chain",
         address: int = 0
     ) -> None:
 
@@ -56,7 +56,7 @@ class BIP44Derivation(IDerivation):  # https://github.com/bitcoin/bips/blob/mast
         self._path = indexes_to_path(indexes=self._indexes)
         return self
 
-    def from_change(self, change: Literal["external-chain", "internal-chain"]) -> "BIP44Derivation":
+    def from_change(self, change: str) -> "BIP44Derivation":
         self._change = (self.change_types[change], False)
         self._indexes[3] = index_tuple_to_integer(index=self._change)
         self._path = indexes_to_path(indexes=self._indexes)
