@@ -62,9 +62,10 @@ class INetwork:
 
     PUBLIC_KEY_ADDRESS_PREFIX: int
     SCRIPT_ADDRESS_PREFIX: int
-    SEGWIT_ADDRESS_PREFIX: SegwitAddress
-    EXTENDED_PRIVATE_KEY: ExtendedPrivateKey
-    EXTENDED_PUBLIC_KEY: ExtendedPublicKey
+    SEGWIT_ADDRESS_PREFIX: Optional[SegwitAddress]
+    EXTENDED_PRIVATE_KEY: Optional[ExtendedPrivateKey]
+    EXTENDED_PUBLIC_KEY: Optional[ExtendedPublicKey]
+    MESSAGE_PREFIX: Optional[str]
     WIF_PREFIX: int
 
 
@@ -96,7 +97,6 @@ class ICryptocurrency:
     SOURCE_CODE: Optional[str]
     ECC: EllipticCurveCryptography
     COIN_TYPE: CoinType
-    MESSAGE_PREFIX: Optional[str]
 
     @classmethod
     def get_default_path(cls, network: Union[str, Type[INetwork]]) -> str:

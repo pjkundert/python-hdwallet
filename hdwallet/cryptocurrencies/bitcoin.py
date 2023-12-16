@@ -36,6 +36,7 @@ class Mainnet(INetwork):
         "P2WSH": 0x02aa7ed3,
         "P2WSH_IN_P2SH": 0x0295b43f
     })
+    MESSAGE_PREFIX = "\x18Bitcoin Signed Message:\n"
     WIF_PREFIX = 0x80
 
 
@@ -63,6 +64,7 @@ class Testnet(INetwork):
         "P2WSH": 0x02575483,
         "P2WSH_IN_P2SH": 0x024289ef
     })
+    MESSAGE_PREFIX = "\x18Bitcoin Signed Message:\n"
     WIF_PREFIX = 0xef
 
 
@@ -87,4 +89,3 @@ class Bitcoin(ICryptocurrency):
         "HARDENED": True
     })
     NETWORKS = Networks
-    MESSAGE_PREFIX = "\x18Bitcoin Signed Message:\n"
