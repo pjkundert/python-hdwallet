@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-# Copyright © 2020-2023, Meheret Tesfaye Batu <meherett.batu@gmail.com>
+# Copyright © 2020-2024, Meheret Tesfaye Batu <meherett.batu@gmail.com>
 # Distributed under the MIT software license, see the accompanying
 # file COPYING or https://opensource.org/license/mit
 
@@ -14,7 +14,7 @@ from ...utils import (
     get_bytes, bytes_to_string, bytes_to_integer
 )
 from ...crypto import crc32
-from ...entropys.monero import (
+from ...entropies.monero import (
     MoneroEntropy, MONERO_ENTROPY_LENGTHS
 )
 from ...utils import bytes_chunk_to_words, words_to_bytes_chunk

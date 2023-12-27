@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-# Copyright © 2020-2023, Meheret Tesfaye Batu <meherett.batu@gmail.com>
+# Copyright © 2020-2024, Meheret Tesfaye Batu <meherett.batu@gmail.com>
 # Distributed under the MIT software license, see the accompanying
 # file COPYING or https://opensource.org/license/mit
 
@@ -13,7 +13,7 @@ import unicodedata
 from ....utils import (
     get_bytes, integer_to_bytes, bytes_to_integer, bytes_to_string
 )
-from ....entropys.electrum.v1 import (
+from ....entropies.electrum.v1 import (
     ElectrumV1Entropy, ELECTRUM_V1_ENTROPY_LENGTHS
 )
 from ...imnemonic import IMnemonic

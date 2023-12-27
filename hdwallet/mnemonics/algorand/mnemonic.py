@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-# Copyright © 2020-2023, Meheret Tesfaye Batu <meherett.batu@gmail.com>
+# Copyright © 2020-2024, Meheret Tesfaye Batu <meherett.batu@gmail.com>
 # Distributed under the MIT software license, see the accompanying
 # file COPYING or https://opensource.org/license/mit
 
@@ -14,7 +14,7 @@ from ...utils import (
     get_bytes, bytes_to_string
 )
 from ...crypto import sha512_256
-from ...entropys.algorand import (
+from ...entropies.algorand import (
     AlgorandEntropy, ALGORAND_ENTROPY_LENGTHS
 )
 from ...utils import convert_bits

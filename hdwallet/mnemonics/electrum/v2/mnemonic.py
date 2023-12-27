@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-# Copyright © 2020-2023, Meheret Tesfaye Batu <meherett.batu@gmail.com>
+# Copyright © 2020-2024, Meheret Tesfaye Batu <meherett.batu@gmail.com>
 # Distributed under the MIT software license, see the accompanying
 # file COPYING or https://opensource.org/license/mit
 
@@ -16,7 +16,7 @@ from ....utils import (
 from ....crypto import hmac_sha512
 from ....mnemonics.bip39 import BIP39Mnemonic
 from ....mnemonics.electrum.v1 import ElectrumV1Mnemonic
-from ....entropys.electrum.v2 import (
+from ....entropies.electrum.v2 import (
     ElectrumV2Entropy, ELECTRUM_V2_ENTROPY_LENGTHS
 )
 from ...imnemonic import IMnemonic
