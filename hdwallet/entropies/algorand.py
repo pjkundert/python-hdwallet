@@ -16,6 +16,7 @@ class ALGORAND_ENTROPY_LENGTHS:
 
 class AlgorandEntropy(IEntropy):
 
-    lengths: List[int] = [
+    name = "Algorand"
+    lengths = [
         ALGORAND_ENTROPY_LENGTHS.TWO_HUNDRED_FIFTY_SIX
     ]

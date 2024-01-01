@@ -4,19 +4,34 @@
 # Distributed under the MIT software license, see the accompanying
 # file COPYING or https://opensource.org/license/mit
 
-from typing import List
+from typing import (
+    List, Union
+)
 
 import secrets
 import os
 
 from ..utils import (
-    integer_to_bytes, bytes_to_string
+    get_bytes, integer_to_bytes, bytes_to_string
 )
 
 
 class IEntropy:
 
+    name: str
+    entropy: str
     lengths: List[int]
+    length: int
+
+    def __init__(self, entropy: Union[bytes, str]) -> None:
+        try:
+            length: int = len(get_bytes(entropy))
+            if not self.is_valid_bytes_length(length):
+                raise Exception("Unsupported entropy length")
+            self.entropy = bytes_to_string(entropy)
+            self.length = length * 8
+        except ValueError:
+            raise Exception("Invalid entropy data")
 
     @classmethod
     def generate(cls, length: int) -> str:

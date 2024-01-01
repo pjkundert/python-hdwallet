@@ -6,6 +6,7 @@
 
 from typing import List
 
+from .ientropy import IEntropy
 from .algorand import (
     AlgorandEntropy, ALGORAND_ENTROPY_LENGTHS
 )
@@ -24,6 +25,7 @@ from .monero import (
 
 
 __all__: List[str] = [
+    "IEntropy",
     "AlgorandEntropy", "ALGORAND_ENTROPY_LENGTHS",
     "BIP39Entropy", "BIP39_ENTROPY_LENGTHS",
     "ElectrumV1Entropy", "ELECTRUM_V1_ENTROPY_LENGTHS",

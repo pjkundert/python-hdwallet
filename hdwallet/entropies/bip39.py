@@ -20,7 +20,8 @@ class BIP39_ENTROPY_LENGTHS:
 
 class BIP39Entropy(IEntropy):
 
-    lengths: List[int] = [
+    name = "BIP39"
+    lengths = [
         BIP39_ENTROPY_LENGTHS.ONE_HUNDRED_TWENTY_EIGHT,
         BIP39_ENTROPY_LENGTHS.ONE_HUNDRED_SIXTY,
         BIP39_ENTROPY_LENGTHS.ONE_HUNDRED_NINETY_TWO,
