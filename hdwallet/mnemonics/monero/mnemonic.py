@@ -14,8 +14,8 @@ from ...utils import (
     get_bytes, bytes_to_string, bytes_to_integer
 )
 from ...crypto import crc32
-from ...entropies.monero import (
-    MoneroEntropy, MONERO_ENTROPY_LENGTHS
+from ...entropies import (
+    IEntropy, MoneroEntropy, MONERO_ENTROPY_LENGTHS
 )
 from ...utils import bytes_chunk_to_words, words_to_bytes_chunk
 from ..imnemonic import IMnemonic
@@ -44,6 +44,8 @@ class MONERO_MNEMONIC_LANGUAGES:
 
 
 class MoneroMnemonic(IMnemonic):
+
+    _name = "Monero"
 
     word_bit_length: int = 11
     words_list_number: int = 1626
@@ -114,8 +116,12 @@ class MoneroMnemonic(IMnemonic):
         )
 
     @classmethod
-    def from_entropy(cls, entropy: Union[str, bytes], language: str, checksum: bool = False) -> str:
-        return cls.encode(entropy=entropy, language=language, checksum=checksum)
+    def from_entropy(cls, entropy: Union[str, bytes, IEntropy], language: str, checksum: bool = False) -> str:
+        if isinstance(entropy, str) or isinstance(entropy, bytes):
+            return cls.encode(entropy=entropy, language=language, checksum=checksum)
+        elif isinstance(entropy, MoneroEntropy):
+            return cls.encode(entropy=entropy.entropy(), language=language, checksum=checksum)
+        raise Exception("Invalid entropy, only accept str, bytes, or Monero entropy class")
 
     @classmethod
     def encode(cls, entropy: Union[str, bytes], language: str, checksum: bool = False) -> str:

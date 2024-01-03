@@ -16,8 +16,8 @@ from ....utils import (
 from ....crypto import hmac_sha512
 from ....mnemonics.bip39 import BIP39Mnemonic
 from ....mnemonics.electrum.v1 import ElectrumV1Mnemonic
-from ....entropies.electrum.v2 import (
-    ElectrumV2Entropy, ELECTRUM_V2_ENTROPY_LENGTHS
+from ....entropies import (
+    IEntropy, ElectrumV2Entropy, ELECTRUM_V2_ENTROPY_LENGTHS
 )
 from ...imnemonic import IMnemonic
 
@@ -45,6 +45,8 @@ class ELECTRUM_V2_MNEMONIC_TYPES:
 
 
 class ElectrumV2Mnemonic(IMnemonic):
+
+    _name = "Electrum-V2"
 
     word_bit_length: int = 11
     words: List[int] = [
@@ -86,7 +88,13 @@ class ElectrumV2Mnemonic(IMnemonic):
     @classmethod
     def from_entropy(cls, entropy: Union[str, bytes], language: str, mnemonic_type: str = "standard", max_attempts: int = 10 ** 60) -> str:
 
-        entropy: bytes = get_bytes(entropy)
+        if isinstance(entropy, str) or isinstance(entropy, bytes):
+            entropy: bytes = get_bytes(entropy)
+        elif isinstance(entropy, ElectrumV2Entropy):
+            entropy: bytes = get_bytes(entropy.entropy())
+        else:
+            raise Exception("Invalid entropy, only accept str, bytes, or Electrum-V2 entropy class")
+
         # Do not waste time trying if the entropy bit are not enough
         if ElectrumV2Entropy.are_entropy_bits_enough(entropy):
 

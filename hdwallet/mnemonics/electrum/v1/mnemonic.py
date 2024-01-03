@@ -13,8 +13,8 @@ import unicodedata
 from ....utils import (
     get_bytes, integer_to_bytes, bytes_to_integer, bytes_to_string
 )
-from ....entropies.electrum.v1 import (
-    ElectrumV1Entropy, ELECTRUM_V1_ENTROPY_LENGTHS
+from ....entropies import (
+    IEntropy, ElectrumV1Entropy, ELECTRUM_V1_ENTROPY_LENGTHS
 )
 from ...imnemonic import IMnemonic
 
@@ -30,6 +30,8 @@ class ELECTRUM_V1_MNEMONIC_LANGUAGES:
 
 
 class ElectrumV1Mnemonic(IMnemonic):
+
+    _name = "Electrum-V1"
 
     words: List[int] = [
         ELECTRUM_V1_MNEMONIC_WORDS.TWELVE
@@ -55,8 +57,12 @@ class ElectrumV1Mnemonic(IMnemonic):
         )
 
     @classmethod
-    def from_entropy(cls, entropy: Union[str, bytes], language: str) -> str:
-        return cls.encode(entropy=entropy, language=language)
+    def from_entropy(cls, entropy: Union[str, bytes, IEntropy], language: str) -> str:
+        if isinstance(entropy, str) or isinstance(entropy, bytes):
+            return cls.encode(entropy=entropy, language=language)
+        elif isinstance(entropy, ElectrumV1Entropy):
+            return cls.encode(entropy=entropy.entropy(), language=language)
+        raise Exception("Invalid entropy, only accept str, bytes, or Electrum-V1 entropy class")
 
     @classmethod
     def encode(cls, entropy: Union[str, bytes], language: str) -> str:

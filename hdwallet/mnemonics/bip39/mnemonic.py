@@ -5,7 +5,7 @@
 # file COPYING or https://opensource.org/license/mit
 
 from typing import (
-    Union, Dict, List, Optional
+    Union, Dict, List, Optional, Type
 )
 
 import unicodedata
@@ -19,8 +19,8 @@ from ...utils import (
     binary_string_to_bytes
 )
 from ...crypto import sha256
-from ...entropies.bip39 import (
-    BIP39Entropy, BIP39_ENTROPY_LENGTHS
+from ...entropies import (
+    IEntropy, BIP39Entropy, BIP39_ENTROPY_LENGTHS
 )
 from ..imnemonic import IMnemonic
 
@@ -51,6 +51,8 @@ class BIP39_MNEMONIC_LANGUAGES:
 
 
 class BIP39Mnemonic(IMnemonic):
+
+    _name = "BIP39"
 
     word_bit_length: int = 11
     words_list_number: int = 2048
@@ -107,8 +109,12 @@ class BIP39Mnemonic(IMnemonic):
         )
 
     @classmethod
-    def from_entropy(cls, entropy: Union[str, bytes], language: str) -> str:
-        return cls.encode(entropy=entropy, language=language)
+    def from_entropy(cls, entropy: Union[str, bytes, IEntropy], language: str) -> str:
+        if isinstance(entropy, str) or isinstance(entropy, bytes):
+            return cls.encode(entropy=entropy, language=language)
+        elif isinstance(entropy, BIP39Entropy):
+            return cls.encode(entropy=entropy.entropy(), language=language)
+        raise Exception("Invalid entropy, only accept str, bytes, or BIP39 entropy class")
 
     @classmethod
     def encode(cls, entropy: Union[str, bytes], language: str) -> str:

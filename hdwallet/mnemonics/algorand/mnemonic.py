@@ -14,8 +14,8 @@ from ...utils import (
     get_bytes, bytes_to_string
 )
 from ...crypto import sha512_256
-from ...entropies.algorand import (
-    AlgorandEntropy, ALGORAND_ENTROPY_LENGTHS
+from ...entropies import (
+    IEntropy, AlgorandEntropy, ALGORAND_ENTROPY_LENGTHS
 )
 from ...utils import convert_bits
 from ..imnemonic import IMnemonic
@@ -32,6 +32,8 @@ class ALGORAND_MNEMONIC_LANGUAGES:
 
 
 class AlgorandMnemonic(IMnemonic):
+
+    _name = "Algorand"
 
     checksum_length: int = 2
     words: List[int] = [
@@ -57,8 +59,12 @@ class AlgorandMnemonic(IMnemonic):
         )
 
     @classmethod
-    def from_entropy(cls, entropy: Union[str, bytes], language: str) -> str:
-        return cls.encode(entropy=entropy, language=language)
+    def from_entropy(cls, entropy: Union[str, bytes, IEntropy], language: str) -> str:
+        if isinstance(entropy, str) or isinstance(entropy, bytes):
+            return cls.encode(entropy=entropy, language=language)
+        elif isinstance(entropy, AlgorandEntropy):
+            return cls.encode(entropy=entropy.entropy(), language=language)
+        raise Exception("Invalid entropy, only accept str, bytes, or Algorand entropy class")
 
     @classmethod
     def encode(cls, entropy: Union[str, bytes], language: str) -> str:

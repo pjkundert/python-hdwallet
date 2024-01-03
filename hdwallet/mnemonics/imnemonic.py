@@ -16,9 +16,38 @@ import os
 
 class IMnemonic(ABC):
 
+    _name: str
+    _mnemonic: List[str]
+    _word: int
+    _language: str
+
     words: List[int]
     languages: List[str]
     wordlist_path: Dict[str, str]
+
+    def __init__(self, mnemonic: Union[str, List[str]]) -> None:
+
+        self._mnemonic: List[str] = self.normalize(mnemonic)
+        if not self.is_valid(self._mnemonic):
+            raise Exception("Invalid mnemonic words")
+
+        _, self._language = self.find_language(self._mnemonic)
+        self._word = len(self._mnemonic)
+
+    def name(self) -> str:
+        return self._name
+
+    def mnemonic(self) -> str:
+        return " ".join(self._mnemonic)
+
+    def language(self) -> str:
+        language: str = ""
+        for index, _ in enumerate(self._language.split("-")):
+            language += _.title() if index == 0 else f"-{_.title()}"
+        return language
+
+    def word(self) -> int:
+        return self._word
 
     @classmethod
     @abstractmethod
@@ -64,3 +93,7 @@ class IMnemonic(ABC):
             return True
         except ValueError:
             return False
+
+    @classmethod
+    def normalize(cls, mnemonic: Union[str, List[str]]) -> List[str]:
+        return mnemonic.split() if isinstance(mnemonic, str) else mnemonic

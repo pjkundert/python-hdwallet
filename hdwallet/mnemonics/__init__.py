@@ -6,6 +6,7 @@
 
 from typing import List
 
+from .imnemonic import IMnemonic
 from .algorand import (
     AlgorandMnemonic, ALGORAND_MNEMONIC_WORDS, ALGORAND_MNEMONIC_LANGUAGES
 )
@@ -24,6 +25,7 @@ from .monero import (
 
 
 __all__: List[str] = [
+    "IMnemonic",
     "AlgorandMnemonic", "ALGORAND_MNEMONIC_WORDS", "ALGORAND_MNEMONIC_LANGUAGES",
     "BIP39Mnemonic", "BIP39_MNEMONIC_WORDS", "BIP39_MNEMONIC_LANGUAGES",
     "ElectrumV1Mnemonic", "ELECTRUM_V1_MNEMONIC_WORDS", "ELECTRUM_V1_MNEMONIC_LANGUAGES",
