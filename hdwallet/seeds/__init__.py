@@ -8,7 +8,8 @@ from typing import List
 
 from .algorand import AlgorandSeed
 from .bip39 import BIP39Seed
-from .cardano import CardanoSeed
+from .cardano.byron_legacy import CardanoByronLegacySeed
+from .cardano.icarus import CardanoIcarusSeed
 from .electrum.v1 import ElectrumV1Seed
 from .electrum.v2 import ElectrumV2Seed
 from .monero import MoneroSeed
@@ -17,7 +18,8 @@ from .monero import MoneroSeed
 __all__: List[str] = [
     "AlgorandSeed",
     "BIP39Seed",
-    "CardanoSeed",
+    "CardanoByronLegacySeed",
+    "CardanoIcarusSeed",
     "ElectrumV1Seed",
     "ElectrumV2Seed",
     "MoneroSeed"

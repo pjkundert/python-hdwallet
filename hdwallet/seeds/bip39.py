@@ -16,6 +16,8 @@ from .iseed import ISeed
 
 class BIP39Seed(ISeed):
 
+    _name = "BIP39"
+
     # Salt modifier for seed generation
     seed_salt_modifier: str = "mnemonic"
     # PBKDF2 round for seed generation

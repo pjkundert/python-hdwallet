@@ -11,7 +11,19 @@ from abc import (
 
 class ISeed(ABC):
 
+    _name: str
+    _seed: str
+
+    def __init__(self, seed: str) -> None:
+        self._seed = seed
+
+    def name(self) -> str:
+        return self._name
+
+    def seed(self) -> str:
+        return self._name
+
     @classmethod
     @abstractmethod
-    def generate(cls, mnemonic: str, **kwargs) -> str:
+    def generate(cls, mnemonic: str) -> str:
         pass

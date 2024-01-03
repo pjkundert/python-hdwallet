@@ -10,8 +10,10 @@ from .iseed import ISeed
 
 class AlgorandSeed(ISeed):
 
+    _name = "Algorand"
+
     @classmethod
-    def generate(cls, mnemonic: str, **kwargs) -> str:
+    def generate(cls, mnemonic: str) -> str:
 
         if not AlgorandMnemonic.is_valid(mnemonic=mnemonic):
             ValueError("Invalid Algorand mnemonic words")

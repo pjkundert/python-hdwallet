@@ -16,6 +16,8 @@ from ..iseed import ISeed
 
 class ElectrumV2Seed(ISeed):
 
+    _name = "Electrum-V2"
+
     # Salt modifier for seed generation
     seed_salt_modifier: str = "electrum"
     # PBKDF2 round for seed generation
