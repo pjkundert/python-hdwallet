@@ -6,6 +6,7 @@
 
 from typing import List
 
+from .iseed import ISeed
 from .algorand import AlgorandSeed
 from .bip39 import BIP39Seed
 from .cardano.byron_legacy import CardanoByronLegacySeed
@@ -16,6 +17,7 @@ from .monero import MoneroSeed
 
 
 __all__: List[str] = [
+    "ISeed",
     "AlgorandSeed",
     "BIP39Seed",
     "CardanoByronLegacySeed",
