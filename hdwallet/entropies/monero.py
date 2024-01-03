@@ -17,7 +17,8 @@ class MONERO_ENTROPY_LENGTHS:
 
 class MoneroEntropy(IEntropy):
 
-    name = "Monero"
+    _name = "Monero"
+
     lengths = [
         MONERO_ENTROPY_LENGTHS.ONE_HUNDRED_TWENTY_EIGHT,
         MONERO_ENTROPY_LENGTHS.TWO_HUNDRED_FIFTY_SIX

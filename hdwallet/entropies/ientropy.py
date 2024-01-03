@@ -18,20 +18,30 @@ from ..utils import (
 
 class IEntropy:
 
-    name: str
-    entropy: str
+    _name: str
+    _entropy: str
+    _length: int
+
     lengths: List[int]
-    length: int
 
     def __init__(self, entropy: Union[bytes, str]) -> None:
         try:
             length: int = len(get_bytes(entropy))
             if not self.is_valid_bytes_length(length):
                 raise Exception("Unsupported entropy length")
-            self.entropy = bytes_to_string(entropy)
-            self.length = length * 8
+            self._entropy = bytes_to_string(entropy)
+            self._length = length * 8
         except ValueError:
             raise Exception("Invalid entropy data")
+
+    def name(self) -> str:
+        return self._name
+
+    def entropy(self) -> str:
+        return self._entropy
+
+    def length(self) -> int:
+        return self._length
 
     @classmethod
     def generate(cls, length: int) -> str:

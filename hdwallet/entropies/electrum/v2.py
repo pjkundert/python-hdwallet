@@ -22,7 +22,8 @@ class ELECTRUM_V2_ENTROPY_LENGTHS:
 
 class ElectrumV2Entropy(IEntropy):
 
-    name = "Electrum-V1"
+    _name = "Electrum-V2"
+
     lengths = [
         ELECTRUM_V2_ENTROPY_LENGTHS.ONE_HUNDRED_THIRTY_TWO,
         ELECTRUM_V2_ENTROPY_LENGTHS.TWO_HUNDRED_SIXTY_FOUR
