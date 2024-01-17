@@ -20,7 +20,7 @@ from ...utils import (
 )
 from ...crypto import sha256
 from ...entropies import (
-    IEntropy, BIP39Entropy, BIP39_ENTROPY_LENGTHS
+    IEntropy, BIP39Entropy, BIP39_ENTROPY_STRENGTHS
 )
 from ..imnemonic import IMnemonic
 
@@ -63,12 +63,12 @@ class BIP39Mnemonic(IMnemonic):
         BIP39_MNEMONIC_WORDS.TWENTY_ONE,
         BIP39_MNEMONIC_WORDS.TWENTY_FOUR
     ]
-    words_to_entropy_length: Dict[int, int] = {
-        BIP39_MNEMONIC_WORDS.TWELVE: BIP39_ENTROPY_LENGTHS.ONE_HUNDRED_TWENTY_EIGHT,
-        BIP39_MNEMONIC_WORDS.FIFTEEN: BIP39_ENTROPY_LENGTHS.ONE_HUNDRED_SIXTY,
-        BIP39_MNEMONIC_WORDS.EIGHTEEN: BIP39_ENTROPY_LENGTHS.ONE_HUNDRED_NINETY_TWO,
-        BIP39_MNEMONIC_WORDS.TWENTY_ONE: BIP39_ENTROPY_LENGTHS.TWO_HUNDRED_TWENTY_FOUR,
-        BIP39_MNEMONIC_WORDS.TWENTY_FOUR: BIP39_ENTROPY_LENGTHS.TWO_HUNDRED_FIFTY_SIX
+    words_to_entropy_strength: Dict[int, int] = {
+        BIP39_MNEMONIC_WORDS.TWELVE: BIP39_ENTROPY_STRENGTHS.ONE_HUNDRED_TWENTY_EIGHT,
+        BIP39_MNEMONIC_WORDS.FIFTEEN: BIP39_ENTROPY_STRENGTHS.ONE_HUNDRED_SIXTY,
+        BIP39_MNEMONIC_WORDS.EIGHTEEN: BIP39_ENTROPY_STRENGTHS.ONE_HUNDRED_NINETY_TWO,
+        BIP39_MNEMONIC_WORDS.TWENTY_ONE: BIP39_ENTROPY_STRENGTHS.TWO_HUNDRED_TWENTY_FOUR,
+        BIP39_MNEMONIC_WORDS.TWENTY_FOUR: BIP39_ENTROPY_STRENGTHS.TWO_HUNDRED_FIFTY_SIX
     }
     languages: List[str] = [
         BIP39_MNEMONIC_LANGUAGES.CHINESE_SIMPLIFIED,
@@ -105,7 +105,7 @@ class BIP39Mnemonic(IMnemonic):
             raise ValueError(f"Invalid words number for mnemonic (expected {cls.words}, got {words})")
 
         return cls.from_entropy(
-            entropy=BIP39Entropy.generate(cls.words_to_entropy_length[words]), language=language
+            entropy=BIP39Entropy.generate(cls.words_to_entropy_strength[words]), language=language
         )
 
     @classmethod
@@ -120,8 +120,8 @@ class BIP39Mnemonic(IMnemonic):
     def encode(cls, entropy: Union[str, bytes], language: str) -> str:
         # Check entropy length
         entropy: bytes = get_bytes(entropy)
-        if not BIP39Entropy.is_valid_bytes_length(len(entropy)):
-            raise ValueError(f"Wrong entropy length (expected {BIP39Entropy.lengths}, got {len(entropy) * 8})")
+        if not BIP39Entropy.is_valid_bytes_strength(len(entropy)):
+            raise ValueError(f"Wrong entropy length (expected {BIP39Entropy.strengths}, got {len(entropy) * 8})")
 
         # Convert entropy to binary string
         entropy_binary_string: str = bytes_to_binary_string(get_bytes(entropy), len(entropy) * 8)

@@ -14,7 +14,7 @@ from ....utils import (
     get_bytes, integer_to_bytes, bytes_to_integer, bytes_to_string
 )
 from ....entropies import (
-    IEntropy, ElectrumV1Entropy, ELECTRUM_V1_ENTROPY_LENGTHS
+    IEntropy, ElectrumV1Entropy, ELECTRUM_V1_ENTROPY_STRENGTHS
 )
 from ...imnemonic import IMnemonic
 
@@ -36,8 +36,8 @@ class ElectrumV1Mnemonic(IMnemonic):
     words: List[int] = [
         ELECTRUM_V1_MNEMONIC_WORDS.TWELVE
     ]
-    words_to_entropy_length: Dict[int, int] = {
-        ELECTRUM_V1_MNEMONIC_WORDS.TWELVE: ELECTRUM_V1_ENTROPY_LENGTHS.ONE_HUNDRED_TWENTY_EIGHT
+    words_to_entropy_strength: Dict[int, int] = {
+        ELECTRUM_V1_MNEMONIC_WORDS.TWELVE: ELECTRUM_V1_ENTROPY_STRENGTHS.ONE_HUNDRED_TWENTY_EIGHT
     }
     languages: List[str] = [
         ELECTRUM_V1_MNEMONIC_LANGUAGES.ENGLISH
@@ -53,7 +53,7 @@ class ElectrumV1Mnemonic(IMnemonic):
             raise ValueError(f"Invalid words number for mnemonic (expected {cls.words}, got {words})")
 
         return cls.from_entropy(
-            entropy=ElectrumV1Entropy.generate(cls.words_to_entropy_length[words]), language=language
+            entropy=ElectrumV1Entropy.generate(cls.words_to_entropy_strength[words]), language=language
         )
 
     @classmethod
@@ -68,8 +68,8 @@ class ElectrumV1Mnemonic(IMnemonic):
     def encode(cls, entropy: Union[str, bytes], language: str) -> str:
         # Check entropy length
         entropy: bytes = get_bytes(entropy)
-        if not ElectrumV1Entropy.is_valid_bytes_length(len(entropy)):
-            raise ValueError(f"Wrong entropy length (expected {ElectrumV1Entropy.lengths}, got {len(entropy) * 8})")
+        if not ElectrumV1Entropy.is_valid_bytes_strength(len(entropy)):
+            raise ValueError(f"Wrong entropy length (expected {ElectrumV1Entropy.strengths}, got {len(entropy) * 8})")
 
         mnemonic: List[str] = []
         words_list: List[str] = cls.get_words_list_by_language(language=language)

@@ -15,7 +15,7 @@ from ...utils import (
 )
 from ...crypto import crc32
 from ...entropies import (
-    IEntropy, MoneroEntropy, MONERO_ENTROPY_LENGTHS
+    IEntropy, MoneroEntropy, MONERO_ENTROPY_STRENGTHS
 )
 from ...utils import bytes_chunk_to_words, words_to_bytes_chunk
 from ..imnemonic import IMnemonic
@@ -59,11 +59,11 @@ class MoneroMnemonic(IMnemonic):
         MONERO_MNEMONIC_WORDS.THIRTEEN,
         MONERO_MNEMONIC_WORDS.TWENTY_FIVE
     ]
-    words_to_entropy_length: Dict[int, int] = {
-        MONERO_MNEMONIC_WORDS.TWELVE: MONERO_ENTROPY_LENGTHS.ONE_HUNDRED_TWENTY_EIGHT,
-        MONERO_MNEMONIC_WORDS.THIRTEEN: MONERO_ENTROPY_LENGTHS.ONE_HUNDRED_TWENTY_EIGHT,
-        MONERO_MNEMONIC_WORDS.TWENTY_FOUR: MONERO_ENTROPY_LENGTHS.TWO_HUNDRED_FIFTY_SIX,
-        MONERO_MNEMONIC_WORDS.TWENTY_FIVE: MONERO_ENTROPY_LENGTHS.TWO_HUNDRED_FIFTY_SIX
+    words_to_entropy_strength: Dict[int, int] = {
+        MONERO_MNEMONIC_WORDS.TWELVE: MONERO_ENTROPY_STRENGTHS.ONE_HUNDRED_TWENTY_EIGHT,
+        MONERO_MNEMONIC_WORDS.THIRTEEN: MONERO_ENTROPY_STRENGTHS.ONE_HUNDRED_TWENTY_EIGHT,
+        MONERO_MNEMONIC_WORDS.TWENTY_FOUR: MONERO_ENTROPY_STRENGTHS.TWO_HUNDRED_FIFTY_SIX,
+        MONERO_MNEMONIC_WORDS.TWENTY_FIVE: MONERO_ENTROPY_STRENGTHS.TWO_HUNDRED_FIFTY_SIX
     }
     languages: List[str] = [
         MONERO_MNEMONIC_LANGUAGES.CHINESE_SIMPLIFIED,
@@ -108,7 +108,7 @@ class MoneroMnemonic(IMnemonic):
             raise ValueError(f"Invalid words number for mnemonic (expected {cls.words}, got {words})")
 
         return cls.from_entropy(
-            entropy=MoneroEntropy.generate(cls.words_to_entropy_length[words]),
+            entropy=MoneroEntropy.generate(cls.words_to_entropy_strength[words]),
             language=language,
             checksum=(
                 True if words in cls.words_checksum else False
@@ -127,8 +127,8 @@ class MoneroMnemonic(IMnemonic):
     def encode(cls, entropy: Union[str, bytes], language: str, checksum: bool = False) -> str:
         # Check entropy length
         entropy: bytes = get_bytes(entropy)
-        if not MoneroEntropy.is_valid_bytes_length(len(entropy)):
-            raise ValueError(f"Wrong entropy length (expected {MoneroEntropy.lengths}, got {len(entropy) * 8})")
+        if not MoneroEntropy.is_valid_bytes_strength(len(entropy)):
+            raise ValueError(f"Wrong entropy length (expected {MoneroEntropy.strengths}, got {len(entropy) * 8})")
 
         mnemonic: List[str] = []
         words_list: List[str] = cls.get_words_list_by_language(language=language)

@@ -17,7 +17,7 @@ from ....crypto import hmac_sha512
 from ....mnemonics.bip39 import BIP39Mnemonic
 from ....mnemonics.electrum.v1 import ElectrumV1Mnemonic
 from ....entropies import (
-    IEntropy, ElectrumV2Entropy, ELECTRUM_V2_ENTROPY_LENGTHS
+    IEntropy, ElectrumV2Entropy, ELECTRUM_V2_ENTROPY_STRENGTHS
 )
 from ...imnemonic import IMnemonic
 
@@ -53,9 +53,9 @@ class ElectrumV2Mnemonic(IMnemonic):
         ELECTRUM_V2_MNEMONIC_WORDS.TWELVE,
         ELECTRUM_V2_MNEMONIC_WORDS.TWENTY_FOUR
     ]
-    words_to_entropy_length: Dict[int, int] = {
-        ELECTRUM_V2_MNEMONIC_WORDS.TWELVE: ELECTRUM_V2_ENTROPY_LENGTHS.ONE_HUNDRED_THIRTY_TWO,
-        ELECTRUM_V2_MNEMONIC_WORDS.TWENTY_FOUR: ELECTRUM_V2_ENTROPY_LENGTHS.TWO_HUNDRED_SIXTY_FOUR
+    words_to_entropy_strength: Dict[int, int] = {
+        ELECTRUM_V2_MNEMONIC_WORDS.TWELVE: ELECTRUM_V2_ENTROPY_STRENGTHS.ONE_HUNDRED_THIRTY_TWO,
+        ELECTRUM_V2_MNEMONIC_WORDS.TWENTY_FOUR: ELECTRUM_V2_ENTROPY_STRENGTHS.TWO_HUNDRED_SIXTY_FOUR
     }
     languages: List[str] = [
         ELECTRUM_V2_MNEMONIC_LANGUAGES.CHINESE_SIMPLIFIED,
@@ -82,7 +82,7 @@ class ElectrumV2Mnemonic(IMnemonic):
             raise ValueError(f"Invalid words number for mnemonic (expected {cls.words}, got {words})")
 
         return cls.from_entropy(
-            entropy=ElectrumV2Entropy.generate(cls.words_to_entropy_length[words]), language=language, mnemonic_type=mnemonic_type
+            entropy=ElectrumV2Entropy.generate(cls.words_to_entropy_strength[words]), language=language, mnemonic_type=mnemonic_type
         )
 
     @classmethod

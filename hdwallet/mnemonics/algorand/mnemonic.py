@@ -15,7 +15,7 @@ from ...utils import (
 )
 from ...crypto import sha512_256
 from ...entropies import (
-    IEntropy, AlgorandEntropy, ALGORAND_ENTROPY_LENGTHS
+    IEntropy, AlgorandEntropy, ALGORAND_ENTROPY_STRENGTHS
 )
 from ...utils import convert_bits
 from ..imnemonic import IMnemonic
@@ -39,8 +39,8 @@ class AlgorandMnemonic(IMnemonic):
     words: List[int] = [
         ALGORAND_MNEMONIC_WORDS.TWENTY_FIVE
     ]
-    words_to_entropy_length: Dict[int, int] = {
-        ALGORAND_MNEMONIC_WORDS.TWENTY_FIVE: ALGORAND_ENTROPY_LENGTHS.TWO_HUNDRED_FIFTY_SIX
+    words_to_entropy_strength: Dict[int, int] = {
+        ALGORAND_MNEMONIC_WORDS.TWENTY_FIVE: ALGORAND_ENTROPY_STRENGTHS.TWO_HUNDRED_FIFTY_SIX
     }
     languages: List[str] = [
         ALGORAND_MNEMONIC_LANGUAGES.ENGLISH
@@ -55,7 +55,7 @@ class AlgorandMnemonic(IMnemonic):
             raise ValueError(f"Invalid words number for mnemonic (expected {cls.words}, got {words})")
 
         return cls.from_entropy(
-            entropy=AlgorandEntropy.generate(cls.words_to_entropy_length[words]), language=language
+            entropy=AlgorandEntropy.generate(cls.words_to_entropy_strength[words]), language=language
         )
 
     @classmethod
@@ -70,8 +70,8 @@ class AlgorandMnemonic(IMnemonic):
     def encode(cls, entropy: Union[str, bytes], language: str) -> str:
         # Check entropy length
         entropy: bytes = get_bytes(entropy)
-        if not AlgorandEntropy.is_valid_bytes_length(len(entropy)):
-            raise ValueError(f"Wrong entropy length (expected {AlgorandEntropy.lengths}, got {len(entropy) * 8})")
+        if not AlgorandEntropy.is_valid_bytes_strength(len(entropy)):
+            raise ValueError(f"Wrong entropy length (expected {AlgorandEntropy.strengths}, got {len(entropy) * 8})")
 
         # Compute checksum word
         checksum: bytes = sha512_256(entropy)[:cls.checksum_length]
