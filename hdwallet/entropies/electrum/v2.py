@@ -14,7 +14,7 @@ from ...utils import bytes_to_integer
 from ..ientropy import IEntropy
 
 
-class ELECTRUM_V2_ENTROPY_LENGTHS:
+class ELECTRUM_V2_ENTROPY_STRENGTHS:
 
     ONE_HUNDRED_THIRTY_TWO: int = 132
     TWO_HUNDRED_SIXTY_FOUR: int = 264
@@ -24,15 +24,15 @@ class ElectrumV2Entropy(IEntropy):
 
     _name = "Electrum-V2"
 
-    lengths = [
-        ELECTRUM_V2_ENTROPY_LENGTHS.ONE_HUNDRED_THIRTY_TWO,
-        ELECTRUM_V2_ENTROPY_LENGTHS.TWO_HUNDRED_SIXTY_FOUR
+    strengths = [
+        ELECTRUM_V2_ENTROPY_STRENGTHS.ONE_HUNDRED_THIRTY_TWO,
+        ELECTRUM_V2_ENTROPY_STRENGTHS.TWO_HUNDRED_SIXTY_FOUR
     ]
 
     @classmethod
-    def is_valid_length(cls, length: int) -> bool:
-        for _length in cls.lengths:
-            if _length - 11 <= length <= _length:
+    def is_valid_strength(cls, strength: int) -> bool:
+        for _strength in cls.strengths:
+            if _strength - 11 <= strength <= _strength:
                 return True
         return False
 
@@ -42,5 +42,5 @@ class ElectrumV2Entropy(IEntropy):
         if isinstance(entropy, bytes):
             entropy: int = bytes_to_integer(entropy)
 
-        entropy_length: int = 0 if entropy <= 0 else math.floor(math.log(entropy, 2))
-        return cls.is_valid_length(entropy_length)
+        entropy_strength: int = 0 if entropy <= 0 else math.floor(math.log(entropy, 2))
+        return cls.is_valid_strength(entropy_strength)

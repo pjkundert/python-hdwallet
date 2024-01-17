@@ -9,7 +9,7 @@ from typing import List
 from ..ientropy import IEntropy
 
 
-class ELECTRUM_V1_ENTROPY_LENGTHS:
+class ELECTRUM_V1_ENTROPY_STRENGTHS:
 
     ONE_HUNDRED_TWENTY_EIGHT: int = 128
 
@@ -18,6 +18,6 @@ class ElectrumV1Entropy(IEntropy):
 
     _name = "Electrum-V1"
 
-    lengths = [
-        ELECTRUM_V1_ENTROPY_LENGTHS.ONE_HUNDRED_TWENTY_EIGHT
+    strengths = [
+        ELECTRUM_V1_ENTROPY_STRENGTHS.ONE_HUNDRED_TWENTY_EIGHT
     ]

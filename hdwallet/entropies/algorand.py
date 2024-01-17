@@ -9,7 +9,7 @@ from typing import List
 from .ientropy import IEntropy
 
 
-class ALGORAND_ENTROPY_LENGTHS:
+class ALGORAND_ENTROPY_STRENGTHS:
 
     TWO_HUNDRED_FIFTY_SIX: int = 256
 
@@ -18,6 +18,6 @@ class AlgorandEntropy(IEntropy):
 
     _name = "Algorand"
 
-    lengths = [
-        ALGORAND_ENTROPY_LENGTHS.TWO_HUNDRED_FIFTY_SIX
+    strengths = [
+        ALGORAND_ENTROPY_STRENGTHS.TWO_HUNDRED_FIFTY_SIX
     ]

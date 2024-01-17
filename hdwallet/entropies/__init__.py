@@ -8,27 +8,27 @@ from typing import List
 
 from .ientropy import IEntropy
 from .algorand import (
-    AlgorandEntropy, ALGORAND_ENTROPY_LENGTHS
+    AlgorandEntropy, ALGORAND_ENTROPY_STRENGTHS
 )
 from .bip39 import (
-    BIP39Entropy, BIP39_ENTROPY_LENGTHS
+    BIP39Entropy, BIP39_ENTROPY_STRENGTHS
 )
 from .electrum.v1 import (
-    ElectrumV1Entropy, ELECTRUM_V1_ENTROPY_LENGTHS
+    ElectrumV1Entropy, ELECTRUM_V1_ENTROPY_STRENGTHS
 )
 from .electrum.v2 import (
-    ElectrumV2Entropy, ELECTRUM_V2_ENTROPY_LENGTHS
+    ElectrumV2Entropy, ELECTRUM_V2_ENTROPY_STRENGTHS
 )
 from .monero import (
-    MoneroEntropy, MONERO_ENTROPY_LENGTHS
+    MoneroEntropy, MONERO_ENTROPY_STRENGTHS
 )
 
 
 __all__: List[str] = [
     "IEntropy",
-    "AlgorandEntropy", "ALGORAND_ENTROPY_LENGTHS",
-    "BIP39Entropy", "BIP39_ENTROPY_LENGTHS",
-    "ElectrumV1Entropy", "ELECTRUM_V1_ENTROPY_LENGTHS",
-    "ElectrumV2Entropy", "ELECTRUM_V2_ENTROPY_LENGTHS",
-    "MoneroEntropy", "MONERO_ENTROPY_LENGTHS"
+    "AlgorandEntropy", "ALGORAND_ENTROPY_STRENGTHS",
+    "BIP39Entropy", "BIP39_ENTROPY_STRENGTHS",
+    "ElectrumV1Entropy", "ELECTRUM_V1_ENTROPY_STRENGTHS",
+    "ElectrumV2Entropy", "ELECTRUM_V2_ENTROPY_STRENGTHS",
+    "MoneroEntropy", "MONERO_ENTROPY_STRENGTHS"
 ]

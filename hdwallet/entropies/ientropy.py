@@ -20,17 +20,17 @@ class IEntropy:
 
     _name: str
     _entropy: str
-    _length: int
+    _strength: int
 
-    lengths: List[int]
+    strengths: List[int]
 
     def __init__(self, entropy: Union[bytes, str]) -> None:
         try:
-            length: int = len(get_bytes(entropy))
-            if not self.is_valid_bytes_length(length):
-                raise Exception("Unsupported entropy length")
+            strength: int = len(get_bytes(entropy))
+            if not self.is_valid_bytes_strength(strength):
+                raise Exception("Unsupported entropy strength")
             self._entropy = bytes_to_string(entropy)
-            self._length = length * 8
+            self._strength = strength * 8
         except ValueError:
             raise Exception("Invalid entropy data")
 
@@ -40,23 +40,23 @@ class IEntropy:
     def entropy(self) -> str:
         return self._entropy
 
-    def length(self) -> int:
-        return self._length
+    def strength(self) -> int:
+        return self._strength
 
     @classmethod
-    def generate(cls, length: int) -> str:
+    def generate(cls, strength: int) -> str:
         return bytes_to_string(
-            os.urandom(length // 8)
-            if length % 8 == 0 else
+            os.urandom(strength // 8)
+            if strength % 8 == 0 else
             integer_to_bytes(
-                secrets.randbits(length)
+                secrets.randbits(strength)
             )
         )
 
     @classmethod
-    def is_valid_length(cls, length: int) -> bool:
-        return length in cls.lengths
+    def is_valid_strength(cls, strength: int) -> bool:
+        return strength in cls.strengths
 
     @classmethod
-    def is_valid_bytes_length(cls, bytes_length: int) -> bool:
-        return cls.is_valid_length(bytes_length * 8)
+    def is_valid_bytes_strength(cls, bytes_strength: int) -> bool:
+        return cls.is_valid_strength(bytes_strength * 8)

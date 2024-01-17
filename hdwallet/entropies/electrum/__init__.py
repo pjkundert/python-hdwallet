@@ -7,16 +7,16 @@
 from typing import List
 
 from .v1 import (
-    ElectrumV1Entropy, ELECTRUM_V1_ENTROPY_LENGTHS
+    ElectrumV1Entropy, ELECTRUM_V1_ENTROPY_STRENGTHS
 )
 from .v2 import (
-    ElectrumV2Entropy, ELECTRUM_V2_ENTROPY_LENGTHS
+    ElectrumV2Entropy, ELECTRUM_V2_ENTROPY_STRENGTHS
 )
 
 
 __all__: List[str] = [
     "ElectrumV1Entropy",
-    "ELECTRUM_V1_ENTROPY_LENGTHS",
+    "ELECTRUM_V1_ENTROPY_STRENGTHS",
     "ElectrumV2Entropy",
-    "ELECTRUM_V2_ENTROPY_LENGTHS"
+    "ELECTRUM_V2_ENTROPY_STRENGTHS"
 ]
