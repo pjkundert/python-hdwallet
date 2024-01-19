@@ -30,6 +30,9 @@ from ..addresses.p2pkh import P2PKHAddress
 from ..wif import (
     private_key_to_wif, wif_to_private_key
 )
+from ..keys import (
+    serialize, deserialize
+)
 from ..crypto import hmac_sha512
 from ..utils import (
     get_bytes, bytes_to_integer, integer_to_bytes, bytes_to_string, reset_bits, set_bits
@@ -49,28 +52,27 @@ class BIP32(IHD):
     _hmac: Optional[bytes] = None
 
     _root_private_key: Optional[IPrivateKey] = None
-    _private_key: Optional[IPrivateKey] = None
-    _root_public_key: Optional[IPublicKey] = None
-    _public_key: Optional[IPublicKey] = None
     _root_chain_code: Optional[bytes] = None
+    _root_public_key: Optional[IPublicKey] = None
+    _private_key: Optional[IPrivateKey] = None
     _chain_code: Optional[bytes] = None
+    _public_key: Optional[IPublicKey] = None
 
     _wif_type: str
     _public_key_type: str
 
-    _path: str = "m/"
-    _indexes: List[int] = []
     _fingerprint: Optional[bytes] = None
     _parent_fingerprint: Optional[bytes] = None
+    _indexes: List[int] = []
+    _path: str = "m/"
+
     _root_depth: int = 0
-    _depth: int = 0
     _root_index: int = 0
+    _depth: int = 0
     _index: int = 0
 
-    def name(self) -> str:
-        return "BIP32"
-
-    def __init__(self, ecc_name: str, public_key_type: str = "compressed"):
+    def __init__(self, ecc_name: str, public_key_type: str = "compressed", **kwargs):
+        super().__init__(**kwargs)
 
         self._ecc_name: str = ecc_name
         self._ecc: EllipticCurveCryptography = self.get_ecc(
@@ -83,6 +85,10 @@ class BIP32(IHD):
         else:
             raise ValueError(f"Invalid Electrum v1 public key type, (expected: 'uncompressed' or 'compressed' types, got: '{public_key_type}')")
         self._public_key_type = public_key_type
+
+    @classmethod
+    def name(cls) -> str:
+        return "BIP32"
 
     @staticmethod
     def get_hmac(ecc_name: str) -> bytes:
@@ -114,7 +120,7 @@ class BIP32(IHD):
         else:
             raise ValueError("Invalid curve type")
 
-    def from_seed(self, seed: Union[bytes, str], **kwargs) -> BIP32:
+    def from_seed(self, seed: Union[bytes, str], **kwargs) -> "BIP32":
 
         self._seed = get_bytes(seed)
         if len(self._seed) < 16:
@@ -134,7 +140,7 @@ class BIP32(IHD):
                 self.get_hmac(ecc_name=self._ecc_name), hmac_data, hashlib.sha512
             ).digest()
 
-            if self._ecc.curve_name() == "Kholaw-Ed25519":
+            if self._ecc.name() == "Kholaw-Ed25519":
                 # Compute kL and kR
                 success = ((self._hmac[:hmac_half_length][31] & 0x20) == 0)
                 if not success:
@@ -158,7 +164,7 @@ class BIP32(IHD):
 
             return bytes(data)
 
-        if self._ecc.curve_name() == "Kholaw-Ed25519":
+        if self._ecc.name() == "Kholaw-Ed25519":
             # Compute kL and kR
             kl_bytes, kr_bytes = (
                 self._hmac[:hmac_half_length], self._hmac[hmac_half_length:]
@@ -187,95 +193,51 @@ class BIP32(IHD):
         self._private_key, self._chain_code, self._parent_fingerprint = (
             self._root_private_key, self._root_chain_code, FINGERPRINT_MASTER_KEY
         )
-        self._root_public_key = self._private_key.public_key()
+        self._root_public_key = self._root_private_key.public_key()
         self._public_key = self._root_public_key
         return self
 
-    @staticmethod
-    def _deserialize_xprivate_key(xprivate_key: str, encoded: bool = True) -> tuple:
-        decoded_xprivate_key: str = (
-            check_decode(xprivate_key) if encoded else xprivate_key
-        )
-        if len(decoded_xprivate_key) != 78:  # 156
-            raise ValueError("Invalid xprivate key.")
-        return (
-            decoded_xprivate_key[:4], decoded_xprivate_key[4:5],
-            decoded_xprivate_key[5:9], decoded_xprivate_key[9:13],
-            decoded_xprivate_key[13:45], decoded_xprivate_key[46:]
+    def from_xprivate_key(self, xprivate_key: str, encoded: bool = True) -> "BIP32":
+
+        if len(check_decode(xprivate_key) if encoded else xprivate_key) != 78:
+            raise Exception(f"Invalid extended(x) private key")
+
+        version, depth, parent_fingerprint, index, chain_code, key = deserialize(
+            key=xprivate_key, encoded=encoded
         )
 
-    def from_xprivate_key(self, xprivate_key: str, strict: bool = False, encoded: bool = True) -> BIP32:
-        # if not is_root_xprivate_key(xprivate_key=xprivate_key, symbol=self._cryptocurrency.SYMBOL):
-        #     if strict:
-        #         raise ValueError("Invalid root xprivate key.")
-
-        _deserialize_xprivate_key = self._deserialize_xprivate_key(
-            xprivate_key=xprivate_key, encoded=encoded
-        )
-        self._root_depth, self._root_index = (
-            int.from_bytes(_deserialize_xprivate_key[1], "big"),
-            struct.unpack(">L", _deserialize_xprivate_key[3])[0]
-        )
-        self._depth, self._fingerprint, self._index = (
-            int.from_bytes(_deserialize_xprivate_key[1], "big"),
-            _deserialize_xprivate_key[2],
-            struct.unpack(">L", _deserialize_xprivate_key[3])[0]
-        )
-        self._root_private_key, self._root_chain_code = (
-            _deserialize_xprivate_key[5], _deserialize_xprivate_key[4]
-        )
-        self._private_key, self._chain_code, self._parent_fingerprint = (
-            self._ecc.private_key_class().from_bytes(
-                self._root_private_key
-            ),
-            self._root_chain_code,
-            FINGERPRINT_MASTER_KEY
-        )
-        self._root_public_key = self._private_key.public_key()
+        self._root_chain_code = chain_code
+        self._root_private_key = self._ecc.private_key_class().from_bytes(key[1:])
+        self._root_public_key = self._root_private_key.public_key()
+        self._root_depth = depth
+        self._parent_fingerprint = parent_fingerprint
+        self._root_index = index
+        self._chain_code = self._root_chain_code
+        self._private_key = self._root_private_key
         self._public_key = self._root_public_key
+        self._depth = self._root_depth
+        self._index = self._root_index
         return self
 
-    # @staticmethod
-    # def _deserialize_xpublic_key(xpublic_key: str, encoded: bool = True) -> tuple:
-    #     decoded_xpublic_key: str = (
-    #         check_decode(xpublic_key) if encoded else xpublic_key
-    #     )
-    #     if len(decoded_xpublic_key) != 78:  # 156
-    #         raise ValueError("Invalid xpublic key.")
-    #     return (
-    #         decoded_xpublic_key[:4], decoded_xpublic_key[4:5],
-    #         decoded_xpublic_key[5:9], decoded_xpublic_key[9:13],
-    #         decoded_xpublic_key[13:45], decoded_xpublic_key[45:]
-    #     )
-    #
-    # def from_xpublic_key(self, xpublic_key: str, strict: bool = False, encoded: bool = True) -> BIP32:
-    #     # if not is_root_xpublic_key(xpublic_key=xpublic_key, symbol=self._cryptocurrency.SYMBOL):
-    #     #     if strict:
-    #     #         raise ValueError("Invalid root xpublic key.")
-    #
-    #     _deserialize_xpublic_key = self._deserialize_xpublic_key(
-    #         xpublic_key=xpublic_key, encoded=encoded
-    #     )
-    #     self._root_depth, self._root_index = (
-    #         int.from_bytes(_deserialize_xpublic_key[1], "big"),
-    #         struct.unpack(">L", _deserialize_xpublic_key[3])[0]
-    #     )
-    #     self._depth, self._fingerprint, self._index = (
-    #         int.from_bytes(_deserialize_xpublic_key[1], "big"),
-    #         _deserialize_xpublic_key[2],
-    #         struct.unpack(">L", _deserialize_xpublic_key[3])[0]
-    #     )
-    #     self._root_public_key, self._root_chain_code = (
-    #         _deserialize_xpublic_key[5], _deserialize_xpublic_key[4]
-    #     )
-    #     self._public_key, self._chain_code, self._parent_fingerprint = (
-    #         self._ecc.public_key_class().from_bytes(
-    #             self._root_public_key
-    #         ),
-    #         self._root_chain_code,
-    #         FINGERPRINT_MASTER_KEY
-    #     )
-    #     return self
+    def from_xpublic_key(self, xpublic_key: str, encoded: bool = True) -> "BIP32":
+
+        if len(check_decode(xpublic_key) if encoded else xpublic_key) != 78:
+            raise Exception(f"Invalid extended(x) public key")
+
+        version, depth, parent_fingerprint, index, chain_code, key = deserialize(
+            key=xpublic_key, encoded=encoded
+        )
+
+        self._root_chain_code = chain_code
+        self._root_public_key = self._ecc.public_key_class().from_bytes(key)
+        self._root_depth = depth
+        self._parent_fingerprint = parent_fingerprint
+        self._root_index = index
+        self._chain_code = self._root_chain_code
+        self._public_key = self._root_public_key
+        self._depth = self._root_depth
+        self._index = self._root_index
+        return self
 
     def from_wif(self, wif: str) -> BIP32:
         return self.from_private_key(private_key=wif_to_private_key(wif=wif))
@@ -288,7 +250,7 @@ class BIP32(IHD):
     def from_public_key(self, public_key: str) -> BIP32:
         pass
 
-    def from_derivation(self, derivation: IDerivation) -> BIP32:
+    def from_derivation(self, derivation: IDerivation) -> "BIP32":
 
         if not isinstance(derivation, IDerivation):
             raise ValueError("Invalid derivation class")
@@ -307,7 +269,7 @@ class BIP32(IHD):
             self.drive(index)
         return self
 
-    def update_derivation(self, derivation: IDerivation) -> BIP32:
+    def update_derivation(self, derivation: IDerivation) -> "BIP32":
 
         if not isinstance(derivation, IDerivation):
             raise ValueError("Invalid derivation class")
@@ -318,7 +280,7 @@ class BIP32(IHD):
         )
         return self
 
-    def clean_derivation(self) -> BIP32:
+    def clean_derivation(self) -> "BIP32":
         if self._root_private_key:
             self._private_key, self._chain_code, self._parent_fingerprint = (
                 self._root_private_key, self._root_chain_code, b"\x00\x00\x00\x00"
@@ -441,11 +403,11 @@ class BIP32(IHD):
                         kl_bytes + kr_bytes
                     ),
                     _hmacr,
-                    get_bytes(self.finger_print())
+                    get_bytes(self.fingerprint())
                 )
                 self._public_key = self._private_key.public_key()
                 self._depth, self._index, self._fingerprint = (
-                    (self._depth + 1), index, get_bytes(self.finger_print())
+                    (self._depth + 1), index, get_bytes(self.fingerprint())
                 )
             else:
                 if index & 0x80000000:
@@ -475,12 +437,12 @@ class BIP32(IHD):
                 new_public_key: IPublicKey = self._ecc.public_key_class().from_point(
                     new_public_key_point
                 )
-                self._parent_fingerprint = get_bytes(self.finger_print())
+                self._parent_fingerprint = get_bytes(self.fingerprint())
                 self._chain_code, self._public_key = (
                     _hmacr, new_public_key
                 )
                 self._depth, self._index, self._fingerprint = (
-                    (self._depth + 1), index, get_bytes(self.finger_print())
+                    (self._depth + 1), index, get_bytes(self.fingerprint())
                 )
 
             return self
@@ -504,12 +466,12 @@ class BIP32(IHD):
 
             new_private_key: IPrivateKey = self._ecc.private_key_class().from_bytes(_hmacl)
 
-            self._parent_fingerprint = get_bytes(self.finger_print())
+            self._parent_fingerprint = get_bytes(self.fingerprint())
             self._private_key, self._chain_code, self._public_key = (
                 new_private_key, _hmacr, new_private_key.public_key()
             )
             self._depth, self._index, self._fingerprint = (
-                (self._depth + 1), index, get_bytes(self.finger_print())
+                (self._depth + 1), index, get_bytes(self.fingerprint())
             )
 
         elif self._ecc.name() in [
@@ -555,12 +517,12 @@ class BIP32(IHD):
                     PRIVATE_KEY_PREFIX * 32 + integer_to_bytes(key_int)
                 )[-32:])
 
-                self._parent_fingerprint = get_bytes(self.finger_print())
+                self._parent_fingerprint = get_bytes(self.fingerprint())
                 self._private_key, self._chain_code, self._public_key = (
                     new_private_key, _hmacr, new_private_key.public_key()
                 )
                 self._depth, self._index, self._fingerprint = (
-                    (self._depth + 1), index, get_bytes(self.finger_print())
+                    (self._depth + 1), index, get_bytes(self.fingerprint())
                 )
             else:
                 new_public_key_point: IPoint = (
@@ -570,46 +532,119 @@ class BIP32(IHD):
                     new_public_key_point
                 )
 
-                self._parent_fingerprint = get_bytes(self.finger_print())
+                self._parent_fingerprint = get_bytes(self.fingerprint())
                 self._chain_code, self._public_key = (
                     _hmacr, new_public_key
                 )
                 self._depth, self._index, self._fingerprint = (
-                    (self._depth + 1), index, get_bytes(self.finger_print())
+                    (self._depth + 1), index, get_bytes(self.fingerprint())
                 )
         return self
 
-    def root_private_key(self) -> str:
-        return bytes_to_string(self._root_private_key.raw())
+    def seed(self) -> Optional[str]:
+        return bytes_to_string(self._seed)
 
-    def root_public_key(self, public_key_type: str = "compressed") -> str:
-        if public_key_type == "uncompressed":
+    def root_xprivate_key(self, version: Union[str, bytes, int], encoded: bool = True) -> Optional[str]:
+
+        return serialize(
+            version=(
+                integer_to_bytes(version) if isinstance(version, int) else get_bytes(version)
+            ),
+            depth=self._root_depth,
+            parent_fingerprint=FINGERPRINT_MASTER_KEY,
+            index=self._root_index,
+            chain_code=self.root_chain_code(),
+            key=(
+                "00" + self.root_private_key()
+            ),
+            encoded=encoded
+        ) if self.root_private_key() else None
+
+    def root_xpublic_key(self, version: Union[str, bytes, int], encoded: bool = True) -> Optional[str]:
+
+        return serialize(
+            version=(
+                integer_to_bytes(version) if isinstance(version, int) else get_bytes(version)
+            ),
+            depth=self._root_depth,
+            parent_fingerprint=FINGERPRINT_MASTER_KEY,
+            index=self._root_index,
+            chain_code=self.root_chain_code(),
+            key=self.root_public_key(
+                public_key_type="compressed"
+            ),
+            encoded=encoded
+        ) if self.root_public_key(public_key_type="compressed") else None
+
+    def root_private_key(self) -> Optional[str]:
+        return bytes_to_string(self._root_private_key.raw()) if self._root_private_key else None
+
+    def root_chain_code(self) -> Optional[str]:
+        return bytes_to_string(self._root_chain_code)
+
+    def root_public_key(self, public_key_type: Optional[str] = None) -> Optional[str]:
+        _public_key_type: str = (
+            public_key_type if public_key_type in ["uncompressed", "compressed"] else self._public_key_type
+        )
+        if not self._root_public_key:
+            return None
+        if _public_key_type == "uncompressed":
             return bytes_to_string(self._root_public_key.raw_uncompressed())
-        elif public_key_type == "compressed":
+        elif _public_key_type == "compressed":
             return bytes_to_string(self._root_public_key.raw_compressed())
         raise ValueError("Invalid public key type")
 
-    def xprivate_key(self, encoded: bool = True) -> str:
-        return bytes_to_string(self._private_key.raw())
+    def xprivate_key(self, version: Union[str, bytes, int], encoded: bool = True) -> Optional[str]:
 
-    def xpublic_key(self, encoded: bool = True) -> str:
-        return bytes_to_string(self._public_key.raw_compressed())
+        return serialize(
+            version=(
+                integer_to_bytes(version) if isinstance(version, int) else get_bytes(version)
+            ),
+            depth=self._depth,
+            parent_fingerprint=self.parent_fingerprint(),
+            index=self._index,
+            chain_code=self.chain_code(),
+            key=("00" + self.private_key()),
+            encoded=encoded
+        ) if self.private_key() else None
 
-    def private_key(self) -> str:
-        return bytes_to_string(self._private_key.raw())
+    def xpublic_key(self, version: Union[str, bytes, int], encoded: bool = True) -> Optional[str]:
 
-    def wif(self) -> Optional[str]:
-        return private_key_to_wif(
-            private_key=self.private_key(), wif_type=self._wif_type
+        return serialize(
+            version=(
+                integer_to_bytes(version) if isinstance(version, int) else get_bytes(version)
+            ),
+            depth=self._depth,
+            parent_fingerprint=self.parent_fingerprint(),
+            index=self._index,
+            chain_code=self.chain_code(),
+            key=self.public_key(
+                public_key_type="compressed"
+            ),
+            encoded=encoded
+        ) if self.public_key(public_key_type="compressed") else None
+
+    def private_key(self) -> Optional[str]:
+        return bytes_to_string(self._private_key.raw()) if self._private_key else None
+
+    def wif(self, wif_type: Optional[str] = None) -> Optional[str]:
+        _wif_type: str = (
+            wif_type if wif_type in ["wif", "wif-compressed"] else self._wif_type
         )
+        return private_key_to_wif(
+            private_key=self.private_key(), wif_type=_wif_type
+        ) if self.private_key() else None
 
-    def chain_code(self) -> str:
+    def chain_code(self) -> Optional[str]:
         return bytes_to_string(self._chain_code)
 
-    def public_key(self) -> str:
-        if self._public_key_type == "uncompressed":
+    def public_key(self, public_key_type: Optional[str] = None):
+        _public_key_type: str = (
+            public_key_type if public_key_type in ["uncompressed", "compressed"] else self._public_key_type
+        )
+        if _public_key_type == "uncompressed":
             return self.uncompressed()
-        elif self._public_key_type == "compressed":
+        elif _public_key_type == "compressed":
             return self.compressed()
         else:
             raise ValueError("Invalid Electrum v1 public key mode")
@@ -620,13 +655,13 @@ class BIP32(IHD):
     def uncompressed(self) -> str:
         return bytes_to_string(self._public_key.raw_uncompressed())
 
-    def hash(self):
+    def hash(self) -> str:
         return bytes_to_string(ripemd160(sha256(get_bytes(self.public_key())).digest()))
 
-    def finger_print(self) -> str:
+    def fingerprint(self) -> str:
         return self.hash()[:8]
 
-    def parent_finger_print(self) -> str:
+    def parent_fingerprint(self) -> str:
         return bytes_to_string(self._parent_fingerprint)
 
     def depth(self) -> int:
