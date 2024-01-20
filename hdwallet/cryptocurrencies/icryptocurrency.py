@@ -7,20 +7,25 @@
 from abc import (
     ABC, abstractmethod
 )
-
 from typing import (
     Optional, Union, Type, List
 )
 
-import inspect
-import sys
-
 from ..ecc import EllipticCurveCryptography
-from ..derivations.bip44 import BIP44Derivation
-from ..utils import NestedNamespace
-from ..exceptions import (
-    NetworkError, SymbolError
+from ..entropies import (
+    AlgorandEntropy, BIP39Entropy, ElectrumV1Entropy, ElectrumV2Entropy, MoneroEntropy
 )
+from ..mnemonics import (
+    AlgorandMnemonic, BIP39Mnemonic, ElectrumV1Mnemonic, ElectrumV2Mnemonic, MoneroMnemonic
+)
+from ..seeds import (
+    AlgorandSeed, BIP39Seed, CardanoSeed, ElectrumV1Seed, ElectrumV2Seed, MoneroSeed
+)
+from ..derivations.bip44 import BIP44Derivation
+from ..utils import (
+    NestedNamespace, bytes_to_integer
+)
+from ..exceptions import NetworkError
 
 
 class CoinType(NestedNamespace):
@@ -28,8 +33,11 @@ class CoinType(NestedNamespace):
     INDEX: int
     HARDENED: bool
 
-    def __str__(self):
+    def __str__(self) -> str:
         return f"{self.INDEX}'" if self.HARDENED else f"{self.INDEX}"
+
+    def __int__(self) -> int:
+        return self.INDEX
 
 
 class SegwitAddress(NestedNamespace):
@@ -38,35 +46,51 @@ class SegwitAddress(NestedNamespace):
     VERSION: int
 
 
-class ExtendedKey(NestedNamespace):
+class ExtendedKeyVersions(NestedNamespace):
 
-    P2PKH: int
-    P2SH: int
+    def is_version(self, version: bytes) -> bool:
+        return bytes_to_integer(version) in self.__dict__.values()
 
-    P2WPKH: Optional[int] = None
-    P2WPKH_IN_P2SH: Optional[int] = None
+    def get_version(self, name: str) -> Union[str, int, bytes]:
+        return self.__getattribute__(name)
 
-    P2WSH: Optional[int] = None
-    P2WSH_IN_P2SH: Optional[int] = None
+    def get_name(self, version: bytes) -> Optional[str]:
+        name: Optional[str] = None
+        for key in self.__dict__.keys():
+            if self.__dict__.get(key) == bytes_to_integer(version):
+                name = key
+                break
+        return name
 
 
-class ExtendedPrivateKey(ExtendedKey):
+class ExtendedPrivateKeyVersions(ExtendedKeyVersions):
     pass
 
 
-class ExtendedPublicKey(ExtendedKey):
+class ExtendedPublicKeyVersions(ExtendedKeyVersions):
     pass
 
 
 class INetwork:
 
-    PUBLIC_KEY_ADDRESS_PREFIX: int
-    SCRIPT_ADDRESS_PREFIX: int
-    SEGWIT_ADDRESS_PREFIX: Optional[SegwitAddress]
-    EXTENDED_PRIVATE_KEY: Optional[ExtendedPrivateKey]
-    EXTENDED_PUBLIC_KEY: Optional[ExtendedPublicKey]
-    MESSAGE_PREFIX: Optional[str]
-    WIF_PREFIX: int
+    # Bitcoin network types
+    PUBLIC_KEY_ADDRESS_PREFIX: Optional[int] = None
+    SCRIPT_ADDRESS_PREFIX: Optional[int] = None
+    SEGWIT_ADDRESS_PREFIX: Optional[SegwitAddress] = None
+    EXTENDED_PRIVATE_KEY_VERSIONS: Optional[ExtendedPrivateKeyVersions] = None
+    EXTENDED_PUBLIC_KEY_VERSIONS: Optional[ExtendedPublicKeyVersions] = None
+    MESSAGE_PREFIX: Optional[str] = None
+    WIF_PREFIX: Optional[int] = None
+
+    # Monero network types
+    STANDARD: Optional[int] = None
+    INTEGRATED: Optional[int] = None
+    SUB_ADDRESS: Optional[int] = None
+
+    # Cardano network types
+    TYPE: Optional[int] = None
+    PAYMENT_ADDRESS_HRP: Optional[str] = None
+    REWARD_ADDRESS_HRP: Optional[str] = None
 
 
 class INetworks(ABC):
@@ -97,6 +121,15 @@ class ICryptocurrency:
     SOURCE_CODE: Optional[str]
     ECC: EllipticCurveCryptography
     COIN_TYPE: CoinType
+    ENTROPIES: List[Union[
+        AlgorandEntropy, BIP39Entropy, ElectrumV1Entropy, ElectrumV2Entropy, MoneroEntropy
+    ]]
+    MNEMONICS: List[Union[
+        AlgorandMnemonic, BIP39Mnemonic, ElectrumV1Mnemonic, ElectrumV2Mnemonic, MoneroMnemonic
+    ]]
+    SEEDS: List[Union[
+        AlgorandSeed, BIP39Seed, CardanoSeed, ElectrumV1Seed, ElectrumV2Seed, MoneroSeed
+    ]]
 
     @classmethod
     def get_default_path(cls, network: Union[str, Type[INetwork]]) -> str:
@@ -119,14 +152,3 @@ class ICryptocurrency:
             raise NetworkError(
                 "Invalid network type", expected=[str, INetwork], got=type(network)
             )
-
-
-def get_cryptocurrency(symbol: str) -> ICryptocurrency:
-
-    for _, cryptocurrency in inspect.getmembers(sys.modules[__name__]):
-        if inspect.isclass(cryptocurrency):
-            if issubclass(cryptocurrency, ICryptocurrency) and cryptocurrency != ICryptocurrency:
-                if symbol == cryptocurrency.SYMBOL:
-                    return cryptocurrency
-
-    raise SymbolError(f"Unknown cryptocurrency '{symbol}' symbol")
