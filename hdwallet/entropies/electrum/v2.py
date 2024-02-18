@@ -4,9 +4,7 @@
 # Distributed under the MIT software license, see the accompanying
 # file COPYING or https://opensource.org/license/mit
 
-from typing import (
-    List, Union
-)
+from typing import Union
 
 import math
 
@@ -22,12 +20,14 @@ class ELECTRUM_V2_ENTROPY_STRENGTHS:
 
 class ElectrumV2Entropy(IEntropy):
 
-    _name = "Electrum-V2"
-
     strengths = [
         ELECTRUM_V2_ENTROPY_STRENGTHS.ONE_HUNDRED_THIRTY_TWO,
         ELECTRUM_V2_ENTROPY_STRENGTHS.TWO_HUNDRED_SIXTY_FOUR
     ]
+
+    @classmethod
+    def name(cls) -> str:
+        return "Electrum-V2"
 
     @classmethod
     def is_valid_strength(cls, strength: int) -> bool:

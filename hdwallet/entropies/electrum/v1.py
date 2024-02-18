@@ -4,8 +4,6 @@
 # Distributed under the MIT software license, see the accompanying
 # file COPYING or https://opensource.org/license/mit
 
-from typing import List
-
 from ..ientropy import IEntropy
 
 
@@ -16,8 +14,10 @@ class ELECTRUM_V1_ENTROPY_STRENGTHS:
 
 class ElectrumV1Entropy(IEntropy):
 
-    _name = "Electrum-V1"
-
     strengths = [
         ELECTRUM_V1_ENTROPY_STRENGTHS.ONE_HUNDRED_TWENTY_EIGHT
     ]
+
+    @classmethod
+    def name(cls) -> str:
+        return "Electrum-V1"

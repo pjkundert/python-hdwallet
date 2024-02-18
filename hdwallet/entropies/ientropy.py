@@ -18,7 +18,6 @@ from ..utils import (
 
 class IEntropy:
 
-    _name: str
     _entropy: str
     _strength: int
 
@@ -34,8 +33,9 @@ class IEntropy:
         except ValueError:
             raise Exception("Invalid entropy data")
 
-    def name(self) -> str:
-        return self._name
+    @classmethod
+    def name(cls) -> str:
+        pass
 
     def entropy(self) -> str:
         return self._entropy
