@@ -14,16 +14,17 @@ class ISeed(ABC):
     _name: str
     _seed: str
 
-    def __init__(self, seed: str) -> None:
+    def __init__(self, seed: str, **kwargs) -> None:
         self._seed = seed
 
-    def name(self) -> str:
-        return self._name
+    @classmethod
+    def name(cls) -> str:
+        pass
 
     def seed(self) -> str:
-        return self._name
+        return self._seed
 
     @classmethod
     @abstractmethod
-    def generate(cls, mnemonic: str) -> str:
+    def generate(cls, mnemonic: str, **kwargs) -> str:
         pass

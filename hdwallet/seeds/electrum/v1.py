@@ -12,13 +12,15 @@ from ..iseed import ISeed
 
 class ElectrumV1Seed(ISeed):
 
-    _name = "Electrum-V1"
-
     # Number of hash iteration
     hash_iteration_number: int = 10 ** 5
 
     @classmethod
-    def generate(cls, mnemonic: str) -> str:
+    def name(cls) -> str:
+        return "Electrum-V1"
+
+    @classmethod
+    def generate(cls, mnemonic: str, **kwargs) -> str:
 
         if not ElectrumV1Mnemonic.is_valid(mnemonic=mnemonic):
             ValueError("Invalid Electrum V1 mnemonic words")

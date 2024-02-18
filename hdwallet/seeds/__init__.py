@@ -9,10 +9,10 @@ from typing import List
 from .iseed import ISeed
 from .algorand import AlgorandSeed
 from .bip39 import BIP39Seed
-from .cardano.byron_legacy import CardanoByronLegacySeed
-from .cardano.icarus import CardanoIcarusSeed
-from .electrum.v1 import ElectrumV1Seed
-from .electrum.v2 import ElectrumV2Seed
+from .cardano import CardanoSeed
+from .electrum import (
+    ElectrumV1Seed, ElectrumV2Seed
+)
 from .monero import MoneroSeed
 
 
@@ -20,8 +20,7 @@ __all__: List[str] = [
     "ISeed",
     "AlgorandSeed",
     "BIP39Seed",
-    "CardanoByronLegacySeed",
-    "CardanoIcarusSeed",
+    "CardanoSeed",
     "ElectrumV1Seed",
     "ElectrumV2Seed",
     "MoneroSeed"

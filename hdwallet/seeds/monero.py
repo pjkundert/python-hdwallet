@@ -10,10 +10,12 @@ from .iseed import ISeed
 
 class MoneroSeed(ISeed):
 
-    _name = "Monero"
+    @classmethod
+    def name(cls) -> str:
+        return "Monero"
 
     @classmethod
-    def generate(cls, mnemonic: str) -> str:
+    def generate(cls, mnemonic: str, **kwargs) -> str:
 
         if not MoneroMnemonic.is_valid(mnemonic=mnemonic):
             ValueError("Invalid Monero mnemonic words")

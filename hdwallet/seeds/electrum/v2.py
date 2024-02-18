@@ -16,12 +16,14 @@ from ..iseed import ISeed
 
 class ElectrumV2Seed(ISeed):
 
-    _name = "Electrum-V2"
-
     # Salt modifier for seed generation
     seed_salt_modifier: str = "electrum"
     # PBKDF2 round for seed generation
     seed_pbkdf2_rounds: int = 2048
+
+    @classmethod
+    def name(cls) -> str:
+        return "Electrum-V2"
 
     @classmethod
     def generate(cls, mnemonic: str, passphrase: Optional[str] = None) -> str:

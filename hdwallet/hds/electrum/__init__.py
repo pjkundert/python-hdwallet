@@ -6,11 +6,11 @@
 
 from typing import List
 
-from .byron_legacy import CardanoByronLegacySeed
-from .icarus import CardanoIcarusSeed
+from .v1 import ElectrumV1HD
+from .v2 import ElectrumV2HD
 
 
 __all__: List[str] = [
-    "CardanoByronLegacySeed",
-    "CardanoIcarusSeed"
+    "ElectrumV1HD",
+    "ElectrumV2HD"
 ]
