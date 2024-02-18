@@ -46,8 +46,6 @@ class ELECTRUM_V2_MNEMONIC_TYPES:
 
 class ElectrumV2Mnemonic(IMnemonic):
 
-    _name = "Electrum-V2"
-
     word_bit_length: int = 11
     words: List[int] = [
         ELECTRUM_V2_MNEMONIC_WORDS.TWELVE,
@@ -75,6 +73,10 @@ class ElectrumV2Mnemonic(IMnemonic):
         ELECTRUM_V2_MNEMONIC_TYPES.STANDARD_2FA: "101",
         ELECTRUM_V2_MNEMONIC_TYPES.SEGWIT_2FA: "102"
     }
+
+    @classmethod
+    def name(cls) -> str:
+        return "Electrum-V2"
 
     @classmethod
     def from_words(cls, words: int, language: str, mnemonic_type: str = "standard") -> str:

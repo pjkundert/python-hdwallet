@@ -45,8 +45,6 @@ class MONERO_MNEMONIC_LANGUAGES:
 
 class MoneroMnemonic(IMnemonic):
 
-    _name = "Monero"
-
     word_bit_length: int = 11
     words_list_number: int = 1626
     words: List[int] = [
@@ -101,6 +99,10 @@ class MoneroMnemonic(IMnemonic):
         MONERO_MNEMONIC_LANGUAGES.RUSSIAN: "monero/wordlist/russian.txt",
         MONERO_MNEMONIC_LANGUAGES.SPANISH: "monero/wordlist/spanish.txt"
     }
+
+    @classmethod
+    def name(cls) -> str:
+        return "Monero"
 
     @classmethod
     def from_words(cls, words: int, language: str) -> str:

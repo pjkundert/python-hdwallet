@@ -16,7 +16,6 @@ import os
 
 class IMnemonic(ABC):
 
-    _name: str
     _mnemonic: List[str]
     _word: int
     _language: str
@@ -34,8 +33,9 @@ class IMnemonic(ABC):
         _, self._language = self.find_language(self._mnemonic)
         self._word = len(self._mnemonic)
 
-    def name(self) -> str:
-        return self._name
+    @classmethod
+    def name(cls) -> str:
+        pass
 
     def mnemonic(self) -> str:
         return " ".join(self._mnemonic)

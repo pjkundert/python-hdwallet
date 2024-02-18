@@ -52,8 +52,6 @@ class BIP39_MNEMONIC_LANGUAGES:
 
 class BIP39Mnemonic(IMnemonic):
 
-    _name = "BIP39"
-
     word_bit_length: int = 11
     words_list_number: int = 2048
     words: List[int] = [
@@ -98,6 +96,10 @@ class BIP39Mnemonic(IMnemonic):
         BIP39_MNEMONIC_LANGUAGES.SPANISH: "bip39/wordlist/spanish.txt",
         BIP39_MNEMONIC_LANGUAGES.TURKISH: "bip39/wordlist/turkish.txt"
     }
+
+    @classmethod
+    def name(cls) -> str:
+        return "BIP39"
 
     @classmethod
     def from_words(cls, words: int, language: str) -> str:

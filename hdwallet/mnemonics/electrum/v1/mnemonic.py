@@ -31,8 +31,6 @@ class ELECTRUM_V1_MNEMONIC_LANGUAGES:
 
 class ElectrumV1Mnemonic(IMnemonic):
 
-    _name = "Electrum-V1"
-
     words: List[int] = [
         ELECTRUM_V1_MNEMONIC_WORDS.TWELVE
     ]
@@ -46,6 +44,10 @@ class ElectrumV1Mnemonic(IMnemonic):
         ELECTRUM_V1_MNEMONIC_LANGUAGES.ENGLISH: "electrum/v1/wordlist/english.txt"
     }
     words_list_number: int = 1626
+
+    @classmethod
+    def name(cls) -> str:
+        return "Electrum-V1"
 
     @classmethod
     def from_words(cls, words: int, language: str) -> str:

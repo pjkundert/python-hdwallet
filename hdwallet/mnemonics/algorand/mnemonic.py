@@ -33,8 +33,6 @@ class ALGORAND_MNEMONIC_LANGUAGES:
 
 class AlgorandMnemonic(IMnemonic):
 
-    _name = "Algorand"
-
     checksum_length: int = 2
     words: List[int] = [
         ALGORAND_MNEMONIC_WORDS.TWENTY_FIVE
@@ -48,6 +46,10 @@ class AlgorandMnemonic(IMnemonic):
     wordlist_path: Dict[str, str] = {
         ALGORAND_MNEMONIC_LANGUAGES.ENGLISH: "algorand/wordlist/english.txt"
     }
+
+    @classmethod
+    def name(cls) -> str:
+        return "Algorand"
 
     @classmethod
     def from_words(cls, words: int, language: str) -> str:
