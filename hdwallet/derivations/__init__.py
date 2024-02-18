@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-# Copyright © 2020-2023, Meheret Tesfaye Batu <meherett.batu@gmail.com>
+# Copyright © 2020-2024, Meheret Tesfaye Batu <meherett.batu@gmail.com>
 # Distributed under the MIT software license, see the accompanying
 # file COPYING or https://opensource.org/license/mit
 
@@ -13,6 +13,7 @@ from .bip84 import BIP84Derivation
 from .bip86 import BIP86Derivation
 from .cip1852 import CIP1852Derivation
 from .custom import CustomDerivation
+from .electrum import ElectrumDerivation
 
 
 __all__: List[str] = [
@@ -22,5 +23,6 @@ __all__: List[str] = [
     "BIP84Derivation",
     "BIP86Derivation",
     "CIP1852Derivation",
-    "CustomDerivation"
+    "CustomDerivation",
+    "ElectrumDerivation"
 ]

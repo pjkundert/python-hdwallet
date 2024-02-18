@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-# Copyright © 2020-2023, Meheret Tesfaye Batu <meherett.batu@gmail.com>
+# Copyright © 2020-2024, Meheret Tesfaye Batu <meherett.batu@gmail.com>
 # Distributed under the MIT software license, see the accompanying
 # file COPYING or https://opensource.org/license/mit
 
@@ -39,6 +39,10 @@ class BIP44Derivation(IDerivation):  # https://github.com/bitcoin/bips/blob/mast
             index_tuple_to_integer(index=self._address)
         ]
         self._path = indexes_to_path(indexes=self._indexes)
+
+    @classmethod
+    def name(cls) -> str:
+        return "BIP44"
 
     def from_coin_type(self, coin_type: int) -> "BIP44Derivation":
         self._coin_type = (coin_type, True)

@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-# Copyright © 2020-2023, Meheret Tesfaye Batu <meherett.batu@gmail.com>
+# Copyright © 2020-2024, Meheret Tesfaye Batu <meherett.batu@gmail.com>
 # Distributed under the MIT software license, see the accompanying
 # file COPYING or https://opensource.org/license/mit
 
@@ -34,6 +34,10 @@ class IDerivation:
 
     def __str__(self) -> str:
         return self._path
+
+    @classmethod
+    def name(cls) -> str:
+        pass
 
     def path(self) -> str:
         return self._path
