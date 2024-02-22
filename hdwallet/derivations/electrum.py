@@ -4,7 +4,9 @@
 # Distributed under the MIT software license, see the accompanying
 # file COPYING or https://opensource.org/license/mit
 
-from typing import Tuple
+from typing import (
+    Union, Tuple
+)
 
 from ..utils import (
     indexes_to_path, index_tuple_to_integer
@@ -46,8 +48,8 @@ class ElectrumDerivation(IDerivation):
         self._path = indexes_to_path(indexes=self._indexes)
         return self
 
-    def change_index(self) -> Tuple[int, bool]:
-        return self._change_index
+    def change_index(self, only_index=False) -> Union[Tuple[int, bool], int]:
+        return self._change_index[0] if not only_index else self._change_index
 
-    def address_index(self) -> Tuple[int, bool]:
-        return self._address_index
+    def address_index(self, only_index=False) -> Union[Tuple[int, bool], int]:
+        return self._address_index[0] if not only_index else self._address_index
