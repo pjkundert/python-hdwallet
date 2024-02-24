@@ -4,16 +4,11 @@
 # Distributed under the MIT software license, see the accompanying
 # file COPYING or https://opensource.org/license/mit
 
-from typing import Union
+from ...slip10.ed25519 import SLIP10Ed25519Point
 
 
-class IHD:
+class KholawEd25519Point(SLIP10Ed25519Point):
 
-    def name(self) -> str:
-        pass
-
-    def from_seed(self, seed: Union[bytes, str], **kwargs) -> "IHD":
-        pass
-
-    def address(self, **kwargs) -> str:
-        pass
+    @staticmethod
+    def name() -> str:
+        return "Kholaw-Ed25519"
