@@ -16,19 +16,19 @@ from .iderivation import IDerivation
 
 class ElectrumDerivation(IDerivation):
 
-    _change_index: Tuple[int, bool]
-    _address_index: Tuple[int, bool]
+    _change: Tuple[int, bool]
+    _address: Tuple[int, bool]
 
     def __init__(
-        self, change_index: int = 0, address_index: int = 0
+        self, change: int = 0, address: int = 0
     ) -> None:
         super(ElectrumDerivation, self).__init__()
 
-        self._change_index = (change_index, False)
-        self._address_index = (address_index, False)
+        self._change = (change, False)
+        self._address = (address, False)
         self._indexes = [
-            index_tuple_to_integer(index=self._change_index),
-            index_tuple_to_integer(index=self._address_index)
+            index_tuple_to_integer(index=self._change),
+            index_tuple_to_integer(index=self._address)
         ]
         self._path = indexes_to_path(indexes=self._indexes)
 
@@ -36,20 +36,20 @@ class ElectrumDerivation(IDerivation):
     def name(cls) -> str:
         return "Electrum"
 
-    def from_change_index(self, change_index: int) -> "ElectrumDerivation":
-        self._change_index = (change_index, False)
-        self._indexes[0] = index_tuple_to_integer(index=self._change_index)
+    def from_change(self, change: int) -> "ElectrumDerivation":
+        self._change = (change, False)
+        self._indexes[0] = index_tuple_to_integer(index=self._change)
         self._path = indexes_to_path(indexes=self._indexes)
         return self
 
-    def from_address_index(self, address_index: int) -> "ElectrumDerivation":
-        self._address_index = (address_index, False)
-        self._indexes[1] = index_tuple_to_integer(index=self._address_index)
+    def from_address(self, address: int) -> "ElectrumDerivation":
+        self._address = (address, False)
+        self._indexes[1] = index_tuple_to_integer(index=self._address)
         self._path = indexes_to_path(indexes=self._indexes)
         return self
 
-    def change_index(self, only_index=False) -> Union[Tuple[int, bool], int]:
-        return self._change_index[0] if not only_index else self._change_index
+    def change(self, only_index=False) -> Union[Tuple[int, bool], int]:
+        return self._change[0] if not only_index else self._change
 
-    def address_index(self, only_index=False) -> Union[Tuple[int, bool], int]:
-        return self._address_index[0] if not only_index else self._address_index
+    def address(self, only_index=False) -> Union[Tuple[int, bool], int]:
+        return self._address[0] if not only_index else self._address
