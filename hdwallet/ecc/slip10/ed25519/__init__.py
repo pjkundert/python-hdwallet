@@ -10,7 +10,7 @@ from .public_key import SLIP10Ed25519PublicKey
 from .private_key import SLIP10Ed25519PrivateKey
 
 
-class SLIP10Ed25519(IEllipticCurveCryptography):
+class SLIP10Ed25519ECC(IEllipticCurveCryptography):
 
     NAME = "SLIP10-Ed25519"
     ORDER = 2 ** 252 + 27742317777372353535851937790883648493
