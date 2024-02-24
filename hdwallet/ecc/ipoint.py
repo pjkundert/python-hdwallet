@@ -14,6 +14,11 @@ from abc import (
 
 class IPoint(ABC):
 
+    @staticmethod
+    @abstractmethod
+    def name() -> str:
+        pass
+
     @classmethod
     @abstractmethod
     def from_bytes(cls, point_bytes: bytes) -> 'IPoint':
@@ -46,11 +51,6 @@ class IPoint(ABC):
 
     @abstractmethod
     def underlying_object(self) -> Any:
-        pass
-
-    @staticmethod
-    @abstractmethod
-    def curve_type() -> str:
         pass
 
     @abstractmethod

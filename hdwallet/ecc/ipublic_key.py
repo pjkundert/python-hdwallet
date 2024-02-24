@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-# Copyright © 2020-2023, Meheret Tesfaye Batu <meherett.batu@gmail.com>
+# Copyright © 2020-2024, Meheret Tesfaye Batu <meherett.batu@gmail.com>
 # Distributed under the MIT software license, see the accompanying
 # file COPYING or https://opensource.org/license/mit
 
@@ -15,6 +15,11 @@ from .ipoint import IPoint
 
 
 class IPublicKey(ABC):
+
+    @staticmethod
+    @abstractmethod
+    def name() -> str:
+        pass
 
     @classmethod
     @abstractmethod
@@ -40,11 +45,6 @@ class IPublicKey(ABC):
 
     @abstractmethod
     def underlying_object(self) -> Any:
-        pass
-
-    @staticmethod
-    @abstractmethod
-    def curve_type() -> str:
         pass
 
     @staticmethod

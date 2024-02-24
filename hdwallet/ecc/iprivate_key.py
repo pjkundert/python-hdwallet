@@ -16,6 +16,11 @@ from .ipublic_key import IPublicKey
 
 class IPrivateKey(ABC):
 
+    @staticmethod
+    @abstractmethod
+    def name() -> str:
+        pass
+
     @classmethod
     @abstractmethod
     def from_bytes(cls, key_bytes: bytes) -> 'IPrivateKey':
@@ -31,11 +36,6 @@ class IPrivateKey(ABC):
 
     @abstractmethod
     def underlying_object(self) -> Any:
-        pass
-
-    @staticmethod
-    @abstractmethod
-    def curve_type() -> str:
         pass
 
     @staticmethod
