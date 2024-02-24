@@ -17,19 +17,19 @@ from ..ecc import (
 )
 from ..crypto import hash160
 from ..utils import (
-    integer_to_bytes, bytes_to_string
+    get_bytes, integer_to_bytes, bytes_to_string
 )
 from .iaddress import IAddress
 
 
-class P2PKHAddress(IAddress):
+class P2SHAddress(IAddress):
     
-    network_version: int = 0x00
+    network_version: int = 0x05
     alphabet: str = "123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz"
 
     @staticmethod
     def name() -> str:
-        return "P2PKH"
+        return "P2SH"
 
     @classmethod
     def encode(cls, public_key: Union[bytes, str, IPublicKey], **kwargs: Any) -> str:
@@ -45,9 +45,12 @@ class P2PKHAddress(IAddress):
             if kwargs.get("public_key_type", PUBLIC_KEY_TYPES.COMPRESSED) == PUBLIC_KEY_TYPES.COMPRESSED else
             public_key.raw_uncompressed()
         )
+        script_hash: bytes = hash160(get_bytes(
+            "76a914" + bytes_to_string(public_key_hash) + "88ac"
+        ))
 
         return ensure_string(check_encode(
-            (network_version + public_key_hash), alphabet=kwargs.get(
+            (network_version + script_hash), alphabet=kwargs.get(
                 "alphabet", cls.alphabet
             )
         ))

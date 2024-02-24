@@ -1,56 +1,26 @@
 #!/usr/bin/env python3
 
-from abc import (
-    ABC, abstractmethod
-)
-from binascii import unhexlify
-from typing import (
-    Any, Union, Type, Dict
-)
+# Copyright © 2020-2024, Meheret Tesfaye Batu <meherett.batu@gmail.com>
+# Distributed under the MIT software license, see the accompanying
+# file COPYING or https://opensource.org/license/mit
 
-from ..ecc import (
-    EllipticCurveCryptography,
-    ECC_TYPE_TO_INSTANCE,
-    IPublicKey,
-    KholawEd25519PublicKey,
-    SLIP10Ed25519PublicKey,
-    SLIP10Ed25519Blake2bPublicKey,
-    SLIP10Ed25519MoneroPublicKey,
-    SLIP10Nist256p1PublicKey,
-    SLIP10Secp256k1PublicKey
-)
+from typing import List
+
+from .p2pkh import P2PKHAddress
+from .p2sh import P2SHAddress
+from .p2tr import P2TRAddress
+from .p2wpkh import P2WPKHAddress
+from .p2wpkh_in_p2sh import P2WPKHInP2SHAddress
+from .p2wsh import P2WSHAddress
+from .p2wsh_in_p2sh import P2WSHInP2SHAddress
 
 
-class IAddress(ABC):
-
-    @classmethod
-    @abstractmethod
-    def encode(cls, public_key: Union[bytes, IPublicKey], *args, **kwargs: Any) -> str:
-        pass
-
-    @classmethod
-    @abstractmethod
-    def decode(cls, address: str, **kwargs: Any) -> bytes:
-        pass
-
-
-def validate_and_get_public_key(
-    public_key: Union[bytes, str, IPublicKey], public_key_cls: Type[IPublicKey]
-) -> Union[
-    IPublicKey,
-    KholawEd25519PublicKey,
-    SLIP10Ed25519PublicKey,
-    SLIP10Ed25519Blake2bPublicKey,
-    SLIP10Ed25519MoneroPublicKey,
-    SLIP10Nist256p1PublicKey,
-    SLIP10Secp256k1PublicKey
-]:
-    if isinstance(public_key, bytes):
-        public_key: IPublicKey = public_key_cls.from_bytes(public_key)
-    elif isinstance(public_key, str):
-        public_key: IPublicKey = public_key_cls.from_bytes(unhexlify(public_key))
-    elif not isinstance(public_key, public_key_cls):
-        ecc: EllipticCurveCryptography = ECC_TYPE_TO_INSTANCE[public_key_cls.curve_type()]
-        raise TypeError(f"A {ecc.curve_name()} public key is required"
-                        f"(expected: {public_key_cls}, got: {type(public_key)}")
-    return public_key
+__all__: List[str] = [
+    "P2PKHAddress",
+    "P2SHAddress",
+    "P2TRAddress",
+    "P2WPKHAddress",
+    "P2WPKHInP2SHAddress",
+    "P2WSHAddress",
+    "P2WSHInP2SHAddress"
+]
