@@ -17,7 +17,7 @@ class AvalancheAddress(IAddress):
 
     hrp: str = "avax"
     address_prefix: Optional[str] = None
-    address_types: dict = {
+    avalanche_types: dict = {
         "p-chain": "P-",  # The Platform Chain (P-Chain) prefix
         "x-chain": "X-"  # The Exchange Chain (X-Chain) prefix
     }
@@ -31,12 +31,12 @@ class AvalancheAddress(IAddress):
 
         if cls.address_prefix:
             pass
-        elif not kwargs.get("address_type"):
+        elif not kwargs.get("avalanche_type"):
             raise TypeError("Avalanche address type is required")
-        elif kwargs.get("address_type") in ["p", "p-chain", "platform-chain"]:
-            cls.address_prefix = cls.address_types["p-chain"]
-        elif kwargs.get("address_type") in ["x", "x-chain", "exchange-chain"]:
-            cls.address_prefix = cls.address_types["x-chain"]
+        elif kwargs.get("avalanche_type") in ["p", "p-chain", "platform-chain"]:
+            cls.address_prefix = cls.avalanche_types["p-chain"]
+        elif kwargs.get("avalanche_type") in ["x", "x-chain", "exchange-chain"]:
+            cls.address_prefix = cls.avalanche_types["x-chain"]
         else:
             raise ValueError("Wrong avalanche address type")
 
@@ -49,12 +49,12 @@ class AvalancheAddress(IAddress):
 
         if cls.address_prefix:
             pass
-        elif not kwargs.get("address_type"):
+        elif not kwargs.get("avalanche_type"):
             raise TypeError("Avalanche address type ie required")
-        elif kwargs.get("address_type") in ["p", "p-chain", "platform", "platform-chain"]:
-            cls.address_prefix = cls.address_types["p-chain"]
-        elif kwargs.get("address_type") in ["x", "x-chain", "exchange", "exchange-chain"]:
-            cls.address_prefix = cls.address_types["x-chain"]
+        elif kwargs.get("avalanche_type") in ["p", "p-chain", "platform", "platform-chain"]:
+            cls.address_prefix = cls.avalanche_types["p-chain"]
+        elif kwargs.get("avalanche_type") in ["x", "x-chain", "exchange", "exchange-chain"]:
+            cls.address_prefix = cls.avalanche_types["x-chain"]
         else:
             raise ValueError("Wrong avalanche address type")
 
