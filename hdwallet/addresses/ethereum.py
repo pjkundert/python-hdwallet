@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-# Copyright © 2023, Meheret Tesfaye Batu <meherett.batu@gmail.com>
+# Copyright © 2020-2024, Meheret Tesfaye Batu <meherett.batu@gmail.com>
 # Distributed under the MIT software license, see the accompanying
 # file COPYING or https://opensource.org/license/mit
 
@@ -9,18 +9,20 @@ from typing import (
 )
 
 from ..ecc import (
-    IPublicKey, SLIP10Secp256k1PublicKey
+    IPublicKey, SLIP10Secp256k1PublicKey, validate_and_get_public_key
 )
 from ..crypto import kekkak256
 from ..utils import bytes_to_string
-from . import (
-    IAddress, validate_and_get_public_key
-)
+from .iaddress import IAddress
 
 
 class EthereumAddress(IAddress):
 
     address_prefix: str = "0x"
+
+    @staticmethod
+    def name() -> str:
+        return "Ethereum"
 
     @staticmethod
     def checksum_encode(address: str) -> str:
@@ -38,7 +40,7 @@ class EthereumAddress(IAddress):
     @classmethod
     def encode(cls, public_key: Union[bytes, str, IPublicKey], **kwargs: Any) -> str:
 
-        public_key: SLIP10Secp256k1PublicKey = validate_and_get_public_key(
+        public_key: IPublicKey = validate_and_get_public_key(
             public_key=public_key, public_key_cls=SLIP10Secp256k1PublicKey
         )
         address: str = bytes_to_string(
