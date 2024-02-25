@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-# Copyright © 2023, Meheret Tesfaye Batu <meherett.batu@gmail.com>
+# Copyright © 2020-2024, Meheret Tesfaye Batu <meherett.batu@gmail.com>
 # Distributed under the MIT software license, see the accompanying
 # file COPYING or https://opensource.org/license/mit
 
@@ -10,7 +10,7 @@ from typing import (
 
 from ..ecc import IPublicKey
 from .cosmos import CosmosAddress
-from . import IAddress
+from .iaddress import IAddress
 
 
 class AvalancheAddress(IAddress):
@@ -21,6 +21,10 @@ class AvalancheAddress(IAddress):
         "p-chain": "P-",  # The Platform Chain (P-Chain) prefix
         "x-chain": "X-"  # The Exchange Chain (X-Chain) prefix
     }
+
+    @staticmethod
+    def name() -> str:
+        return "Avalanche"
 
     @classmethod
     def encode(cls, public_key: Union[bytes, str, IPublicKey], **kwargs: Any) -> str:
