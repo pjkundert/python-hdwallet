@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-# Copyright © 2023, Meheret Tesfaye Batu <meherett.batu@gmail.com>
+# Copyright © 2020-2024, Meheret Tesfaye Batu <meherett.batu@gmail.com>
 # Distributed under the MIT software license, see the accompanying
 # file COPYING or https://opensource.org/license/mit
 
@@ -12,27 +12,30 @@ from ..libs.base58 import (
     ensure_string, check_encode, check_decode
 )
 from ..ecc import (
-    IPublicKey, SLIP10Secp256k1PublicKey
+    IPublicKey, SLIP10Secp256k1PublicKey, validate_and_get_public_key
 )
 from ..crypto import kekkak256
 from ..utils import (
     integer_to_bytes, bytes_to_string
 )
-from .p2pkh import P2PKHAddress
-from . import validate_and_get_public_key
+from .iaddress import IAddress
 
 
-class TronAddress(P2PKHAddress):
+class TronAddress(IAddress):
 
     public_key_address: int = 0x41
     alphabet: str = "123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz"
+
+    @staticmethod
+    def name() -> str:
+        return "Tron"
 
     @classmethod
     def encode(cls, public_key: Union[bytes, str, IPublicKey], **kwargs: Any) -> str:
 
         network_version: bytes = integer_to_bytes(cls.public_key_address)
         
-        public_key: SLIP10Secp256k1PublicKey = validate_and_get_public_key(
+        public_key: IPublicKey = validate_and_get_public_key(
             public_key=public_key, public_key_cls=SLIP10Secp256k1PublicKey
         )
         
