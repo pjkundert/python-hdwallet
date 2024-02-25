@@ -1,16 +1,17 @@
 #!/usr/bin/env python3
 
-# Copyright © 2020-2023, Meheret Tesfaye Batu <meherett.batu@gmail.com>
+# Copyright © 2020-2024, Meheret Tesfaye Batu <meherett.batu@gmail.com>
 # Distributed under the MIT software license, see the accompanying
 # file COPYING or https://opensource.org/license/mit
 
 from typing import (
-    Union, Tuple, Literal
+    Union, Tuple
 )
 
 from .libs.base58 import (
     encode, decode
 )
+from .const import WIF_TYPES
 from .crypto import double_sha256
 from .utils import (
     get_bytes, integer_to_bytes, bytes_to_string
@@ -45,7 +46,7 @@ def encode_wif(private_key: Union[str, bytes]) -> Tuple[str, str]:
     )
 
 
-def decode_wif(wif: str) -> Tuple[bytes, Literal["wif", "wif-compressed"], bytes]:
+def decode_wif(wif: str) -> Tuple[bytes, str, bytes]:
 
     raw: bytes = decode(wif)
     if not raw.startswith(integer_to_bytes(0x80)):
@@ -60,25 +61,25 @@ def decode_wif(wif: str) -> Tuple[bytes, Literal["wif", "wif-compressed"], bytes
 
     checksum: bytes = raw_without_prefix[-1 * 4:]
     private_key: bytes = raw_without_prefix[:-1 * 4]
-    wif_type: Literal["wif", "wif-compressed"] = "wif"
+    wif_type: str = WIF_TYPES.WIF
 
     if len(private_key) not in [33, 32]:
         raise ValueError(f"Invalid wallet important format")
     elif len(private_key) == 33:
         private_key = private_key[:-len(integer_to_bytes(COMPRESSED_PRIVATE_KEY_PREFIX))]
-        wif_type = "wif-compressed"
+        wif_type = WIF_TYPES.WIF_COMPRESSED
 
     return private_key, wif_type, checksum
 
 
-def private_key_to_wif(private_key: Union[str, bytes], wif_type: Literal["wif", "wif-compressed"] = "wif-compressed") -> str:
+def private_key_to_wif(private_key: Union[str, bytes], wif_type: str = WIF_TYPES.WIF_COMPRESSED) -> str:
     """
     Private key to Wallet Important Format (WIF) converter
 
     :param private_key: Private key
     :type private_key: Union[str, bytes]
     :param wif_type: Wallet Important Format (WIF) type, default to ``wif-compressed``
-    :type wif_type: Literal["wif", "wif-compressed"]
+    :type wif_type: str
 
     :returns: str -- Wallet Important Format
     """
@@ -86,9 +87,9 @@ def private_key_to_wif(private_key: Union[str, bytes], wif_type: Literal["wif", 
     # Getting uncompressed and compressed
     wif, wif_compressed = encode_wif(private_key=private_key)
 
-    if wif_type == "wif":
+    if wif_type == WIF_TYPES.WIF:
         return wif
-    elif wif_type == "wif-compressed":
+    elif wif_type == WIF_TYPES.WIF_COMPRESSED:
         return wif_compressed
     else:
         raise ValueError("Invalid WIF type, choose only 'wif' or 'wif-compressed' types")
@@ -107,14 +108,14 @@ def wif_to_private_key(wif: str) -> str:
     return bytes_to_string(decode_wif(wif=wif)[0])
 
 
-def get_wif_type(wif: str) -> Literal["wif", "wif-compressed"]:
+def get_wif_type(wif: str) -> str:
     """
     Get Wallet Important Format (WIF) type
 
     :param wif: Wallet Important Format
     :type wif: str
 
-    :returns: Literal["wif", "wif-compressed"] -- WFI type
+    :returns: str -- WFI type
     """
 
     return decode_wif(wif=wif)[1]
