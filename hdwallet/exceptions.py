@@ -1,63 +1,62 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 
-from typing import Optional
+# Copyright © 2020-2024, Meheret Tesfaye Batu <meherett.batu@gmail.com>
+# Distributed under the MIT software license, see the accompanying
+# file COPYING or https://opensource.org/license/mit
 
-
-class DerivationError(Exception):
-
-    def __init__(self, error_message: str, error_detail: Optional[str] = None):
-        self.error_message = error_message
-        self.error_detail = error_detail
-
-    def __str__(self):
-        if self.error_detail:
-            return f"{self.error_message}, {self.error_detail}"
-        return f"{self.error_message}"
+from typing import (
+    Optional, Any
+)
 
 
-class SemanticError(Exception):
+class Error(Exception):
 
-    def __init__(self, error_message: str, error_detail: Optional[str] = None):
-        self.error_message = error_message
-        self.error_detail = error_detail
+    def __init__(
+        self,
+        message: str,
+        detail: Optional[str] = None,
+        expected: Any = None,
+        got: Any = None
+    ):
+        self._message, self._detail, self._expected, self._got = (
+            message, detail, None, f"'{got}'"
+        )
 
-    def __str__(self):
-        if self.error_detail:
-            return f"{self.error_message}, {self.error_detail}"
-        return f"{self.error_message}"
-
-
-class AddressError(Exception):
-
-    def __init__(self, error_message: str, error_detail: Optional[str] = None):
-        self.error_message = error_message
-        self.error_detail = error_detail
+        if isinstance(expected, list):
+            for expect in expected:
+                if self._expected is None:
+                    self._expected = f"'{expect}'"
+                else:
+                    self._expected += f", '{expect}'"
+        else:
+            self._expected = expected
 
     def __str__(self):
-        if self.error_detail:
-            return f"{self.error_message}, {self.error_detail}"
-        return f"{self.error_message}"
+        if self._expected and self._got and self._detail:
+            return f"{self._message}, (expected: {self._expected} | got: {self._got}), {self._detail}"
+        elif self._expected and self._got and not self._detail:
+            return f"{self._message}, (expected: {self._expected} | got: {self._got})"
+        elif self._detail:
+            return f"{self._message}, {self._detail}"
+        else:
+            return f"{self._message}"
 
 
-class SymbolError(Exception):
-
-    def __init__(self, error_message: str, error_detail: Optional[str] = None):
-        self.error_message = error_message
-        self.error_detail = error_detail
-
-    def __str__(self):
-        if self.error_detail:
-            return f"{self.error_message}, {self.error_detail}"
-        return f"{self.error_message}"
+class DerivationError(Error):
+    pass
 
 
-class NetworkError(Exception):
+class SemanticError(Error):
+    pass
 
-    def __init__(self, error_message: str, error_detail: Optional[str] = None):
-        self.error_message = error_message
-        self.error_detail = error_detail
 
-    def __str__(self):
-        if self.error_detail:
-            return f"{self.error_message}, {self.error_detail}"
-        return f"{self.error_message}"
+class AddressError(Error):
+    pass
+
+
+class SymbolError(Error):
+    pass
+
+
+class NetworkError(Error):
+    pass
