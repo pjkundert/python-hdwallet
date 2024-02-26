@@ -1,24 +1,26 @@
 #!/usr/bin/env python3
 
-# Copyright © 2023, Meheret Tesfaye Batu <meherett.batu@gmail.com>
+# Copyright © 2020-2024, Meheret Tesfaye Batu <meherett.batu@gmail.com>
 # Distributed under the MIT software license, see the accompanying
 # file COPYING or https://opensource.org/license/mit
 
 from typing import (
-    Tuple, Union, Optional, Literal, Dict
+    Tuple, Union, Optional, Dict
 )
 
 from ..libs.base58 import (
     encode_monero, decode_monero
 )
 from ..ecc import (
-    IPublicKey, SLIP10Ed25519MoneroPublicKey
+    IPublicKey, SLIP10Ed25519MoneroPublicKey, validate_and_get_public_key
+)
+from ..cryptocurrencies.monero import (
+    Mainnet, Stagenet, Testnet
 )
 from ..crypto import kekkak256
 from ..utils import (
     bytes_to_string, integer_to_bytes
 )
-from . import validate_and_get_public_key
 
 
 class MoneroAddress:
@@ -28,20 +30,24 @@ class MoneroAddress:
     network_types: Dict[str, Dict[str, Dict[str, int]]] = {
         "mainnet": {
             "version_types": {
-                "standard": 0x12, "integrated": 0x13, "sub-address": 0x2a
+                "standard": Mainnet.STANDARD, "integrated": Mainnet.INTEGRATED, "sub-address": Mainnet.SUB_ADDRESS
             }
         },
         "stagenet": {
             "version_types": {
-                "standard": 0x18, "integrated": 0x19, "sub-address": 0x24
+                "standard": Stagenet.STANDARD, "integrated": Stagenet.INTEGRATED, "sub-address": Stagenet.SUB_ADDRESS
             }
         },
         "testnet": {
             "version_types": {
-                "standard": 0x35, "integrated": 0x36, "sub-address": 0x3f
+                "standard": Testnet.STANDARD, "integrated": Testnet.INTEGRATED, "sub-address": Testnet.SUB_ADDRESS
             }
         }
     }
+
+    @staticmethod
+    def name() -> str:
+        return "Monero"
 
     @classmethod
     def compute_checksum(cls, public_key: bytes) -> bytes:
@@ -52,15 +58,15 @@ class MoneroAddress:
         cls,
         spend_public_key: Union[bytes, str, IPublicKey],
         view_public_key: Union[bytes, str, IPublicKey],
-        network_type: Literal["mainnet", "stagenet", "testnet"] = "mainnet",
-        version_type: Literal["standard", "integrated", "sub-address"] = "standard",
+        network_type: str = "mainnet",
+        version_type: str = "standard",
         payment_id: Optional[bytes] = None
     ) -> str:
 
-        spend_public_key: SLIP10Ed25519MoneroPublicKey = validate_and_get_public_key(
+        spend_public_key: IPublicKey = validate_and_get_public_key(
             public_key=spend_public_key, public_key_cls=SLIP10Ed25519MoneroPublicKey
         )
-        view_public_key: SLIP10Ed25519MoneroPublicKey = validate_and_get_public_key(
+        view_public_key: IPublicKey = validate_and_get_public_key(
             public_key=view_public_key, public_key_cls=SLIP10Ed25519MoneroPublicKey
         )
 
@@ -71,7 +77,9 @@ class MoneroAddress:
             cls.network_types[network_type]["version_types"][version_type]
         )
         payload: bytes = (
-            version + spend_public_key.raw_compressed() + view_public_key.raw_compressed() + (b"" if payment_id is None else payment_id)
+            version + spend_public_key.raw_compressed() +
+            view_public_key.raw_compressed() +
+            (b"" if payment_id is None else payment_id)
         )
 
         return encode_monero(payload + cls.compute_checksum(payload))
@@ -80,8 +88,8 @@ class MoneroAddress:
     def decode(
         cls,
         address: str,
-        network_type: Literal["mainnet", "stagenet", "testnet"] = "mainnet",
-        version_type: Literal["standard", "integrated", "sub-address"] = "standard",
+        network_type: str = "mainnet",
+        version_type: str = "standard",
         payment_id: Optional[bytes] = None
     ) -> Tuple[str, str]:
 
@@ -122,10 +130,10 @@ class MoneroAddress:
 
         spend_public_key: bytes = payload_without_prefix[:length]
         if not SLIP10Ed25519MoneroPublicKey.is_valid_bytes(spend_public_key):
-            raise ValueError(f"Invalid {SLIP10Ed25519MoneroPublicKey.curve_type()} public key {bytes_to_string(spend_public_key)}")
+            raise ValueError(f"Invalid {SLIP10Ed25519MoneroPublicKey.name()} public key {bytes_to_string(spend_public_key)}")
 
         view_public_key: bytes = payload_without_prefix[length:(length * 2)]
         if not SLIP10Ed25519MoneroPublicKey.is_valid_bytes(view_public_key):
-            raise ValueError(f"Invalid {SLIP10Ed25519MoneroPublicKey.curve_type()} public key {bytes_to_string(view_public_key)}")
+            raise ValueError(f"Invalid {SLIP10Ed25519MoneroPublicKey.name()} public key {bytes_to_string(view_public_key)}")
 
         return bytes_to_string(spend_public_key), bytes_to_string(view_public_key)
