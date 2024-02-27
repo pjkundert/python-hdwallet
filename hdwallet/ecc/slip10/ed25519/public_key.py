@@ -30,12 +30,10 @@ class SLIP10Ed25519PublicKey(IPublicKey):
 
     @classmethod
     def from_bytes(cls, public_key: bytes) -> IPublicKey:
-        # Remove the 0x00 prefix if present because nacl requires 32-byte length
         if (len(public_key) == SLIP10_ED25519_CONST.PUBLIC_KEY_BYTE_LENGTH + len(SLIP10_ED25519_CONST.PUBLIC_KEY_PREFIX)
                 and public_key[0] == bytes_to_integer(SLIP10_ED25519_CONST.PUBLIC_KEY_PREFIX)):
             public_key = public_key[1:]
 
-        # nacl doesn't check if the point lies on curve
         if not point_is_on_curve(public_key):
             raise ValueError("Invalid public key bytes")
 
