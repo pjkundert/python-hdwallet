@@ -13,6 +13,8 @@ from typing import (
 
 import os
 
+from ..entropies import IEntropy
+
 
 class IMnemonic(ABC):
 
@@ -48,6 +50,16 @@ class IMnemonic(ABC):
 
     def word(self) -> int:
         return self._word
+
+    @classmethod
+    @abstractmethod
+    def from_words(cls, words: int, language: str, **kwargs) -> str:
+        pass
+
+    @classmethod
+    @abstractmethod
+    def from_entropy(cls, entropy: Union[str, bytes, IEntropy], language: str, **kwargs) -> str:
+        pass
 
     @classmethod
     @abstractmethod

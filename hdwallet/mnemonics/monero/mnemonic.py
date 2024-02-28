@@ -105,7 +105,7 @@ class MoneroMnemonic(IMnemonic):
         return "Monero"
 
     @classmethod
-    def from_words(cls, words: int, language: str) -> str:
+    def from_words(cls, words: int, language: str, **kwargs) -> str:
         if words not in cls.words:
             raise ValueError(f"Invalid words number for mnemonic (expected {cls.words}, got {words})")
 
@@ -118,16 +118,20 @@ class MoneroMnemonic(IMnemonic):
         )
 
     @classmethod
-    def from_entropy(cls, entropy: Union[str, bytes, IEntropy], language: str, checksum: bool = False) -> str:
+    def from_entropy(cls, entropy: Union[str, bytes, IEntropy], language: str, **kwargs) -> str:
         if isinstance(entropy, str) or isinstance(entropy, bytes):
-            return cls.encode(entropy=entropy, language=language, checksum=checksum)
+            return cls.encode(
+                entropy=entropy, language=language, checksum=kwargs.get("checksum", False)
+            )
         elif isinstance(entropy, MoneroEntropy):
-            return cls.encode(entropy=entropy.entropy(), language=language, checksum=checksum)
+            return cls.encode(
+                entropy=entropy.entropy(), language=language, checksum=kwargs.get("checksum", False)
+            )
         raise Exception("Invalid entropy, only accept str, bytes, or Monero entropy class")
 
     @classmethod
     def encode(cls, entropy: Union[str, bytes], language: str, checksum: bool = False) -> str:
-        # Check entropy length
+
         entropy: bytes = get_bytes(entropy)
         if not MoneroEntropy.is_valid_bytes_strength(len(entropy)):
             raise ValueError(f"Wrong entropy length (expected {MoneroEntropy.strengths}, got {len(entropy) * 8})")
@@ -144,7 +148,6 @@ class MoneroMnemonic(IMnemonic):
 
         if checksum:
             unique_prefix_length = cls.language_unique_prefix_lengths[language]
-            # Join the prefix of all words together
             prefixes = "".join(word[:unique_prefix_length] for word in mnemonic)
             checksum_word = mnemonic[
                 bytes_to_integer(crc32(prefixes)) % len(mnemonic)
@@ -155,12 +158,10 @@ class MoneroMnemonic(IMnemonic):
 
     @classmethod
     def decode(cls, mnemonic: str) -> str:
-        # Check mnemonic length
         words: list = cls.normalize(mnemonic)
         if len(words) not in cls.words:
             raise ValueError(f"Invalid mnemonic words count (expected {cls.words}, got {len(words)})")
 
-        # Detect language if it was not specified at construction
         words_list, language = cls.find_language(mnemonic=words)
         if len(words_list) != cls.words_list_number:
             raise ValueError(f"Invalid number of loaded words list (expected {cls.words_list_number}, got {len(words_list)})")
@@ -168,7 +169,6 @@ class MoneroMnemonic(IMnemonic):
         if len(words) in cls.words_checksum:
             mnemonic: list = words[:-1]
             unique_prefix_length = cls.language_unique_prefix_lengths[language]
-            # Join the prefix of all words together
             prefixes = "".join(word[:unique_prefix_length] for word in mnemonic)
             checksum_word = mnemonic[
                 bytes_to_integer(crc32(prefixes)) % len(mnemonic)
@@ -176,7 +176,6 @@ class MoneroMnemonic(IMnemonic):
             if words[-1] != checksum_word:
                 raise ValueError(f"Invalid checksum (expected {checksum_word}, got {words[-1]})")
 
-        # Consider 3 words at a time, 3 words represent 4 bytes
         entropy: bytes = b""
         for index in range(len(words) // 3):
             word_1, word_2, word_3 = words[index * 3:(index * 3) + 3]

@@ -52,7 +52,7 @@ class AlgorandMnemonic(IMnemonic):
         return "Algorand"
 
     @classmethod
-    def from_words(cls, words: int, language: str) -> str:
+    def from_words(cls, words: int, language: str, **kwargs) -> str:
         if words not in cls.words:
             raise ValueError(f"Invalid words number for mnemonic (expected {cls.words}, got {words})")
 
@@ -61,7 +61,7 @@ class AlgorandMnemonic(IMnemonic):
         )
 
     @classmethod
-    def from_entropy(cls, entropy: Union[str, bytes, IEntropy], language: str) -> str:
+    def from_entropy(cls, entropy: Union[str, bytes, IEntropy], language: str, **kwargs) -> str:
         if isinstance(entropy, str) or isinstance(entropy, bytes):
             return cls.encode(entropy=entropy, language=language)
         elif isinstance(entropy, AlgorandEntropy):
@@ -70,19 +70,14 @@ class AlgorandMnemonic(IMnemonic):
 
     @classmethod
     def encode(cls, entropy: Union[str, bytes], language: str) -> str:
-        # Check entropy length
         entropy: bytes = get_bytes(entropy)
         if not AlgorandEntropy.is_valid_bytes_strength(len(entropy)):
             raise ValueError(f"Wrong entropy length (expected {AlgorandEntropy.strengths}, got {len(entropy) * 8})")
 
-        # Compute checksum word
         checksum: bytes = sha512_256(entropy)[:cls.checksum_length]
         checksum_word_indexes: Optional[List[int]] = convert_bits(checksum, 8, 11)
-        # Cannot be None by converting bytes from 8-bit to 11-bit
         assert checksum_word_indexes is not None
-        # Convert entropy bytes to a list of word indexes
         word_indexes: Optional[List[int]] = convert_bits(entropy, 8, 11)
-        # Cannot be None by converting bytes from 8-bit to 11-bit
         assert word_indexes is not None
 
         words_list: list = cls.get_words_list_by_language(language=language)
@@ -91,29 +86,21 @@ class AlgorandMnemonic(IMnemonic):
 
     @classmethod
     def decode(cls, mnemonic: str) -> str:
-        # Check mnemonic length
         words: list = cls.normalize(mnemonic)
         if len(words) not in cls.words:
             raise ValueError(f"Invalid mnemonic words count (expected {cls.words}, got {len(words)})")
 
-        # Detect language if it was not specified at construction
         words_list, language = cls.find_language(mnemonic=words)
         words_list_with_index: dict = {
             words_list[i]: i for i in range(len(words_list))
         }
-        # Get words indexes
         word_indexes = [words_list_with_index[word] for word in words]
-        # Get back entropy as list
         entropy_list: Optional[List[int]] = convert_bits(word_indexes[:-1], 11, 8)
-        # Cannot be None if the number of words is valid (checked at the beginning)
         assert entropy_list is not None
-        # Get back entropy bytes
         entropy: bytes = bytes(entropy_list)[:-1]
 
-        # Validate checksum
         checksum: bytes = sha512_256(entropy)[:cls.checksum_length]
         checksum_word_indexes: Optional[List[int]] = convert_bits(checksum, 8, 11)
-        # Cannot be None by converting bytes from 8-bit to 11-bit
         assert checksum_word_indexes is not None
         if checksum_word_indexes[0] != word_indexes[-1]:
             raise ValueError(

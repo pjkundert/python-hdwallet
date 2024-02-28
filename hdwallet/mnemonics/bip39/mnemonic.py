@@ -102,7 +102,7 @@ class BIP39Mnemonic(IMnemonic):
         return "BIP39"
 
     @classmethod
-    def from_words(cls, words: int, language: str) -> str:
+    def from_words(cls, words: int, language: str, **kwargs) -> str:
         if words not in cls.words:
             raise ValueError(f"Invalid words number for mnemonic (expected {cls.words}, got {words})")
 
@@ -111,7 +111,7 @@ class BIP39Mnemonic(IMnemonic):
         )
 
     @classmethod
-    def from_entropy(cls, entropy: Union[str, bytes, IEntropy], language: str) -> str:
+    def from_entropy(cls, entropy: Union[str, bytes, IEntropy], language: str, **kwargs) -> str:
         if isinstance(entropy, str) or isinstance(entropy, bytes):
             return cls.encode(entropy=entropy, language=language)
         elif isinstance(entropy, BIP39Entropy):
@@ -120,29 +120,23 @@ class BIP39Mnemonic(IMnemonic):
 
     @classmethod
     def encode(cls, entropy: Union[str, bytes], language: str) -> str:
-        # Check entropy length
+
         entropy: bytes = get_bytes(entropy)
         if not BIP39Entropy.is_valid_bytes_strength(len(entropy)):
             raise ValueError(f"Wrong entropy length (expected {BIP39Entropy.strengths}, got {len(entropy) * 8})")
 
-        # Convert entropy to binary string
         entropy_binary_string: str = bytes_to_binary_string(get_bytes(entropy), len(entropy) * 8)
-        # Get entropy hash as binary string
         entropy_hash_binary_string: str = bytes_to_binary_string(sha256(entropy), 32 * 8)
-        # Get mnemonic binary string by concatenating entropy and checksum
         mnemonic_bin: str = entropy_binary_string + entropy_hash_binary_string[:len(entropy) // 4]
 
-        # Get mnemonic from entropy
         mnemonic: List[str] = []
         words_list: List[str] = cls.get_words_list_by_language(language=language)
         if len(words_list) != cls.words_list_number:
             raise ValueError(f"Invalid number of loaded words list (expected {cls.words_list_number}, got {len(words_list)})")
 
         for index in range(len(mnemonic_bin) // cls.word_bit_length):
-            # Get current word index
             word_bin: str = mnemonic_bin[index * cls.word_bit_length:(index + 1) * cls.word_bit_length]
             word_index: int = binary_string_to_integer(word_bin)
-            # Get word at given index
             mnemonic.append(words_list[word_index])
 
         return " ".join(cls.normalize(mnemonic))
@@ -151,13 +145,11 @@ class BIP39Mnemonic(IMnemonic):
     def decode(
         cls, mnemonic: str, checksum: bool = False, words_list: Optional[List[str]] = None, words_list_with_index: Optional[dict] = None
     ) -> str:
-        # Check mnemonic length
         words: list = cls.normalize(mnemonic)
         if len(words) not in cls.words:
             raise ValueError(f"Invalid mnemonic words count (expected {cls.words}, got {len(words)})")
 
         if not words_list or not words_list_with_index:
-            # Detect language if it was not specified at construction
             words_list, language = cls.find_language(mnemonic=words)
             if len(words_list) != cls.words_list_number:
                 raise ValueError(f"Invalid number of loaded words list (expected {cls.words_list_number}, got {len(words_list)})")
@@ -168,23 +160,18 @@ class BIP39Mnemonic(IMnemonic):
         if len(words_list) != cls.words_list_number:
             raise ValueError(f"Invalid number of loaded words list (expected {cls.words_list_number}, got {len(words_list)})")
 
-        # Get back mnemonic binary string
         mnemonic_bin: str = "".join(map(
             lambda word: integer_to_binary_string(
                 words_list_with_index[word], cls.word_bit_length
             ), words
         ))
 
-        # Get checksum length
         mnemonic_bit_length: int = len(mnemonic_bin)
         checksum_length: int = mnemonic_bit_length // 33
-        # Verify checksum
         checksum_bin: str = mnemonic_bin[-checksum_length:]
-        # Get back entropy binary string
         entropy: bytes = binary_string_to_bytes(
             mnemonic_bin[:-checksum_length], checksum_length * 8
         )
-        # Convert entropy hash to binary string
         entropy_hash_bin: str = bytes_to_binary_string(
             sha256(entropy), 32 * 8
         )

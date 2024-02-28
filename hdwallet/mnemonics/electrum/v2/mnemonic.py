@@ -79,16 +79,20 @@ class ElectrumV2Mnemonic(IMnemonic):
         return "Electrum-V2"
 
     @classmethod
-    def from_words(cls, words: int, language: str, mnemonic_type: str = "standard") -> str:
+    def from_words(cls, words: int, language: str, **kwargs) -> str:
         if words not in cls.words:
             raise ValueError(f"Invalid words number for mnemonic (expected {cls.words}, got {words})")
 
         return cls.from_entropy(
-            entropy=ElectrumV2Entropy.generate(cls.words_to_entropy_strength[words]), language=language, mnemonic_type=mnemonic_type
+            entropy=ElectrumV2Entropy.generate(
+                cls.words_to_entropy_strength[words]
+            ),
+            language=language,
+            mnemonic_type=kwargs.get("mnemonic_type", "standard")
         )
 
     @classmethod
-    def from_entropy(cls, entropy: Union[str, bytes], language: str, mnemonic_type: str = "standard", max_attempts: int = 10 ** 60) -> str:
+    def from_entropy(cls, entropy: Union[str, bytes], language: str, **kwargs) -> str:
 
         if isinstance(entropy, str) or isinstance(entropy, bytes):
             entropy: bytes = get_bytes(entropy)
@@ -97,10 +101,8 @@ class ElectrumV2Mnemonic(IMnemonic):
         else:
             raise Exception("Invalid entropy, only accept str, bytes, or Electrum-V2 entropy class")
 
-        # Do not waste time trying if the entropy bit are not enough
         if ElectrumV2Entropy.are_entropy_bits_enough(entropy):
 
-            # Get bip39, electrum v1 and v2 global words list
             words_list: List[str] = cls.get_words_list_by_language(
                 language=language, wordlist_path=cls.wordlist_path
             )
@@ -117,15 +119,14 @@ class ElectrumV2Mnemonic(IMnemonic):
                 electrum_v1_words_list[i]: i for i in range(len(electrum_v1_words_list))
             }
 
-            # Same of Electrum: increase the entropy until a valid one is found
             entropy: int = bytes_to_integer(entropy)
-            for index in range(max_attempts):
+            for index in range(kwargs.get("max_attempts", 10 ** 60)):
                 new_entropy: int = entropy + index
                 try:
                     return cls.encode(
                         entropy=integer_to_bytes(new_entropy),
                         language=language,
-                        mnemonic_type=mnemonic_type,
+                        mnemonic_type=kwargs.get("mnemonic_type", "standard"),
                         words_list=words_list,
                         bip39_words_list=bip39_words_list,
                         bip39_words_list_with_index=bip39_words_list_with_index,
@@ -150,7 +151,6 @@ class ElectrumV2Mnemonic(IMnemonic):
         electrum_v1_words_list_with_index: Optional[dict] = None
     ) -> str:
 
-        # Check entropy bits enough
         entropy: int = bytes_to_integer(get_bytes(entropy))
         if not ElectrumV2Entropy.are_entropy_bits_enough(entropy):
             raise ValueError("Entropy bit length is not enough for generating a valid mnemonic")
@@ -178,22 +178,18 @@ class ElectrumV2Mnemonic(IMnemonic):
     @classmethod
     def decode(cls, mnemonic: str, mnemonic_type: str = "standard") -> str:
 
-        # Check mnemonic length
         words: list = cls.normalize(mnemonic)
         if len(words) not in cls.words:
             raise ValueError(f"Invalid mnemonic words count (expected {cls.words}, got {len(words)})")
 
-        # Check mnemonic validity
         if not cls.is_valid(mnemonic, mnemonic_type=mnemonic_type):
             raise ValueError(f"Invalid {mnemonic_type} mnemonic type words")
 
-        # Detect language if it was not specified at construction
         words_list, language = cls.find_language(mnemonic=words)
         words_list_with_index: dict = {
             words_list[i]: i for i in range(len(words_list))
         }
 
-        # Decode words
         entropy: int = 0
         for word in reversed(words):
             entropy: int = (entropy * len(words_list)) + words_list_with_index[word]

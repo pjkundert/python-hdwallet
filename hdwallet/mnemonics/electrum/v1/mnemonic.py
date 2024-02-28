@@ -50,7 +50,7 @@ class ElectrumV1Mnemonic(IMnemonic):
         return "Electrum-V1"
 
     @classmethod
-    def from_words(cls, words: int, language: str) -> str:
+    def from_words(cls, words: int, language: str, **kwargs) -> str:
         if words not in cls.words:
             raise ValueError(f"Invalid words number for mnemonic (expected {cls.words}, got {words})")
 
@@ -59,7 +59,7 @@ class ElectrumV1Mnemonic(IMnemonic):
         )
 
     @classmethod
-    def from_entropy(cls, entropy: Union[str, bytes, IEntropy], language: str) -> str:
+    def from_entropy(cls, entropy: Union[str, bytes, IEntropy], language: str, **kwargs) -> str:
         if isinstance(entropy, str) or isinstance(entropy, bytes):
             return cls.encode(entropy=entropy, language=language)
         elif isinstance(entropy, ElectrumV1Entropy):
@@ -68,7 +68,7 @@ class ElectrumV1Mnemonic(IMnemonic):
 
     @classmethod
     def encode(cls, entropy: Union[str, bytes], language: str) -> str:
-        # Check entropy length
+
         entropy: bytes = get_bytes(entropy)
         if not ElectrumV1Entropy.is_valid_bytes_strength(len(entropy)):
             raise ValueError(f"Wrong entropy length (expected {ElectrumV1Entropy.strengths}, got {len(entropy) * 8})")
@@ -96,29 +96,24 @@ class ElectrumV1Mnemonic(IMnemonic):
     @classmethod
     def decode(cls, mnemonic: str, words_list: Optional[List[str]] = None, words_list_with_index: Optional[dict] = None) -> str:
 
-        # Check mnemonic length
         words: list = cls.normalize(mnemonic)
         if len(words) not in cls.words:
             raise ValueError(f"Invalid mnemonic words count (expected {cls.words}, got {len(words)})")
 
         if not words_list or not words_list_with_index:
-            # Detect language if it was not specified at construction
             words_list, language = cls.find_language(mnemonic=words)
             words_list_with_index: dict = {
                 words_list[i]: i for i in range(len(words_list))
             }
 
-        # Consider 3 words at a time, 3 words represent 4 bytes
         entropy: bytes = b""
         for index in range(len(words) // 3):
             word_1, word_2, word_3 = words[index * 3:(index * 3) + 3]
 
-            # Get the word indexes
             word_1_index: int = words_list_with_index[word_1]
             word_2_index: int = words_list_with_index[word_2] % len(words_list)
             word_3_index: int = words_list_with_index[word_3] % len(words_list)
 
-            # Get back the bytes chunk
             chunk: int = (
                 word_1_index +
                 (len(words_list) * ((word_2_index - word_1_index) % len(words_list))) +
