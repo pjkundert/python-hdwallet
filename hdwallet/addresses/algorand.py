@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-# Copyright © 2023, Meheret Tesfaye Batu <meherett.batu@gmail.com>
+# Copyright © 2020-2024, Meheret Tesfaye Batu <meherett.batu@gmail.com>
 # Distributed under the MIT software license, see the accompanying
 # file COPYING or https://opensource.org/license/mit
 
@@ -12,20 +12,22 @@ from ..libs.base32 import (
     encode_no_padding, decode
 )
 from ..ecc import (
-    IPublicKey, SLIP10Ed25519PublicKey
+    IPublicKey, SLIP10Ed25519PublicKey, validate_and_get_public_key
 )
 from ..crypto import sha512_256
 from ..utils import (
     get_bytes, bytes_to_string
 )
-from . import (
-    IAddress, validate_and_get_public_key
-)
+from .iaddress import IAddress
 
 
 class AlgorandAddress(IAddress):
 
     checksum_length: int = 4
+
+    @staticmethod
+    def name() -> str:
+        return "Algorand"
 
     @staticmethod
     def compute_checksum(public_key: bytes) -> bytes:
@@ -34,7 +36,7 @@ class AlgorandAddress(IAddress):
     @classmethod
     def encode(cls, public_key: Union[bytes, str, IPublicKey], **kwargs: Any) -> str:
 
-        public_key: SLIP10Ed25519PublicKey = validate_and_get_public_key(
+        public_key: IPublicKey = validate_and_get_public_key(
             public_key=public_key, public_key_cls=SLIP10Ed25519PublicKey
         )
         return encode_no_padding(bytes_to_string(
@@ -60,6 +62,6 @@ class AlgorandAddress(IAddress):
             raise ValueError(f"Invalid checksum (expected: {checksum.hex()}, got: {checksum_got.hex()})")
 
         if not SLIP10Ed25519PublicKey.is_valid_bytes(public_key):
-            raise ValueError(f"Invalid {SLIP10Ed25519PublicKey.curve_type()} public key {public_key.hex()}")
+            raise ValueError(f"Invalid {SLIP10Ed25519PublicKey.name()} public key {public_key.hex()}")
 
         return bytes_to_string(public_key)
