@@ -1,5 +1,9 @@
 #!/usr/bin/env python3
 
+# Copyright © 2020-2024, Meheret Tesfaye Batu <meherett.batu@gmail.com>
+# Distributed under the MIT software license, see the accompanying
+# file COPYING or https://opensource.org/license/mit
+
 from typing import (
     Any, Union
 )
@@ -8,21 +12,24 @@ from ..libs.bech32 import (
     bech32_encode, bech32_decode
 )
 from ..ecc import (
-    IPublicKey, SLIP10Ed25519PublicKey
+    IPublicKey, SLIP10Ed25519PublicKey, validate_and_get_public_key
 )
-from . import (
-    IAddress, validate_and_get_public_key
-)
+from ..utils import bytes_to_string
+from .iaddress import IAddress
 
 
 class ElrondAddress(IAddress):
 
     hrp: str = "erd"
 
+    @staticmethod
+    def name() -> str:
+        return "Elrond"
+
     @classmethod
     def encode(cls, public_key: Union[bytes, str, IPublicKey], **kwargs: Any) -> str:
 
-        public_key: SLIP10Ed25519PublicKey = validate_and_get_public_key(
+        public_key: IPublicKey = validate_and_get_public_key(
             public_key=public_key, public_key_cls=SLIP10Ed25519PublicKey
         )
         return bech32_encode(
@@ -32,9 +39,7 @@ class ElrondAddress(IAddress):
     @classmethod
     def decode(cls, address: str, **kwargs: Any) -> str:
 
-        address_decode_bytes: tuple = bech32_decode(
+        hrp, address_decode = bech32_decode(
             kwargs.get("hrp", cls.hrp), address
         )
-        return bytearray(
-            address_decode_bytes[1]
-        ).hex()
+        return bytes_to_string(address_decode)
