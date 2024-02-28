@@ -4,11 +4,12 @@
 # Distributed under the MIT software license, see the accompanying
 # file COPYING or https://opensource.org/license/mit
 
-from typing import List
-
-from ..ecc import KholawEd25519
+from ..ecc import KholawEd25519ECC
+from ..const import (
+    CARDANO_TYPES, CoinType, Entropies, Mnemonics, Seeds, HDs, Addresses, Networks, Params, XPrivateKeyVersions, XPublicKeyVersions
+)
 from .icryptocurrency import (
-    ICryptocurrency, INetworks, INetwork, CoinType, XPrivateKeyVersions, XPublicKeyVersions, NestedNamespace
+    ICryptocurrency, INetwork
 )
 
 
@@ -38,57 +39,41 @@ class Testnet(INetwork):
     })
 
 
-class Networks(INetworks):
-
-    MAINNET = Mainnet
-    TESTNET = Testnet
-
-    @classmethod
-    def networks(cls) -> List[str]:
-        return ["mainnet", "testnet"]
-
-
-class Types(NestedNamespace):
-
-    BYRON_ICARUS: str
-    BYRON_LEDGER: str
-    BYRON_LEGACY: str
-    SHELLEY_ICARUS: str
-    SHELLEY_LEDGER: str
-
-
 class Cardano(ICryptocurrency):
 
     NAME = "Cardano"
     SYMBOL = "ADA"
     SOURCE_CODE = "https://github.com/cardano-foundation/cardano-wallet"
-    ECC = KholawEd25519
+    ECC = KholawEd25519ECC
     COIN_TYPE = CoinType({
         "INDEX": 1815,
         "HARDENED": True
     })
-    NETWORKS = Networks
-    ENTROPIES = [
-        "BIP39"
-    ]
-    MNEMONICS = [
-        "BIP39"
-    ]
-    SEEDS = [
-        "Cardano", "BIP39"
-    ]
-    HDS = [
-        "Cardano"
-    ]
-
-    PUBLIC_KEY_ADDRESS: int = 0
-    REDEMPTION_ADDRESS: int = 2
-    TYPES: Types = Types({
-        "BYRON_ICARUS": "byron-icarus",
-        "BYRON_LEDGER": "byron-ledger",
-        "BYRON_LEGACY": "byron-legacy",
-        "SHELLEY_ICARUS": "shelley-icarus",
-        "SHELLEY_LEDGER":  "shelley-ledger"
+    TYPES = CARDANO_TYPES
+    NETWORKS = Networks({
+        "MAINNET": Mainnet, "TESTNET": Testnet
     })
-    PAYMENT_PREFIX: int = 0x00
-    REWARD_PREFIX: int = 0x0e
+    DEFAULT_NETWORK = NETWORKS.MAINNET
+    ENTROPIES = Entropies({
+        "BIP39"
+    })
+    MNEMONICS = Mnemonics({
+        "BIP39"
+    })
+    SEEDS = Seeds((
+        {"CARDANO": "Cardano"}, "BIP39"
+    ))
+    HDS = HDs({
+        "CARDANO": "Cardano"
+    })
+    DEFAULT_HD = HDS.CARDANO
+    ADDRESSES = Addresses({
+        "CARDANO": "Cardano"
+    })
+    DEFAULT_ADDRESS = ADDRESSES.CARDANO
+    PARAMS = Params({
+        "PUBLIC_KEY_ADDRESS": 0,
+        "REDEMPTION_ADDRESS": 2,
+        "PAYMENT_PREFIX": 0x00,
+        "REWARD_PREFIX": 0x0e,
+    })
