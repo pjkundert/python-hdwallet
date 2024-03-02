@@ -6,7 +6,7 @@
 
 from ..ecc import SLIP10Ed25519ECC
 from ..const import (
-    CoinType, Entropies, Mnemonics, Seeds, HDs, Addresses, Networks, XPrivateKeyVersions, XPublicKeyVersions
+    CoinType, Entropies, Mnemonics, Seeds, HDs, Addresses, Networks, Params, XPrivateKeyVersions, XPublicKeyVersions
 )
 from .icryptocurrency import (
     ICryptocurrency, INetwork
@@ -49,8 +49,11 @@ class Elrond(ICryptocurrency):
     HDS = HDs({
         "BIP32", "BIP44"
     })
-    DEFAULT_HD = HDS.BIP32
+    DEFAULT_HD = HDS.BIP44
     ADDRESSES = Addresses({
         "ELROND": "Elrond"
     })
     DEFAULT_ADDRESS = ADDRESSES.ELROND
+    PARAMS = Params({
+        "HRP": "erd"
+    })

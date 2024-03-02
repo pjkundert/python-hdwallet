@@ -14,13 +14,14 @@ from ..libs.bech32 import (
 from ..ecc import (
     IPublicKey, SLIP10Ed25519PublicKey, validate_and_get_public_key
 )
+from ..cryptocurrencies import Elrond
 from ..utils import bytes_to_string
 from .iaddress import IAddress
 
 
 class ElrondAddress(IAddress):
 
-    hrp: str = "erd"
+    hrp: str = Elrond.PARAMS.HRP
 
     @staticmethod
     def name() -> str:
