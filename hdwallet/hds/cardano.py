@@ -10,7 +10,7 @@ import hashlib
 import cbor2
 
 from ..ecc import (
-    EllipticCurveCryptography, IPoint, IPublicKey, KholawEd25519PrivateKey
+    IEllipticCurveCryptography, IPoint, IPublicKey, KholawEd25519PrivateKey
 )
 from ..crypto import (
     pbkdf2_hmac_sha512, hmac_sha512, hmac_sha256, sha512
@@ -74,7 +74,7 @@ class CardanoHD(BIP32HD):
                 if success:
                     iteration_number += 1
 
-                self._root_private_key = self._ecc.private_key_class().from_bytes(il)
+                self._root_private_key = self._ecc.PRIVATE_KEY.from_bytes(il)
                 self._root_chain_code = ir
 
         elif self.cardano_type in [
@@ -104,7 +104,7 @@ class CardanoHD(BIP32HD):
             ))
 
             self._root_private_key, self._root_chain_code = (
-                self._ecc.private_key_class().from_bytes(
+                self._ecc.PRIVATE_KEY.from_bytes(
                     key[:KholawEd25519PrivateKey.length()]
                 ), key[KholawEd25519PrivateKey.length():]
             )
@@ -124,7 +124,7 @@ class CardanoHD(BIP32HD):
 
             while not success:
                 self._hmac = hmac_sha512(
-                    self.get_hmac(ecc_name=self._ecc_name), hmac_data
+                    self.get_hmac(ecc=self._ecc), hmac_data
                 )
                 # Compute kL and kR
                 success = ((self._hmac[:hmac_half_length][31] & 0x20) == 0)
@@ -149,10 +149,10 @@ class CardanoHD(BIP32HD):
             # Tweak kL bytes
             kl: bytes = tweak_master_key_bits(kl)
             chain_code: bytes = hmac_sha256(
-                self.get_hmac(ecc_name=self._ecc_name), b"\x01" + self._seed
+                self.get_hmac(ecc=self._ecc), b"\x01" + self._seed
             )
             self._root_private_key, self._root_chain_code = (
-                self._ecc.private_key_class().from_bytes(
+                self._ecc.PRIVATE_KEY.from_bytes(
                     (kl + kr)
                 ), chain_code
             )
@@ -196,7 +196,7 @@ class CardanoHD(BIP32HD):
                     b"\x03" + self._public_key.raw_compressed()[1:] + index_bytes
                 ))
 
-            def new_private_key_left_part(zl: bytes, kl: bytes, ecc: EllipticCurveCryptography) -> bytes:
+            def new_private_key_left_part(zl: bytes, kl: bytes, ecc: IEllipticCurveCryptography) -> bytes:
                 if self.cardano_type == "byron-legacy":
                     zl: int = bytes_to_integer(
                         multiply_scalar_no_carry(zl, 8), endianness="little"
@@ -204,7 +204,7 @@ class CardanoHD(BIP32HD):
                     kl: int = bytes_to_integer(kl, endianness="little")
 
                     return integer_to_bytes(
-                        (zl + kl) % ecc.order(), bytes_num=32, endianness="little"
+                        (zl + kl) % ecc.ORDER, bytes_num=32, endianness="little"
                     )
                 else:
                     zl: int = bytes_to_integer(zl[:28], endianness="little")
@@ -212,7 +212,7 @@ class CardanoHD(BIP32HD):
 
                     private_key_left: int = (zl * 8) + kl
                     # Discard child if multiple of curve order
-                    if private_key_left % ecc.order() == 0:
+                    if private_key_left % ecc.ORDER == 0:
                         raise ValueError("Computed child key is not valid, very unlucky index")
 
                     return integer_to_bytes(
@@ -248,7 +248,7 @@ class CardanoHD(BIP32HD):
             )
 
             self._private_key, self._chain_code, self._parent_fingerprint = (
-                self._ecc.private_key_class().from_bytes(
+                self._ecc.PRIVATE_KEY.from_bytes(
                     kl_bytes + kr_bytes
                 ),
                 _hmacr,
@@ -268,13 +268,13 @@ class CardanoHD(BIP32HD):
                 b"\x03" + self._public_key.raw_compressed()[1:] + index_bytes
             ))
 
-            def new_public_key_point(public_key: IPublicKey, zl: bytes, ecc: EllipticCurveCryptography) -> IPoint:
+            def new_public_key_point(public_key: IPublicKey, zl: bytes, ecc: IEllipticCurveCryptography) -> IPoint:
                 if self.cardano_type == "byron-legacy":
                     zl: int = bytes_to_integer(multiply_scalar_no_carry(zl, 8), endianness="little")
-                    return public_key.point() + (zl * ecc.generator())
+                    return public_key.point() + (zl * ecc.GENERATOR)
                 else:
                     zl: int = bytes_to_integer(zl[:28], endianness="little")
-                    return public_key.point() + ((zl * 8) * ecc.generator())
+                    return public_key.point() + ((zl * 8) * ecc.GENERATOR)
 
             z_hmacl, z_hmacr, _hmacl, _hmacr = (
                 z_hmac[:hmac_half_length], z_hmac[hmac_half_length:],
@@ -286,7 +286,7 @@ class CardanoHD(BIP32HD):
             # If the public key is the identity point (0, 1) discard the child
             if new_public_key_point.x() == 0 and new_public_key_point.y() == 1:
                 raise ValueError("Computed public child key is not valid, very unlucky index")
-            new_public_key: IPublicKey = self._ecc.public_key_class().from_point(
+            new_public_key: IPublicKey = self._ecc.PUBLIC_KEY.from_point(
                 new_public_key_point
             )
             self._parent_fingerprint = get_bytes(self.fingerprint())
