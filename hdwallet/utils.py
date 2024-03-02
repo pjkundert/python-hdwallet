@@ -1,348 +1,246 @@
 #!/usr/bin/env python3
 
-from mnemonic import Mnemonic
-from binascii import hexlify, unhexlify
+# Copyright © 2020-2024, Meheret Tesfaye Batu <meherett.batu@gmail.com>
+# Distributed under the MIT software license, see the accompanying
+# file COPYING or https://opensource.org/license/mit
+
 from random import choice
-from typing import AnyStr, Optional
-
-import string
-import os
-import inspect
-import unicodedata
-import binascii
-
-from hdwallet import cryptocurrencies
-from .cryptocurrencies import (
-    get_cryptocurrency, Cryptocurrency
+from typing import (
+    List, Tuple, AnyStr, Optional, Union, Literal
 )
-from .libs.base58 import check_decode
+
+import binascii
+import string
 
 # Alphabet and digits.
-letters = string.ascii_letters + string.digits
-
-
-def _unhexlify(integer: int):
-    try:
-        return unhexlify("0%x" % integer)
-    except binascii.Error:
-        return unhexlify("%x" % integer)
-
-
-def get_semantic(_cryptocurrency: Cryptocurrency, version: bytes, key_type: str) -> str:
-    for name, cryptocurrency in inspect.getmembers(cryptocurrencies):
-        if inspect.isclass(cryptocurrency):
-            if issubclass(cryptocurrency, cryptocurrencies.Cryptocurrency) and cryptocurrency == _cryptocurrency:
-                if key_type == "private_key":
-                    for key, value in inspect.getmembers(cryptocurrency.EXTENDED_PRIVATE_KEY):
-                        if value == int(version.hex(), 16):
-                            return key.lower()
-                elif key_type == "public_key":
-                    for key, value in inspect.getmembers(cryptocurrency.EXTENDED_PUBLIC_KEY):
-                        if value == int(version.hex(), 16):
-                            return key.lower()
-
-
-def get_bytes(string: AnyStr) -> bytes:
-    if isinstance(string, bytes):
-        byte = string
-    elif isinstance(string, str):
-        byte = bytes.fromhex(string)
-    else:
-        raise TypeError("Agreement must be either 'bytes' or 'string'!")
-    return byte
+LETTERS: str = (
+    string.ascii_letters + string.digits
+)
 
 
 def generate_passphrase(length: int = 32) -> str:
-    """
-    Generate entropy hex string.
-
-    :param length: Passphrase length, default to 32.
-    :type length: int
-
-    :returns: str -- Passphrase hex string.
-
-    >>> from hdwallet.utils import generate_passphrase
-    >>> generate_passphrase(length=32)
-    "N39rPfa3QvF2Tm2nPyoBpXNiBFXJywTz"
-    """
-
-    return str().join(choice(letters) for _ in range(length))
+    return "".join(choice(LETTERS) for _ in range(length))
 
 
-def generate_entropy(strength: int = 128) -> str:
-    """
-    Generate entropy hex string.
+def path_to_indexes(path: str) -> List[int]:
 
-    :param strength: Entropy strength, default to 128.
-    :type strength: int
+    if path in ["m", "m/"]:
+        return []
+    elif path[0:2] != "m/":
+        raise ValueError(f"Bad path, please insert like this type of path \"m/0'/0\"!, not: ({path})")
 
-    :returns: str -- Entropy hex string.
-
-    >>> from hdwallet.utils import generate_entropy
-    >>> generate_entropy(strength=128)
-    "ee535b143b0d9d1f87546f9df0d06b1a"
-    """
-
-    if strength not in [128, 160, 192, 224, 256]:
-        raise ValueError(
-            "Strength should be one of the following "
-            "[128, 160, 192, 224, 256], but it is not (%d)."
-            % strength
-        )
-    return hexlify(os.urandom(strength // 8)).decode()
+    indexes: List[int] = []
+    for index in path.lstrip("m/").split("/"):
+        indexes.append((int(index[:-1]) + 0x80000000) if "'" in index else int(index))
+    return indexes
 
 
-def generate_mnemonic(language: str = "english", strength: int = 128) -> str:
-    """
-    Generate mnemonic words.
+def indexes_to_path(indexes: List[int]) -> str:
 
-    :param language: Mnemonic language, default to english.
-    :type language: str
-    :param strength: Entropy strength, default to 128.
-    :type strength: int
-
-    :returns: str -- Mnemonic words.
-
-    >>> from hdwallet.utils import generate_mnemonic
-    >>> generate_mnemonic(language="french")
-    "sceptre capter séquence girafe absolu relatif fleur zoologie muscle sirop saboter parure"
-    """
-
-    if language and language not in ["english", "french", "italian", "japanese",
-                                     "chinese_simplified", "chinese_traditional", "korean", "spanish"]:
-        raise ValueError("invalid language, use only this options english, french, "
-                         "italian, spanish, chinese_simplified, chinese_traditional, japanese or korean languages.")
-    if strength not in [128, 160, 192, 224, 256]:
-        raise ValueError(
-            "Strength should be one of the following "
-            "[128, 160, 192, 224, 256], but it is not (%d)."
-            % strength
-        )
-
-    return Mnemonic(language=language).generate(strength=strength)
+    path: str = "m"
+    for index in indexes:
+        path += f"/{index - 0x80000000}'" if index & 0x80000000 else f"/{index}"
+    return path
 
 
-def is_entropy(entropy: str) -> bool:
-    """
-    Check entropy hex string.
-
-    :param entropy: Mnemonic words.
-    :type entropy: str
-
-    :returns: bool -- Entropy valid/invalid.
-
-    >>> from hdwallet.utils import is_entropy
-    >>> is_entropy(entropy="ee535b143b0d9d1f87546f9df0d06b1a")
-    True
-    """
-
-    try:
-        return len(unhexlify(entropy)) in [16, 20, 24, 28, 32]
-    except:
-        return False
+def index_tuple_to_integer(index: Tuple[int, bool]) -> int:
+    return (index[0] + 0x80000000) if index[1] else index[0]
 
 
-def is_mnemonic(mnemonic: str, language: Optional[str] = None) -> bool:
-    """
-    Check mnemonic words.
+def index_tuple_to_string(index: Tuple[int, bool]) -> str:
+    _index, _hardened = index[0], "'" if index[1] else ""
+    return f"{_index}{_hardened}"
 
-    :param mnemonic: Mnemonic words.
-    :type mnemonic: str
-    :param language: Mnemonic language, default to None.
-    :type language: str
 
-    :returns: bool -- Mnemonic valid/invalid.
+def index_string_to_tuple(index: str) -> Tuple[int, bool]:
+    index_split: List[str] = index.split("'")
+    return (
+        (int(index_split[0]), True)
+        if index.endswith("'") else
+        (int(index_split[0]), False)
+    )
 
-    >>> from hdwallet.utils import is_mnemonic
-    >>> is_mnemonic(mnemonic="sceptre capter séquence girafe absolu relatif fleur zoologie muscle sirop saboter parure")
-    True
-    """
 
-    if language and language not in ["english", "french", "italian", "japanese",
-                                     "chinese_simplified", "chinese_traditional", "korean", "spanish"]:
-        raise ValueError("invalid language, use only this options english, french, "
-                         "italian, spanish, chinese_simplified, chinese_traditional, japanese or korean languages.")
-    try:
-        mnemonic = unicodedata.normalize("NFKD", mnemonic)
-        if language is None:
-            for _language in ["english", "french", "italian",
-                              "chinese_simplified", "chinese_traditional", "japanese", "korean", "spanish"]:
-                valid = False
-                if Mnemonic(language=_language).check(mnemonic=mnemonic) is True:
-                    valid = True
-                    break
-            return valid
+def xor(data_1: bytes, data_2: bytes) -> bytes:
+    return bytes(
+        [b1 ^ b2 for b1, b2 in zip(data_1, data_2)]
+    )
+
+
+def add_no_carry(data_1: bytes, data_2: bytes) -> bytes:
+    return bytes(
+        [(b1 + b2) & 0xFF for b1, b2 in zip(data_1, data_2)]
+    )
+
+
+def multiply_scalar_no_carry(data: bytes, scalar: int) -> bytes:
+    return bytes(
+        [(b * scalar) & 0xFF for b in data]
+    )
+
+
+def is_bits_set(value: int, bit_num: int) -> bool:
+    return (value & (1 << bit_num)) != 0
+
+
+def are_bits_set(value: int, bit_mask: int) -> bool:
+    return (value & bit_mask) != 0
+
+
+def set_bit(value: int, bit_num: int) -> int:
+    return value | (1 << bit_num)
+
+
+def set_bits(value: int, bit_mask: int) -> int:
+    return value | bit_mask
+
+
+def reset_bit(value: int, bit_num: int) -> int:
+    return value & ~(1 << bit_num)
+
+
+def reset_bits(value: int, bit_mask: int) -> int:
+    return value & ~bit_mask
+
+
+def get_bytes(data: AnyStr, unhexlify: bool = True) -> bytes:
+    if not data:
+        return b''
+    if isinstance(data, bytes):
+        return data
+    elif isinstance(data, str):
+        if unhexlify:
+            return bytes.fromhex(data)
         else:
-            return Mnemonic(language=language).check(mnemonic=mnemonic)
-    except:
-        return False
+            return bytes(data, 'utf-8')
+    else:
+        raise TypeError("Agreement must be either 'bytes' or 'string'!")
 
 
-def get_entropy_strength(entropy: str) -> int:
-    """
-    Get entropy strength.
-
-    :param entropy: Entropy hex string.
-    :type entropy: str
-
-    :returns: int -- Entropy strength.
-
-    >>> from hdwallet.utils import get_entropy_strength
-    >>> get_entropy_strength(entropy="ee535b143b0d9d1f87546f9df0d06b1a")
-    128
-    """
-
-    if not is_entropy(entropy=entropy):
-        raise ValueError("Invalid entropy hex string.")
-
-    length = len(unhexlify(entropy))
-    if length == 16:
-        return 128
-    elif length == 20:
-        return 160
-    elif length == 24:
-        return 192
-    elif length == 28:
-        return 224
-    elif length == 32:
-        return 256
+def bytes_reverse(data: bytes) -> bytes:
+    tmp = bytearray(data)
+    tmp.reverse()
+    return bytes(tmp)
 
 
-def get_mnemonic_strength(mnemonic: str, language: Optional[str] = None) -> int:
-    """
-    Get mnemonic strength.
-
-    :param mnemonic: Mnemonic words.
-    :type mnemonic: str
-    :param language: Mnemonic language, default to None.
-    :type language: str
-
-    :returns: int -- Mnemonic strength.
-
-    >>> from hdwallet.utils import get_mnemonic_strength
-    >>> get_mnemonic_strength(mnemonic="sceptre capter séquence girafe absolu relatif fleur zoologie muscle sirop saboter parure")
-    128
-    """
-
-    if not is_mnemonic(mnemonic=mnemonic, language=language):
-        raise ValueError("Invalid mnemonic words.")
-
-    words = len(unicodedata.normalize("NFKD", mnemonic).split(" "))
-    if words == 12:
-        return 128
-    elif words == 15:
-        return 160
-    elif words == 18:
-        return 192
-    elif words == 21:
-        return 224
-    elif words == 24:
-        return 256
+def bytes_to_string(data: bytes) -> str:
+    if not data:
+        return ''
+    try:
+        bytes.fromhex(data)
+        return data
+    except (ValueError, TypeError):
+        pass
+    if not isinstance(data, bytes):
+        data = bytes(data, 'utf-8')
+    return data.hex()
 
 
-def get_mnemonic_language(mnemonic: str) -> str:
-    """
-    Get mnemonic language.
-
-    :param mnemonic: Mnemonic words.
-    :type mnemonic: str
-
-    :returns: str -- Mnemonic language.
-
-    >>> from hdwallet.utils import get_mnemonic_language
-    >>> get_mnemonic_language(mnemonic="sceptre capter séquence girafe absolu relatif fleur zoologie muscle sirop saboter parure")
-    "french"
-    """
-
-    if not is_mnemonic(mnemonic=mnemonic):
-        raise ValueError("Invalid mnemonic words.")
-
-    language = None
-    mnemonic = unicodedata.normalize("NFKD", mnemonic)
-    for _language in ["english", "french", "italian",
-                      "chinese_simplified", "chinese_traditional", "japanese", "korean", "spanish"]:
-        if Mnemonic(language=_language).check(mnemonic=mnemonic) is True:
-            language = _language
-            break
-    return language
+def bytes_to_integer(data: bytes, endianness: Literal["little", "big"] = "big", signed: bool = False) -> int:
+    return int.from_bytes(data, byteorder=endianness, signed=signed)
 
 
-def entropy_to_mnemonic(entropy: str, language: str = "english") -> str:
-    """
-    Get mnemonic from entropy hex string.
-
-    :param entropy: Entropy hex string.
-    :type entropy: str
-    :param language: Mnemonic language, default to english.
-    :type language: str
-
-    :returns: str -- Mnemonic words.
-
-    >>> from hdwallet.utils import entropy_to_mnemonic
-    >>> entropy_to_mnemonic(entropy="ee535b143b0d9d1f87546f9df0d06b1a", language="korean")
-    "학력 외침 주민 스위치 출연 연습 근본 여전히 울음 액수 귀신 마누라"
-    """
-
-    if not is_entropy(entropy=entropy):
-        raise ValueError("Invalid entropy hex string.")
-
-    if language and language not in ["english", "french", "italian", "japanese",
-                                     "chinese_simplified", "chinese_traditional", "korean", "spanish"]:
-        raise ValueError("Invalid language, use only this options english, french, "
-                         "italian, spanish, chinese_simplified, chinese_traditional, japanese or korean languages.")
-
-    return Mnemonic(language=language).to_mnemonic(unhexlify(entropy))
+def integer_to_bytes(data: int, bytes_num: Optional[int] = None, endianness: Literal["little", "big"] = "big", signed: bool = False) -> bytes:
+    bytes_num = bytes_num or ((data.bit_length() if data > 0 else 1) + 7) // 8
+    return data.to_bytes(bytes_num, byteorder=endianness, signed=signed)
 
 
-def mnemonic_to_entropy(mnemonic: str, language: Optional[str] = None) -> str:
-    """
-    Get entropy from mnemonic words.
-
-    :param mnemonic: Mnemonic words.
-    :type mnemonic: str
-    :param language: Mnemonic language, default to english.
-    :type language: str
-
-    :returns: str -- Enropy hex string.
-
-    >>> from hdwallet.utils import mnemonic_to_entropy
-    >>> mnemonic_to_entropy(mnemonic="학력 외침 주민 스위치 출연 연습 근본 여전히 울음 액수 귀신 마누라", language="korean")
-    "ee535b143b0d9d1f87546f9df0d06b1a"
-    """
-
-    if not is_mnemonic(mnemonic=mnemonic, language=language):
-        raise ValueError("Invalid mnemonic words.")
-
-    mnemonic = unicodedata.normalize("NFKD", mnemonic)
-    language = language if language else get_mnemonic_language(mnemonic=mnemonic)
-    return Mnemonic(language=language).to_entropy(mnemonic).hex()
+def integer_to_binary_string(data: int, zero_pad_bit_len: int = 0) -> str:
+    return bin(data)[2:].zfill(zero_pad_bit_len)
 
 
-def is_root_xprivate_key(xprivate_key: str, symbol: str) -> bool:
-    decoded_xprivate_key = check_decode(xprivate_key)
-    if len(decoded_xprivate_key) != 78:  # 78, 156
-        raise ValueError("Invalid xprivate key.")
-    cryptocurrency = get_cryptocurrency(symbol=symbol)
-    semantic = get_semantic(_cryptocurrency=cryptocurrency, version=decoded_xprivate_key[:4], key_type="private_key")
-    version = cryptocurrency.EXTENDED_PRIVATE_KEY.__getattribute__(
-        semantic.upper()
+def binary_string_to_integer(data: Union[bytes, str]) -> int:
+    return int((data.encode("utf-8") if isinstance(data, str) else data), 2)
+
+
+def bytes_to_binary_string(data: bytes, zero_pad_bit_len: int = 0) -> str:
+    return integer_to_binary_string(bytes_to_integer(data), zero_pad_bit_len)
+
+
+def binary_string_to_bytes(data: Union[bytes, str], zero_pad_byte_len: int = 0) -> bytes:
+    return binascii.unhexlify(hex(binary_string_to_integer(data))[2:].zfill(zero_pad_byte_len))
+
+
+def decode(data: Union[bytes, str], encoding: str = "utf-8") -> str:
+
+    if isinstance(data, str):
+        return data
+    if isinstance(data, bytes):
+        return data.decode(encoding)
+    raise TypeError("Invalid data type")
+
+
+def encode(data: Union[bytes, str], encoding: str = "utf-8") -> bytes:
+
+    if isinstance(data, str):
+        return data.encode(encoding)
+    if isinstance(data, bytes):
+        return data
+    raise TypeError("Invalid data type")
+
+
+def convert_bits(
+    data: Union[bytes, List[int]], from_bits: int, to_bits: int
+) -> Optional[List[int]]:
+
+    max_out_val = (1 << to_bits) - 1
+
+    acc = 0
+    bits = 0
+    ret = []
+
+    for value in data:
+        if value < 0 or (value >> from_bits):
+            return None
+        acc |= value << bits
+        bits += from_bits
+        while bits >= to_bits:
+            ret.append(acc & max_out_val)
+            acc = acc >> to_bits
+            bits -= to_bits
+
+    if bits != 0:
+        ret.append(acc & max_out_val)
+
+    return ret
+
+
+def bytes_chunk_to_words(
+    bytes_chunk: bytes, words_list: List[str], endianness: Literal["little", "big"]
+) -> List[str]:
+
+    words_list_length = len(words_list)
+
+    chunk: int = bytes_to_integer(bytes_chunk, endianness=endianness)
+
+    word_1_index = chunk % words_list_length
+    word_2_index = ((chunk // words_list_length) + word_1_index) % words_list_length
+    word_3_index = ((chunk // words_list_length // words_list_length) + word_2_index) % words_list_length
+
+    return [words_list[index] for index in (word_1_index, word_2_index, word_3_index)]
+
+
+def words_to_bytes_chunk(
+    word_1: str, word_2: str, word_3: str, words_list: List[str], endianness: Literal["little", "big"]
+) -> bytes:
+
+    words_list_length = len(words_list)
+    words_list_with_index: dict = {
+        words_list[i]: i for i in range(len(words_list))
+    }
+
+    word_1_index, word_2_index,  word_3_index = (
+        words_list_with_index[word_1], words_list_with_index[word_2] % words_list_length, words_list_with_index[word_3] % words_list_length
     )
-    if version is None:
-        raise NotImplementedError(semantic)
-    raw = f"{_unhexlify(version).hex()}000000000000000000"
-    return decoded_xprivate_key.hex().startswith(raw)
 
-
-def is_root_xpublic_key(xpublic_key: str, symbol: str) -> bool:
-    decoded_xpublic_key = check_decode(xpublic_key)
-    if len(decoded_xpublic_key) != 78:  # 78, 156
-        raise ValueError("Invalid xpublic key.")
-    cryptocurrency = get_cryptocurrency(symbol=symbol)
-    semantic = get_semantic(_cryptocurrency=cryptocurrency, version=decoded_xpublic_key[:4], key_type="public_key")
-    version = cryptocurrency.EXTENDED_PUBLIC_KEY.__getattribute__(
-        semantic.upper()
+    chunk: int = (
+        word_1_index + (
+            words_list_length * ((word_2_index - word_1_index) % words_list_length)
+        ) + (
+            words_list_length * words_list_length * ((word_3_index - word_2_index) % words_list_length)
+        )
     )
-    if version is None:
-        raise NotImplementedError(semantic)
-    raw = f"{_unhexlify(version).hex()}000000000000000000"
-    return decoded_xpublic_key.hex().startswith(raw)
+
+    return integer_to_bytes(
+        chunk, bytes_num=4, endianness=endianness
+    )
