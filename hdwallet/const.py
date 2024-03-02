@@ -171,30 +171,6 @@ class XPublicKeyVersions(ExtendedKeyVersions):
     pass
 
 
-class CardanoTypes(NestedNamespace):
-
-    BYRON_ICARUS: str
-    BYRON_LEDGER: str
-    BYRON_LEGACY: str
-    SHELLEY_ICARUS: str
-    SHELLEY_LEDGER: str
-
-    def get_cardano_types(self) -> List[str]:
-        return list(self.__dict__.values())
-
-    def is_cardano_type(self, cardano_type) -> bool:
-        return cardano_type in self.get_cardano_types()
-
-
-CARDANO_TYPES: CardanoTypes = CardanoTypes({
-    "BYRON_ICARUS": "byron-icarus",
-    "BYRON_LEDGER": "byron-ledger",
-    "BYRON_LEGACY": "byron-legacy",
-    "SHELLEY_ICARUS": "shelley-icarus",
-    "SHELLEY_LEDGER":  "shelley-ledger"
-})
-
-
 class PublicKeyTypes(NestedNamespace):
 
     UNCOMPRESSED: str
