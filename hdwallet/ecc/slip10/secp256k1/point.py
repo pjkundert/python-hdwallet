@@ -6,11 +6,10 @@
 
 from typing import Any
 from ecdsa.ecdsa import curve_secp256k1
-from ecdsa import (
-    ellipticcurve, keys
+from ecdsa.ellipticcurve import (
+    Point, PointJacobi
 )
-
-import coincurve
+from ecdsa import keys
 
 from ....const import SLIP10_SECP256K1_CONST
 from ...iecc import IPoint
@@ -21,12 +20,18 @@ from ....utils import (
 
 if SLIP10_SECP256K1_CONST.USE == "coincurve":
 
+    import coincurve
+
     class SLIP10Secp256k1Point(IPoint):
 
-        m_pub_key: coincurve.PublicKey
+        public_key: coincurve.PublicKey
 
-        def __init__(self, point_obj: coincurve.PublicKey) -> None:
-            self.m_pub_key = point_obj
+        def __init__(self, public_key: coincurve.PublicKey) -> None:
+            self.public_key = public_key
+
+        @staticmethod
+        def name() -> str:
+            return "SLIP10-Secp256k1"
 
         @classmethod
         def from_bytes(cls, point_bytes: bytes) -> IPoint:
@@ -43,37 +48,33 @@ if SLIP10_SECP256K1_CONST.USE == "coincurve":
             except ValueError as ex:
                 raise ValueError("Invalid point coordinates") from ex
 
-        @staticmethod
-        def curve_type() -> str:
-            return "SLIP10-Secp256k1"
-
         def underlying_object(self) -> Any:
-            return self.m_pub_key
+            return self.public_key
 
         def x(self) -> int:
-            return self.m_pub_key.point()[0]
+            return self.public_key.point()[0]
 
         def y(self) -> int:
-            return self.m_pub_key.point()[1]
+            return self.public_key.point()[1]
 
         def raw(self) -> bytes:
             return self.raw_decoded()
 
         def raw_encoded(self) -> bytes:
-            return self.m_pub_key.format(True)
+            return self.public_key.format(True)
 
         def raw_decoded(self) -> bytes:
-            return self.m_pub_key.format(False)[1:]
+            return self.public_key.format(False)[1:]
 
         def __add__(self, point: IPoint) -> IPoint:
-            return self.__class__(self.m_pub_key.combine([point.underlying_object()]))
+            return self.__class__(self.public_key.combine([point.underlying_object()]))
 
         def __radd__(self, point: IPoint) -> IPoint:
             return self + point
 
         def __mul__(self, scalar: int) -> IPoint:
             bytes_num = None or ((scalar.bit_length() if scalar > 0 else 1) + 7) // 8
-            return self.__class__(self.m_pub_key.multiply(scalar.to_bytes(bytes_num, byteorder="big", signed=False)))
+            return self.__class__(self.public_key.multiply(scalar.to_bytes(bytes_num, byteorder="big", signed=False)))
 
         def __rmul__(self, scalar: int) -> IPoint:
             return self * scalar
@@ -82,22 +83,25 @@ elif SLIP10_SECP256K1_CONST.USE == "ecdsa":
 
     class SLIP10Secp256k1Point(IPoint):
 
-        m_point: ellipticcurve.PointJacobi
+        point: PointJacobi
 
-        def __init__(self, point_obj: ellipticcurve.PointJacobi) -> None:
-            self.m_point = point_obj
+        def __init__(self, point_obj: PointJacobi) -> None:
+            self.point = point_obj
+
+        @staticmethod
+        def name() -> str:
+            return "SLIP10-Secp256k1"
 
         @classmethod
         def from_bytes(cls, point_bytes: bytes) -> IPoint:
             try:
                 return cls(
-                    ellipticcurve.PointJacobi.from_bytes(
+                    PointJacobi.from_bytes(
                         curve_secp256k1, point_bytes
                     )
                 )
             except keys.MalformedPointError as ex:
                 raise ValueError("Invalid point key bytes") from ex
-            # ECDSA < 0.17 doesn't have from_bytes method for PointJacobi
             except AttributeError:
                 return cls.from_coordinates(
                     bytes_to_integer(point_bytes[:SLIP10_SECP256K1_CONST.POINT_COORDINATE_BYTE_LENGTH]),
@@ -107,63 +111,49 @@ elif SLIP10_SECP256K1_CONST.USE == "ecdsa":
         @classmethod
         def from_coordinates(cls, x: int, y: int) -> IPoint:
             return cls(
-                ellipticcurve.PointJacobi.from_affine(
-                    ellipticcurve.Point(curve_secp256k1, x, y)
+                PointJacobi.from_affine(
+                    Point(curve_secp256k1, x, y)
                 )
             )
 
-        @staticmethod
-        def curve_type() -> str:
-            return "SLIP10-Secp256k1"
-
         def underlying_object(self) -> Any:
-            return self.m_point
+            return self.point
 
         def x(self) -> int:
-            return self.m_point.x()
+            return self.point.x()
 
         def y(self) -> int:
-            return self.m_point.y()
+            return self.point.y()
 
         def raw(self) -> bytes:
             return self.raw_decoded()
 
         def raw_encoded(self) -> bytes:
             try:
-                return self.m_point.to_bytes("compressed")
-            # ECDSA < 0.17 doesn't have to_bytes method for PointJacobi
+                return self.point.to_bytes("compressed")
             except AttributeError:
-                x_bytes = integer_to_bytes(self.m_point.x(), SLIP10_SECP256K1_CONST.POINT_COORDINATE_BYTE_LENGTH)
-                if self.m_point.y() & 1:
-                    enc_bytes = b"\x03" + x_bytes
-                else:
-                    enc_bytes = b"\x02" + x_bytes
-                return enc_bytes
+                x: bytes = integer_to_bytes(self.point.x(), SLIP10_SECP256K1_CONST.POINT_COORDINATE_BYTE_LENGTH)
+                return b"\x03" + x if self.point.y() & 1 else b"\x02" + x
 
         def raw_decoded(self) -> bytes:
             try:
-                return self.m_point.to_bytes()
-            # ECDSA < 0.17 doesn't have to_bytes method for PointJacobi
+                return self.point.to_bytes()
             except AttributeError:
-                x_bytes = integer_to_bytes(self.m_point.x(), SLIP10_SECP256K1_CONST.POINT_COORDINATE_BYTE_LENGTH)
-                y_bytes = integer_to_bytes(self.m_point.y(), SLIP10_SECP256K1_CONST.POINT_COORDINATE_BYTE_LENGTH)
+                x: bytes = integer_to_bytes(self.point.x(), SLIP10_SECP256K1_CONST.POINT_COORDINATE_BYTE_LENGTH)
+                y: bytes = integer_to_bytes(self.point.y(), SLIP10_SECP256K1_CONST.POINT_COORDINATE_BYTE_LENGTH)
 
-                return x_bytes + y_bytes
+                return x + y
 
-        def __add__(self,
-                    point: IPoint) -> IPoint:
-            return self.__class__(self.m_point + point.underlying_object())
+        def __add__(self, point: IPoint) -> IPoint:
+            return self.__class__(self.point + point.underlying_object())
 
-        def __radd__(self,
-                     point: IPoint) -> IPoint:
+        def __radd__(self, point: IPoint) -> IPoint:
             return self + point
 
-        def __mul__(self,
-                    scalar: int) -> IPoint:
-            return self.__class__(self.m_point * scalar)
+        def __mul__(self, scalar: int) -> IPoint:
+            return self.__class__(self.point * scalar)
 
-        def __rmul__(self,
-                     scalar: int) -> IPoint:
+        def __rmul__(self, scalar: int) -> IPoint:
             return self * scalar
 
 else:

@@ -13,7 +13,7 @@ from .public_key import SLIP10Secp256k1PublicKey
 from .private_key import SLIP10Secp256k1PrivateKey
 
 
-class SLIP10Secp256k1(IEllipticCurveCryptography):
+class SLIP10Secp256k1ECC(IEllipticCurveCryptography):
 
     NAME = "SLIP10-Secp256k1"
     if SLIP10_SECP256K1_CONST.USE == "coincurve":
