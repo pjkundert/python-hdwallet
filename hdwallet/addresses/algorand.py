@@ -14,6 +14,7 @@ from ..libs.base32 import (
 from ..ecc import (
     IPublicKey, SLIP10Ed25519PublicKey, validate_and_get_public_key
 )
+from ..cryptocurrencies import Algorand
 from ..crypto import sha512_256
 from ..utils import (
     get_bytes, bytes_to_string
@@ -23,7 +24,7 @@ from .iaddress import IAddress
 
 class AlgorandAddress(IAddress):
 
-    checksum_length: int = 4
+    checksum_length: int = Algorand.PARAMS.CHECKSUM_LENGTH
 
     @staticmethod
     def name() -> str:
