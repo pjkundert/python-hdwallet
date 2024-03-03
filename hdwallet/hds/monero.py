@@ -1,42 +1,51 @@
 #!/usr/bin/env python3
 
-# Copyright © 2023, Meheret Tesfaye Batu <meherett.batu@gmail.com>
+# Copyright © 2020-2024, Meheret Tesfaye Batu <meherett.batu@gmail.com>
 # Distributed under the MIT software license, see the accompanying
 # file COPYING or https://opensource.org/license/mit
 
 from typing import (
-    Optional, Literal, Union, Tuple
+    Optional, Union, Tuple
 )
 
 from ..libs.ed25519 import scalar_reduce, int_decode
 from ..ecc import (
-    SLIP10Ed25519Monero, IPoint, IPublicKey, IPrivateKey, SLIP10Ed25519MoneroPublicKey, SLIP10Ed25519MoneroPrivateKey
+    SLIP10Ed25519MoneroECC, IPoint, IPublicKey, IPrivateKey, SLIP10Ed25519MoneroPublicKey, SLIP10Ed25519MoneroPrivateKey
 )
 from ..crypto import kekkak256
 from ..utils import (
     get_bytes, bytes_to_string, integer_to_bytes, bytes_to_integer
 )
 from ..addresses.monero import MoneroAddress
+from .ihd import IHD
 
 
-class Monero:
+class MoneroHD(IHD):
+
+    _network: str
+    _seed: Optional[bytes] = None
+    _private_key: Optional[bytes] = None
 
     _spend_private_key: Optional[IPrivateKey]
     _view_private_key: Union[IPrivateKey]
     _spend_public_key: Union[IPublicKey]
     _view_public_key: Union[IPublicKey]
 
-    def __init__(
-        self, network_type: Literal["mainnet", "stagenet", "testnet"] = "mainnet"
-    ) -> None:
+    def __init__(self, network: str = "mainnet", **kwargs) -> None:
+        super().__init__(**kwargs)
 
-        if network_type not in ["mainnet", "stagenet", "testnet"]:
-            raise ValueError(f"Invalid network type, (expected: 'mainnet' | 'stagenet' | 'testnet', got: '{network_type}')")
+        if network not in ["mainnet", "stagenet", "testnet"]:
+            raise ValueError(f"Invalid network type, (expected: 'mainnet', 'stagenet', or 'testnet' networks, got: '{network}')")
 
-        self.network_type = network_type
+        self._network = network
 
-    def from_seed(self, seed: Union[bytes, str]) -> "Monero":
+    @classmethod
+    def name(cls) -> str:
+        return "Monero"
 
+    def from_seed(self, seed: Union[bytes, str], **kwargs) -> "MoneroHD":
+
+        self._seed = seed
         spend_private_key: bytes = (
             get_bytes(seed) if len(get_bytes(seed)) == SLIP10Ed25519MoneroPrivateKey.length() else kekkak256(get_bytes(seed))
         )
@@ -44,15 +53,16 @@ class Monero:
             spend_private_key=scalar_reduce(spend_private_key)
         )
 
-    def from_private_key(self, private_key: Union[bytes, str, SLIP10Ed25519MoneroPrivateKey]) -> "Monero":
+    def from_private_key(self, private_key: Union[bytes, str, IPrivateKey]) -> "MoneroHD":
 
-        if isinstance(private_key, (bytes, str)):
-            private_key: IPrivateKey = SLIP10Ed25519MoneroPrivateKey.from_bytes(get_bytes(private_key))
+        self._private_key = (
+            private_key.raw() if isinstance(private_key, SLIP10Ed25519MoneroPrivateKey) else get_bytes(private_key)
+        )
         return self.from_spend_private_key(
-            spend_private_key=scalar_reduce(private_key.raw())
+            spend_private_key=scalar_reduce(kekkak256(self._private_key))
         )
 
-    def from_spend_private_key(self, spend_private_key: Union[bytes, str, SLIP10Ed25519MoneroPrivateKey]) -> "Monero":
+    def from_spend_private_key(self, spend_private_key: Union[bytes, str, IPrivateKey]) -> "MoneroHD":
 
         if isinstance(spend_private_key, (bytes, str)):
             spend_private_key: IPrivateKey = SLIP10Ed25519MoneroPrivateKey.from_bytes(get_bytes(spend_private_key))
@@ -66,8 +76,8 @@ class Monero:
         return self
 
     def from_watch_only(
-        self, view_private_key: Union[bytes, str, SLIP10Ed25519MoneroPrivateKey], spend_public_key: Union[bytes, str, SLIP10Ed25519MoneroPublicKey]
-    ) -> "Monero":
+        self, view_private_key: Union[bytes, str, IPrivateKey], spend_public_key: Union[bytes, str, IPublicKey]
+    ) -> "MoneroHD":
 
         if isinstance(view_private_key, (bytes, str)):
             view_private_key: IPrivateKey = SLIP10Ed25519MoneroPrivateKey.from_bytes(get_bytes(view_private_key))
@@ -104,7 +114,7 @@ class Monero:
         ))
 
         sub_address_spend_public_key: IPoint = (
-            self._spend_public_key.point() + (SLIP10Ed25519Monero.generator() * m)
+            self._spend_public_key.point() + (SLIP10Ed25519MoneroECC.GENERATOR * m)
         )
         sub_address_view_public_key: IPoint = (
             sub_address_spend_public_key * bytes_to_integer(
@@ -117,14 +127,14 @@ class Monero:
             SLIP10Ed25519MoneroPublicKey.from_point(sub_address_view_public_key)
         )
 
-    def spend_private_key(self) -> str:
+    def seed(self) -> Optional[str]:
+        return bytes_to_string(self._seed) if self._seed else None
 
-        if self._spend_private_key is None:
-            raise Exception("Watch-only class has not a private spend key")
+    def private_key(self) -> Optional[str]:
+        return bytes_to_string(self._private_key) if self._private_key else None
 
-        return bytes_to_string(
-            self._spend_private_key.raw()
-        )
+    def spend_private_key(self) -> Optional[str]:
+        return bytes_to_string(self._spend_private_key.raw()) if self._spend_private_key else None
 
     def view_private_key(self) -> str:
         return bytes_to_string(
@@ -132,31 +142,27 @@ class Monero:
         )
 
     def spend_public_key(self) -> str:
-        return bytes_to_string(
-            self._spend_public_key.raw_compressed()
-        )
+        return bytes_to_string(self._spend_public_key.raw_compressed())
 
     def view_public_key(self) -> str:
-        return bytes_to_string(
-            self._view_public_key.raw_compressed()
+        return bytes_to_string(self._view_public_key.raw_compressed())
+
+    def primary_address(self) -> str:
+        return MoneroAddress.encode(
+            spend_public_key=self._spend_public_key,
+            view_public_key=self._view_public_key,
+            network_type=self._network,
+            version_type="standard",
+            payment_id=None
         )
 
     def integrated_address(self, payment_id: Union[bytes, str]) -> str:
         return MoneroAddress.encode(
             spend_public_key=self._spend_public_key,
             view_public_key=self._view_public_key,
-            network_type=self.network_type,
+            network_type=self._network,
             version_type="integrated",
             payment_id=get_bytes(payment_id)
-        )
-
-    def primary_address(self) -> str:
-        return MoneroAddress.encode(
-            spend_public_key=self._spend_public_key,
-            view_public_key=self._view_public_key,
-            network_type=self.network_type,
-            version_type="standard",
-            payment_id=None
         )
 
     def sub_address(self, minor_index: int, major_index: int = 0) -> str:
@@ -171,23 +177,23 @@ class Monero:
         return MoneroAddress.encode(
             spend_public_key=spend_public_key,
             view_public_key=view_public_key,
-            network_type=self.network_type,
+            network_type=self._network,
             version_type="sub-address",
             payment_id=None
         )
 
-    def address(
-        self, address_type: Literal["standard", "integrated", "sub-address"], **kwargs
-    ) -> str:
+    def address(self, version_type: str, **kwargs) -> str:
 
-        if address_type == "standard":
+        if version_type == "standard":
             return self.primary_address()
-        elif address_type == "integrated":
+        elif version_type == "integrated":
             return self.integrated_address(
                 payment_id=kwargs.get("payment_id")
             )
-        elif address_type == "sub-address":
+        elif version_type == "sub-address":
             return self.sub_address(
                 minor_index=kwargs.get("minor_index"), major_index=kwargs.get("major_index", 0)
             )
-        raise ValueError("Invalid address type, (expected: 'standard' | 'integrated' | 'sub-address', got: '{network_type}')")
+        raise ValueError(
+            f"Invalid version type, (expected: 'standard', 'integrated', and 'sub-address' types, got: '{version_type}')"
+        )
