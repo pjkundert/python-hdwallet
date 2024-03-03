@@ -4,11 +4,12 @@
 # Distributed under the MIT software license, see the accompanying
 # file COPYING or https://opensource.org/license/mit
 
-from typing import List
-
-from ..ecc import SLIP10Secp256k1
+from ..ecc import SLIP10Secp256k1ECC
+from ..const import (
+    CoinType, WitnessVersions, Entropies, Mnemonics, Seeds, HDs, Addresses, Networks, XPrivateKeyVersions, XPublicKeyVersions
+)
 from .icryptocurrency import (
-    ICryptocurrency, INetworks, INetwork, CoinType, ExtendedPrivateKey, ExtendedPublicKey, SegwitAddress
+    ICryptocurrency, INetwork
 )
 
 
@@ -16,11 +17,13 @@ class Mainnet(INetwork):
 
     PUBLIC_KEY_ADDRESS_PREFIX = 0x00
     SCRIPT_ADDRESS_PREFIX = 0x05
-    SEGWIT_ADDRESS_PREFIX = SegwitAddress({
-        "HRP": "bc",
-        "VERSION": 0x00
+    HRP = "bc"
+    WITNESS_VERSIONS = WitnessVersions({
+        "P2TR": 0x01,
+        "P2WPKH": 0x00,
+        "P2WSH": 0x00
     })
-    EXTENDED_PRIVATE_KEY = ExtendedPrivateKey({
+    XPRIVATE_KEY_VERSIONS = XPrivateKeyVersions({
         "P2PKH": 0x0488ade4,
         "P2SH": 0x0488ade4,
         "P2WPKH": 0x04b2430c,
@@ -28,7 +31,7 @@ class Mainnet(INetwork):
         "P2WSH": 0x02aa7a99,
         "P2WSH_IN_P2SH": 0x0295b005
     })
-    EXTENDED_PUBLIC_KEY = ExtendedPublicKey({
+    XPUBLIC_KEY_VERSIONS = XPublicKeyVersions({
         "P2PKH": 0x0488b21e,
         "P2SH": 0x0488b21e,
         "P2WPKH": 0x04b24746,
@@ -44,11 +47,13 @@ class Testnet(INetwork):
 
     PUBLIC_KEY_ADDRESS_PREFIX = 0x6f
     SCRIPT_ADDRESS_PREFIX = 0xc4
-    SEGWIT_ADDRESS_PREFIX = SegwitAddress({
-        "HRP": "tb",
-        "VERSION": 0x00
+    HRP = "tb"
+    WITNESS_VERSIONS = WitnessVersions({
+        "P2TR": 0x01,
+        "P2WPKH": 0x00,
+        "P2WSH": 0x00
     })
-    EXTENDED_PRIVATE_KEY = ExtendedPrivateKey({
+    XPRIVATE_KEY_VERSIONS = XPrivateKeyVersions({
         "P2PKH": 0x04358394,
         "P2SH": 0x04358394,
         "P2WPKH": 0x045f18bc,
@@ -56,7 +61,7 @@ class Testnet(INetwork):
         "P2WSH": 0x02575048,
         "P2WSH_IN_P2SH": 0x024285b5
     })
-    EXTENDED_PUBLIC_KEY = ExtendedPublicKey({
+    XPUBLIC_KEY_VERSIONS = XPublicKeyVersions({
         "P2PKH": 0x043587cf,
         "P2SH": 0x043587cf,
         "P2WPKH": 0x045f1cf6,
@@ -68,24 +73,33 @@ class Testnet(INetwork):
     WIF_PREFIX = 0xef
 
 
-class Networks(INetworks):
-
-    MAINNET = Mainnet
-    TESTNET = Testnet
-
-    @classmethod
-    def networks(cls) -> List[str]:
-        return ["mainnet", "testnet"]
-
-
 class Bitcoin(ICryptocurrency):
 
     NAME = "Bitcoin"
     SYMBOL = "BTC"
     SOURCE_CODE = "https://github.com/bitcoin/bitcoin"
-    ECC = SLIP10Secp256k1
+    ECC = SLIP10Secp256k1ECC
     COIN_TYPE = CoinType({
-        "INDEX": 0,
-        "HARDENED": True
+        "INDEX": 0, "HARDENED": True
     })
-    NETWORKS = Networks
+    NETWORKS = Networks({
+        "MAINNET": Mainnet, "TESTNET": Testnet
+    })
+    DEFAULT_NETWORK = NETWORKS.MAINNET
+    ENTROPIES = Entropies((
+        "BIP39", {"ELECTRUM_V1": "Electrum-V1"}, {"ELECTRUM_V2": "Electrum-V2"}
+    ))
+    MNEMONICS = Mnemonics((
+        "BIP39", {"ELECTRUM_V1": "Electrum-V1"}, {"ELECTRUM_V2": "Electrum-V2"}
+    ))
+    SEEDS = Seeds((
+        "BIP39", {"ELECTRUM_V1": "Electrum-V1"}, {"ELECTRUM_V2": "Electrum-V2"}
+    ))
+    HDS = HDs((
+        "BIP32", "BIP44", "BIP49", "BIP84", "BIP86", "BIP141", {"ELECTRUM_V1": "Electrum-V1"}, {"ELECTRUM_V2": "Electrum-V2"}
+    ))
+    DEFAULT_HD = HDS.BIP44
+    ADDRESSES = Addresses((
+        "P2PKH", "P2SH", "P2TR", "P2WPKH", {"P2WPKH_IN_P2SH": "P2WPKH-In-P2SH"}, "P2WSH", {"P2WSH_IN_P2SH": "P2WSH-In-P2SH"}
+    ))
+    DEFAULT_ADDRESS = ADDRESSES.P2PKH

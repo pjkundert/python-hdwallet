@@ -49,7 +49,7 @@ class Solana(ICryptocurrency):
     HDS = HDs({
         "BIP32", "BIP44"
     })
-    DEFAULT_HD = HDS.BIP32
+    DEFAULT_HD = HDS.BIP44
     ADDRESSES = Addresses({
         "SOLANA": "Solana"
     })
