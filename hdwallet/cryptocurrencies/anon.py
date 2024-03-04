@@ -52,11 +52,11 @@ class Anon(ICryptocurrency):
     SEEDS = Seeds({
         "BIP39"
     })
-    HDS = HDs((
+    HDS = HDs({
         "BIP32", "BIP44"
-    ))
+    })
     DEFAULT_HD = HDS.BIP44
-    ADDRESSES = Addresses((
+    ADDRESSES = Addresses({
         "P2PKH", "P2SH"
-    ))
+    })
     DEFAULT_ADDRESS = ADDRESSES.P2PKH
