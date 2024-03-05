@@ -6,7 +6,7 @@
 
 from ..ecc import SLIP10Ed25519MoneroECC
 from ..const import (
-    CoinType, Entropies, Mnemonics, Seeds, HDs, Addresses, Networks
+    Entropies, Mnemonics, Seeds, HDs, Addresses, Networks
 )
 from .icryptocurrency import (
     ICryptocurrency, INetwork
@@ -40,10 +40,7 @@ class Monero(ICryptocurrency):
     SYMBOL = "XMR"
     SOURCE_CODE = "https://github.com/monero-project/monero"
     ECC = SLIP10Ed25519MoneroECC
-    COIN_TYPE = CoinType({
-        "INDEX": 128,
-        "HARDENED": True
-    })
+    COIN_TYPE = 128
     NETWORKS = Networks({
         "MAINNET": Mainnet, "STAGENET": Stagenet, "TESTNET": Testnet
     })

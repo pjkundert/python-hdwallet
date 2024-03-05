@@ -6,7 +6,7 @@
 
 from ..ecc import SLIP10Secp256k1ECC
 from ..const import (
-    CoinType, Entropies, Mnemonics, Seeds, HDs, Addresses, Networks, XPrivateKeyVersions, XPublicKeyVersions
+    Entropies, Mnemonics, Seeds, HDs, Addresses, Networks, XPrivateKeyVersions, XPublicKeyVersions
 )
 from .icryptocurrency import (
     ICryptocurrency, INetwork
@@ -35,10 +35,7 @@ class EDRCoin(ICryptocurrency):
     SYMBOL = "EDRC"
     SOURCE_CODE = "https://github.com/EDRCoin/EDRcoin-src"
     ECC = SLIP10Secp256k1ECC
-    COIN_TYPE = CoinType({
-        "INDEX": 56,
-        "HARDENED": True
-    })
+    COIN_TYPE = 56
     NETWORKS = Networks({
         "MAINNET": Mainnet
     })

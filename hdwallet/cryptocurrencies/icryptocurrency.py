@@ -11,7 +11,7 @@ from typing import (
 from ..ecc import IEllipticCurveCryptography
 from ..derivations.bip44 import BIP44Derivation
 from ..const import (
-    CoinType, WitnessVersions, Entropies, Mnemonics, Seeds, HDs, Addresses, Networks, Params, XPrivateKeyVersions, XPublicKeyVersions
+    WitnessVersions, Entropies, Mnemonics, Seeds, HDs, Addresses, Networks, Params, XPrivateKeyVersions, XPublicKeyVersions
 )
 from ..exceptions import NetworkError
 
@@ -45,7 +45,7 @@ class ICryptocurrency:
     SYMBOL: str
     SOURCE_CODE: Optional[str]
     ECC: IEllipticCurveCryptography
-    COIN_TYPE: CoinType
+    COIN_TYPE: int
     NETWORKS: Networks
     DEFAULT_NETWORK: str
     ENTROPIES: Entropies

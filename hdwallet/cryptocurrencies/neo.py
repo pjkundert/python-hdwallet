@@ -6,7 +6,7 @@
 
 from ..ecc import SLIP10Nist256p1ECC
 from ..const import (
-    CoinType, Entropies, Mnemonics, Seeds, HDs, Addresses, Networks, Params, XPrivateKeyVersions, XPublicKeyVersions
+    Entropies, Mnemonics, Seeds, HDs, Addresses, Networks, Params, XPrivateKeyVersions, XPublicKeyVersions
 )
 from .icryptocurrency import (
     ICryptocurrency, INetwork
@@ -30,10 +30,7 @@ class Neo(ICryptocurrency):
     SYMBOL = "NEO"
     SOURCE_CODE = "https://github.com/neo-project/neo"
     ECC = SLIP10Nist256p1ECC
-    COIN_TYPE = CoinType({
-        "INDEX": 888,
-        "HARDENED": True
-    })
+    COIN_TYPE = 888
     NETWORKS = Networks({
         "MAINNET": Mainnet
     })

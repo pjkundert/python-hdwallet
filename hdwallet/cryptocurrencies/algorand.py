@@ -6,7 +6,7 @@
 
 from ..ecc import SLIP10Ed25519ECC
 from ..const import (
-    CoinType, Entropies, Mnemonics, Seeds, HDs, Addresses, Networks, Params, XPrivateKeyVersions, XPublicKeyVersions
+    Entropies, Mnemonics, Seeds, HDs, Addresses, Networks, Params, XPrivateKeyVersions, XPublicKeyVersions
 )
 from .icryptocurrency import (
     ICryptocurrency, INetwork
@@ -29,10 +29,7 @@ class Algorand(ICryptocurrency):
     SYMBOL = "ALGO"
     SOURCE_CODE = "https://github.com/algorand/go-algorand"
     ECC = SLIP10Ed25519ECC
-    COIN_TYPE = CoinType({
-        "INDEX": 283,
-        "HARDENED": True
-    })
+    COIN_TYPE = 283
     NETWORKS = Networks({
         "MAINNET": Mainnet
     })

@@ -6,7 +6,7 @@
 
 from ..ecc import SLIP10Ed25519ECC
 from ..const import (
-    NestedNamespace, CoinType, Entropies, Mnemonics, Seeds, HDs, Addresses, Networks, Params, XPrivateKeyVersions, XPublicKeyVersions
+    NestedNamespace, Entropies, Mnemonics, Seeds, HDs, Addresses, Networks, Params, XPrivateKeyVersions, XPublicKeyVersions
 )
 from .icryptocurrency import (
     ICryptocurrency, INetwork
@@ -43,10 +43,7 @@ class Tezos(ICryptocurrency):
     SYMBOL = "XTZ"
     SOURCE_CODE = "https://github.com/tezos/tezos"
     ECC = SLIP10Ed25519ECC
-    COIN_TYPE = CoinType({
-        "INDEX": 1729,
-        "HARDENED": True
-    })
+    COIN_TYPE = 1729
     NETWORKS = Networks({
         "MAINNET": Mainnet
     })

@@ -8,7 +8,7 @@ from typing import List
 
 from ..ecc import KholawEd25519ECC
 from ..const import (
-    NestedNamespace, CoinType, Entropies, Mnemonics, Seeds, HDs, Addresses, Networks, Params, XPrivateKeyVersions, XPublicKeyVersions
+    NestedNamespace, Entropies, Mnemonics, Seeds, HDs, Addresses, Networks, Params, XPrivateKeyVersions, XPublicKeyVersions
 )
 from .icryptocurrency import (
     ICryptocurrency, INetwork
@@ -71,10 +71,7 @@ class Cardano(ICryptocurrency):
     SYMBOL = "ADA"
     SOURCE_CODE = "https://github.com/cardano-foundation/cardano-wallet"
     ECC = KholawEd25519ECC
-    COIN_TYPE = CoinType({
-        "INDEX": 1815,
-        "HARDENED": True
-    })
+    COIN_TYPE = 1815
     NETWORKS = Networks({
         "MAINNET": Mainnet, "TESTNET": Testnet
     })
