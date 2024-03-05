@@ -79,18 +79,6 @@ SLIP10_SECP256K1_CONST: Secp256k1Const = Secp256k1Const({
 })
 
 
-class CoinType(NestedNamespace):
-
-    INDEX: int
-    HARDENED: bool
-
-    def __str__(self) -> str:
-        return f"{self.INDEX}'" if self.HARDENED else f"{self.INDEX}"
-
-    def __int__(self) -> int:
-        return self.INDEX
-
-
 class WitnessVersions(NestedNamespace):
 
     def get_witness_version(self, address: str) -> int:
