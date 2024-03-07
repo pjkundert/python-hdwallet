@@ -4,11 +4,12 @@
 # Distributed under the MIT software license, see the accompanying
 # file COPYING or https://opensource.org/license/mit
 
-from typing import List
-
-from ..ecc import SLIP10Secp256k1
+from ..ecc import SLIP10Secp256k1ECC
+from ..const import (
+    Entropies, Mnemonics, Seeds, HDs, Addresses, Networks, XPrivateKeyVersions, XPublicKeyVersions
+)
 from .icryptocurrency import (
-    ICryptocurrency, INetworks, INetwork, CoinType, ExtendedPrivateKey, ExtendedPublicKey
+    ICryptocurrency, INetwork
 )
 
 
@@ -16,44 +17,44 @@ class Mainnet(INetwork):
 
     PUBLIC_KEY_ADDRESS_PREFIX = 0x17
     SCRIPT_ADDRESS_PREFIX = 0x5
-    SEGWIT_ADDRESS_PREFIX = None
-    EXTENDED_PRIVATE_KEY = ExtendedPrivateKey({
+    XPRIVATE_KEY_VERSIONS = XPrivateKeyVersions({
         "P2PKH": 0x488ade4,
-        "P2SH": 0x488ade4,
-        "P2WPKH": None,
-        "P2WPKH_IN_P2SH": None,
-        "P2WSH": None,
-        "P2WSH_IN_P2SH": None
+        "P2SH": 0x488ade4
     })
-    EXTENDED_PUBLIC_KEY = ExtendedPublicKey({
+    XPUBLIC_KEY_VERSIONS = XPublicKeyVersions({
         "P2PKH": 0x488b21e,
-        "P2SH": 0x488b21e,
-        "P2WPKH": None,
-        "P2WPKH_IN_P2SH": None,
-        "P2WSH": None,
-        "P2WSH_IN_P2SH": None
+        "P2SH": 0x488b21e
     })
     MESSAGE_PREFIX = "\x18AuroraCoin Signed Message:\n"
     WIF_PREFIX = 0x97
-
-
-class Networks(INetworks):
-
-    MAINNET = Mainnet
-
-    @classmethod
-    def networks(cls) -> List[str]:
-        return ["mainnet"]
 
 
 class Auroracoin(ICryptocurrency):
 
     NAME = "Auroracoin"
     SYMBOL = "AUR"
-    SOURCE_CODE = None
-    ECC = SLIP10Secp256k1
-    COIN_TYPE = CoinType({
-        "INDEX": 85,
-        "HARDENED": True
+    SOURCE_CODE = "https://github.com/aurarad/auroracoin"
+    ECC = SLIP10Secp256k1ECC
+    COIN_TYPE = 85
+    NETWORKS = Networks({
+        "MAINNET": Mainnet
     })
-    NETWORKS = Networks
+    DEFAULT_NETWORK = NETWORKS.MAINNET
+    ENTROPIES = Entropies({
+        "BIP39"
+    })
+    MNEMONICS = Mnemonics({
+        "BIP39"
+    })
+    SEEDS = Seeds({
+        "BIP39"
+    })
+    HDS = HDs({
+        "BIP32", "BIP44"
+    })
+    DEFAULT_HD = HDS.BIP44
+    ADDRESSES = Addresses({
+        "P2PKH", "P2SH"
+    })
+    DEFAULT_ADDRESS = ADDRESSES.P2PKH
+
