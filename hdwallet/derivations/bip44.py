@@ -4,9 +4,7 @@
 # Distributed under the MIT software license, see the accompanying
 # file COPYING or https://opensource.org/license/mit
 
-from typing import (
-    Tuple, Any
-)
+from typing import Tuple
 
 from ..utils import (
     indexes_to_path, index_tuple_to_integer
@@ -22,12 +20,12 @@ class BIP44Derivation(IDerivation):  # https://github.com/bitcoin/bips/blob/mast
     }
 
     def __init__(
-        self, coin_type: Any = 0, account: int = 0, change: str = "external-chain", address: int = 0
+        self, coin_type: int = 0, account: int = 0, change: str = "external-chain", address: int = 0
     ) -> None:
 
         super(BIP44Derivation, self).__init__()
 
-        self._coin_type: Tuple[int, bool] = (int(coin_type), True)
+        self._coin_type: Tuple[int, bool] = (coin_type, True)
         self._account: Tuple[int, bool] = (account, True)
         self._change: Tuple[int, bool] = (self.change_types[change], False)
         self._address: Tuple[int, bool] = (address, False)
