@@ -44,15 +44,11 @@ class Testnet(INetwork):
     SCRIPT_ADDRESS_PREFIX = 0xc4
     XPRIVATE_KEY_VERSIONS = XPrivateKeyVersions({
         "P2PKH": 0x4358394,
-        "P2SH": 0x4358394,
-        "P2WPKH": 0x4358394,
-        "P2WPKH_IN_P2SH": 0x4358394
+        "P2SH": 0x4358394
     })
     XPUBLIC_KEY_VERSIONS = XPublicKeyVersions({
         "P2PKH": 0x43587cf,
-        "P2SH": 0x43587cf,
-        "P2WPKH": 0x43587cf,
-        "P2WPKH_IN_P2SH": 0x43587cf
+        "P2SH": 0x43587cf
     })
     MESSAGE_PREFIX = "\x18Viacoin Signed Message:\n"
     WIF_PREFIX = 0xff
