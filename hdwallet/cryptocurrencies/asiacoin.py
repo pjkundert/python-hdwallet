@@ -6,7 +6,7 @@
 
 from ..ecc import SLIP10Secp256k1ECC
 from ..const import (
-    Entropies, Mnemonics, Seeds, HDs, Addresses, Networks, XPrivateKeyVersions, XPublicKeyVersions
+    Info, Entropies, Mnemonics, Seeds, HDs, Addresses, Networks, XPrivateKeyVersions, XPublicKeyVersions
 )
 from .icryptocurrency import (
     ICryptocurrency, INetwork
@@ -33,7 +33,11 @@ class Asiacoin(ICryptocurrency):
 
     NAME = "Asiacoin"
     SYMBOL = "AC"
-    SOURCE_CODE = "http://www.thecoin.asia"
+    INFO = Info({
+        "WEBSITES": [
+            "http://www.thecoin.asia"
+        ]
+    })
     ECC = SLIP10Secp256k1ECC
     COIN_TYPE = 51
     NETWORKS = Networks({

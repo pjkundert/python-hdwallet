@@ -6,7 +6,7 @@
 
 from ..ecc import SLIP10Secp256k1ECC
 from ..const import (
-    WitnessVersions, Entropies, Mnemonics, Seeds, HDs, Addresses, Networks, XPrivateKeyVersions, XPublicKeyVersions
+    Info, Entropies, Mnemonics, Seeds, HDs, Addresses, Networks, XPrivateKeyVersions, XPublicKeyVersions
 )
 from .icryptocurrency import (
     ICryptocurrency, INetwork
@@ -33,7 +33,13 @@ class BitcoinPlus(ICryptocurrency):
 
     NAME = "Bitcoin Plus"
     SYMBOL = "XBC"
-    SOURCE_CODE = "https://github.com/bitcoinplusorg/xbcwalletsource"
+    INFO = Info({
+        "SOURCE_CODE": "https://github.com/bitcoinplusorg/xbcwalletsource",
+        "WHITEPAPER": "https://bitcoinplus.org/wp-content/uploads/2020/09/bitcoin-plus-whitepaper.pdf",
+        "WEBSITES": [
+            "https://bitcoinplus.org"
+        ]
+    })
     ECC = SLIP10Secp256k1ECC
     COIN_TYPE = 65
     NETWORKS = Networks({

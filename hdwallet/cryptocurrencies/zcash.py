@@ -6,7 +6,7 @@
 
 from ..ecc import SLIP10Secp256k1ECC
 from ..const import (
-    Entropies, Mnemonics, Seeds, HDs, Addresses, Networks, XPrivateKeyVersions, XPublicKeyVersions
+    Info, Entropies, Mnemonics, Seeds, HDs, Addresses, Networks, XPrivateKeyVersions, XPublicKeyVersions
 )
 from .icryptocurrency import (
     ICryptocurrency, INetwork
@@ -49,7 +49,13 @@ class Zcash(ICryptocurrency):
 
     NAME = "Zcash"
     SYMBOL = "ZEC"
-    SOURCE_CODE = "https://github.com/zcash/zcash"
+    INFO = Info({
+        "SOURCE_CODE": "https://github.com/zcash/zcash",
+        "WHITEPAPER": "https://github.com/zcash/zips/blob/master/protocol/protocol.pdf",
+        "WEBSITES": [
+            "https://z.cash"
+        ]
+    })
     ECC = SLIP10Secp256k1ECC
     COIN_TYPE = 133
     NETWORKS = Networks({

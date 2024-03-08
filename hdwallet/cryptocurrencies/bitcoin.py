@@ -6,7 +6,7 @@
 
 from ..ecc import SLIP10Secp256k1ECC
 from ..const import (
-    WitnessVersions, Entropies, Mnemonics, Seeds, HDs, Addresses, Networks, XPrivateKeyVersions, XPublicKeyVersions
+    Info, WitnessVersions, Entropies, Mnemonics, Seeds, HDs, Addresses, Networks, XPrivateKeyVersions, XPublicKeyVersions
 )
 from .icryptocurrency import (
     ICryptocurrency, INetwork
@@ -77,7 +77,13 @@ class Bitcoin(ICryptocurrency):
 
     NAME = "Bitcoin"
     SYMBOL = "BTC"
-    SOURCE_CODE = "https://github.com/bitcoin/bitcoin"
+    INFO = Info({
+        "SOURCE_CODE": "https://github.com/bitcoin/bitcoin",
+        "WHITEPAPER": "https://bitcoin.org/bitcoin.pdf",
+        "WEBSITES": [
+            "https://bitcoin.org"
+        ]
+    })
     ECC = SLIP10Secp256k1ECC
     COIN_TYPE = 0
     NETWORKS = Networks({

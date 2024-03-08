@@ -6,7 +6,7 @@
 
 from ..ecc import SLIP10Ed25519MoneroECC
 from ..const import (
-    Entropies, Mnemonics, Seeds, HDs, Addresses, Networks
+    Info, Entropies, Mnemonics, Seeds, HDs, Addresses, Networks
 )
 from .icryptocurrency import (
     ICryptocurrency, INetwork
@@ -38,7 +38,13 @@ class Monero(ICryptocurrency):
 
     NAME = "Monero"
     SYMBOL = "XMR"
-    SOURCE_CODE = "https://github.com/monero-project/monero"
+    INFO = Info({
+        "SOURCE_CODE": "https://github.com/monero-project/monero",
+        "WHITEPAPER": "https://github.com/monero-project/research-lab/blob/master/whitepaper/whitepaper.pdf",
+        "WEBSITES": [
+            "https://www.getmonero.org"
+        ]
+    })
     ECC = SLIP10Ed25519MoneroECC
     COIN_TYPE = 128
     NETWORKS = Networks({

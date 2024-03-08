@@ -6,7 +6,7 @@
 
 from ..ecc import SLIP10Ed25519ECC
 from ..const import (
-    Entropies, Mnemonics, Seeds, HDs, Addresses, Networks, Params, XPrivateKeyVersions, XPublicKeyVersions
+    Info, Entropies, Mnemonics, Seeds, HDs, Addresses, Networks, Params, XPrivateKeyVersions, XPublicKeyVersions
 )
 from .icryptocurrency import (
     ICryptocurrency, INetwork
@@ -27,7 +27,13 @@ class Solana(ICryptocurrency):
 
     NAME = "Solana"
     SYMBOL = "SOL"
-    SOURCE_CODE = "https://github.com/solana-labs/solana"
+    INFO = Info({
+        "SOURCE_CODE": "https://github.com/solana-labs/solana",
+        "WHITEPAPER": "https://solana.com/solana-whitepaper.pdf",
+        "WEBSITES": [
+            "https://solana.com"
+        ]
+    })
     ECC = SLIP10Ed25519ECC
     COIN_TYPE = 501
     NETWORKS = Networks({

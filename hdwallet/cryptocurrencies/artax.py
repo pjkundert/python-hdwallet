@@ -6,7 +6,7 @@
 
 from ..ecc import SLIP10Secp256k1ECC
 from ..const import (
-    Entropies, Mnemonics, Seeds, HDs, Addresses, Networks, XPrivateKeyVersions, XPublicKeyVersions
+    Info, Entropies, Mnemonics, Seeds, HDs, Addresses, Networks, XPrivateKeyVersions, XPublicKeyVersions
 )
 from .icryptocurrency import (
     ICryptocurrency, INetwork
@@ -33,7 +33,12 @@ class Artax(ICryptocurrency):
 
     NAME = "Artax"
     SYMBOL = "XAX"
-    SOURCE_CODE = "https://github.com/artax-committee/Artax"
+    INFO = Info({
+        "SOURCE_CODE": "https://github.com/artax-committee/Artax",
+        "WEBSITES": [
+            "http://www.artaxcoin.org"
+        ]
+    })
     ECC = SLIP10Secp256k1ECC
     COIN_TYPE = 219
     NETWORKS = Networks({

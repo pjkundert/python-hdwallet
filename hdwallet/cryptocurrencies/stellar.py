@@ -6,7 +6,7 @@
 
 from ..ecc import SLIP10Ed25519ECC
 from ..const import (
-    Entropies, Mnemonics, Seeds, HDs, Addresses, Networks, Params, XPrivateKeyVersions, XPublicKeyVersions
+    Info, Entropies, Mnemonics, Seeds, HDs, Addresses, Networks, Params, XPrivateKeyVersions, XPublicKeyVersions
 )
 from .icryptocurrency import (
     ICryptocurrency, INetwork
@@ -27,7 +27,13 @@ class Stellar(ICryptocurrency):
 
     NAME = "Stellar"
     SYMBOL = "XLM"
-    SOURCE_CODE = "https://github.com/stellar/stellar-core"
+    INFO = Info({
+        "SOURCE_CODE": "https://github.com/stellar/stellar-core",
+        "WHITEPAPER": "https://www.stellar.org/papers/stellar-consensus-protocol.pdf",
+        "WEBSITES": [
+            "https://www.stellar.org"
+        ]
+    })
     ECC = SLIP10Ed25519ECC
     COIN_TYPE = 148
     NETWORKS = Networks({

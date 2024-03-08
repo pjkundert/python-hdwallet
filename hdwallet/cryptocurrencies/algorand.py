@@ -6,7 +6,7 @@
 
 from ..ecc import SLIP10Ed25519ECC
 from ..const import (
-    Entropies, Mnemonics, Seeds, HDs, Addresses, Networks, Params, XPrivateKeyVersions, XPublicKeyVersions
+    Info, Entropies, Mnemonics, Seeds, HDs, Addresses, Networks, Params, XPrivateKeyVersions, XPublicKeyVersions
 )
 from .icryptocurrency import (
     ICryptocurrency, INetwork
@@ -27,7 +27,14 @@ class Algorand(ICryptocurrency):
 
     NAME = "Algorand"
     SYMBOL = "ALGO"
-    SOURCE_CODE = "https://github.com/algorand/go-algorand"
+    INFO = Info({
+        "SOURCE_CODE": "https://github.com/algorand/go-algorand",
+        "WHITEPAPER": "https://www.algorand.com/resources/white-papers",
+        "WEBSITES": [
+            "http://algorand.foundation",
+            "https://www.algorand.com"
+        ]
+    })
     ECC = SLIP10Ed25519ECC
     COIN_TYPE = 283
     NETWORKS = Networks({

@@ -6,7 +6,7 @@
 
 from ..ecc import SLIP10Secp256k1ECC
 from ..const import (
-    Entropies, Mnemonics, Seeds, HDs, Addresses, Networks, XPrivateKeyVersions, XPublicKeyVersions
+    Info, Entropies, Mnemonics, Seeds, HDs, Addresses, Networks, XPrivateKeyVersions, XPublicKeyVersions
 )
 from .icryptocurrency import (
     ICryptocurrency, INetwork
@@ -33,7 +33,12 @@ class Axe(ICryptocurrency):
 
     NAME = "Axe"
     SYMBOL = "AXE"
-    SOURCE_CODE = "https://github.com/AXErunners/axe"
+    INFO = Info({
+        "SOURCE_CODE": "https://github.com/AXErunners/axe",
+        "WEBSITES": [
+            "https://axerunners.com"
+        ]
+    })
     ECC = SLIP10Secp256k1ECC
     COIN_TYPE = 4242
     NETWORKS = Networks({

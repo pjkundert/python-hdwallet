@@ -4,9 +4,9 @@
 # Distributed under the MIT software license, see the accompanying
 # file COPYING or https://opensource.org/license/mit
 
-from ..ecc import SLIP10Ed25519ECC
+from ..ecc import SLIP10Secp256k1ECC
 from ..const import (
-    Info, Entropies, Mnemonics, Seeds, HDs, Addresses, Networks, Params, XPrivateKeyVersions, XPublicKeyVersions
+    Info, Entropies, Mnemonics, Seeds, HDs, Addresses, Networks, XPrivateKeyVersions, XPublicKeyVersions
 )
 from .icryptocurrency import (
     ICryptocurrency, INetwork
@@ -15,28 +15,34 @@ from .icryptocurrency import (
 
 class Mainnet(INetwork):
 
+    PUBLIC_KEY_ADDRESS_PREFIX = 0x21
+    SCRIPT_ADDRESS_PREFIX = 0x35
     XPRIVATE_KEY_VERSIONS = XPrivateKeyVersions({
-        "P2PKH": 0x0488ade4
+        "P2PKH": 0xd7dc6e9f,
+        "P2SH": 0xd7dc6e9f
     })
     XPUBLIC_KEY_VERSIONS = XPublicKeyVersions({
-        "P2PKH": 0x0488b21e
+        "P2PKH": 0x3b8c856,
+        "P2SH": 0x3b8c856
     })
+    MESSAGE_PREFIX = "DarkCoin Signed Message:\n"
+    WIF_PREFIX = 0x6a
 
 
-class Elrond(ICryptocurrency):
+class Energi(ICryptocurrency):
 
-    NAME = "Elrond"
-    SYMBOL = "EGLD"
+    NAME = "Energi"
+    SYMBOL = "NRG"
     INFO = Info({
-        "SOURCE_CODE": "https://github.com/ElrondNetwork",
-        "WHITEPAPER": "https://files.multiversx.com/multiversx-whitepaper.pdf",
+        "SOURCE_CODE": "https://github.com/energicryptocurrency/go-energi",
+        "WHITEPAPER": "https://www.energi.world/whitepaper",
         "WEBSITES": [
-            "https://multiversx.com",
-            "https://multiversx.com/ecosystem"
+            "https://energi.world",
+            "https://www.energiswap.exchange"
         ]
     })
-    ECC = SLIP10Ed25519ECC
-    COIN_TYPE = 508
+    ECC = SLIP10Secp256k1ECC
+    COIN_TYPE = 9797
     NETWORKS = Networks({
         "MAINNET": Mainnet
     })
@@ -55,9 +61,6 @@ class Elrond(ICryptocurrency):
     })
     DEFAULT_HD = HDS.BIP44
     ADDRESSES = Addresses({
-        "ELROND": "Elrond"
+        "P2PKH", "P2SH"
     })
-    DEFAULT_ADDRESS = ADDRESSES.ELROND
-    PARAMS = Params({
-        "HRP": "erd"
-    })
+    DEFAULT_ADDRESS = ADDRESSES.P2PKH

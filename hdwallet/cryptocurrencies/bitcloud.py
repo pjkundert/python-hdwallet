@@ -6,7 +6,7 @@
 
 from ..ecc import SLIP10Secp256k1ECC
 from ..const import (
-    Entropies, Mnemonics, Seeds, HDs, Addresses, Networks, XPrivateKeyVersions, XPublicKeyVersions
+    Info, Entropies, Mnemonics, Seeds, HDs, Addresses, Networks, XPrivateKeyVersions, XPublicKeyVersions
 )
 from .icryptocurrency import (
     ICryptocurrency, INetwork
@@ -33,7 +33,13 @@ class BitCloud(ICryptocurrency):
 
     NAME = "Bit Cloud"
     SYMBOL = "BTDX"
-    SOURCE_CODE = "https://github.com/LIMXTEC/Bitcloud"
+    INFO = Info({
+        "SOURCE_CODE": "https://github.com/LIMXTEC/Bitcloud",
+        "WHITEPAPER": "https://github.com/LIMXTEC/Bitcloud/blob/master/README.md",
+        "WEBSITES": [
+            "https://bit-cloud.cc"
+        ]
+    })
     ECC = SLIP10Secp256k1ECC
     COIN_TYPE = 218
     NETWORKS = Networks({

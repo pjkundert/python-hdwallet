@@ -4,9 +4,9 @@
 # Distributed under the MIT software license, see the accompanying
 # file COPYING or https://opensource.org/license/mit
 
-from ..ecc import SLIP10Ed25519ECC
+from ..ecc import SLIP10Secp256k1ECC
 from ..const import (
-    Info, Entropies, Mnemonics, Seeds, HDs, Addresses, Networks, Params, XPrivateKeyVersions, XPublicKeyVersions
+    Info, Entropies, Mnemonics, Seeds, HDs, Addresses, Networks, XPrivateKeyVersions, XPublicKeyVersions
 )
 from .icryptocurrency import (
     ICryptocurrency, INetwork
@@ -15,28 +15,33 @@ from .icryptocurrency import (
 
 class Mainnet(INetwork):
 
+    PUBLIC_KEY_ADDRESS_PREFIX = 0x21
+    SCRIPT_ADDRESS_PREFIX = 0x5
     XPRIVATE_KEY_VERSIONS = XPrivateKeyVersions({
-        "P2PKH": 0x0488ade4
+        "P2PKH": 0x488ade4,
+        "P2SH": 0x488ade4
     })
     XPUBLIC_KEY_VERSIONS = XPublicKeyVersions({
-        "P2PKH": 0x0488b21e
+        "P2PKH": 0x488b21e,
+        "P2SH": 0x488b21e
     })
+    MESSAGE_PREFIX = "\x18Bitcoin Signed Message:\n"
+    WIF_PREFIX = 0xa8
 
 
-class Elrond(ICryptocurrency):
+class EuropeCoin(ICryptocurrency):
 
-    NAME = "Elrond"
-    SYMBOL = "EGLD"
+    NAME = "Europe Coin"
+    SYMBOL = "ERC"
     INFO = Info({
-        "SOURCE_CODE": "https://github.com/ElrondNetwork",
-        "WHITEPAPER": "https://files.multiversx.com/multiversx-whitepaper.pdf",
+        "SOURCE_CODE": "https://github.com/LIMXTEC/Europecoin-V3",
+        "WHITEPAPER": "https://www.europecoin.eu.org/projects-2/37-specifications",
         "WEBSITES": [
-            "https://multiversx.com",
-            "https://multiversx.com/ecosystem"
+            "https://www.europecoin.eu.org"
         ]
     })
-    ECC = SLIP10Ed25519ECC
-    COIN_TYPE = 508
+    ECC = SLIP10Secp256k1ECC
+    COIN_TYPE = 151
     NETWORKS = Networks({
         "MAINNET": Mainnet
     })
@@ -55,9 +60,6 @@ class Elrond(ICryptocurrency):
     })
     DEFAULT_HD = HDS.BIP44
     ADDRESSES = Addresses({
-        "ELROND": "Elrond"
+        "P2PKH", "P2SH"
     })
-    DEFAULT_ADDRESS = ADDRESSES.ELROND
-    PARAMS = Params({
-        "HRP": "erd"
-    })
+    DEFAULT_ADDRESS = ADDRESSES.P2PKH

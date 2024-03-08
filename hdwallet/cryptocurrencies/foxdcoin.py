@@ -15,9 +15,9 @@ from .icryptocurrency import (
 
 class Mainnet(INetwork):
 
-    PUBLIC_KEY_ADDRESS_PREFIX = 0x47
-    SCRIPT_ADDRESS_PREFIX = 0x21
-    HRP = "viacoin"
+    PUBLIC_KEY_ADDRESS_PREFIX = 0x23
+    SCRIPT_ADDRESS_PREFIX = 0x1e
+    HRP = "fx"
     WITNESS_VERSIONS = WitnessVersions({
         "P2WPKH": 0x00,
         "P2WSH": 0x00
@@ -25,48 +25,64 @@ class Mainnet(INetwork):
     XPRIVATE_KEY_VERSIONS = XPrivateKeyVersions({
         "P2PKH": 0x488ade4,
         "P2SH": 0x488ade4,
-        "P2WPKH": 0x0488ade4,
-        "P2WPKH_IN_P2SH": 0x0488ade4
+        "P2WPKH": 0x04b2430c,
+        "P2WPKH_IN_P2SH": 0x049d7878,
+        "P2WSH": 0x02aa7a99,
+        "P2WSH_IN_P2SH": 0x0295b005
     })
     XPUBLIC_KEY_VERSIONS = XPublicKeyVersions({
         "P2PKH": 0x488b21e,
         "P2SH": 0x488b21e,
-        "P2WPKH": 0x0488b21e,
-        "P2WPKH_IN_P2SH": 0x0488b21e
+        "P2WPKH": 0x04b24746,
+        "P2WPKH_IN_P2SH": 0x049d7cb2,
+        "P2WSH": 0x02aa7ed3,
+        "P2WSH_IN_P2SH": 0x0295b43f
     })
-    MESSAGE_PREFIX = "\x18Viacoin Signed Message:\n"
-    WIF_PREFIX = 0xc7
+    MESSAGE_PREFIX = "Foxdcoin Signed Message:\n"
+    WIF_PREFIX = 0x80
 
 
 class Testnet(INetwork):
 
-    PUBLIC_KEY_ADDRESS_PREFIX = 0x7f
-    SCRIPT_ADDRESS_PREFIX = 0xc4
+    PUBLIC_KEY_ADDRESS_PREFIX = 0x5f
+    SCRIPT_ADDRESS_PREFIX = 0x5a
+    HRP = "tf"
+    WITNESS_VERSIONS = WitnessVersions({
+        "P2WPKH": 0x00,
+        "P2WSH": 0x00
+    })
     XPRIVATE_KEY_VERSIONS = XPrivateKeyVersions({
-        "P2PKH": 0x4358394,
-        "P2SH": 0x4358394
+        "P2PKH": 0x488ade4,
+        "P2SH": 0x488ade4,
+        "P2WPKH": 0x04b2430c,
+        "P2WPKH_IN_P2SH": 0x049d7878,
+        "P2WSH": 0x02aa7a99,
+        "P2WSH_IN_P2SH": 0x0295b005
     })
     XPUBLIC_KEY_VERSIONS = XPublicKeyVersions({
-        "P2PKH": 0x43587cf,
-        "P2SH": 0x43587cf
+        "P2PKH": 0x488b21e,
+        "P2SH": 0x488b21e,
+        "P2WPKH": 0x04b24746,
+        "P2WPKH_IN_P2SH": 0x049d7cb2,
+        "P2WSH": 0x02aa7ed3,
+        "P2WSH_IN_P2SH": 0x0295b43f
     })
-    MESSAGE_PREFIX = "\x18Viacoin Signed Message:\n"
-    WIF_PREFIX = 0xff
+    MESSAGE_PREFIX = "Foxdcoin Signed Message:\n"
+    WIF_PREFIX = 0xef
 
 
-class Viacoin(ICryptocurrency):
+class Foxdcoin(ICryptocurrency):
 
-    NAME = "Viacoin"
-    SYMBOL = "VIA"
+    NAME = "Foxdcoin"
+    SYMBOL = "FOXD"
     INFO = Info({
-        "SOURCE_CODE": "https://github.com/viacoin/viacoin",
-        "WHITEPAPER": "https://github.com/viacoin/documents/blob/master/whitepapers/Viacoin_fullcolor_whitepaper.pdf",
+        "SOURCE_CODE": "https://github.com/foxdproject/foxdcoin",
         "WEBSITES": [
-            "http://viacoin.org"
+            "https://www.foxdcoin.com"
         ]
     })
     ECC = SLIP10Secp256k1ECC
-    COIN_TYPE = 14
+    COIN_TYPE = 175
     NETWORKS = Networks({
         "MAINNET": Mainnet, "TESTNET": Testnet
     })
@@ -88,3 +104,4 @@ class Viacoin(ICryptocurrency):
         "P2PKH", "P2SH"
     })
     DEFAULT_ADDRESS = ADDRESSES.P2PKH
+

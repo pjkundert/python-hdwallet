@@ -6,7 +6,7 @@
 
 from ..ecc import SLIP10Secp256k1ECC
 from ..const import (
-    Entropies, Mnemonics, Seeds, HDs, Addresses, Networks, XPrivateKeyVersions, XPublicKeyVersions
+    Info, Entropies, Mnemonics, Seeds, HDs, Addresses, Networks, XPrivateKeyVersions, XPublicKeyVersions
 )
 from .icryptocurrency import (
     ICryptocurrency, INetwork
@@ -33,7 +33,20 @@ class Anon(ICryptocurrency):
 
     NAME = "Anon"
     SYMBOL = "ANON"
-    SOURCE_CODE = "https://github.com/anonymousbitcoin/anon"
+    # INFO = Info({
+    #     "SOURCE_CODE": "https://github.com/anonymousbitcoin/anon",
+    #     "WHITEPAPER": "https://www.anon.community/whitepaper",
+    #     "WEBSITES": [
+    #         "https://www.anon.community"
+    #     ]
+    # })
+    INFO = Info({
+        "SOURCE_CODE": None,
+        "WHITEPAPER": None,
+        "WEBSITES": [
+            None
+        ]
+    })
     ECC = SLIP10Secp256k1ECC
     COIN_TYPE = 220
     NETWORKS = Networks({

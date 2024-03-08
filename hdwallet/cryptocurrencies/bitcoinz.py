@@ -6,7 +6,7 @@
 
 from ..ecc import SLIP10Secp256k1ECC
 from ..const import (
-    Entropies, Mnemonics, Seeds, HDs, Addresses, Networks, XPrivateKeyVersions, XPublicKeyVersions
+    Info, Entropies, Mnemonics, Seeds, HDs, Addresses, Networks, XPrivateKeyVersions, XPublicKeyVersions
 )
 from .icryptocurrency import (
     ICryptocurrency, INetwork
@@ -33,7 +33,13 @@ class BitcoinZ(ICryptocurrency):
 
     NAME = "BitcoinZ"
     SYMBOL = "BTCZ"
-    SOURCE_CODE = "https://github.com/btcz/bitcoinz"
+    INFO = Info({
+        "SOURCE_CODE": "https://github.com/btcz/bitcoinz",
+        "WHITEPAPER": "https://getbtcz.com/btcz-analytical-description",
+        "WEBSITES": [
+            "https://getbtcz.com"
+        ]
+    })
     ECC = SLIP10Secp256k1ECC
     COIN_TYPE = 177
     NETWORKS = Networks({
