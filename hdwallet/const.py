@@ -79,6 +79,13 @@ SLIP10_SECP256K1_CONST: Secp256k1Const = Secp256k1Const({
 })
 
 
+class Info(NestedNamespace):
+
+    SOURCE_CODE: Optional[str] = None
+    WHITEPAPER: Optional[str] = None
+    WEBSITES: List[str] = []
+
+
 class WitnessVersions(NestedNamespace):
 
     def get_witness_version(self, address: str) -> int:

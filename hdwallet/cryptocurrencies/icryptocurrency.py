@@ -5,13 +5,13 @@
 # file COPYING or https://opensource.org/license/mit
 
 from typing import (
-    Optional, Union, Type, List, Literal
+    Optional, Union, Type
 )
 
 from ..ecc import IEllipticCurveCryptography
 from ..derivations.bip44 import BIP44Derivation
 from ..const import (
-    WitnessVersions, Entropies, Mnemonics, Seeds, HDs, Addresses, Networks, Params, XPrivateKeyVersions, XPublicKeyVersions
+    Info, WitnessVersions, Entropies, Mnemonics, Seeds, HDs, Addresses, Networks, Params, XPrivateKeyVersions, XPublicKeyVersions
 )
 from ..exceptions import NetworkError
 
@@ -43,7 +43,7 @@ class ICryptocurrency:
 
     NAME: str
     SYMBOL: str
-    SOURCE_CODE: Optional[str]
+    INFO: Info
     ECC: IEllipticCurveCryptography
     COIN_TYPE: int
     NETWORKS: Networks
@@ -71,7 +71,7 @@ class ICryptocurrency:
                 account=0, change="external-chain", address=0
             )
             bip44_derivation.from_coin_type(
-                coin_type=cls.COIN_TYPE.INDEX if network == "mainnet" else 1
+                coin_type=cls.COIN_TYPE if network == "mainnet" else 1
             )
             return bip44_derivation.path()
         except TypeError:
