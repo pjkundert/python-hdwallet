@@ -72,6 +72,6 @@ class BitcoinCash(ICryptocurrency):
     })
     DEFAULT_HD = HDS.BIP44
     ADDRESSES = Addresses({
-        "P2PKH", "P2SH"
+        "P2PKH", "P2SH", "P2WPKH", {"P2WPKH_IN_P2SH": "P2WPKH-In-P2SH"}, "P2WSH", {"P2WSH_IN_P2SH": "P2WSH-In-P2SH"}
     })
     DEFAULT_ADDRESS = ADDRESSES.P2PKH

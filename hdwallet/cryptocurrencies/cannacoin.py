@@ -15,8 +15,8 @@ from .icryptocurrency import (
 
 class Mainnet(INetwork):
 
-    PUBLIC_KEY_ADDRESS_PREFIX = 0x3c
-    SCRIPT_ADDRESS_PREFIX = 0x16
+    PUBLIC_KEY_ADDRESS_PREFIX = 0x1c
+    SCRIPT_ADDRESS_PREFIX = 0x5
     XPRIVATE_KEY_VERSIONS = XPrivateKeyVersions({
         "P2PKH": 0x488ade4,
         "P2SH": 0x488ade4
@@ -25,23 +25,23 @@ class Mainnet(INetwork):
         "P2PKH": 0x488b21e,
         "P2SH": 0x488b21e
     })
-    MESSAGE_PREFIX = "\x18newyorkc Signed Message:\n"
-    WIF_PREFIX = 0xbc
+    MESSAGE_PREFIX = "\x18Cannacoin Signed Message:\n"
+    WIF_PREFIX = 0x9c
 
 
-class NewYorkCoin(ICryptocurrency):
+class Cannacoin(ICryptocurrency):
 
-    NAME = "New York Coin"
-    SYMBOL = "NYC"
+    NAME = "Cannacoin"
+    SYMBOL = "CCN"
     INFO = Info({
-        "SOURCE_CODE": "https://github.com/NewYorkCoinNYC/newyorkcoin",
+        "SOURCE_CODE": "https://github.com/cannacoin-official/Cannacoin",
+        "WHITEPAPER": "https://wiki.cannacoin.org/whitepaper.html",
         "WEBSITES": [
-            "https://nycoin.net",
-            "https://newyorkcoin.net"
+            "https://cannacoin.org"
         ]
     })
     ECC = SLIP10Secp256k1ECC
-    COIN_TYPE = 179
+    COIN_TYPE = 19
     NETWORKS = Networks({
         "MAINNET": Mainnet
     })

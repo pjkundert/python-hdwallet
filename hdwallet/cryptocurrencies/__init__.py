@@ -11,20 +11,40 @@ from typing import (
 from .icryptocurrency import ICryptocurrency
 from .algorand import Algorand
 from .anon import Anon
+from .argoneum import Argoneum
 from .artax import Artax
+from .aryacoin import Aryacoin
 from .asiacoin import Asiacoin
+from .atom import Atom
 from .auroracoin import Auroracoin
+from .avian import Avian
 from .axe import Axe
+from .bata import Bata
 from .beetlecoin import BeetleCoin
+from .belacoin import BelaCoin
 from .bitcloud import BitCloud
 from .bitcoin import Bitcoin
 from .bitcoincash import BitcoinCash
+from .bitcoingold import BitcoinGold
 from .bitcoinplus import BitcoinPlus
+from .bitcoinsv import BitcoinSV
 from .bitcoinz import BitcoinZ
+from .bitcore import Bitcore
 from .bitsend import BitSend
+from .blackcoin import Blackcoin
 from .blocknode import Blocknode
+from .blockstamp import BlockStamp
 from .bolivarcoin import Bolivarcoin
+from .britcoin import BritCoin
+from .cannacoin import Cannacoin
 from .cardano import Cardano
+from .clubcoin import ClubCoin
+from .cpuchain import CPUChain
+from .cranepay import CranePay
+from .dash import Dash
+from .defcoin import Defcoin
+from .diamond import Diamond
+from .digitalcoin import Digitalcoin
 from .edrcoin import EDRCoin
 from .einsteinium import Einsteinium
 from .elrond import Elrond
@@ -34,8 +54,17 @@ from .exclusivecoin import ExclusiveCoin
 from .feathercoin import Feathercoin
 from .flashcoin import Flashcoin
 from .foxdcoin import Foxdcoin
+from .gcrcoin import GCRCoin
+from .gobyte import GoByte
+from .groestlcoin import GroestlCoin
+from .hempcoin import Hempcoin
+from .hush import Hush
 from .insanecoin import InsaneCoin
 from .jumbucks import Jumbucks
+from .komodo import Komodo
+from .linx import Linx
+from .litecoin import Litecoin
+from .lkrcoin import Lkrcoin
 from .mazacoin import Mazacoin
 from .minexcoin import Minexcoin
 from .monero import Monero
@@ -48,6 +77,13 @@ from .neoscoin import Neoscoin
 from .newyorkcoin import NewYorkCoin
 from .nix import NIX
 from .nubits import NuBits
+from .okcash import OKCash
+from .onix import Onix
+from .pesobit import Pesobit
+from .pinkcoin import Pinkcoin
+from .poswcoin import PoSWCoin
+from .projectcoin import ProjectCoin
+from .qtum import Qtum
 from .rapids import Rapids
 from .reddcoin import Reddcoin
 from .rubycoin import Rubycoin
@@ -59,6 +95,9 @@ from .stash import Stash
 from .stellar import Stellar
 from .sugarchain import Sugarchain
 from .tezos import Tezos
+from .toacoin import TOACoin
+from .tron import Tron
+from .ultimatesecurecash import UltimateSecureCash
 from .verge import Verge
 from .viacoin import Viacoin
 from .vpncoin import VPNCoin
@@ -69,22 +108,42 @@ from .zcash import Zcash
 
 
 CRYPTOCURRENCIES: Dict[str, Type[ICryptocurrency]] = {
-    "Anon": Anon,
     "Algorand": Algorand,
+    "Anon": Anon,
+    "Argoneum": Argoneum,
     "Artax": Artax,
+    "Aryacoin": Aryacoin,
     "Asiacoin": Asiacoin,
+    "Atom": Atom,
     "Auroracoin": Auroracoin,
+    "Avian": Avian,
     "Axe": Axe,
+    "Bata": Bata,
     "Beetle Coin": BeetleCoin,
+    "Bela Coin": BelaCoin,
     "Bit Cloud": BitCloud,
     "Bitcoin": Bitcoin,
     "Bitcoin Cash": BitcoinCash,
+    "Bitcoin Gold": BitcoinGold,
     "Bitcoin Plus": BitcoinPlus,
+    "Bitcoin SV": BitcoinSV,
     "BitcoinZ": BitcoinZ,
+    "Bitcore": Bitcore,
     "Bit Send": BitSend,
+    "Blackcoin": Blackcoin,
     "Blocknode": Blocknode,
+    "Block Stamp": BlockStamp,
     "Bolivarcoin": Bolivarcoin,
+    "Brit Coin": BritCoin,
+    "Cannacoin": Cannacoin,
     "Cardano": Cardano,
+    "Club Coin": ClubCoin,
+    "CPU Chain": CPUChain,
+    "Crane Pay": CranePay,
+    "Dash": Dash,
+    "Defcoin": Defcoin,
+    "Diamond": Diamond,
+    "Digitalcoin": Digitalcoin,
     "EDR Coin": EDRCoin,
     "Einsteinium": Einsteinium,
     "Elrond": Elrond,
@@ -94,8 +153,17 @@ CRYPTOCURRENCIES: Dict[str, Type[ICryptocurrency]] = {
     "Feathercoin": Feathercoin,
     "Flashcoin": Flashcoin,
     "Foxdcoin": Foxdcoin,
+    "GCR Coin": GCRCoin,
+    "Go Byte": GoByte,
+    "Groestl Coin": GroestlCoin,
+    "Hempcoin": Hempcoin,
+    "Hush": Hush,
     "InsaneCoin": InsaneCoin,
     "Jumbucks": Jumbucks,
+    "Komodo": Komodo,
+    "Linx": Linx,
+    "Litecoin": Litecoin,
+    "Lkrcoin": Lkrcoin,
     "Mazacoin": Mazacoin,
     "Minexcoin": Minexcoin,
     "Monero": Monero,
@@ -105,9 +173,16 @@ CRYPTOCURRENCIES: Dict[str, Type[ICryptocurrency]] = {
     "Navcoin": Navcoin,
     "Neo": Neo,
     "Neoscoin": Neoscoin,
-    "NewYorkCoin": NewYorkCoin,
+    "New York Coin": NewYorkCoin,
     "NIX": NIX,
     "NuBits": NuBits,
+    "OK Cash": OKCash,
+    "Onix": Onix,
+    "Pesobit": Pesobit,
+    "Pinkcoin": Pinkcoin,
+    "PoSW Coin": PoSWCoin,
+    "ProjectCoin": ProjectCoin,
+    "Qtum": Qtum,
     "Rapids": Rapids,
     "Reddcoin": Reddcoin,
     "Rubycoin": Rubycoin,
@@ -119,6 +194,9 @@ CRYPTOCURRENCIES: Dict[str, Type[ICryptocurrency]] = {
     "Stellar": Stellar,
     "Sugarchain": Sugarchain,
     "Tezos": Tezos,
+    "TOA Coin": TOACoin,
+    "Tron": Tron,
+    "Ultimate Secure Cash": UltimateSecureCash,
     "Verge": Verge,
     "Viacoin": Viacoin,
     "Virtual Cash": VPNCoin,

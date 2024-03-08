@@ -15,33 +15,33 @@ from .icryptocurrency import (
 
 class Mainnet(INetwork):
 
-    PUBLIC_KEY_ADDRESS_PREFIX = 0x3c
-    SCRIPT_ADDRESS_PREFIX = 0x16
+    PUBLIC_KEY_ADDRESS_PREFIX = 0x37
+    SCRIPT_ADDRESS_PREFIX = 0x1c
     XPRIVATE_KEY_VERSIONS = XPrivateKeyVersions({
-        "P2PKH": 0x488ade4,
-        "P2SH": 0x488ade4
+        "P2PKH": 0x3cc1c73,
+        "P2SH": 0x3cc1c73
     })
     XPUBLIC_KEY_VERSIONS = XPublicKeyVersions({
-        "P2PKH": 0x488b21e,
-        "P2SH": 0x488b21e
+        "P2PKH": 0x3cc23d7,
+        "P2SH": 0x3cc23d7
     })
-    MESSAGE_PREFIX = "\x18newyorkc Signed Message:\n"
-    WIF_PREFIX = 0xbc
+    MESSAGE_PREFIX = "\x18OKCash Signed Message:\n"
+    WIF_PREFIX = 0x3
 
 
-class NewYorkCoin(ICryptocurrency):
+class OKCash(ICryptocurrency):
 
-    NAME = "New York Coin"
-    SYMBOL = "NYC"
+    NAME = "OK Cash"
+    SYMBOL = "OK"
     INFO = Info({
-        "SOURCE_CODE": "https://github.com/NewYorkCoinNYC/newyorkcoin",
+        "SOURCE_CODE": "https://github.com/okcashpro/okcash",
+        "WHITEPAPER": "https://github.com/okcashpro/okcash-whitepaper",
         "WEBSITES": [
-            "https://nycoin.net",
-            "https://newyorkcoin.net"
+            "http://okcash.co"
         ]
     })
     ECC = SLIP10Secp256k1ECC
-    COIN_TYPE = 179
+    COIN_TYPE = 69
     NETWORKS = Networks({
         "MAINNET": Mainnet
     })

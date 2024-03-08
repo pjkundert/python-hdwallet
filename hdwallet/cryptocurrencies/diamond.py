@@ -15,8 +15,8 @@ from .icryptocurrency import (
 
 class Mainnet(INetwork):
 
-    PUBLIC_KEY_ADDRESS_PREFIX = 0x3c
-    SCRIPT_ADDRESS_PREFIX = 0x16
+    PUBLIC_KEY_ADDRESS_PREFIX = 0x5a
+    SCRIPT_ADDRESS_PREFIX = 0x8
     XPRIVATE_KEY_VERSIONS = XPrivateKeyVersions({
         "P2PKH": 0x488ade4,
         "P2SH": 0x488ade4
@@ -25,23 +25,23 @@ class Mainnet(INetwork):
         "P2PKH": 0x488b21e,
         "P2SH": 0x488b21e
     })
-    MESSAGE_PREFIX = "\x18newyorkc Signed Message:\n"
-    WIF_PREFIX = 0xbc
+    MESSAGE_PREFIX = "\x18Diamond Signed Message:\n"
+    WIF_PREFIX = 0xda
 
 
-class NewYorkCoin(ICryptocurrency):
+class Diamond(ICryptocurrency):
 
-    NAME = "New York Coin"
-    SYMBOL = "NYC"
+    NAME = "Diamond"
+    SYMBOL = "DMD"
     INFO = Info({
-        "SOURCE_CODE": "https://github.com/NewYorkCoinNYC/newyorkcoin",
+        "SOURCE_CODE": "https://github.com/DMDcoin/Diamond",
+        "WHITEPAPER": "https://bit.diamonds/DMD_WP.pdf",
         "WEBSITES": [
-            "https://nycoin.net",
-            "https://newyorkcoin.net"
+            "http://bit.diamonds"
         ]
     })
     ECC = SLIP10Secp256k1ECC
-    COIN_TYPE = 179
+    COIN_TYPE = 152
     NETWORKS = Networks({
         "MAINNET": Mainnet
     })

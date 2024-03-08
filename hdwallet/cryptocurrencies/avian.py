@@ -15,9 +15,9 @@ from .icryptocurrency import (
 
 class Mainnet(INetwork):
 
-    PUBLIC_KEY_ADDRESS_PREFIX = 0x47
-    SCRIPT_ADDRESS_PREFIX = 0x21
-    HRP = "viacoin"
+    PUBLIC_KEY_ADDRESS_PREFIX = 0x3c
+    SCRIPT_ADDRESS_PREFIX = 0x7a
+    HRP = "av"
     WITNESS_VERSIONS = WitnessVersions({
         "P2WPKH": 0x00,
         "P2WSH": 0x00
@@ -25,50 +25,38 @@ class Mainnet(INetwork):
     XPRIVATE_KEY_VERSIONS = XPrivateKeyVersions({
         "P2PKH": 0x488ade4,
         "P2SH": 0x488ade4,
-        "P2WPKH": 0x0488ade4,
-        "P2WPKH_IN_P2SH": 0x0488ade4
+        "P2WPKH": 0x04b2430c,
+        "P2WPKH_IN_P2SH": 0x049d7878,
+        "P2WSH": 0x02aa7a99,
+        "P2WSH_IN_P2SH": 0x0295b005
     })
     XPUBLIC_KEY_VERSIONS = XPublicKeyVersions({
         "P2PKH": 0x488b21e,
         "P2SH": 0x488b21e,
-        "P2WPKH": 0x0488b21e,
-        "P2WPKH_IN_P2SH": 0x0488b21e
+        "P2WPKH": 0x04b24746,
+        "P2WPKH_IN_P2SH": 0x049d7cb2,
+        "P2WSH": 0x02aa7ed3,
+        "P2WSH_IN_P2SH": 0x0295b43f
     })
-    MESSAGE_PREFIX = "\x18Viacoin Signed Message:\n"
-    WIF_PREFIX = 0xc7
+    MESSAGE_PREFIX = "Aviancoin Signed Message:\n"
+    WIF_PREFIX = 0x80
 
 
-class Testnet(INetwork):
+class Avian(ICryptocurrency):
 
-    PUBLIC_KEY_ADDRESS_PREFIX = 0x7f
-    SCRIPT_ADDRESS_PREFIX = 0xc4
-    XPRIVATE_KEY_VERSIONS = XPrivateKeyVersions({
-        "P2PKH": 0x4358394,
-        "P2SH": 0x4358394
-    })
-    XPUBLIC_KEY_VERSIONS = XPublicKeyVersions({
-        "P2PKH": 0x43587cf,
-        "P2SH": 0x43587cf
-    })
-    MESSAGE_PREFIX = "\x18Viacoin Signed Message:\n"
-    WIF_PREFIX = 0xff
-
-
-class Viacoin(ICryptocurrency):
-
-    NAME = "Viacoin"
-    SYMBOL = "VIA"
+    NAME = "Avian"
+    SYMBOL = "AVN"
     INFO = Info({
-        "SOURCE_CODE": "https://github.com/viacoin/viacoin",
-        "WHITEPAPER": "https://github.com/viacoin/documents/blob/master/whitepapers/Viacoin_fullcolor_whitepaper.pdf",
+        "SOURCE_CODE": "https://github.com/AvianNetwork/Avian",
+        "WHITEPAPER": "https://www.avn.network/_files/ugd/c493c9_83224e1867d24a4185421548cfd6a35a.pdf",
         "WEBSITES": [
-            "http://viacoin.org"
+            "https://avn.network"
         ]
     })
     ECC = SLIP10Secp256k1ECC
-    COIN_TYPE = 14
+    COIN_TYPE = 921
     NETWORKS = Networks({
-        "MAINNET": Mainnet, "TESTNET": Testnet
+        "MAINNET": Mainnet
     })
     DEFAULT_NETWORK = NETWORKS.MAINNET
     ENTROPIES = Entropies({
@@ -85,6 +73,6 @@ class Viacoin(ICryptocurrency):
     })
     DEFAULT_HD = HDS.BIP44
     ADDRESSES = Addresses({
-        "P2PKH", "P2SH", "P2WPKH", {"P2WPKH_IN_P2SH": "P2WPKH-In-P2SH"}
+        "P2PKH", "P2SH", "P2WPKH", {"P2WPKH_IN_P2SH": "P2WPKH-In-P2SH"}, "P2WSH", {"P2WSH_IN_P2SH": "P2WSH-In-P2SH"}
     })
     DEFAULT_ADDRESS = ADDRESSES.P2PKH

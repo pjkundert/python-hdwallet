@@ -15,35 +15,52 @@ from .icryptocurrency import (
 
 class Mainnet(INetwork):
 
-    PUBLIC_KEY_ADDRESS_PREFIX = 0x3c
-    SCRIPT_ADDRESS_PREFIX = 0x16
+    PUBLIC_KEY_ADDRESS_PREFIX = 0x4c
+    SCRIPT_ADDRESS_PREFIX = 0x10
     XPRIVATE_KEY_VERSIONS = XPrivateKeyVersions({
-        "P2PKH": 0x488ade4,
-        "P2SH": 0x488ade4
+        "P2PKH": 0x0488ade4,
+        "P2SH": 0x0488ade4
     })
     XPUBLIC_KEY_VERSIONS = XPublicKeyVersions({
-        "P2PKH": 0x488b21e,
-        "P2SH": 0x488b21e
+        "P2PKH": 0x0488b21e,
+        "P2SH": 0x0488b21e
     })
-    MESSAGE_PREFIX = "\x18newyorkc Signed Message:\n"
-    WIF_PREFIX = 0xbc
+    MESSAGE_PREFIX = "\x18Bitcoin Signed Message:\n"
+    WIF_PREFIX = 0xcc
 
 
-class NewYorkCoin(ICryptocurrency):
+class Testnet(INetwork):
 
-    NAME = "New York Coin"
-    SYMBOL = "NYC"
+    PUBLIC_KEY_ADDRESS_PREFIX = 0x8c
+    SCRIPT_ADDRESS_PREFIX = 0x13
+    XPRIVATE_KEY_VERSIONS = XPrivateKeyVersions({
+        "P2PKH": 0x04358394,
+        "P2SH": 0x04358394
+    })
+    XPUBLIC_KEY_VERSIONS = XPublicKeyVersions({
+        "P2PKH": 0x043587cf,
+        "P2SH": 0x043587cf
+    })
+    MESSAGE_PREFIX = "\x18Bitcoin Signed Message:\n"
+    WIF_PREFIX = 0xef
+
+
+class Dash(ICryptocurrency):
+
+    NAME = "Dash"
+    SYMBOL = "DASH"
     INFO = Info({
-        "SOURCE_CODE": "https://github.com/NewYorkCoinNYC/newyorkcoin",
+        "SOURCE_CODE": "https://github.com/dashpay/dash",
+        "WHITEPAPER": "https://docs.dash.org",
         "WEBSITES": [
-            "https://nycoin.net",
-            "https://newyorkcoin.net"
+            "https://www.dash.org",
+            "https://newsroom.dash.org"
         ]
     })
     ECC = SLIP10Secp256k1ECC
-    COIN_TYPE = 179
+    COIN_TYPE = 5
     NETWORKS = Networks({
-        "MAINNET": Mainnet
+        "MAINNET": Mainnet, "TESTNET": Testnet
     })
     DEFAULT_NETWORK = NETWORKS.MAINNET
     ENTROPIES = Entropies({

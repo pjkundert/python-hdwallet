@@ -15,33 +15,34 @@ from .icryptocurrency import (
 
 class Mainnet(INetwork):
 
-    PUBLIC_KEY_ADDRESS_PREFIX = 0x3c
-    SCRIPT_ADDRESS_PREFIX = 0x16
+    PUBLIC_KEY_ADDRESS_PREFIX = 0x1e
+    SCRIPT_ADDRESS_PREFIX = 0x5
     XPRIVATE_KEY_VERSIONS = XPrivateKeyVersions({
         "P2PKH": 0x488ade4,
         "P2SH": 0x488ade4
     })
     XPUBLIC_KEY_VERSIONS = XPublicKeyVersions({
-        "P2PKH": 0x488b21e,
-        "P2SH": 0x488b21e
+        "P2PKH": 0x9e0488b2,
+        "P2SH": 0x9e0488b2
     })
-    MESSAGE_PREFIX = "\x18newyorkc Signed Message:\n"
-    WIF_PREFIX = 0xbc
+    MESSAGE_PREFIX = "\x18Digitalcoin Signed Message:\n"
+    WIF_PREFIX = 0x9e
 
 
-class NewYorkCoin(ICryptocurrency):
+class Digitalcoin(ICryptocurrency):
 
-    NAME = "New York Coin"
-    SYMBOL = "NYC"
+    NAME = "Digitalcoin"
+    SYMBOL = "DGC"
     INFO = Info({
-        "SOURCE_CODE": "https://github.com/NewYorkCoinNYC/newyorkcoin",
+        "SOURCE_CODE": "https://github.com/lomtax/digitalcoin",
+        "WHITEPAPER": "https://github.com/lomtax/digitalcoin/blob/master/README.md",
         "WEBSITES": [
-            "https://nycoin.net",
-            "https://newyorkcoin.net"
+            "http://digitalcoin.co",
+            "https://digitalcoin.tech"
         ]
     })
     ECC = SLIP10Secp256k1ECC
-    COIN_TYPE = 179
+    COIN_TYPE = 18
     NETWORKS = Networks({
         "MAINNET": Mainnet
     })

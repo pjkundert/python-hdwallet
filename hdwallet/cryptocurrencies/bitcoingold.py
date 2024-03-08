@@ -15,42 +15,46 @@ from .icryptocurrency import (
 
 class Mainnet(INetwork):
 
-    PUBLIC_KEY_ADDRESS_PREFIX = 0x33
-    SCRIPT_ADDRESS_PREFIX = 0x1c
-    HRP = "monkey"
+    PUBLIC_KEY_ADDRESS_PREFIX = 0x26
+    SCRIPT_ADDRESS_PREFIX = 0x17 
+    HRP = "btg"
     WITNESS_VERSIONS = WitnessVersions({
         "P2WPKH": 0x00,
         "P2WSH": 0x00
     })
     XPRIVATE_KEY_VERSIONS = XPrivateKeyVersions({
-        "P2PKH": 0x488dde4,
-        "P2SH": 0x488dde4,
-        "P2WPKH": 0x488dde4,
-        "P2WPKH_IN_P2SH": 0x488dde4
+        "P2PKH": 0x0488ade4,
+        "P2SH": 0x0488ade4,
+        "P2WPKH": 0x04b2430c,
+        "P2WPKH_IN_P2SH": 0x049d7878,
+        "P2WSH": 0x02aa7a99,
+        "P2WSH_IN_P2SH": 0x0295b005
     })
     XPUBLIC_KEY_VERSIONS = XPublicKeyVersions({
-        "P2PKH": 0x488b21e,
-        "P2SH": 0x488b21e,
-        "P2WPKH": 0x488b21e,
-        "P2WPKH_IN_P2SH": 0x488b21e
+        "P2PKH": 0x0488b21e,
+        "P2SH": 0x0488b21e,
+        "P2WPKH": 0x04b24746,
+        "P2WPKH_IN_P2SH": 0x049d7cb2,
+        "P2WSH": 0x02aa7ed3,
+        "P2WSH_IN_P2SH": 0x0295b43f
     })
-    MESSAGE_PREFIX = "Monkey Signed Message:\n"
-    WIF_PREFIX = 0x37
+    MESSAGE_PREFIX = "\x1DBitcoin Gold Signed Message:\n"
+    WIF_PREFIX = 0x80
 
 
-class MonkeyProject(ICryptocurrency):
+class BitcoinGold(ICryptocurrency):
 
-    NAME = "Monkey Project"
-    SYMBOL = "MONK"
+    NAME = "Bitcoin Gold"
+    SYMBOL = "BTG"
     INFO = Info({
-        "SOURCE_CODE": "https://github.com/decenomy/MONK",
-        "WHITEPAPER": "https://decenomy.net/wp-content/uploads/DECENOMY_WP_v1.0_EN.pdf",
+        "SOURCE_CODE": "https://github.com/BTCGPU/BTCGPU",
+        "WHITEPAPER": "https://github.com/BTCGPU/BTCGPU/wiki/Technical-Spec",
         "WEBSITES": [
-            "http://www.monkey.vision"
+            "https://bitcoingold.org"
         ]
     })
     ECC = SLIP10Secp256k1ECC
-    COIN_TYPE = 214
+    COIN_TYPE = 156
     NETWORKS = Networks({
         "MAINNET": Mainnet
     })
@@ -69,7 +73,6 @@ class MonkeyProject(ICryptocurrency):
     })
     DEFAULT_HD = HDS.BIP44
     ADDRESSES = Addresses({
-        "P2PKH", "P2SH", "P2WPKH", {"P2WPKH_IN_P2SH": "P2WPKH-In-P2SH"}
+        "P2PKH", "P2SH", "P2WPKH", {"P2WPKH_IN_P2SH": "P2WPKH-In-P2SH"}, "P2WSH", {"P2WSH_IN_P2SH": "P2WSH-In-P2SH"}
     })
     DEFAULT_ADDRESS = ADDRESSES.P2PKH
-

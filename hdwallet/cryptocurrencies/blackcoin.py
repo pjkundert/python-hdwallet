@@ -15,33 +15,34 @@ from .icryptocurrency import (
 
 class Mainnet(INetwork):
 
-    PUBLIC_KEY_ADDRESS_PREFIX = 0x3c
-    SCRIPT_ADDRESS_PREFIX = 0x16
+    PUBLIC_KEY_ADDRESS_PREFIX = 0x19
+    SCRIPT_ADDRESS_PREFIX = 0x55
     XPRIVATE_KEY_VERSIONS = XPrivateKeyVersions({
-        "P2PKH": 0x488ade4,
-        "P2SH": 0x488ade4
+        "P2PKH": 0x2cfbf60,
+        "P2SH": 0x2cfbf60
     })
     XPUBLIC_KEY_VERSIONS = XPublicKeyVersions({
-        "P2PKH": 0x488b21e,
-        "P2SH": 0x488b21e
+        "P2PKH": 0x2cfbede,
+        "P2SH": 0x2cfbede
     })
-    MESSAGE_PREFIX = "\x18newyorkc Signed Message:\n"
-    WIF_PREFIX = 0xbc
+    MESSAGE_PREFIX = "\x18BlackCoin Signed Message:\n"
+    WIF_PREFIX = 0x99
 
 
-class NewYorkCoin(ICryptocurrency):
+class Blackcoin(ICryptocurrency):
 
-    NAME = "New York Coin"
-    SYMBOL = "NYC"
+    NAME = "Blackcoin"
+    SYMBOL = "BLK"
     INFO = Info({
-        "SOURCE_CODE": "https://github.com/NewYorkCoinNYC/newyorkcoin",
+        "SOURCE_CODE": "https://github.com/coinblack",
+        "WHITEPAPER": "https://blackcoin.org/blackcoin-pos-protocol-v2-whitepaper.pdf",
         "WEBSITES": [
-            "https://nycoin.net",
-            "https://newyorkcoin.net"
+            "https://blackcoin.org",
+            "https://blackcoinmore.org"
         ]
     })
     ECC = SLIP10Secp256k1ECC
-    COIN_TYPE = 179
+    COIN_TYPE = 10
     NETWORKS = Networks({
         "MAINNET": Mainnet
     })

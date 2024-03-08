@@ -15,8 +15,8 @@ from .icryptocurrency import (
 
 class Mainnet(INetwork):
 
-    PUBLIC_KEY_ADDRESS_PREFIX = 0x3c
-    SCRIPT_ADDRESS_PREFIX = 0x16
+    PUBLIC_KEY_ADDRESS_PREFIX = 0x19
+    SCRIPT_ADDRESS_PREFIX = 0x55
     XPRIVATE_KEY_VERSIONS = XPrivateKeyVersions({
         "P2PKH": 0x488ade4,
         "P2SH": 0x488ade4
@@ -25,23 +25,22 @@ class Mainnet(INetwork):
         "P2PKH": 0x488b21e,
         "P2SH": 0x488b21e
     })
-    MESSAGE_PREFIX = "\x18newyorkc Signed Message:\n"
-    WIF_PREFIX = 0xbc
+    MESSAGE_PREFIX = "\x18BritCoin Signed Message:\n"
+    WIF_PREFIX = 0x99
 
 
-class NewYorkCoin(ICryptocurrency):
+class BritCoin(ICryptocurrency):
 
-    NAME = "New York Coin"
-    SYMBOL = "NYC"
+    NAME = "Brit Coin"
+    SYMBOL = "BRIT"
     INFO = Info({
-        "SOURCE_CODE": "https://github.com/NewYorkCoinNYC/newyorkcoin",
+        "SOURCE_CODE": "https://github.com/britcoin3",
         "WEBSITES": [
-            "https://nycoin.net",
-            "https://newyorkcoin.net"
+            "http://britcoin.xyz"
         ]
     })
     ECC = SLIP10Secp256k1ECC
-    COIN_TYPE = 179
+    COIN_TYPE = 70
     NETWORKS = Networks({
         "MAINNET": Mainnet
     })

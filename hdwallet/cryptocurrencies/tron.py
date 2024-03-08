@@ -15,33 +15,34 @@ from .icryptocurrency import (
 
 class Mainnet(INetwork):
 
-    PUBLIC_KEY_ADDRESS_PREFIX = 0x3c
-    SCRIPT_ADDRESS_PREFIX = 0x16
+    PUBLIC_KEY_ADDRESS_PREFIX = 0x41
+    SCRIPT_ADDRESS_PREFIX = 0x05
     XPRIVATE_KEY_VERSIONS = XPrivateKeyVersions({
-        "P2PKH": 0x488ade4,
-        "P2SH": 0x488ade4
+        "P2PKH": 0x0488ade4,
+        "P2SH": 0x0488ade4
     })
     XPUBLIC_KEY_VERSIONS = XPublicKeyVersions({
-        "P2PKH": 0x488b21e,
-        "P2SH": 0x488b21e
+        "P2PKH": 0x0488b21e,
+        "P2SH": 0x0488b21e
     })
-    MESSAGE_PREFIX = "\x18newyorkc Signed Message:\n"
-    WIF_PREFIX = 0xbc
+    MESSAGE_PREFIX = None
+    WIF_PREFIX = 0x80
 
 
-class NewYorkCoin(ICryptocurrency):
+class Tron(ICryptocurrency):
 
-    NAME = "New York Coin"
-    SYMBOL = "NYC"
+    NAME = "Tron"
+    SYMBOL = "TRX"
     INFO = Info({
-        "SOURCE_CODE": "https://github.com/NewYorkCoinNYC/newyorkcoin",
+        "SOURCE_CODE": "https://github.com/tronprotocol/java-tron",
+        "WHITEPAPER": "https://developers.tron.network/docs",
         "WEBSITES": [
-            "https://nycoin.net",
-            "https://newyorkcoin.net"
+            "https://trondao.org",
+            "https://tron.network"
         ]
     })
     ECC = SLIP10Secp256k1ECC
-    COIN_TYPE = 179
+    COIN_TYPE = 195
     NETWORKS = Networks({
         "MAINNET": Mainnet
     })

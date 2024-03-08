@@ -15,67 +15,76 @@ from .icryptocurrency import (
 
 class Mainnet(INetwork):
 
-    PUBLIC_KEY_ADDRESS_PREFIX = 0x3f
-    SCRIPT_ADDRESS_PREFIX = 0x7d
-    HRP = "sugar"
+    SCRIPT_ADDRESS_PREFIX = 0x32
+    PUBLIC_KEY_ADDRESS_PREFIX = 0x3a
+    HRP = "qc1"
     WITNESS_VERSIONS = WitnessVersions({
         "P2WPKH": 0x00,
         "P2WSH": 0x00
     })
     XPRIVATE_KEY_VERSIONS = XPrivateKeyVersions({
-        "P2PKH": 0x488ade4,
-        "P2SH": 0x488ade4,
-        "P2WPKH": 0x04b2430c,
-        "P2WPKH_IN_P2SH": 0x049d7878
+        "P2PKH": 0x0488ade4,
+        "P2SH": 0x0488ade4,
+        "P2WPKH": 0x045f18bc,
+        "P2WPKH_IN_P2SH": 0x049d7878,
+        "P2WSH": 0x02aa7a99,
+        "P2WSH_IN_P2SH": 0x0295b005
     })
     XPUBLIC_KEY_VERSIONS = XPublicKeyVersions({
-        "P2PKH": 0x488b21e,
-        "P2SH": 0x488b21e,
-        "P2WPKH": 0x04b24746,
-        "P2WPKH_IN_P2SH": 0x049d7cb2
+        "P2PKH": 0x0488b21e,
+        "P2SH": 0x0488b21e,
+        "P2WPKH": 0x045f1cf6,
+        "P2WPKH_IN_P2SH": 0x049d7cb2,
+        "P2WSH": 0x02aa7ed3,
+        "P2WSH_IN_P2SH": 0x0295b43f
     })
-    MESSAGE_PREFIX = "\x18Sugarchain Signed Message:\n"
+    MESSAGE_PREFIX = None
     WIF_PREFIX = 0x80
 
 
 class Testnet(INetwork):
 
-    PUBLIC_KEY_ADDRESS_PREFIX = 0x42
-    SCRIPT_ADDRESS_PREFIX = 0x80
-    HRP = "tugar"
+    SCRIPT_ADDRESS_PREFIX = 0x6e
+    PUBLIC_KEY_ADDRESS_PREFIX = 0x78
+    HRP = "tq1"
     WITNESS_VERSIONS = WitnessVersions({
         "P2WPKH": 0x00,
         "P2WSH": 0x00
     })
     XPRIVATE_KEY_VERSIONS = XPrivateKeyVersions({
-        "P2PKH": 0x45f18bc,
-        "P2SH": 0x45f18bc,
+        "P2PKH": 0x04358394,
+        "P2SH": 0x04358394,
         "P2WPKH": 0x045f18bc,
-        "P2WPKH_IN_P2SH": 0x044a4e28
+        "P2WPKH_IN_P2SH": 0x044a4e28,
+        "P2WSH": 0x02575048,
+        "P2WSH_IN_P2SH": 0x024285b5
     })
     XPUBLIC_KEY_VERSIONS = XPublicKeyVersions({
-        "P2PKH": 0x45f1cf6,
-        "P2SH": 0x45f1cf6,
+        "P2PKH": 0x043587cf,
+        "P2SH": 0x043587cf,
         "P2WPKH": 0x045f1cf6,
-        "P2WPKH_IN_P2SH": 0x044a5262
+        "P2WPKH_IN_P2SH": 0x044a5262,
+        "P2WSH": 0x02575483,
+        "P2WSH_IN_P2SH": 0x024289ef
     })
-    MESSAGE_PREFIX = "\x18Sugarchain Signed Message:\n"
+    MESSAGE_PREFIX = None
     WIF_PREFIX = 0xef
 
 
-class Sugarchain(ICryptocurrency):
+class Qtum(ICryptocurrency):
 
-    NAME = "Sugarchain"
-    SYMBOL = "SUGAR"
+    NAME = "Qtum"
+    SYMBOL = "QTUM"
     INFO = Info({
-        "SOURCE_CODE": "https://github.com/sugarchain-project/sugarchain",
-        "WHITEPAPER": "https://sugarchain.org/whitepaper",
+        "SOURCE_CODE": "https://github.com/qtumproject/qtum",
+        "WHITEPAPER": "https://qtumorg.s3.ap-northeast-2.amazonaws.com/Qtum_New_Whitepaper_en.pdf",
         "WEBSITES": [
-            "https://sugarchain.org"
+            "https://qtum.org",
+            "https://qtum.info"
         ]
     })
     ECC = SLIP10Secp256k1ECC
-    COIN_TYPE = 408
+    COIN_TYPE = 2301
     NETWORKS = Networks({
         "MAINNET": Mainnet, "TESTNET": Testnet
     })
@@ -94,6 +103,6 @@ class Sugarchain(ICryptocurrency):
     })
     DEFAULT_HD = HDS.BIP44
     ADDRESSES = Addresses({
-        "P2PKH", "P2SH", "P2WPKH", {"P2WPKH_IN_P2SH": "P2WPKH-In-P2SH"}
+        "P2PKH", "P2SH", "P2TR", "P2WPKH", {"P2WPKH_IN_P2SH": "P2WPKH-In-P2SH"}, "P2WSH", {"P2WSH_IN_P2SH": "P2WSH-In-P2SH"}
     })
     DEFAULT_ADDRESS = ADDRESSES.P2PKH

@@ -15,9 +15,9 @@ from .icryptocurrency import (
 
 class Mainnet(INetwork):
 
-    PUBLIC_KEY_ADDRESS_PREFIX = 0x47
-    SCRIPT_ADDRESS_PREFIX = 0x21
-    HRP = "viacoin"
+    PUBLIC_KEY_ADDRESS_PREFIX = 0x1c
+    SCRIPT_ADDRESS_PREFIX = 0x1e
+    HRP = "cpu"
     WITNESS_VERSIONS = WitnessVersions({
         "P2WPKH": 0x00,
         "P2WSH": 0x00
@@ -25,50 +25,34 @@ class Mainnet(INetwork):
     XPRIVATE_KEY_VERSIONS = XPrivateKeyVersions({
         "P2PKH": 0x488ade4,
         "P2SH": 0x488ade4,
-        "P2WPKH": 0x0488ade4,
-        "P2WPKH_IN_P2SH": 0x0488ade4
+        "P2WPKH": 0x04b2430c,
+        "P2WPKH_IN_P2SH": 0x049d7878
     })
     XPUBLIC_KEY_VERSIONS = XPublicKeyVersions({
         "P2PKH": 0x488b21e,
         "P2SH": 0x488b21e,
-        "P2WPKH": 0x0488b21e,
-        "P2WPKH_IN_P2SH": 0x0488b21e
+        "P2WPKH": 0x04b24746,
+        "P2WPKH_IN_P2SH": 0x049d7cb2
     })
-    MESSAGE_PREFIX = "\x18Viacoin Signed Message:\n"
-    WIF_PREFIX = 0xc7
+    MESSAGE_PREFIX = "\x1DCPUchain Signed Message:\n"
+    WIF_PREFIX = 0x80
 
 
-class Testnet(INetwork):
+class CPUChain(ICryptocurrency):
 
-    PUBLIC_KEY_ADDRESS_PREFIX = 0x7f
-    SCRIPT_ADDRESS_PREFIX = 0xc4
-    XPRIVATE_KEY_VERSIONS = XPrivateKeyVersions({
-        "P2PKH": 0x4358394,
-        "P2SH": 0x4358394
-    })
-    XPUBLIC_KEY_VERSIONS = XPublicKeyVersions({
-        "P2PKH": 0x43587cf,
-        "P2SH": 0x43587cf
-    })
-    MESSAGE_PREFIX = "\x18Viacoin Signed Message:\n"
-    WIF_PREFIX = 0xff
-
-
-class Viacoin(ICryptocurrency):
-
-    NAME = "Viacoin"
-    SYMBOL = "VIA"
+    NAME = "CPU Chain"
+    SYMBOL = "CPU"
     INFO = Info({
-        "SOURCE_CODE": "https://github.com/viacoin/viacoin",
-        "WHITEPAPER": "https://github.com/viacoin/documents/blob/master/whitepapers/Viacoin_fullcolor_whitepaper.pdf",
+        "SOURCE_CODE": "https://github.com/cpuchain/cpuchain",
+        "WHITEPAPER": "https://cpuchain.org/assets/v1.pdf",
         "WEBSITES": [
-            "http://viacoin.org"
+            "https://cpuchain.org"
         ]
     })
     ECC = SLIP10Secp256k1ECC
-    COIN_TYPE = 14
+    COIN_TYPE = 363
     NETWORKS = Networks({
-        "MAINNET": Mainnet, "TESTNET": Testnet
+        "MAINNET": Mainnet
     })
     DEFAULT_NETWORK = NETWORKS.MAINNET
     ENTROPIES = Entropies({

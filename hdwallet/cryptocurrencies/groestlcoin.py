@@ -15,9 +15,9 @@ from .icryptocurrency import (
 
 class Mainnet(INetwork):
 
-    PUBLIC_KEY_ADDRESS_PREFIX = 0x47
-    SCRIPT_ADDRESS_PREFIX = 0x21
-    HRP = "viacoin"
+    PUBLIC_KEY_ADDRESS_PREFIX = 0x24
+    SCRIPT_ADDRESS_PREFIX = 0x5
+    HRP = "grs"
     WITNESS_VERSIONS = WitnessVersions({
         "P2WPKH": 0x00,
         "P2WSH": 0x00
@@ -25,48 +25,57 @@ class Mainnet(INetwork):
     XPRIVATE_KEY_VERSIONS = XPrivateKeyVersions({
         "P2PKH": 0x488ade4,
         "P2SH": 0x488ade4,
-        "P2WPKH": 0x0488ade4,
-        "P2WPKH_IN_P2SH": 0x0488ade4
+        "P2WPKH": 0x04b2430c,
+        "P2WPKH_IN_P2SH": 0x049d7878
     })
     XPUBLIC_KEY_VERSIONS = XPublicKeyVersions({
         "P2PKH": 0x488b21e,
         "P2SH": 0x488b21e,
-        "P2WPKH": 0x0488b21e,
-        "P2WPKH_IN_P2SH": 0x0488b21e
+        "P2WPKH": 0x04b24746,
+        "P2WPKH_IN_P2SH": 0x049d7cb2
     })
-    MESSAGE_PREFIX = "\x18Viacoin Signed Message:\n"
-    WIF_PREFIX = 0xc7
+    MESSAGE_PREFIX = "\x19GroestlCoin Signed Message:\n"
+    WIF_PREFIX = 0x80
 
 
 class Testnet(INetwork):
 
-    PUBLIC_KEY_ADDRESS_PREFIX = 0x7f
+    PUBLIC_KEY_ADDRESS_PREFIX = 0x6f
     SCRIPT_ADDRESS_PREFIX = 0xc4
+    HRP = "tgrs"
+    WITNESS_VERSIONS = WitnessVersions({
+        "P2WPKH": 0x00,
+        "P2WSH": 0x00
+    })
     XPRIVATE_KEY_VERSIONS = XPrivateKeyVersions({
         "P2PKH": 0x4358394,
-        "P2SH": 0x4358394
+        "P2SH": 0x4358394,
+        "P2WPKH": 0x045f18bc,
+        "P2WPKH_IN_P2SH": 0x044a4e28
     })
     XPUBLIC_KEY_VERSIONS = XPublicKeyVersions({
         "P2PKH": 0x43587cf,
-        "P2SH": 0x43587cf
+        "P2SH": 0x43587cf,
+        "P2WPKH": 0x045f1cf6,
+        "P2WPKH_IN_P2SH": 0x044a5262
     })
-    MESSAGE_PREFIX = "\x18Viacoin Signed Message:\n"
-    WIF_PREFIX = 0xff
+    MESSAGE_PREFIX = "\x19GroestlCoin Signed Message:\n"
+    WIF_PREFIX = 0xef
 
 
-class Viacoin(ICryptocurrency):
+class GroestlCoin(ICryptocurrency):
 
-    NAME = "Viacoin"
-    SYMBOL = "VIA"
+    NAME = "Groestl Coin"
+    SYMBOL = "GRS"
     INFO = Info({
-        "SOURCE_CODE": "https://github.com/viacoin/viacoin",
-        "WHITEPAPER": "https://github.com/viacoin/documents/blob/master/whitepapers/Viacoin_fullcolor_whitepaper.pdf",
+        "SOURCE_CODE": "https://github.com/Groestlcoin/groestlcoin",
+        "WHITEPAPER": "http://www.groestl.info/groestl-implementation-guide.pdf",
         "WEBSITES": [
-            "http://viacoin.org"
+            "https://www.groestlcoin.org"
         ]
     })
     ECC = SLIP10Secp256k1ECC
-    COIN_TYPE = 14
+    COIN_TYPE = 17
     NETWORKS = Networks({
         "MAINNET": Mainnet, "TESTNET": Testnet
     })

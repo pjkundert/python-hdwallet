@@ -15,33 +15,34 @@ from .icryptocurrency import (
 
 class Mainnet(INetwork):
 
-    PUBLIC_KEY_ADDRESS_PREFIX = 0x3c
-    SCRIPT_ADDRESS_PREFIX = 0x16
+    PUBLIC_KEY_ADDRESS_PREFIX = 0x19
+    SCRIPT_ADDRESS_PREFIX = 0x5   
     XPRIVATE_KEY_VERSIONS = XPrivateKeyVersions({
-        "P2PKH": 0x488ade4,
-        "P2SH": 0x488ade4
+        "P2PKH": 0xa40b91bd,
+        "P2SH": 0xa40b91bd
     })
     XPUBLIC_KEY_VERSIONS = XPublicKeyVersions({
-        "P2PKH": 0x488b21e,
-        "P2SH": 0x488b21e
+        "P2PKH": 0xa40c86fa,
+        "P2SH": 0xa40c86fa
     })
-    MESSAGE_PREFIX = "\x18newyorkc Signed Message:\n"
-    WIF_PREFIX = 0xbc
+    MESSAGE_PREFIX = "\x18Bata Signed Message:\n"
+    WIF_PREFIX = 0xa4
 
 
-class NewYorkCoin(ICryptocurrency):
+class Bata(ICryptocurrency):
 
-    NAME = "New York Coin"
-    SYMBOL = "NYC"
+    NAME = "Bata"
+    SYMBOL = "BTA"
     INFO = Info({
-        "SOURCE_CODE": "https://github.com/NewYorkCoinNYC/newyorkcoin",
+        "SOURCE_CODE": "https://github.com/BTA-BATA/Bataoshi",
+        "WHITEPAPER": "https://bata.io/wp-content/uploads/2021/09/Bata-Cryptocurrency-Whitepaper.pdf",
         "WEBSITES": [
-            "https://nycoin.net",
-            "https://newyorkcoin.net"
+            "https://bata.io",
+            "https://bata.digital"
         ]
     })
     ECC = SLIP10Secp256k1ECC
-    COIN_TYPE = 179
+    COIN_TYPE = 89
     NETWORKS = Networks({
         "MAINNET": Mainnet
     })

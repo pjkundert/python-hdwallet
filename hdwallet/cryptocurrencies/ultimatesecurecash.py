@@ -15,33 +15,33 @@ from .icryptocurrency import (
 
 class Mainnet(INetwork):
 
-    PUBLIC_KEY_ADDRESS_PREFIX = 0x3c
-    SCRIPT_ADDRESS_PREFIX = 0x16
+    PUBLIC_KEY_ADDRESS_PREFIX = 0x44
+    SCRIPT_ADDRESS_PREFIX = 0x7d
     XPRIVATE_KEY_VERSIONS = XPrivateKeyVersions({
-        "P2PKH": 0x488ade4,
-        "P2SH": 0x488ade4
+        "P2PKH": 0xee8031e8,
+        "P2SH": 0xee8031e8
     })
     XPUBLIC_KEY_VERSIONS = XPublicKeyVersions({
-        "P2PKH": 0x488b21e,
-        "P2SH": 0x488b21e
+        "P2PKH": 0xee80286a,
+        "P2SH": 0xee80286a
     })
-    MESSAGE_PREFIX = "\x18newyorkc Signed Message:\n"
-    WIF_PREFIX = 0xbc
+    MESSAGE_PREFIX = "\x18UltimateSecureCash Signed Message:\n"
+    WIF_PREFIX = 0xbf
 
 
-class NewYorkCoin(ICryptocurrency):
+class UltimateSecureCash(ICryptocurrency):
 
-    NAME = "New York Coin"
-    SYMBOL = "NYC"
+    NAME = "Ultimate Secure Cash"
+    SYMBOL = "USC"
     INFO = Info({
-        "SOURCE_CODE": "https://github.com/NewYorkCoinNYC/newyorkcoin",
+        "SOURCE_CODE": "https://github.com/SilentTrader/UltimateSecureCash",
+        "WHITEPAPER": "https://ultimatesecurecash.info/#spec",
         "WEBSITES": [
-            "https://nycoin.net",
-            "https://newyorkcoin.net"
+            "http://ultimatesecurecash.info"
         ]
     })
     ECC = SLIP10Secp256k1ECC
-    COIN_TYPE = 179
+    COIN_TYPE = 112
     NETWORKS = Networks({
         "MAINNET": Mainnet
     })
