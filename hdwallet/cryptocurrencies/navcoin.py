@@ -15,33 +15,33 @@ from .icryptocurrency import (
 
 class Mainnet(INetwork):
 
-    PUBLIC_KEY_ADDRESS_PREFIX = 0x582
-    SCRIPT_ADDRESS_PREFIX = 0x5389
+    PUBLIC_KEY_ADDRESS_PREFIX = 0x35
+    SCRIPT_ADDRESS_PREFIX = 0x55
     XPRIVATE_KEY_VERSIONS = XPrivateKeyVersions({
-        "P2PKH": 0x488ade4,
-        "P2SH": 0x488ade4
+        "P2PKH": 0x0488ade4,
+        "P2SH": 0x0488ade4
     })
     XPUBLIC_KEY_VERSIONS = XPublicKeyVersions({
-        "P2PKH": 0x488b21e,
-        "P2SH": 0x488b21e
+        "P2PKH": 0x0488b21e,
+        "P2SH": 0x0488b21e
     })
-    MESSAGE_PREFIX = "\x18ANON Signed Message:\n"
-    WIF_PREFIX = 0x80
+    MESSAGE_PREFIX = "\x18Navcoin Signed Message:\n"
+    WIF_PREFIX = 0x96
 
 
-class Anon(ICryptocurrency):
+class Navcoin(ICryptocurrency):
 
-    NAME = "Anon"
-    SYMBOL = "ANON"
+    NAME = "Navcoin"
+    SYMBOL = "NAV"
     INFO = Info({
-        "SOURCE_CODE": "https://github.com/anonymousbitcoin/anon",
-        "WHITEPAPER": "https://www.anon.community/whitepaper",
+        "SOURCE_CODE": "https://github.com/navcoin/navcoin-core",
+        "WHITEPAPER": "https://doc.nav.community",
         "WEBSITES": [
-            "https://www.anon.community"
+            "http://www.navcoin.org"
         ]
     })
     ECC = SLIP10Secp256k1ECC
-    COIN_TYPE = 220
+    COIN_TYPE = 130
     NETWORKS = Networks({
         "MAINNET": Mainnet
     })

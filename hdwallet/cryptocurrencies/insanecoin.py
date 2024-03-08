@@ -15,8 +15,8 @@ from .icryptocurrency import (
 
 class Mainnet(INetwork):
 
-    PUBLIC_KEY_ADDRESS_PREFIX = 0x582
-    SCRIPT_ADDRESS_PREFIX = 0x5389
+    PUBLIC_KEY_ADDRESS_PREFIX = 0x66
+    SCRIPT_ADDRESS_PREFIX = 0x39
     XPRIVATE_KEY_VERSIONS = XPrivateKeyVersions({
         "P2PKH": 0x488ade4,
         "P2SH": 0x488ade4
@@ -25,23 +25,23 @@ class Mainnet(INetwork):
         "P2PKH": 0x488b21e,
         "P2SH": 0x488b21e
     })
-    MESSAGE_PREFIX = "\x18ANON Signed Message:\n"
-    WIF_PREFIX = 0x80
+    MESSAGE_PREFIX = "\x18INSaNe Signed Message:\n"
+    WIF_PREFIX = 0x37
 
 
-class Anon(ICryptocurrency):
+class InsaneCoin(ICryptocurrency):
 
-    NAME = "Anon"
-    SYMBOL = "ANON"
+    NAME = "InsaneCoin"
+    SYMBOL = "INSN"
     INFO = Info({
-        "SOURCE_CODE": "https://github.com/anonymousbitcoin/anon",
-        "WHITEPAPER": "https://www.anon.community/whitepaper",
+        "SOURCE_CODE": "https://github.com/CryptoCoderz/INSN",
+        "WHITEPAPER": "https://insane.network/velocity-bluepaper",
         "WEBSITES": [
-            "https://www.anon.community"
+            "https://insane.network"
         ]
     })
     ECC = SLIP10Secp256k1ECC
-    COIN_TYPE = 220
+    COIN_TYPE = 68
     NETWORKS = Networks({
         "MAINNET": Mainnet
     })

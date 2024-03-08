@@ -15,8 +15,8 @@ from .icryptocurrency import (
 
 class Mainnet(INetwork):
 
-    PUBLIC_KEY_ADDRESS_PREFIX = 0x582
-    SCRIPT_ADDRESS_PREFIX = 0x5389
+    PUBLIC_KEY_ADDRESS_PREFIX = 0x32
+    SCRIPT_ADDRESS_PREFIX = 0x9
     XPRIVATE_KEY_VERSIONS = XPrivateKeyVersions({
         "P2PKH": 0x488ade4,
         "P2SH": 0x488ade4
@@ -25,23 +25,22 @@ class Mainnet(INetwork):
         "P2PKH": 0x488b21e,
         "P2SH": 0x488b21e
     })
-    MESSAGE_PREFIX = "\x18ANON Signed Message:\n"
-    WIF_PREFIX = 0x80
+    MESSAGE_PREFIX = None
+    WIF_PREFIX = 0xe0
 
 
-class Anon(ICryptocurrency):
+class Mazacoin(ICryptocurrency):
 
-    NAME = "Anon"
-    SYMBOL = "ANON"
+    NAME = "Mazacoin"
+    SYMBOL = "MZC"
     INFO = Info({
-        "SOURCE_CODE": "https://github.com/anonymousbitcoin/anon",
-        "WHITEPAPER": "https://www.anon.community/whitepaper",
+        "SOURCE_CODE": "https://github.com/MazaCoin/maza",
         "WEBSITES": [
-            "https://www.anon.community"
+            "http://www.mazacoin.org"
         ]
     })
     ECC = SLIP10Secp256k1ECC
-    COIN_TYPE = 220
+    COIN_TYPE = 13
     NETWORKS = Networks({
         "MAINNET": Mainnet
     })

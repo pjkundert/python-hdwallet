@@ -15,8 +15,8 @@ from .icryptocurrency import (
 
 class Mainnet(INetwork):
 
-    PUBLIC_KEY_ADDRESS_PREFIX = 0x582
-    SCRIPT_ADDRESS_PREFIX = 0x5389
+    PUBLIC_KEY_ADDRESS_PREFIX = 0x3f
+    SCRIPT_ADDRESS_PREFIX = 0xc4
     XPRIVATE_KEY_VERSIONS = XPrivateKeyVersions({
         "P2PKH": 0x488ade4,
         "P2SH": 0x488ade4
@@ -25,23 +25,23 @@ class Mainnet(INetwork):
         "P2PKH": 0x488b21e,
         "P2SH": 0x488b21e
     })
-    MESSAGE_PREFIX = "\x18ANON Signed Message:\n"
-    WIF_PREFIX = 0x80
+    MESSAGE_PREFIX = "\x18Salus Signed Message:\n"
+    WIF_PREFIX = 0xbf
 
 
-class Anon(ICryptocurrency):
+class Saluscoin(ICryptocurrency):
 
-    NAME = "Anon"
-    SYMBOL = "ANON"
+    NAME = "Saluscoin"
+    SYMBOL = "SLS"
     INFO = Info({
-        "SOURCE_CODE": "https://github.com/anonymousbitcoin/anon",
-        "WHITEPAPER": "https://www.anon.community/whitepaper",
+        "SOURCE_CODE": "https://github.com/saluscoin/SaluS",
         "WEBSITES": [
-            "https://www.anon.community"
+            "http://saluscoin.info",
+            "https://divitia.com"
         ]
     })
     ECC = SLIP10Secp256k1ECC
-    COIN_TYPE = 220
+    COIN_TYPE = 572
     NETWORKS = Networks({
         "MAINNET": Mainnet
     })

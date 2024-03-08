@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+ #!/usr/bin/env python3
 
 # Copyright © 2020-2024, Meheret Tesfaye Batu <meherett.batu@gmail.com>
 # Distributed under the MIT software license, see the accompanying
@@ -15,8 +15,8 @@ from .icryptocurrency import (
 
 class Mainnet(INetwork):
 
-    PUBLIC_KEY_ADDRESS_PREFIX = 0x582
-    SCRIPT_ADDRESS_PREFIX = 0x5389
+    PUBLIC_KEY_ADDRESS_PREFIX = 0x3c
+    SCRIPT_ADDRESS_PREFIX = 0x55
     XPRIVATE_KEY_VERSIONS = XPrivateKeyVersions({
         "P2PKH": 0x488ade4,
         "P2SH": 0x488ade4
@@ -25,23 +25,22 @@ class Mainnet(INetwork):
         "P2PKH": 0x488b21e,
         "P2SH": 0x488b21e
     })
-    MESSAGE_PREFIX = "\x18ANON Signed Message:\n"
-    WIF_PREFIX = 0x80
+    MESSAGE_PREFIX = "\x18Rubycoin Signed Message:\n"
+    WIF_PREFIX = 0xbc
 
 
-class Anon(ICryptocurrency):
+class Rubycoin(ICryptocurrency):
 
-    NAME = "Anon"
-    SYMBOL = "ANON"
+    NAME = "Rubycoin"
+    SYMBOL = "RBY"
     INFO = Info({
-        "SOURCE_CODE": "https://github.com/anonymousbitcoin/anon",
-        "WHITEPAPER": "https://www.anon.community/whitepaper",
+        "SOURCE_CODE": "https://github.com/rubycoinorg/rubycoin",
         "WEBSITES": [
-            "https://www.anon.community"
+            "http://www.rubycoin.org"
         ]
     })
     ECC = SLIP10Secp256k1ECC
-    COIN_TYPE = 220
+    COIN_TYPE = 16
     NETWORKS = Networks({
         "MAINNET": Mainnet
     })

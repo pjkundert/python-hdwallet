@@ -15,8 +15,8 @@ from .icryptocurrency import (
 
 class Mainnet(INetwork):
 
-    PUBLIC_KEY_ADDRESS_PREFIX = 0x582
-    SCRIPT_ADDRESS_PREFIX = 0x5389
+    PUBLIC_KEY_ADDRESS_PREFIX = 0x3d
+    SCRIPT_ADDRESS_PREFIX = 0x5
     XPRIVATE_KEY_VERSIONS = XPrivateKeyVersions({
         "P2PKH": 0x488ade4,
         "P2SH": 0x488ade4
@@ -25,23 +25,24 @@ class Mainnet(INetwork):
         "P2PKH": 0x488b21e,
         "P2SH": 0x488b21e
     })
-    MESSAGE_PREFIX = "\x18ANON Signed Message:\n"
-    WIF_PREFIX = 0x80
+    MESSAGE_PREFIX = "\x18Reddcoin Signed Message:\n"
+    WIF_PREFIX = 0xbd
 
 
-class Anon(ICryptocurrency):
+class Reddcoin(ICryptocurrency):
 
-    NAME = "Anon"
-    SYMBOL = "ANON"
+    NAME = "Reddcoin"
+    SYMBOL = "RDD"
     INFO = Info({
-        "SOURCE_CODE": "https://github.com/anonymousbitcoin/anon",
-        "WHITEPAPER": "https://www.anon.community/whitepaper",
+        "SOURCE_CODE": "https://github.com/reddcoin-project/reddcoin",
+        "WHITEPAPER": "https://redd.love/assets/doc/Redd-Paper.pdf",
         "WEBSITES": [
-            "https://www.anon.community"
+            "http://www.reddcoin.com",
+            "https://redd.love"
         ]
     })
     ECC = SLIP10Secp256k1ECC
-    COIN_TYPE = 220
+    COIN_TYPE = 4
     NETWORKS = Networks({
         "MAINNET": Mainnet
     })
@@ -63,3 +64,4 @@ class Anon(ICryptocurrency):
         "P2PKH", "P2SH"
     })
     DEFAULT_ADDRESS = ADDRESSES.P2PKH
+

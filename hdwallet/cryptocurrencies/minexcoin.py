@@ -15,8 +15,8 @@ from .icryptocurrency import (
 
 class Mainnet(INetwork):
 
-    PUBLIC_KEY_ADDRESS_PREFIX = 0x582
-    SCRIPT_ADDRESS_PREFIX = 0x5389
+    PUBLIC_KEY_ADDRESS_PREFIX = 0x4b
+    SCRIPT_ADDRESS_PREFIX = 0x5
     XPRIVATE_KEY_VERSIONS = XPrivateKeyVersions({
         "P2PKH": 0x488ade4,
         "P2SH": 0x488ade4
@@ -25,23 +25,23 @@ class Mainnet(INetwork):
         "P2PKH": 0x488b21e,
         "P2SH": 0x488b21e
     })
-    MESSAGE_PREFIX = "\x18ANON Signed Message:\n"
+    MESSAGE_PREFIX = "\x18Bitcoin Signed Message:\n"
     WIF_PREFIX = 0x80
 
 
-class Anon(ICryptocurrency):
+class Minexcoin(ICryptocurrency):
 
-    NAME = "Anon"
-    SYMBOL = "ANON"
+    NAME = "Minexcoin"
+    SYMBOL = "MNX"
     INFO = Info({
-        "SOURCE_CODE": "https://github.com/anonymousbitcoin/anon",
-        "WHITEPAPER": "https://www.anon.community/whitepaper",
+        "SOURCE_CODE": "https://github.com/minexcoin/minexcoin",
+        "WHITEPAPER": "https://minexcoin.com/html/download/wpeng.pdf",
         "WEBSITES": [
-            "https://www.anon.community"
+            "https://minexcoin.com"
         ]
     })
     ECC = SLIP10Secp256k1ECC
-    COIN_TYPE = 220
+    COIN_TYPE = 182
     NETWORKS = Networks({
         "MAINNET": Mainnet
     })

@@ -15,35 +15,51 @@ from .icryptocurrency import (
 
 class Mainnet(INetwork):
 
-    PUBLIC_KEY_ADDRESS_PREFIX = 0x582
-    SCRIPT_ADDRESS_PREFIX = 0x5389
+    PUBLIC_KEY_ADDRESS_PREFIX = 0x3f
+    SCRIPT_ADDRESS_PREFIX = 0x7d
     XPRIVATE_KEY_VERSIONS = XPrivateKeyVersions({
-        "P2PKH": 0x488ade4,
-        "P2SH": 0x488ade4
+        "P2PKH": 0xee8031e8,
+        "P2SH": 0xee8031e8
     })
     XPUBLIC_KEY_VERSIONS = XPublicKeyVersions({
-        "P2PKH": 0x488b21e,
-        "P2SH": 0x488b21e
+        "P2PKH": 0xee80286a,
+        "P2SH": 0xee80286a
     })
-    MESSAGE_PREFIX = "\x18ANON Signed Message:\n"
-    WIF_PREFIX = 0x80
+    MESSAGE_PREFIX = None
+    WIF_PREFIX = 0xbf
 
 
-class Anon(ICryptocurrency):
+class Testnet(INetwork):
 
-    NAME = "Anon"
-    SYMBOL = "ANON"
+    PUBLIC_KEY_ADDRESS_PREFIX = 0x7f
+    SCRIPT_ADDRESS_PREFIX = 0xc4
+    XPRIVATE_KEY_VERSIONS = XPrivateKeyVersions({
+        "P2PKH": 0x76c1077a,
+        "P2SH": 0x76c1077a
+    })
+    XPUBLIC_KEY_VERSIONS = XPublicKeyVersions({
+        "P2PKH": 0x76c0fdfb,
+        "P2SH": 0x76c0fdfb
+    })
+    MESSAGE_PREFIX = None
+    WIF_PREFIX = 0xff
+
+
+class ShadowCash(ICryptocurrency):
+
+    NAME = "Shadow Cash"
+    SYMBOL = "SDC"
     INFO = Info({
-        "SOURCE_CODE": "https://github.com/anonymousbitcoin/anon",
-        "WHITEPAPER": "https://www.anon.community/whitepaper",
+        "SOURCE_CODE": "https://github.com/shadowproject/shadow",
+        "WHITEPAPER": "https://github.com/shadowproject/whitepapers",
         "WEBSITES": [
-            "https://www.anon.community"
+            "http://shadowproject.io"
         ]
     })
     ECC = SLIP10Secp256k1ECC
-    COIN_TYPE = 220
+    COIN_TYPE = 35
     NETWORKS = Networks({
-        "MAINNET": Mainnet
+        "MAINNET": Mainnet, "TESTNET": Testnet
     })
     DEFAULT_NETWORK = NETWORKS.MAINNET
     ENTROPIES = Entropies({

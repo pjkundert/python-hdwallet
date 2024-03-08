@@ -6,7 +6,7 @@
 
 from ..ecc import SLIP10Secp256k1ECC
 from ..const import (
-    Info, Entropies, Mnemonics, Seeds, HDs, Addresses, Networks, XPrivateKeyVersions, XPublicKeyVersions
+    Info, WitnessVersions, Entropies, Mnemonics, Seeds, HDs, Addresses, Networks, XPrivateKeyVersions, XPublicKeyVersions
 )
 from .icryptocurrency import (
     ICryptocurrency, INetwork
@@ -15,33 +15,43 @@ from .icryptocurrency import (
 
 class Mainnet(INetwork):
 
-    PUBLIC_KEY_ADDRESS_PREFIX = 0x582
-    SCRIPT_ADDRESS_PREFIX = 0x5389
+    PUBLIC_KEY_ADDRESS_PREFIX = 0x26
+    SCRIPT_ADDRESS_PREFIX = 0x35
+    HRP = "nix"
+    WITNESS_VERSIONS = WitnessVersions({
+        "P2WPKH": 0x00,
+        "P2WSH": 0x00
+    })
     XPRIVATE_KEY_VERSIONS = XPrivateKeyVersions({
         "P2PKH": 0x488ade4,
-        "P2SH": 0x488ade4
+        "P2SH": 0x488ade4,
+        "P2WPKH": 0x488ade4,
+        "P2WPKH_IN_P2SH": 0x488ade4
     })
     XPUBLIC_KEY_VERSIONS = XPublicKeyVersions({
         "P2PKH": 0x488b21e,
-        "P2SH": 0x488b21e
+        "P2SH": 0x488b21e,
+        "P2WPKH": 0x488b21e,
+        "P2WPKH_IN_P2SH": 0x488b21e
     })
-    MESSAGE_PREFIX = "\x18ANON Signed Message:\n"
+    MESSAGE_PREFIX = "\x18Nix Signed Message:\n"
     WIF_PREFIX = 0x80
 
 
-class Anon(ICryptocurrency):
+class NIX(ICryptocurrency):
 
-    NAME = "Anon"
-    SYMBOL = "ANON"
+    NAME = "NIX"
+    SYMBOL = "NIX"
     INFO = Info({
-        "SOURCE_CODE": "https://github.com/anonymousbitcoin/anon",
-        "WHITEPAPER": "https://www.anon.community/whitepaper",
+        "SOURCE_CODE": "https://github.com/NixPlatform/NixCore",
+        "WHITEPAPER": "https://nixplatform.io/about/documentation",
         "WEBSITES": [
-            "https://www.anon.community"
+            "https://nixplatform.io",
+            "https://governance.nixplatform.io"
         ]
     })
     ECC = SLIP10Secp256k1ECC
-    COIN_TYPE = 220
+    COIN_TYPE = 400
     NETWORKS = Networks({
         "MAINNET": Mainnet
     })

@@ -15,33 +15,34 @@ from .icryptocurrency import (
 
 class Mainnet(INetwork):
 
-    PUBLIC_KEY_ADDRESS_PREFIX = 0x582
-    SCRIPT_ADDRESS_PREFIX = 0x5389
+    PUBLIC_KEY_ADDRESS_PREFIX = 0x49
+    SCRIPT_ADDRESS_PREFIX = 0x57
     XPRIVATE_KEY_VERSIONS = XPrivateKeyVersions({
-        "P2PKH": 0x488ade4,
-        "P2SH": 0x488ade4
+        "P2PKH": 0x48894ed,
+        "P2SH": 0x48894ed
     })
     XPUBLIC_KEY_VERSIONS = XPublicKeyVersions({
-        "P2PKH": 0x488b21e,
-        "P2SH": 0x488b21e
+        "P2PKH": 0x4887f1e,
+        "P2SH": 0x4887f1e
     })
-    MESSAGE_PREFIX = "\x18ANON Signed Message:\n"
-    WIF_PREFIX = 0x80
+    MESSAGE_PREFIX = "\x18Whitecoin Signed Message:\n"
+    WIF_PREFIX = 0xc9
 
 
-class Anon(ICryptocurrency):
+class Whitecoin(ICryptocurrency):
 
-    NAME = "Anon"
-    SYMBOL = "ANON"
+    NAME = "Whitecoin"
+    SYMBOL = "XWC"
     INFO = Info({
-        "SOURCE_CODE": "https://github.com/anonymousbitcoin/anon",
-        "WHITEPAPER": "https://www.anon.community/whitepaper",
+        "SOURCE_CODE": "https://github.com/Whitecoin-XWC/Whitecoin-core",
+        "WHITEPAPER": "https://www.whitecoin.info/pdf/Whitecoin%20Technical%20White%20Paper_en.pdf",
         "WEBSITES": [
-            "https://www.anon.community"
+            "http://whitecoin.info",
+            "http://xwc.com"
         ]
     })
     ECC = SLIP10Secp256k1ECC
-    COIN_TYPE = 220
+    COIN_TYPE = 559
     NETWORKS = Networks({
         "MAINNET": Mainnet
     })

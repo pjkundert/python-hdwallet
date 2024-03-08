@@ -15,33 +15,33 @@ from .icryptocurrency import (
 
 class Mainnet(INetwork):
 
-    PUBLIC_KEY_ADDRESS_PREFIX = 0x582
-    SCRIPT_ADDRESS_PREFIX = 0x5389
+    PUBLIC_KEY_ADDRESS_PREFIX = 0x4b
+    SCRIPT_ADDRESS_PREFIX = 0x12
     XPRIVATE_KEY_VERSIONS = XPrivateKeyVersions({
-        "P2PKH": 0x488ade4,
-        "P2SH": 0x488ade4
+        "P2PKH": 0x221312b,
+        "P2SH": 0x221312b
     })
     XPUBLIC_KEY_VERSIONS = XPublicKeyVersions({
-        "P2PKH": 0x488b21e,
-        "P2SH": 0x488b21e
+        "P2PKH": 0x22d2533,
+        "P2SH": 0x22d2533
     })
-    MESSAGE_PREFIX = "\x18ANON Signed Message:\n"
-    WIF_PREFIX = 0x80
+    MESSAGE_PREFIX = None
+    WIF_PREFIX = 0xd4
 
 
-class Anon(ICryptocurrency):
+class XUEZ(ICryptocurrency):
 
-    NAME = "Anon"
-    SYMBOL = "ANON"
+    NAME = "XUEZ"
+    SYMBOL = "XUEZ"
     INFO = Info({
-        "SOURCE_CODE": "https://github.com/anonymousbitcoin/anon",
-        "WHITEPAPER": "https://www.anon.community/whitepaper",
+        "SOURCE_CODE": "https://github.com/XUEZ/Xuez-Core",
+        "WHITEPAPER": "https://github.com/XUEZ/Whitepaper",
         "WEBSITES": [
-            "https://www.anon.community"
+            "https://xuezcoin.com"
         ]
     })
     ECC = SLIP10Secp256k1ECC
-    COIN_TYPE = 220
+    COIN_TYPE = 225
     NETWORKS = Networks({
         "MAINNET": Mainnet
     })
