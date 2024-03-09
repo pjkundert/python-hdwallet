@@ -36,6 +36,7 @@ from .blocknode import Blocknode
 from .blockstamp import BlockStamp
 from .bolivarcoin import Bolivarcoin
 from .britcoin import BritCoin
+from .canadaecoin import CanadaECoin
 from .cannacoin import Cannacoin
 from .cardano import Cardano
 from .clubcoin import ClubCoin
@@ -106,7 +107,6 @@ from .xuez import XUEZ
 from .ycash import Ycash
 from .zcash import Zcash
 
-
 CRYPTOCURRENCIES: Dict[str, Type[ICryptocurrency]] = {
     "Algorand": Algorand,
     "Anon": Anon,
@@ -135,6 +135,7 @@ CRYPTOCURRENCIES: Dict[str, Type[ICryptocurrency]] = {
     "Block Stamp": BlockStamp,
     "Bolivarcoin": Bolivarcoin,
     "Brit Coin": BritCoin,
+    "Canada eCoin": CanadaECoin,
     "Cannacoin": Cannacoin,
     "Cardano": Cardano,
     "Club Coin": ClubCoin,
@@ -206,4 +207,8 @@ CRYPTOCURRENCIES: Dict[str, Type[ICryptocurrency]] = {
     "Zcash": Zcash
 }
 
-__all__: List[str] = CRYPTOCURRENCIES.keys()
+__all__: List[str] = (
+    ["ICryptocurrency", "CRYPTOCURRENCIES"] + [
+        cryptocurrency.__name__ for cryptocurrency in CRYPTOCURRENCIES.values()
+    ]
+)
