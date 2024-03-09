@@ -39,32 +39,42 @@ from .britcoin import BritCoin
 from .canadaecoin import CanadaECoin
 from .cannacoin import Cannacoin
 from .cardano import Cardano
+from .clams import Clams
 from .clubcoin import ClubCoin
 from .cpuchain import CPUChain
 from .cranepay import CranePay
+from .crave import Crave
 from .dash import Dash
 from .defcoin import Defcoin
+from .denarius import Denarius
 from .diamond import Diamond
 from .digitalcoin import Digitalcoin
 from .edrcoin import EDRCoin
 from .einsteinium import Einsteinium
+from .elastos import Elastos
 from .elrond import Elrond
 from .energi import Energi
 from .europecoin import EuropeCoin
 from .exclusivecoin import ExclusiveCoin
 from .feathercoin import Feathercoin
+from .fix import FIX
 from .flashcoin import Flashcoin
 from .foxdcoin import Foxdcoin
 from .gcrcoin import GCRCoin
 from .gobyte import GoByte
+from .gridcoin import Gridcoin
 from .groestlcoin import GroestlCoin
+from .helleniccoin import Helleniccoin
 from .hempcoin import Hempcoin
 from .hush import Hush
 from .insanecoin import InsaneCoin
+from .ixcoin import IXCoin
 from .jumbucks import Jumbucks
 from .komodo import Komodo
+from .lbrycredits import LBRYCredits
 from .linx import Linx
 from .litecoin import Litecoin
+from .litecoinz import LitecoinZ
 from .lkrcoin import Lkrcoin
 from .mazacoin import Mazacoin
 from .minexcoin import Minexcoin
@@ -138,32 +148,42 @@ CRYPTOCURRENCIES: Dict[str, Type[ICryptocurrency]] = {
     "Canada eCoin": CanadaECoin,
     "Cannacoin": Cannacoin,
     "Cardano": Cardano,
+    "Clams": Clams,
     "Club Coin": ClubCoin,
     "CPU Chain": CPUChain,
     "Crane Pay": CranePay,
+    "Crave": Crave,
     "Dash": Dash,
     "Defcoin": Defcoin,
+    "Denarius": Denarius,
     "Diamond": Diamond,
     "Digitalcoin": Digitalcoin,
     "EDR Coin": EDRCoin,
     "Einsteinium": Einsteinium,
+    "Elastos": Elastos,
     "Elrond": Elrond,
     "Energi": Energi,
     "Europe Coin": EuropeCoin,
     "Exclusive Coin": ExclusiveCoin,
     "Feathercoin": Feathercoin,
+    "FIX": FIX,
     "Flashcoin": Flashcoin,
     "Foxdcoin": Foxdcoin,
     "GCR Coin": GCRCoin,
     "Go Byte": GoByte,
+    "Gridcoin": Gridcoin,
     "Groestl Coin": GroestlCoin,
+    "Helleniccoin": Helleniccoin,
     "Hempcoin": Hempcoin,
     "Hush": Hush,
     "InsaneCoin": InsaneCoin,
+    "IX Coin": IXCoin,
     "Jumbucks": Jumbucks,
     "Komodo": Komodo,
+    "LBRY Credits": LBRYCredits,
     "Linx": Linx,
     "Litecoin": Litecoin,
+    "LitecoinZ": LitecoinZ,
     "Lkrcoin": Lkrcoin,
     "Mazacoin": Mazacoin,
     "Minexcoin": Minexcoin,
