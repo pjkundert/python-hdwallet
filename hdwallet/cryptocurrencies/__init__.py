@@ -327,8 +327,6 @@ CRYPTOCURRENCIES: Dict[str, Type[ICryptocurrency]] = {
     Zencash.NAME: Zencash
 }
 
-__all__: List[str] = (
-    ["ICryptocurrency", "CRYPTOCURRENCIES"] + [
-        cryptocurrency.__name__ for cryptocurrency in CRYPTOCURRENCIES.values()
-    ]
-)
+__all__: List[str] = ["ICryptocurrency", "CRYPTOCURRENCIES"] + [
+    cryptocurrency.__name__ for cryptocurrency in CRYPTOCURRENCIES.values()
+]
