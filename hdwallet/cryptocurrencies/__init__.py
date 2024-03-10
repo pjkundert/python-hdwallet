@@ -52,6 +52,7 @@ from .denarius import Denarius
 from .diamond import Diamond
 from .digibyte import DigiByte
 from .digitalcoin import Digitalcoin
+from .dogecoin import Dogecoin
 from .ecoin import ECoin
 from .edrcoin import EDRCoin
 from .einsteinium import Einsteinium
@@ -60,6 +61,7 @@ from .elrond import Elrond
 from .energi import Energi
 from .ethereum import Ethereum
 from .europecoin import EuropeCoin
+from .evrmore import Evrmore
 from .exclusivecoin import ExclusiveCoin
 from .feathercoin import Feathercoin
 from .firstcoin import Firstcoin
@@ -67,6 +69,7 @@ from .fix import FIX
 from .flashcoin import Flashcoin
 from .flux import Flux
 from .foxdcoin import Foxdcoin
+from .fujicoin import FujiCoin
 from .gamecredits import GameCredits
 from .gcrcoin import GCRCoin
 from .gobyte import GoByte
@@ -75,6 +78,7 @@ from .groestlcoin import GroestlCoin
 from .gulden import Gulden
 from .helleniccoin import Helleniccoin
 from .hempcoin import Hempcoin
+from .horizen import Horizen
 from .hush import Hush
 from .insanecoin import InsaneCoin
 from .internetofpeople import InternetOfPeople
@@ -90,61 +94,78 @@ from .litecoinz import LitecoinZ
 from .lkrcoin import Lkrcoin
 from .lynx import Lynx
 from .mazacoin import Mazacoin
+from .megacoin import Megacoin
 from .minexcoin import Minexcoin
 from .monacoin import Monacoin
 from .monero import Monero
 from .monk import Monk
 from .monkeyproject import MonkeyProject
 from .multiversx import MultiversX
+from .myriadcion import Myriadcoin
 from .namecoin import Namecoin
 from .navcoin import Navcoin
+from .neblio import Neblio
 from .neo import Neo
 from .neoscoin import Neoscoin
 from .neurocoin import Neurocoin
 from .newyorkcoin import NewYorkCoin
 from .nix import NIX
+from .novacoin import Novacoin
 from .nubits import NuBits
 from .nushares import NuShares
 from .okcash import OKCash
+from .omni import Omni
 from .onix import Onix
 from .peercoin import Peercoin
 from .pesobit import Pesobit
+from .phore import Phore
 from .pinkcoin import Pinkcoin
 from .pivx import Pivx
 from .poswcoin import PoSWCoin
+from .potcoin import Potcoin
 from .projectcoin import ProjectCoin
 from .putincoin import Putincoin
 from .qtum import Qtum
 from .rapids import Rapids
+from .ravencoin import Ravencoin
 from .reddcoin import Reddcoin
 from .ripple import Ripple
+from .rsk import RSK
 from .rubycoin import Rubycoin
 from .safecoin import Safecoin
 from .saluscoin import Saluscoin
+from .scribe import Scribe
 from .shadowcash import ShadowCash
 from .slimcoin import Slimcoin
 from .smileycoin import Smileycoin
 from .solana import Solana
+from .solarcoin import Solarcoin
 from .stash import Stash
 from .stellar import Stellar
 from .stratis import Stratis
 from .sugarchain import Sugarchain
+from .syscoin import Syscoin
 from .tezos import Tezos
 from .thoughtai import ThoughtAI
 from .toacoin import TOACoin
 from .tron import Tron
+from .twins import TWINS
 from .ultimatesecurecash import UltimateSecureCash
 from .unobtanium import Unobtanium
+from .vcash import Vcash
 from .verge import Verge
 from .vertcoin import Vertcoin
 from .viacoin import Viacoin
+from .vivo import Vivo
 from .vpncoin import VPNCoin
 from .whitecoin import Whitecoin
 from .wincoin import Wincoin
+from .xinfin import XinFin
 from .xuez import XUEZ
 from .ycash import Ycash
 from .zcash import Zcash
 from .zclassic import ZClassic
+from .zencash import Zencash
 
 CRYPTOCURRENCIES: Dict[str, Type[ICryptocurrency]] = {
     Algorand.NAME: Algorand,
@@ -190,6 +211,7 @@ CRYPTOCURRENCIES: Dict[str, Type[ICryptocurrency]] = {
     Diamond.NAME: Diamond,
     DigiByte.NAME: DigiByte,
     Digitalcoin.NAME: Digitalcoin,
+    Dogecoin.NAME: Dogecoin,
     ECoin.NAME: ECoin,
     EDRCoin.NAME: EDRCoin,
     Einsteinium.NAME: Einsteinium,
@@ -198,6 +220,7 @@ CRYPTOCURRENCIES: Dict[str, Type[ICryptocurrency]] = {
     Energi.NAME: Energi,
     Ethereum.NAME: Ethereum,
     EuropeCoin.NAME: EuropeCoin,
+    Evrmore.NAME: Evrmore,
     ExclusiveCoin.NAME: ExclusiveCoin,
     Feathercoin.NAME: Feathercoin,
     Firstcoin.NAME: Firstcoin,
@@ -205,6 +228,7 @@ CRYPTOCURRENCIES: Dict[str, Type[ICryptocurrency]] = {
     Flashcoin.NAME: Flashcoin,
     Flux.NAME: Flux,
     Foxdcoin.NAME: Foxdcoin,
+    FujiCoin.NAME: FujiCoin,
     GameCredits.NAME: GameCredits,
     GCRCoin.NAME: GCRCoin,
     GoByte.NAME: GoByte,
@@ -213,6 +237,7 @@ CRYPTOCURRENCIES: Dict[str, Type[ICryptocurrency]] = {
     Gulden.NAME: Gulden,
     Helleniccoin.NAME: Helleniccoin,
     Hempcoin.NAME: Hempcoin,
+    Horizen.NAME: Horizen,
     Hush.NAME: Hush,
     InsaneCoin.NAME: InsaneCoin,
     InternetOfPeople.NAME: InternetOfPeople,
@@ -228,61 +253,78 @@ CRYPTOCURRENCIES: Dict[str, Type[ICryptocurrency]] = {
     Lkrcoin.NAME: Lkrcoin,
     Lynx.NAME: Lynx,
     Mazacoin.NAME: Mazacoin,
+    Megacoin.NAME: Megacoin,
     Minexcoin.NAME: Minexcoin,
     Monacoin.NAME: Monacoin,
     Monero.NAME: Monero,
     Monk.NAME: Monk,
     MonkeyProject.NAME: MonkeyProject,
     MultiversX.NAME: MultiversX,
+    Myriadcoin.NAME: Myriadcoin,
     Namecoin.NAME: Namecoin,
     Navcoin.NAME: Navcoin,
+    Neblio.NAME: Neblio,
     Neo.NAME: Neo,
     Neoscoin.NAME: Neoscoin,
     Neurocoin.NAME: Neurocoin,
     NewYorkCoin.NAME: NewYorkCoin,
     NIX.NAME: NIX,
+    Novacoin.NAME: Novacoin,
     NuBits.NAME: NuBits,
     NuShares.NAME: NuShares,
     OKCash.NAME: OKCash,
+    Omni.NAME: Omni,
     Onix.NAME: Onix,
     Peercoin.NAME: Peercoin,
     Pesobit.NAME: Pesobit,
+    Phore.NAME: Phore,
     Pinkcoin.NAME: Pinkcoin,
     Pivx.NAME: Pivx,
     PoSWCoin.NAME: PoSWCoin,
+    Potcoin.NAME: Potcoin,
     ProjectCoin.NAME: ProjectCoin,
     Putincoin.NAME: Putincoin,
     Qtum.NAME: Qtum,
     Rapids.NAME: Rapids,
+    Ravencoin.NAME: Ravencoin,
     Reddcoin.NAME: Reddcoin,
     Ripple.NAME: Ripple,
+    RSK.NAME: RSK,
     Rubycoin.NAME: Rubycoin,
     Safecoin.NAME: Safecoin,
     Saluscoin.NAME: Saluscoin,
+    Scribe.NAME: Scribe,
     ShadowCash.NAME: ShadowCash,
     Slimcoin.NAME: Slimcoin,
     Smileycoin.NAME: Smileycoin,
     Solana.NAME: Solana,
+    Solarcoin.NAME: Solarcoin,
     Stash.NAME: Stash,
     Stellar.NAME: Stellar,
     Stratis.NAME: Stratis,
     Sugarchain.NAME: Sugarchain,
+    Syscoin.NAME: Syscoin,
     Tezos.NAME: Tezos,
     ThoughtAI.NAME: ThoughtAI,
     TOACoin.NAME: TOACoin,
     Tron.NAME: Tron,
+    TWINS.NAME: TWINS,
     UltimateSecureCash.NAME: UltimateSecureCash,
     Unobtanium.NAME: Unobtanium,
+    Vcash.NAME: Vcash,
     Verge.NAME: Verge,
     Vertcoin.NAME: Vertcoin,
     Viacoin.NAME: Viacoin,
+    Vivo.NAME: Vivo,
     VPNCoin.NAME: VPNCoin,
     Whitecoin.NAME: Whitecoin,
     Wincoin.NAME: Wincoin,
+    XinFin.NAME: XinFin,
     XUEZ.NAME: XUEZ,
     Ycash.NAME: Ycash,
     Zcash.NAME: Zcash,
-    ZClassic.NAME: ZClassic
+    ZClassic.NAME: ZClassic,
+    Zencash.NAME: Zencash
 }
 
 __all__: List[str] = (
