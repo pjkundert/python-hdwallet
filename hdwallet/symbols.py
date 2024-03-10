@@ -1,294 +1,322 @@
-# !/usr/bin/env python3
+#!/usr/bin/env python3
 
+# Copyright © 2020-2024, Meheret Tesfaye Batu <meherett.batu@gmail.com>
+# Distributed under the MIT software license, see the accompanying
+# file COPYING or https://opensource.org/license/mit
+
+from typing import List
+
+# Algorand
+ALGO: str = "ALGO"
 # Anon
-ANON = "ANON"
+ANON: str = "ANON"
 # Argoneum
-AGM = "AGM"
+AGM: str = "AGM"
 # Artax
-XAX = "XAX"
+XAX: str = "XAX"
 # Aryacoin
-AYA = "AYA"
+AYA: str = "AYA"
 # Asiacoin
-AC = "AC"
+AC: str = "AC"
 # Atom
-ATOM = "ATOM"
+ATOM: str = "ATOM"
 # Auroracoin
-AUR = "AUR"
+AUR: str = "AUR"
+# Avian
+AVN: str = "AVN"
 # Axe
-AXE = "AXE"
+AXE: str = "AXE"
 # Bata
-BTA = "BTA"
+BTA: str = "BTA"
 # Beetle Coin
-BEET = "BEET"
+BEET: str = "BEET"
 # Bela Coin
-BELA = "BELA"
+BELA: str = "BELA"
 # Bit Cloud
-BTDX = "BTDX"
-# Bit Send
-BSD = "BSD"
-# Bitcoin Cash
-BCH = "BCH"
-# Bitcoin Gold
-BTG = "BTG"
+BTDX: str = "BTDX"
 # Bitcoin
-BTC, BTCTEST = "BTC", "BTCTEST"
+BTC: str = "BTC"
+# Bitcoin Cash
+BCH: str = "BCH"
+# Bitcoin Gold
+BTG: str = "BTG"
 # Bitcoin Plus
-XBC = "XBC"
+XBC: str = "XBC"
 # Bitcoin SV
-BSV = "BSV"
+BSV: str = "BSV"
 # BitcoinZ
-BTCZ = "BTCZ"
+BTCZ: str = "BTCZ"
 # Bitcore
-BTX = "BTX"
+BTX: str = "BTX"
+# Bit Send
+BSD: str = "BSD"
 # Blackcoin
-BLK = "BLK"
-# Block Stamp
-BST = "BST"
+BLK: str = "BLK"
 # Blocknode
-BND, BNDTEST = "BND", "BNDTEST"
+BND: str = "BND"
+# Block Stamp
+BST: str = "BST"
 # Bolivarcoin
-BOLI = "BOLI"
+BOLI: str = "BOLI"
 # Brit Coin
-BRIT = "BRIT"
-# CPU Chain
-CPU = "CPU"
+BRIT: str = "BRIT"
 # Canada eCoin
-CDN = "CDN"
+CDN: str = "CDN"
 # Cannacoin
-CCN = "CCN"
+CCN: str = "CCN"
+# Cardano
+ADA: str = "ADA"
 # Clams
-CLAM = "CLAM"
+CLAM: str = "CLAM"
 # Club Coin
-CLUB = "CLUB"
+CLUB: str = "CLUB"
 # Compcoin
-CMP = "CMP"
+CMP: str = "CMP"
+# CPU Chain
+CPU: str = "CPU"
 # Crane Pay
-CRP = "CRP"
+CRP: str = "CRP"
 # Crave
-CRAVE = "CRAVE"
+CRAVE: str = "CRAVE"
 # Dash
-DASH, DASHTEST = "DASH", "DASHTEST"
-# Deep Onion
-ONION = "ONION"
+DASH: str = "DASH"
+# DeepOnion
+ONION: str = "ONION"
 # Defcoin
-DFC = "DFC"
+DFC: str = "DFC"
 # Denarius
-DNR = "DNR"
+DNR: str = "DNR"
 # Diamond
-DMD = "DMD"
+DMD: str = "DMD"
 # Digi Byte
-DGB = "DGB"
+DGB: str = "DGB"
 # Digitalcoin
-DGC = "DGC"
+DGC: str = "DGC"
 # Dogecoin
-DOGE, DOGETEST = "DOGE", "DOGETEST"
+DOGE: str = "DOGE"
+# E-coin
+ECN: str = "ECN"
 # EDR Coin
-EDRC = "EDRC"
-# Ecoin
-ECN = "ECN"
+EDRC: str = "EDRC"
 # Einsteinium
-EMC2 = "EMC2"
+EMC2: str = "EMC2"
 # Elastos
-ELA = "ELA"
+ELA: str = "ELA"
+# Elrond or MultiversX
+EGLD: str = "EGLD"
 # Energi
-NRG = "NRG"
+NRG: str = "NRG"
 # Ethereum
-ETH = "ETH"
+ETH: str = "ETH"
 # Europe Coin
-ERC = "ERC"
+ERC: str = "ERC"
+# Evrmore
+EVR: str = "EVR"
 # Exclusive Coin
-EXCL = "EXCL"
-# FIX
-FIX, FIXTEST = "FIX", "FIXTEST"
+EXCL: str = "EXCL"
 # Feathercoin
-FTC = "FTC"
+FTC: str = "FTC"
 # Firstcoin
-FRST = "FRST"
+FRST: str = "FRST"
+# FIX
+FIX: str = "FIX"
 # Flashcoin
-FLASH = "FLASH"
+FLASH: str = "FLASH"
 # Flux
-FLUX = "FLUX"
+FLUX: str = "FLUX"
+# Foxdcoin
+FOXD: str = "FOXD"
 # Fuji Coin
-FJC = "FJC"
-# GCR Coin
-GCR = "GCR"
+FJC: str = "FJC"
 # Game Credits
-GAME = "GAME"
+GAME: str = "GAME"
+# GCR Coin
+GCR: str = "GCR"
 # Go Byte
-GBX = "GBX"
+GBX: str = "GBX"
 # Gridcoin
-GRC = "GRC"
+GRC: str = "GRC"
 # Groestl Coin
-GRS, GRSTEST = "GRS", "GRSTEST"
+GRS: str = "GRS"
 # Gulden
-NLG = "NLG"
+NLG: str = "NLG"
 # Helleniccoin
-HNC = "HNC"
+HNC: str = "HNC"
 # Hempcoin
-THC = "THC"
+THC: str = "THC"
 # Hush
-HUSH = "HUSH"
-# IX Coin
-IXC = "IXC"
-# Insane Coin
-INSN = "INSN"
+HUSH: str = "HUSH"
+# InsaneCoin
+INSN: str = "INSN"
 # Internet Of People
-IOP = "IOP"
+IOP: str = "IOP"
+# IX Coin
+IXC: str = "IXC"
 # Jumbucks
-JBS = "JBS"
+JBS: str = "JBS"
 # Kobocoin
-KOBO = "KOBO"
+KOBO: str = "KOBO"
 # Komodo
-KMD = "KMD"
+KMD: str = "KMD"
 # LBRY Credits
-LBC = "LBC"
+LBC: str = "LBC"
 # Linx
-LINX = "LINX"
-# Litecoin Cash
-LCC = "LCC"
+LINX: str = "LINX"
 # Litecoin
-LTC, LTCTEST = "LTC", "LTCTEST"
+LTC: str = "LTC"
+# Litecoin Cash
+LCC: str = "LCC"
 # LitecoinZ
-LTZ = "LTZ"
+LTZ: str = "LTZ"
 # Lkrcoin
-LKR = "LKR"
+LKR: str = "LKR"
 # Lynx
-LYNX = "LYNX"
+LYNX: str = "LYNX"
 # Mazacoin
-MZC = "MZC"
+MZC: str = "MZC"
 # Megacoin
-MEC = "MEC"
+MEC: str = "MEC"
 # Minexcoin
-MNX = "MNX"
+MNX: str = "MNX"
 # Monacoin
-MONA = "MONA"
-# Monkey Project
-MONK = "MONK"
+MONA: str = "MONA"
+# Monero
+XMR: str = "XMR"
+# Monkey Project or Monk
+MONK: str = "MONK"
 # Myriadcoin
-XMY = "XMY"
-# NIX
-NIX = "NIX"
+XMY: str = "XMY"
 # Namecoin
-NMC = "NMC"
+NMC: str = "NMC"
 # Navcoin
-NAV = "NAV"
+NAV: str = "NAV"
 # Neblio
-NEBL = "NEBL"
+NEBL: str = "NEBL"
+# Neo
+NEO: str = "NEO"
 # Neoscoin
-NEOS = "NEOS"
+NEOS: str = "NEOS"
 # Neurocoin
-NRO = "NRO"
+NRO: str = "NRO"
 # New York Coin
-NYC = "NYC"
+NYC: str = "NYC"
+# NIX
+NIX: str = "NIX"
 # Novacoin
-NVC = "NVC"
+NVC: str = "NVC"
 # NuBits
-NBT = "NBT"
+NBT: str = "NBT"
 # NuShares
-NSR = "NSR"
+NSR: str = "NSR"
 # OK Cash
-OK = "OK"
+OK: str = "OK"
 # Omni
-OMNI, OMNITEST = "OMNI", "OMNITEST"
-# Onix Coin
-ONX = "ONX"
+OMNI: str = "OMNI"
+# Onix
+ONX: str = "ONX"
 # Peercoin
-PPC = "PPC"
+PPC: str = "PPC"
 # Pesobit
-PSB = "PSB"
+PSB: str = "PSB"
 # Phore
-PHR = "PHR"
+PHR: str = "PHR"
 # Pinkcoin
-PINK = "PINK"
+PINK: str = "PINK"
 # Pivx
-PIVX, PIVXTEST = "PIVX", "PIVXTEST"
-# Posw Coin
-POSW = "POSW"
+PIVX: str = "PIVX"
+# PoSW Coin
+POSW: str = "POSW"
 # Potcoin
-POT = "POT"
+POT: str = "POT"
 # Project Coin
-PRJ = "PRJ"
+PRJ: str = "PRJ"
 # Putincoin
-PUT = "PUT"
+PUT: str = "PUT"
 # Qtum
-QTUM, QTUMTEST = "QTUM", "QTUMTEST"
-# RSK
-RBTC, RBTCTEST = "RBTC", "RBTCTEST"
+QTUM: str = "QTUM"
 # Rapids
-RPD = "RPD"
+RPD: str = "RPD"
 # Ravencoin
-RVN = "RVN"
+RVN: str = "RVN"
 # Reddcoin
-RDD = "RDD"
-# Rubycoin
-RBY = "RBY"
-# Safecoin
-SAFE = "SAFE"
-# Saluscoin
-SLS = "SLS"
-# Scribe
-SCRIBE = "SCRIBE"
-# Shadow Cash
-SDC, SDCTEST = "SDC", "SDCTEST"
-# Slimcoin
-SLM, SLMTEST = "SLM", "SLMTEST"
-# Smileycoin
-SMLY = "SMLY"
-# Solarcoin
-SLR = "SLR"
-# Stash
-STASH = "STASH"
-# Stratis
-STRAT, STRATTEST = "STRAT", "STRATTEST"
-# Sugarchain
-SUGAR, SUGARTEST = "SUGAR", "SUGARTEST"
-# Syscoin
-SYS = "SYS"
-# TOA Coin
-TOA = "TOA"
-# Thought AI
-THT = "THT"
-# TRX
-TRX = "TRX"
-# Twins
-TWINS, TWINSTEST = "TWINS", "TWINSTEST"
-# Ultimate Secure Cash
-USC = "USC"
-# Unobtanium
-UNO = "UNO"
-# Virtual Cash
-VASH = "VASH"
-# Vcash
-VC = "VC"
-# Verge Currency
-XVG = "XVG"
-# Vertcoin
-VTC = "VTC"
-# Viacoin
-VIA, VIATEST = "VIA", "VIATEST"
-# Vivo
-VIVO = "VIVO"
-# Whitecoin
-XWC = "XWC"
-# Wincoin
-WC = "WC"
-# XUEZ
-XUEZ = "XUEZ"
-# XinFin
-XDC = "XDC"
+RDD: str = "RDD"
 # Ripple
-XRP = "XRP"
-#Ycash
-YEC = "YEC"
-# ZClassic
-ZCL = "ZCL"
+XRP: str = "XRP"
+# RSK
+RBTC: str = "RBTC"
+# Rubycoin
+RBY: str = "RBY"
+# Safecoin
+SAFE: str = "SAFE"
+# Saluscoin
+SLS: str = "SLS"
+# Scribe
+SCRIBE: str = "SCRIBE"
+# Shadow Cash
+SDC: str = "SDC"
+# Slimcoin
+SLM: str = "SLM"
+# Smileycoin
+SMLY: str = "SMLY"
+# Solana
+SOL: str = "SOL"
+# Solarcoin
+SLR: str = "SLR"
+# Stash
+STASH: str = "STASH"
+# Stellar
+XLM: str = "XLM"
+# Stratis
+STRAT: str = "STRAT"
+# Sugarchain
+SUGAR: str = "SUGAR"
+# Syscoin
+SYS: str = "SYS"
+# Tezos
+XTZ: str = "XTZ"
+# Thought AI
+THT: str = "THT"
+# TOA Coin
+TOA: str = "TOA"
+# Tron
+TRX: str = "TRX"
+# TWINS
+TWINS: str = "TWINS"
+# Ultimate Secure Cash
+USC: str = "USC"
+# Unobtanium
+UNO: str = "UNO"
+# Vcash
+VC: str = "VC"
+# Verge
+XVG: str = "XVG"
+# Vertcoin
+VTC: str = "VTC"
+# Viacoin
+VIA: str = "VIA"
+# Vivo
+VIVO: str = "VIVO"
+# Virtual Cash
+VASH: str = "VASH"
+# Whitecoin
+XWC: str = "XWC"
+# Wincoin
+WC: str = "WC"
+# XinFin
+XDC: str = "XDC"
+# XUEZ
+XUEZ: str = "XUEZ"
+# Ycash
+YEC: str = "YEC"
 # Zcash
-ZEC, ZECTEST = "ZEC", "ZECTEST"
-# Zencash
-ZEN = "ZEN"
+ZEC: str = "ZEC"
+# ZClassic
+ZCL: str = "ZCL"
+# Zencash or Horizen
+ZEN: str = "ZEN"
 
-
-__all__ = [
+__all__: List[str] = [
+    "ALGO",
     "ANON",
     "AGM",
     "XAX",
@@ -296,73 +324,78 @@ __all__ = [
     "AC",
     "ATOM",
     "AUR",
+    "AVN",
     "AXE",
     "BTA",
     "BEET",
     "BELA",
     "BTDX",
-    "BSD",
+    "BTC",
     "BCH",
     "BTG",
-    "BTC", "BTCTEST",
     "XBC",
     "BSV",
     "BTCZ",
     "BTX",
+    "BSD",
     "BLK",
+    "BND",
     "BST",
-    "BND", "BNDTEST",
     "BOLI",
     "BRIT",
-    "CPU",
     "CDN",
     "CCN",
+    "ADA",
     "CLAM",
     "CLUB",
     "CMP",
+    "CPU",
     "CRP",
     "CRAVE",
-    "DASH", "DASHTEST",
+    "DASH",
     "ONION",
     "DFC",
     "DNR",
     "DMD",
     "DGB",
     "DGC",
-    "DOGE", "DOGETEST",
-    "EDRC",
+    "DOGE",
     "ECN",
+    "EDRC",
     "EMC2",
     "ELA",
+    "EGLD",
     "NRG",
     "ETH",
     "ERC",
+    "EVR",
     "EXCL",
-    "FIX", "FIXTEST",
-    "FLUX",
     "FTC",
     "FRST",
+    "FIX",
     "FLASH",
+    "FLUX",
+    "FOXD",
     "FJC",
-    "GCR",
     "GAME",
+    "GCR",
     "GBX",
     "GRC",
-    "GRS", "GRSTEST",
+    "GRS",
     "NLG",
     "HNC",
     "THC",
     "HUSH",
-    "IXC",
     "INSN",
     "IOP",
+    "IXC",
     "JBS",
     "KOBO",
     "KMD",
     "LBC",
     "LINX",
+    "LTC",
     "LCC",
-    "LTC", "LTCTEST",
     "LTZ",
     "LKR",
     "LYNX",
@@ -370,66 +403,71 @@ __all__ = [
     "MEC",
     "MNX",
     "MONA",
+    "XMR",
     "MONK",
     "XMY",
-    "NIX",
     "NMC",
     "NAV",
     "NEBL",
+    "NEO",
     "NEOS",
     "NRO",
     "NYC",
+    "NIX",
     "NVC",
     "NBT",
     "NSR",
     "OK",
-    "OMNI", "OMNITEST",
+    "OMNI",
     "ONX",
     "PPC",
     "PSB",
     "PHR",
     "PINK",
-    "PIVX", "PIVXTEST",
+    "PIVX",
     "POSW",
     "POT",
     "PRJ",
     "PUT",
-    "QTUM", "QTUMTEST",
-    "RBTC", "RBTCTEST",
+    "QTUM",
     "RPD",
     "RVN",
     "RDD",
+    "XRP",
+    "RBTC",
     "RBY",
     "SAFE",
     "SLS",
     "SCRIBE",
-    "SDC", "SDCTEST",
-    "SLM", "SLMTEST",
+    "SDC",
+    "SLM",
     "SMLY",
+    "SOL",
     "SLR",
     "STASH",
-    "STRAT", "STRATTEST",
-    "SUGAR", "SUGARTEST",
+    "XLM",
+    "STRAT",
+    "SUGAR",
     "SYS",
-    "TOA",
+    "XTZ",
     "THT",
+    "TOA",
     "TRX",
-    "TWINS", "TWINSTEST",
+    "TWINS",
     "USC",
     "UNO",
-    "VASH",
     "VC",
     "XVG",
     "VTC",
-    "VIA", "VIATEST",
+    "VIA",
     "VIVO",
+    "VASH",
     "XWC",
     "WC",
-    "XUEZ",
     "XDC",
-    "XRP",
+    "XUEZ",
     "YEC",
+    "ZEC",
     "ZCL",
-    "ZEC", "ZECTEST",
     "ZEN"
 ]
