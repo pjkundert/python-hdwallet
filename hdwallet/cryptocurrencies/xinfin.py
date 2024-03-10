@@ -58,5 +58,5 @@ class XinFin(ICryptocurrency):
     ADDRESSES = Addresses({
         "XINFIN": "XinFin"
     })
-    DEFAULT_ADDRESS = ADDRESSES.P2PKH
+    DEFAULT_ADDRESS = ADDRESSES.XINFIN
     
