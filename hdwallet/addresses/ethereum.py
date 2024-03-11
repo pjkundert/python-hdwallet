@@ -11,6 +11,7 @@ from typing import (
 from ..ecc import (
     IPublicKey, SLIP10Secp256k1PublicKey, validate_and_get_public_key
 )
+from ..cryptocurrencies import Ethereum
 from ..crypto import kekkak256
 from ..utils import bytes_to_string
 from .iaddress import IAddress
@@ -18,7 +19,7 @@ from .iaddress import IAddress
 
 class EthereumAddress(IAddress):
 
-    address_prefix: str = "0x"
+    address_prefix: str = Ethereum.PARAMS.ADDRESS_PREFIX
 
     @staticmethod
     def name() -> str:

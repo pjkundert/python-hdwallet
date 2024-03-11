@@ -6,7 +6,7 @@
 
 from ..ecc import SLIP10Secp256k1ECC
 from ..const import (
-    Info, Entropies, Mnemonics, Seeds, HDs, Addresses, Networks, XPrivateKeyVersions, XPublicKeyVersions
+    Info, Entropies, Mnemonics, Seeds, HDs, Addresses, Networks, Params, XPrivateKeyVersions, XPublicKeyVersions
 )
 from .icryptocurrency import (
     ICryptocurrency, INetwork
@@ -59,3 +59,6 @@ class Ethereum(ICryptocurrency):
         "ETHEREUM": "Ethereum"
     })
     DEFAULT_ADDRESS = ADDRESSES.ETHEREUM
+    PARAMS = Params({
+        "ADDRESS_PREFIX": "0x"
+    })

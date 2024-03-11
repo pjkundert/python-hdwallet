@@ -6,7 +6,7 @@
 
 from ..ecc import SLIP10Secp256k1ECC
 from ..const import (
-    Info, Entropies, Mnemonics, Seeds, HDs, Addresses, Networks, XPrivateKeyVersions, XPublicKeyVersions
+    Info, Entropies, Mnemonics, Seeds, HDs, Addresses, Networks, Params, XPrivateKeyVersions, XPublicKeyVersions
 )
 from .icryptocurrency import (
     ICryptocurrency, INetwork
@@ -59,4 +59,7 @@ class XinFin(ICryptocurrency):
         "XINFIN": "XinFin"
     })
     DEFAULT_ADDRESS = ADDRESSES.XINFIN
+    PARAMS = Params({
+        "ADDRESS_PREFIX": "xdc"
+    })
     
