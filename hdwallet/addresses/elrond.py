@@ -21,7 +21,7 @@ from .iaddress import IAddress
 
 class ElrondAddress(IAddress):
 
-    hrp: str = Elrond.PARAMS.HRP
+    hrp: str = Elrond.NETWORKS.MAINNET.HRP
 
     @staticmethod
     def name() -> str:
