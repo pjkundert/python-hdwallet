@@ -67,13 +67,3 @@ class AvalancheAddress(IAddress):
         return CosmosAddress.decode(
             address=address_no_prefix, hrp=cls.hrp
         )
-
-
-class AvalanchePChainAddress(AvalancheAddress):
-
-    address_prefix: str = "P-"
-
-
-class AvalancheXChainAddress(AvalancheAddress):
-
-    address_prefix: str = "X-"
