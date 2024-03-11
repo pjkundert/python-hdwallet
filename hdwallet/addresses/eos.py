@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-# Copyright © 2023, Meheret Tesfaye Batu <meherett.batu@gmail.com>
+# Copyright © 2020-2024, Meheret Tesfaye Batu <meherett.batu@gmail.com>
 # Distributed under the MIT software license, see the accompanying
 # file COPYING or https://opensource.org/license/mit
 
@@ -13,18 +13,21 @@ from ..libs.base58 import (
 )
 from ..libs.ripemd160 import ripemd160
 from ..ecc import (
-    IPublicKey, SLIP10Secp256k1PublicKey
+    IPublicKey, SLIP10Secp256k1PublicKey, validate_and_get_public_key
 )
+from ..cryptocurrencies import EOS
 from ..utils import bytes_to_string
-from . import (
-    IAddress, validate_and_get_public_key
-)
+from .iaddress import IAddress
 
 
 class EOSAddress(IAddress):
 
-    address_prefix: str = "EOS"
-    checksum_length: int = 4
+    address_prefix: str = EOS.PARAMS.ADDRESS_PREFIX
+    checksum_length: int = EOS.PARAMS.CHECKSUM_LENGTH
+
+    @staticmethod
+    def name() -> str:
+        return "EOS"
 
     @classmethod
     def compute_checksum(cls, pub_key_bytes: bytes) -> bytes:
@@ -33,7 +36,7 @@ class EOSAddress(IAddress):
     @classmethod
     def encode(cls, public_key: Union[bytes, str, IPublicKey], **kwargs: Any) -> str:
 
-        public_key: SLIP10Secp256k1PublicKey = validate_and_get_public_key(
+        public_key: IPublicKey = validate_and_get_public_key(
             public_key=public_key, public_key_cls=SLIP10Secp256k1PublicKey
         )
         checksum: bytes = cls.compute_checksum(public_key.raw_compressed())
@@ -64,6 +67,6 @@ class EOSAddress(IAddress):
             raise ValueError(f"Invalid checksum (expected: {checksum.hex()}, got: {checksum_got.hex()})")
 
         if not SLIP10Secp256k1PublicKey.is_valid_bytes(public_key):
-            raise ValueError(f"Invalid {SLIP10Secp256k1PublicKey.curve_type()} public key {public_key.hex()}")
+            raise ValueError(f"Invalid {SLIP10Secp256k1PublicKey.name()} public key {public_key.hex()}")
 
         return bytes_to_string(public_key)
