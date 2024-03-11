@@ -6,7 +6,7 @@
 
 from ..ecc import SLIP10Secp256k1ECC
 from ..const import (
-    Info, WitnessVersions, Entropies, Mnemonics, Seeds, HDs, Addresses, Networks, XPrivateKeyVersions, XPublicKeyVersions
+    Info, Entropies, Mnemonics, Seeds, HDs, Addresses, Networks, XPrivateKeyVersions, XPublicKeyVersions
 )
 from .icryptocurrency import (
     ICryptocurrency, INetwork
@@ -15,32 +15,19 @@ from .icryptocurrency import (
 
 class Mainnet(INetwork):
 
-    PUBLIC_KEY_ADDRESS_PREFIX = 0x17
-    SCRIPT_ADDRESS_PREFIX = 0xa
-    HRP = "atom"
-    WITNESS_VERSIONS = WitnessVersions({
-        "P2WPKH": 0x00,
-        "P2WSH": 0x00
-    })
+    HRP = "cosmos"
     XPRIVATE_KEY_VERSIONS = XPrivateKeyVersions({
-        "P2PKH": 0x488ade4,
-        "P2SH": 0x488ade4,
-        "P2WPKH": 0x488ade4,
-        "P2WPKH_IN_P2SH": 0x488ade4
+        "P2PKH": 0x488ade4
     })
     XPUBLIC_KEY_VERSIONS = XPublicKeyVersions({
-        "P2PKH": 0x488b21e,
-        "P2SH": 0x488b21e,
-        "P2WPKH": 0x488b21e,
-        "P2WPKH_IN_P2SH": 0x488b21e
+        "P2PKH": 0x488b21e
     })
-    MESSAGE_PREFIX = "\x18Bitcoin Atom Signed Message:\n"
     WIF_PREFIX = 0x80
 
 
-class Atom(ICryptocurrency):
+class Cosmos(ICryptocurrency):
 
-    NAME = "Atom"
+    NAME = "Cosmos"
     SYMBOL = "ATOM"
     INFO = Info({
         "SOURCE_CODE": "https://github.com/cosmos",
@@ -68,7 +55,7 @@ class Atom(ICryptocurrency):
         "BIP32", "BIP44"
     })
     DEFAULT_HD = HDS.BIP44
-    ADDRESSES = Addresses((
-        "P2PKH", "P2SH", "P2WPKH", {"P2WPKH_IN_P2SH": "P2WPKH-In-P2SH"}
-    ))
-    DEFAULT_ADDRESS = ADDRESSES.P2PKH
+    ADDRESSES = Addresses({
+        "COSMOS": "Cosmos"
+    })
+    DEFAULT_ADDRESS = ADDRESSES.COSMOS

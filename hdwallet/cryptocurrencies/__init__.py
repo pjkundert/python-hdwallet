@@ -15,7 +15,6 @@ from .argoneum import Argoneum
 from .artax import Artax
 from .aryacoin import Aryacoin
 from .asiacoin import Asiacoin
-from .atom import Atom
 from .auroracoin import Auroracoin
 from .avian import Avian
 from .axe import Axe
@@ -24,6 +23,7 @@ from .beetlecoin import BeetleCoin
 from .belacoin import BelaCoin
 from .bitcloud import BitCloud
 from .bitcoin import Bitcoin
+from .bitcoinatom import BitcoinAtom
 from .bitcoincash import BitcoinCash
 from .bitcoingold import BitcoinGold
 from .bitcoinplus import BitcoinPlus
@@ -42,6 +42,7 @@ from .cardano import Cardano
 from .clams import Clams
 from .clubcoin import ClubCoin
 from .compcoin import Compcoin
+from .cosmos import Cosmos
 from .cpuchain import CPUChain
 from .cranepay import CranePay
 from .crave import Crave
@@ -174,7 +175,6 @@ CRYPTOCURRENCIES: Dict[str, Type[ICryptocurrency]] = {
     Artax.NAME: Artax,
     Aryacoin.NAME: Aryacoin,
     Asiacoin.NAME: Asiacoin,
-    Atom.NAME: Atom,
     Auroracoin.NAME: Auroracoin,
     Avian.NAME: Avian,
     Axe.NAME: Axe,
@@ -183,6 +183,7 @@ CRYPTOCURRENCIES: Dict[str, Type[ICryptocurrency]] = {
     BelaCoin.NAME: BelaCoin,
     BitCloud.NAME: BitCloud,
     Bitcoin.NAME: Bitcoin,
+    BitcoinAtom.NAME: BitcoinAtom,
     BitcoinCash.NAME: BitcoinCash,
     BitcoinGold.NAME: BitcoinGold,
     BitcoinPlus.NAME: BitcoinPlus,
@@ -201,6 +202,7 @@ CRYPTOCURRENCIES: Dict[str, Type[ICryptocurrency]] = {
     Clams.NAME: Clams,
     ClubCoin.NAME: ClubCoin,
     Compcoin.NAME: Compcoin,
+    Cosmos.NAME: Cosmos,
     CPUChain.NAME: CPUChain,
     CranePay.NAME: CranePay,
     Crave.NAME: Crave,
