@@ -1,37 +1,43 @@
 #!/usr/bin/env python3
 
+# Copyright © 2020-2024, Meheret Tesfaye Batu <meherett.batu@gmail.com>
+# Distributed under the MIT software license, see the accompanying
+# file COPYING or https://opensource.org/license/mit
+
 from typing import (
     Any, Union
 )
-from hashlib import sha256
 
 from ..libs.ripemd160 import ripemd160
 from ..libs.bech32 import (
     bech32_encode, bech32_decode
 )
 from ..ecc import (
-    IPublicKey, SLIP10Secp256k1PublicKey
+    IPublicKey, SLIP10Secp256k1PublicKey, validate_and_get_public_key
 )
+from ..cryptocurrencies import Cosmos
+from ..crypto import sha256
 from ..utils import bytes_to_string
-from . import (
-    IAddress, validate_and_get_public_key
-)
+from .iaddress import IAddress
 
 
 class CosmosAddress(IAddress):
 
-    hrp: str = "cosmos"
+    hrp: str = Cosmos.NETWORKS.MAINNET.HRP
+
+    @staticmethod
+    def name() -> str:
+        return "Cosmos"
 
     @classmethod
     def encode(cls, public_key: Union[bytes, str, IPublicKey], **kwargs: Any) -> str:
 
-        public_key: SLIP10Secp256k1PublicKey = validate_and_get_public_key(
+        public_key: IPublicKey = validate_and_get_public_key(
             public_key=public_key, public_key_cls=SLIP10Secp256k1PublicKey
         )
         public_key_hash: bytes = ripemd160(sha256(
             public_key.raw_compressed()
-        ).digest())
-
+        ))
         return bech32_encode(
             kwargs.get("hrp", cls.hrp), public_key_hash
         )
