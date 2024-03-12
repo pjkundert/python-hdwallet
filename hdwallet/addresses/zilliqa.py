@@ -1,37 +1,43 @@
 #!/usr/bin/env python3
 
+# Copyright © 2020-2024, Meheret Tesfaye Batu <meherett.batu@gmail.com>
+# Distributed under the MIT software license, see the accompanying
+# file COPYING or https://opensource.org/license/mit
+
 from typing import (
     Any, Union
 )
-from hashlib import sha256
 
 from ..libs.bech32 import (
     bech32_encode, bech32_decode
 )
 from ..ecc import (
-    IPublicKey, SLIP10Secp256k1PublicKey
+    IPublicKey, SLIP10Secp256k1PublicKey, validate_and_get_public_key
 )
+from ..cryptocurrencies import Zilliqa
+from ..crypto import sha256
 from ..utils import bytes_to_string
-from . import (
-    IAddress, validate_and_get_public_key
-)
+from .iaddress import IAddress
 
 
 class ZilliqaAddress(IAddress):
 
-    hrp: str = "zil"
-    sha256_byte_length: int = 20
+    hrp: str = Zilliqa.NETWORKS.MAINNET.HRP
+
+    @staticmethod
+    def name() -> str:
+        return "Zilliqa"
 
     @classmethod
     def encode(cls, public_key: Union[bytes, str, IPublicKey], **kwargs: Any) -> str:
 
-        public_key: SLIP10Secp256k1PublicKey = validate_and_get_public_key(
+        public_key: IPublicKey = validate_and_get_public_key(
             public_key=public_key, public_key_cls=SLIP10Secp256k1PublicKey
         )
-        public_key_hash: bytes = sha256(public_key.raw_compressed()).digest()
+        public_key_hash: bytes = sha256(public_key.raw_compressed())
 
         return bech32_encode(
-            kwargs.get("hrp", cls.hrp), public_key_hash[-cls.sha256_byte_length:]
+            kwargs.get("hrp", cls.hrp), public_key_hash[-20:]
         )
 
     @classmethod
@@ -41,7 +47,7 @@ class ZilliqaAddress(IAddress):
             kwargs.get("hrp", cls.hrp), address
         )
 
-        if len(address_decode) != cls.sha256_byte_length:
-            raise ValueError(f"Invalid length (expected {cls.sha256_byte_length}, got {len(address_decode)})")
+        if len(address_decode) != 20:
+            raise ValueError(f"Invalid length (expected: {20}, got: {len(address_decode)})")
 
         return bytes_to_string(address_decode)
