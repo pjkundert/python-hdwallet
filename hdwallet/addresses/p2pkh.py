@@ -25,7 +25,7 @@ from .iaddress import IAddress
 
 class P2PKHAddress(IAddress):
     
-    network_version: int = Bitcoin.NETWORKS.MAINNET.PUBLIC_KEY_ADDRESS_PREFIX
+    public_key_address_prefix: int = Bitcoin.NETWORKS.MAINNET.PUBLIC_KEY_ADDRESS_PREFIX
     alphabet: str = Bitcoin.PARAMS.ALPHABET
 
     @staticmethod
@@ -35,8 +35,8 @@ class P2PKHAddress(IAddress):
     @classmethod
     def encode(cls, public_key: Union[bytes, str, IPublicKey], **kwargs: Any) -> str:
 
-        network_version: bytes = integer_to_bytes(
-            kwargs.get("network_version", cls.network_version)
+        public_key_address_prefix: bytes = integer_to_bytes(
+            kwargs.get("public_key_address_prefix", cls.public_key_address_prefix)
         )
         public_key: IPublicKey = validate_and_get_public_key(
             public_key=public_key, public_key_cls=SLIP10Secp256k1PublicKey
@@ -48,7 +48,7 @@ class P2PKHAddress(IAddress):
         )
 
         return ensure_string(check_encode(
-            (network_version + public_key_hash), alphabet=kwargs.get(
+            (public_key_address_prefix + public_key_hash), alphabet=kwargs.get(
                 "alphabet", cls.alphabet
             )
         ))
@@ -56,8 +56,8 @@ class P2PKHAddress(IAddress):
     @classmethod
     def decode(cls, address: str, **kwargs: Any) -> str:
 
-        network_version: bytes = integer_to_bytes(
-            kwargs.get("network_version", cls.network_version)
+        public_key_address_prefix: bytes = integer_to_bytes(
+            kwargs.get("public_key_address_prefix", cls.public_key_address_prefix)
         )
         address_decode: bytes = check_decode(
             address, alphabet=kwargs.get(
@@ -65,12 +65,12 @@ class P2PKHAddress(IAddress):
             )
         )
 
-        expected_length: int = 20 + len(network_version)
+        expected_length: int = 20 + len(public_key_address_prefix)
         if len(address_decode) != expected_length:
             raise ValueError(f"Invalid length (expected: {expected_length}, got: {len(address_decode)})")
 
-        prefix_got: bytes = address_decode[:len(network_version)]
-        if network_version != prefix_got:
-            raise ValueError(f"Invalid prefix (expected: {network_version}, got: {prefix_got})")
+        prefix_got: bytes = address_decode[:len(public_key_address_prefix)]
+        if public_key_address_prefix != prefix_got:
+            raise ValueError(f"Invalid prefix (expected: {public_key_address_prefix}, got: {prefix_got})")
 
-        return bytes_to_string(address_decode[len(network_version):])
+        return bytes_to_string(address_decode[len(public_key_address_prefix):])

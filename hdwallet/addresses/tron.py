@@ -24,7 +24,7 @@ from .iaddress import IAddress
 
 class TronAddress(IAddress):
 
-    public_key_address: int = Tron.NETWORKS.MAINNET.PUBLIC_KEY_ADDRESS_PREFIX
+    public_key_address_prefix: int = Tron.NETWORKS.MAINNET.PUBLIC_KEY_ADDRESS_PREFIX
     alphabet: str = Tron.PARAMS.ALPHABET
 
     @staticmethod
@@ -34,7 +34,7 @@ class TronAddress(IAddress):
     @classmethod
     def encode(cls, public_key: Union[bytes, str, IPublicKey], **kwargs: Any) -> str:
 
-        network_version: bytes = integer_to_bytes(cls.public_key_address)
+        network_version: bytes = integer_to_bytes(cls.public_key_address_prefix)
         
         public_key: IPublicKey = validate_and_get_public_key(
             public_key=public_key, public_key_cls=SLIP10Secp256k1PublicKey
@@ -53,7 +53,7 @@ class TronAddress(IAddress):
     @classmethod
     def decode(cls, address: str, **kwargs: Any) -> str:
         
-        network_version: bytes = integer_to_bytes(cls.public_key_address)
+        network_version: bytes = integer_to_bytes(cls.public_key_address_prefix)
         
         address_decode: bytes = check_decode(
             address, alphabet=kwargs.get(

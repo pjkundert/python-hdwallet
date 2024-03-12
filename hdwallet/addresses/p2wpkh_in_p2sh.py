@@ -31,8 +31,8 @@ class P2WPKHInP2SHAddress(P2SHAddress):
     @classmethod
     def encode(cls, public_key: Union[bytes, str, IPublicKey], **kwargs: Any) -> str:
 
-        network_version: bytes = integer_to_bytes(
-            kwargs.get("network_version", cls.network_version)
+        script_address_prefix: bytes = integer_to_bytes(
+            kwargs.get("script_address_prefix", cls.script_address_prefix)
         )
         public_key: IPublicKey = validate_and_get_public_key(
             public_key=public_key, public_key_cls=SLIP10Secp256k1PublicKey
@@ -47,7 +47,7 @@ class P2WPKHInP2SHAddress(P2SHAddress):
         ))
 
         return ensure_string(check_encode(
-            (network_version + script_hash), alphabet=kwargs.get(
+            (script_address_prefix + script_hash), alphabet=kwargs.get(
                 "alphabet", cls.alphabet
             )
         ))
