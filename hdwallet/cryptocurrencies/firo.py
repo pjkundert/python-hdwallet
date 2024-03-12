@@ -15,52 +15,34 @@ from .icryptocurrency import (
 
 class Mainnet(INetwork):
 
-    PUBLIC_KEY_ADDRESS_PREFIX = 0x4c
-    SCRIPT_ADDRESS_PREFIX = 0x10
+    PUBLIC_KEY_ADDRESS_PREFIX = 0x52
+    SCRIPT_ADDRESS_PREFIX = 0x07
     XPRIVATE_KEY_VERSIONS = XPrivateKeyVersions({
-        "P2PKH": 0x488ade4,
-        "P2SH": 0x488ade4
+        "P2PKH": 0x0488ade4,
+        "P2SH": 0x0488ade4
     })
     XPUBLIC_KEY_VERSIONS = XPublicKeyVersions({
-        "P2PKH": 0x488b21e,
-        "P2SH": 0x488b21e
+        "P2PKH": 0x0488b21e,
+        "P2SH": 0x0488b21e
     })
-    MESSAGE_PREFIX = "\x18Stash Signed Message:\n"
-    WIF_PREFIX = 0xcc
+    MESSAGE_PREFIX = "\x18Firo Signed Message:\n"
+    WIF_PREFIX = 0xd2
 
 
-class Testnet(INetwork):
+class Firo(ICryptocurrency):
 
-    PUBLIC_KEY_ADDRESS_PREFIX = 0x8c
-    SCRIPT_ADDRESS_PREFIX = 0x13
-    XPRIVATE_KEY_VERSIONS = XPrivateKeyVersions({
-        "P2PKH": 0x04358394,
-        "P2SH": 0x04358394
-    })
-    XPUBLIC_KEY_VERSIONS = XPublicKeyVersions({
-        "P2PKH": 0x043587cf,
-        "P2SH": 0x043587cf
-    })
-    MESSAGE_PREFIX = "\x18Stash Test Signed Message:\n"
-    WIF_PREFIX = 0xef
-
-
-class Stash(ICryptocurrency):
-
-    NAME = "Stash"
-    SYMBOL = "STASH"
+    NAME = "Firo"
+    SYMBOL = "FIRO"
     INFO = Info({
-        "SOURCE_CODE": "https://docs.stash.capital",
-        "WHITEPAPER": "https://docs.stash.capital",
+        "SOURCE_CODE": "https://github.com/firoorg/firo",
         "WEBSITES": [
-            "https://stash.capital",
-            "https://app.stash.capital/#/dashboard"
+            "https://firo.org"
         ]
     })
     ECC = SLIP10Secp256k1ECC
-    COIN_TYPE = 49344
+    COIN_TYPE = 136  # ZCoin coin type
     NETWORKS = Networks({
-        "MAINNET": Mainnet, "TESTNET": Testnet
+        "MAINNET": Mainnet
     })
     DEFAULT_NETWORK = NETWORKS.MAINNET
     ENTROPIES = Entropies({

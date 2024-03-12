@@ -15,8 +15,8 @@ from .icryptocurrency import (
 
 class Mainnet(INetwork):
 
-    PUBLIC_KEY_ADDRESS_PREFIX = 0x4c
-    SCRIPT_ADDRESS_PREFIX = 0x10
+    PUBLIC_KEY_ADDRESS_PREFIX = 0x50
+    SCRIPT_ADDRESS_PREFIX = 0x09
     XPRIVATE_KEY_VERSIONS = XPrivateKeyVersions({
         "P2PKH": 0x488ade4,
         "P2SH": 0x488ade4
@@ -25,42 +25,24 @@ class Mainnet(INetwork):
         "P2PKH": 0x488b21e,
         "P2SH": 0x488b21e
     })
-    MESSAGE_PREFIX = "\x18Stash Signed Message:\n"
-    WIF_PREFIX = 0xcc
+    MESSAGE_PREFIX = "\x18Zetacoin Signed Message:\n"
+    WIF_PREFIX = 0xe0
 
 
-class Testnet(INetwork):
+class Zetacoin(ICryptocurrency):
 
-    PUBLIC_KEY_ADDRESS_PREFIX = 0x8c
-    SCRIPT_ADDRESS_PREFIX = 0x13
-    XPRIVATE_KEY_VERSIONS = XPrivateKeyVersions({
-        "P2PKH": 0x04358394,
-        "P2SH": 0x04358394
-    })
-    XPUBLIC_KEY_VERSIONS = XPublicKeyVersions({
-        "P2PKH": 0x043587cf,
-        "P2SH": 0x043587cf
-    })
-    MESSAGE_PREFIX = "\x18Stash Test Signed Message:\n"
-    WIF_PREFIX = 0xef
-
-
-class Stash(ICryptocurrency):
-
-    NAME = "Stash"
-    SYMBOL = "STASH"
+    NAME = "Zetacoin"
+    SYMBOL = "ZET"
     INFO = Info({
-        "SOURCE_CODE": "https://docs.stash.capital",
-        "WHITEPAPER": "https://docs.stash.capital",
+        "SOURCE_CODE": "https://github.com/zetacoin/zetacoin",
         "WEBSITES": [
-            "https://stash.capital",
-            "https://app.stash.capital/#/dashboard"
+            "http://www.zetac.org"
         ]
     })
     ECC = SLIP10Secp256k1ECC
-    COIN_TYPE = 49344
+    COIN_TYPE = 719
     NETWORKS = Networks({
-        "MAINNET": Mainnet, "TESTNET": Testnet
+        "MAINNET": Mainnet
     })
     DEFAULT_NETWORK = NETWORKS.MAINNET
     ENTROPIES = Entropies({

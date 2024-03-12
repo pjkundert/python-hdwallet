@@ -15,50 +15,50 @@ from .icryptocurrency import (
 
 class Mainnet(INetwork):
 
-    PUBLIC_KEY_ADDRESS_PREFIX = 0x4c
-    SCRIPT_ADDRESS_PREFIX = 0x10
+    PUBLIC_KEY_ADDRESS_PREFIX = 0x1e
+    SCRIPT_ADDRESS_PREFIX = 0x0d
     XPRIVATE_KEY_VERSIONS = XPrivateKeyVersions({
-        "P2PKH": 0x488ade4,
-        "P2SH": 0x488ade4
+        "P2PKH": 0x0221312b,
+        "P2SH": 0x0221312b
     })
     XPUBLIC_KEY_VERSIONS = XPublicKeyVersions({
-        "P2PKH": 0x488b21e,
-        "P2SH": 0x488b21e
+        "P2PKH": 0x022d2533,
+        "P2SH": 0x022d2533
     })
-    MESSAGE_PREFIX = "\x18Stash Signed Message:\n"
-    WIF_PREFIX = 0xcc
+    MESSAGE_PREFIX = "\x19Divi Signed Message:\n"
+    WIF_PREFIX = 0xd4
 
 
 class Testnet(INetwork):
 
-    PUBLIC_KEY_ADDRESS_PREFIX = 0x8c
-    SCRIPT_ADDRESS_PREFIX = 0x13
+    PUBLIC_KEY_ADDRESS_PREFIX = 0x1e
+    SCRIPT_ADDRESS_PREFIX = 0x0d
     XPRIVATE_KEY_VERSIONS = XPrivateKeyVersions({
-        "P2PKH": 0x04358394,
-        "P2SH": 0x04358394
+        "P2PKH": 0x3a805837,
+        "P2SH": 0x3a805837
     })
     XPUBLIC_KEY_VERSIONS = XPublicKeyVersions({
-        "P2PKH": 0x043587cf,
-        "P2SH": 0x043587cf
+        "P2PKH": 0x3a8061a0,
+        "P2SH": 0x3a8061a0
     })
-    MESSAGE_PREFIX = "\x18Stash Test Signed Message:\n"
-    WIF_PREFIX = 0xef
+    MESSAGE_PREFIX = "\x19Divi Signed Message:\n"
+    WIF_PREFIX = 0xd4
 
 
-class Stash(ICryptocurrency):
+class Divi(ICryptocurrency):
 
-    NAME = "Stash"
-    SYMBOL = "STASH"
+    NAME = "Divi"
+    SYMBOL = "DIVI"
     INFO = Info({
-        "SOURCE_CODE": "https://docs.stash.capital",
-        "WHITEPAPER": "https://docs.stash.capital",
+        "SOURCE_CODE": "https://github.com/Divicoin/Divi",
+        "WHITEPAPER": "https://wiki.diviproject.org/#whitepaper",
         "WEBSITES": [
-            "https://stash.capital",
-            "https://app.stash.capital/#/dashboard"
+            "https://www.diviproject.org",
+            "https://diviwallet.com"
         ]
     })
     ECC = SLIP10Secp256k1ECC
-    COIN_TYPE = 49344
+    COIN_TYPE = 301
     NETWORKS = Networks({
         "MAINNET": Mainnet, "TESTNET": Testnet
     })

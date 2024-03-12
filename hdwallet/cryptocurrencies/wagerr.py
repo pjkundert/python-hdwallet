@@ -15,52 +15,34 @@ from .icryptocurrency import (
 
 class Mainnet(INetwork):
 
-    PUBLIC_KEY_ADDRESS_PREFIX = 0x4c
-    SCRIPT_ADDRESS_PREFIX = 0x10
+    PUBLIC_KEY_ADDRESS_PREFIX = 0x49
+    SCRIPT_ADDRESS_PREFIX = 0x3f
     XPRIVATE_KEY_VERSIONS = XPrivateKeyVersions({
-        "P2PKH": 0x488ade4,
-        "P2SH": 0x488ade4
+        "P2PKH": 0x0221312b,
+        "P2SH": 0x0221312b
     })
     XPUBLIC_KEY_VERSIONS = XPublicKeyVersions({
-        "P2PKH": 0x488b21e,
-        "P2SH": 0x488b21e
+        "P2PKH": 0x022d2533,
+        "P2SH": 0x022d2533
     })
-    MESSAGE_PREFIX = "\x18Stash Signed Message:\n"
-    WIF_PREFIX = 0xcc
+    WIF_PREFIX = 0xc7
 
 
-class Testnet(INetwork):
+class Wagerr(ICryptocurrency):
 
-    PUBLIC_KEY_ADDRESS_PREFIX = 0x8c
-    SCRIPT_ADDRESS_PREFIX = 0x13
-    XPRIVATE_KEY_VERSIONS = XPrivateKeyVersions({
-        "P2PKH": 0x04358394,
-        "P2SH": 0x04358394
-    })
-    XPUBLIC_KEY_VERSIONS = XPublicKeyVersions({
-        "P2PKH": 0x043587cf,
-        "P2SH": 0x043587cf
-    })
-    MESSAGE_PREFIX = "\x18Stash Test Signed Message:\n"
-    WIF_PREFIX = 0xef
-
-
-class Stash(ICryptocurrency):
-
-    NAME = "Stash"
-    SYMBOL = "STASH"
+    NAME = "Wagerr"
+    SYMBOL = "WGR"
     INFO = Info({
-        "SOURCE_CODE": "https://docs.stash.capital",
-        "WHITEPAPER": "https://docs.stash.capital",
+        "SOURCE_CODE": "https://github.com/wagerr/wagerr",
+        "WHITEPAPER": "https://www.wagerr.com/wagerr_whitepaper_v1.pdf",
         "WEBSITES": [
-            "https://stash.capital",
-            "https://app.stash.capital/#/dashboard"
+            "https://www.wagerr.com"
         ]
     })
     ECC = SLIP10Secp256k1ECC
-    COIN_TYPE = 49344
+    COIN_TYPE = 000  # Unknown coin type
     NETWORKS = Networks({
-        "MAINNET": Mainnet, "TESTNET": Testnet
+        "MAINNET": Mainnet
     })
     DEFAULT_NETWORK = NETWORKS.MAINNET
     ENTROPIES = Entropies({

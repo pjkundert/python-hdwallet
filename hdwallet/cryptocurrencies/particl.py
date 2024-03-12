@@ -6,7 +6,7 @@
 
 from ..ecc import SLIP10Secp256k1ECC
 from ..const import (
-    Info, Entropies, Mnemonics, Seeds, HDs, Addresses, Networks, XPrivateKeyVersions, XPublicKeyVersions
+    Info, WitnessVersions, Entropies, Mnemonics, Seeds, HDs, Addresses, Networks, XPrivateKeyVersions, XPublicKeyVersions
 )
 from .icryptocurrency import (
     ICryptocurrency, INetwork
@@ -15,34 +15,39 @@ from .icryptocurrency import (
 
 class Mainnet(INetwork):
 
-    PUBLIC_KEY_ADDRESS_PREFIX = 0x21
-    SCRIPT_ADDRESS_PREFIX = 0x05
+    PUBLIC_KEY_ADDRESS_PREFIX = 0x38
+    SCRIPT_ADDRESS_PREFIX = 0x3c
+    HRP = "pw"
+    WITNESS_VERSIONS = WitnessVersions({
+        "P2WPKH": 0x00,
+        "P2WSH": 0x00
+    })
     XPRIVATE_KEY_VERSIONS = XPrivateKeyVersions({
-        "P2PKH": 0x488ade4,
-        "P2SH": 0x488ade4
+        "P2PKH": 0x8f1daeb8,
+        "P2SH": 0x8f1daeb8
     })
     XPUBLIC_KEY_VERSIONS = XPublicKeyVersions({
-        "P2PKH": 0x488b21e,
-        "P2SH": 0x488b21e
+        "P2PKH": 0x696e82d1,
+        "P2SH": 0x696e82d1
     })
-    MESSAGE_PREFIX = None
-    WIF_PREFIX = 0x80
+    MESSAGE_PREFIX = "\x18Bitcoin Signed Message:\n"
+    WIF_PREFIX = 0x6c
 
 
-class Elastos(ICryptocurrency):
+class Particl(ICryptocurrency):
 
-    NAME = "Elastos"
-    SYMBOL = "ELA"
+    NAME = "Particl"
+    SYMBOL = "PART"
     INFO = Info({
-        "SOURCE_CODE": "https://github.com/elastos",
-        "WHITEPAPER": "https://www.elastos.org/downloads/elastos_whitepaper_en.pdf",
+        "SOURCE_CODE": "https://github.com/particl/particl-core",
+        "WHITEPAPER": "https://github.com/particl/whitepaper/blob/master/Particl%20Whitepaper%20Draft%20v0.3.pdf",
         "WEBSITES": [
-            "https://elastos.info",
-            "https://elastos.org"
+            "http://particl.io",
+            "https://particl.store"
         ]
     })
     ECC = SLIP10Secp256k1ECC
-    COIN_TYPE = 2305
+    COIN_TYPE = 44
     NETWORKS = Networks({
         "MAINNET": Mainnet
     })

@@ -73,6 +73,11 @@ class Testnet(INetwork):
     WIF_PREFIX = 0xef
 
 
+class Regtest(Testnet):
+
+    HRP = "bcrt"
+
+
 class Bitcoin(ICryptocurrency):
 
     NAME = "Bitcoin"
@@ -87,7 +92,7 @@ class Bitcoin(ICryptocurrency):
     ECC = SLIP10Secp256k1ECC
     COIN_TYPE = 0
     NETWORKS = Networks({
-        "MAINNET": Mainnet, "TESTNET": Testnet
+        "MAINNET": Mainnet, "TESTNET": Testnet, "REGTEST": Regtest
     })
     DEFAULT_NETWORK = NETWORKS.MAINNET
     ENTROPIES = Entropies((

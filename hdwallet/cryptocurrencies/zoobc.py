@@ -6,7 +6,7 @@
 
 from ..ecc import SLIP10Secp256k1ECC
 from ..const import (
-    Info, Entropies, Mnemonics, Seeds, HDs, Addresses, Networks, XPrivateKeyVersions, XPublicKeyVersions
+    Info, WitnessVersions, Entropies, Mnemonics, Seeds, HDs, Addresses, Networks, XPrivateKeyVersions, XPublicKeyVersions
 )
 from .icryptocurrency import (
     ICryptocurrency, INetwork
@@ -15,8 +15,13 @@ from .icryptocurrency import (
 
 class Mainnet(INetwork):
 
-    PUBLIC_KEY_ADDRESS_PREFIX = 0x4c
-    SCRIPT_ADDRESS_PREFIX = 0x10
+    PUBLIC_KEY_ADDRESS_PREFIX = 0x00
+    SCRIPT_ADDRESS_PREFIX = 0x05
+    HRP = "bc"
+    WITNESS_VERSIONS = WitnessVersions({
+        "P2WPKH": 0x00,
+        "P2WSH": 0x00
+    })
     XPRIVATE_KEY_VERSIONS = XPrivateKeyVersions({
         "P2PKH": 0x488ade4,
         "P2SH": 0x488ade4
@@ -25,42 +30,26 @@ class Mainnet(INetwork):
         "P2PKH": 0x488b21e,
         "P2SH": 0x488b21e
     })
-    MESSAGE_PREFIX = "\x18Stash Signed Message:\n"
-    WIF_PREFIX = 0xcc
+    MESSAGE_PREFIX = "\x18ZooBC Signed Message:\n"
+    WIF_PREFIX = 0x80
 
 
-class Testnet(INetwork):
+class ZooBC(ICryptocurrency):
 
-    PUBLIC_KEY_ADDRESS_PREFIX = 0x8c
-    SCRIPT_ADDRESS_PREFIX = 0x13
-    XPRIVATE_KEY_VERSIONS = XPrivateKeyVersions({
-        "P2PKH": 0x04358394,
-        "P2SH": 0x04358394
-    })
-    XPUBLIC_KEY_VERSIONS = XPublicKeyVersions({
-        "P2PKH": 0x043587cf,
-        "P2SH": 0x043587cf
-    })
-    MESSAGE_PREFIX = "\x18Stash Test Signed Message:\n"
-    WIF_PREFIX = 0xef
-
-
-class Stash(ICryptocurrency):
-
-    NAME = "Stash"
-    SYMBOL = "STASH"
+    NAME = "ZooBC"
+    SYMBOL = "ZBC"
     INFO = Info({
-        "SOURCE_CODE": "https://docs.stash.capital",
-        "WHITEPAPER": "https://docs.stash.capital",
+        "SOURCE_CODE": "https://github.com/zoobc/zoobc-core",
+        "WHITEPAPER": "https://git.hush.is",
         "WEBSITES": [
-            "https://stash.capital",
-            "https://app.stash.capital/#/dashboard"
+            "https://zoobc.one",
+            "https://zoobc.com"
         ]
     })
     ECC = SLIP10Secp256k1ECC
-    COIN_TYPE = 49344
+    COIN_TYPE = 883
     NETWORKS = Networks({
-        "MAINNET": Mainnet, "TESTNET": Testnet
+        "MAINNET": Mainnet
     })
     DEFAULT_NETWORK = NETWORKS.MAINNET
     ENTROPIES = Entropies({

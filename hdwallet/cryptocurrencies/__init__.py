@@ -9,6 +9,7 @@ from typing import (
 )
 
 from .icryptocurrency import ICryptocurrency
+from .adcoin import Adcoin
 from .algorand import Algorand
 from .anon import Anon
 from .argoneum import Argoneum
@@ -27,7 +28,9 @@ from .bitcoin import Bitcoin
 from .bitcoinatom import BitcoinAtom
 from .bitcoincash import BitcoinCash
 from .bitcoingold import BitcoinGold
+from .bitcoingreen import BitcoinGreen
 from .bitcoinplus import BitcoinPlus
+from .bitcoinprivate import BitcoinPrivate
 from .bitcoinsv import BitcoinSV
 from .bitcoinz import BitcoinZ
 from .bitcore import Bitcore
@@ -54,9 +57,11 @@ from .denarius import Denarius
 from .diamond import Diamond
 from .digibyte import DigiByte
 from .digitalcoin import Digitalcoin
+from .divi import Divi
 from .dogecoin import Dogecoin
 from .ecoin import ECoin
 from .edrcoin import EDRCoin
+from .egulden import EGulden
 from .einsteinium import Einsteinium
 from .elastos import Elastos
 from .elrond import Elrond
@@ -69,6 +74,7 @@ from .evrmore import Evrmore
 from .exclusivecoin import ExclusiveCoin
 from .feathercoin import Feathercoin
 from .filecoin import Filecoin
+from .firo import Firo
 from .firstcoin import Firstcoin
 from .fix import FIX
 from .flashcoin import Flashcoin
@@ -93,6 +99,7 @@ from .ixcoin import IXCoin
 from .jumbucks import Jumbucks
 from .kobocoin import Kobocoin
 from .komodo import Komodo
+from .landcoin import Landcoin
 from .lbrycredits import LBRYCredits
 from .linx import Linx
 from .litecoin import Litecoin
@@ -125,6 +132,7 @@ from .okcash import OKCash
 from .oktchain import OKTChain
 from .omni import Omni
 from .onix import Onix
+from .particl import Particl
 from .peercoin import Peercoin
 from .pesobit import Pesobit
 from .phore import Phore
@@ -139,6 +147,7 @@ from .rapids import Rapids
 from .ravencoin import Ravencoin
 from .reddcoin import Reddcoin
 from .ripple import Ripple
+from .ritocoin import Ritocoin
 from .rsk import RSK
 from .rubycoin import Rubycoin
 from .safecoin import Safecoin
@@ -166,7 +175,9 @@ from .verge import Verge
 from .vertcoin import Vertcoin
 from .viacoin import Viacoin
 from .vivo import Vivo
+from .voxels import Voxels
 from .vpncoin import VPNCoin
+from .wagerr import Wagerr
 from .whitecoin import Whitecoin
 from .wincoin import Wincoin
 from .xinfin import XinFin
@@ -175,9 +186,12 @@ from .ycash import Ycash
 from .zcash import Zcash
 from .zclassic import ZClassic
 from .zencash import Zencash
+from .zetacoin import Zetacoin
 from .zilliqa import Zilliqa
+from .zoobc import ZooBC
 
 CRYPTOCURRENCIES: Dict[str, Type[ICryptocurrency]] = {
+    Adcoin.NAME: Adcoin,
     Algorand.NAME: Algorand,
     Anon.NAME: Anon,
     Argoneum.NAME: Argoneum,
@@ -196,7 +210,9 @@ CRYPTOCURRENCIES: Dict[str, Type[ICryptocurrency]] = {
     BitcoinAtom.NAME: BitcoinAtom,
     BitcoinCash.NAME: BitcoinCash,
     BitcoinGold.NAME: BitcoinGold,
+    BitcoinGreen.NAME: BitcoinGreen,
     BitcoinPlus.NAME: BitcoinPlus,
+    BitcoinPrivate.NAME: BitcoinPrivate,
     BitcoinSV.NAME: BitcoinSV,
     BitcoinZ.NAME: BitcoinZ,
     Bitcore.NAME: Bitcore,
@@ -223,9 +239,11 @@ CRYPTOCURRENCIES: Dict[str, Type[ICryptocurrency]] = {
     Diamond.NAME: Diamond,
     DigiByte.NAME: DigiByte,
     Digitalcoin.NAME: Digitalcoin,
+    Divi.NAME: Divi,
     Dogecoin.NAME: Dogecoin,
     ECoin.NAME: ECoin,
     EDRCoin.NAME: EDRCoin,
+    EGulden.NAME: EGulden,
     Einsteinium.NAME: Einsteinium,
     Elastos.NAME: Elastos,
     Elrond.NAME: Elrond,
@@ -238,6 +256,7 @@ CRYPTOCURRENCIES: Dict[str, Type[ICryptocurrency]] = {
     ExclusiveCoin.NAME: ExclusiveCoin,
     Feathercoin.NAME: Feathercoin,
     Filecoin.NAME: Filecoin,
+    Firo.NAME: Firo,
     Firstcoin.NAME: Firstcoin,
     FIX.NAME: FIX,
     Flashcoin.NAME: Flashcoin,
@@ -262,6 +281,7 @@ CRYPTOCURRENCIES: Dict[str, Type[ICryptocurrency]] = {
     Jumbucks.NAME: Jumbucks,
     Kobocoin.NAME: Kobocoin,
     Komodo.NAME: Komodo,
+    Landcoin.NAME: Landcoin,
     LBRYCredits.NAME: LBRYCredits,
     Linx.NAME: Linx,
     Litecoin.NAME: Litecoin,
@@ -294,6 +314,7 @@ CRYPTOCURRENCIES: Dict[str, Type[ICryptocurrency]] = {
     OKTChain.NAME: OKTChain,
     Omni.NAME: Omni,
     Onix.NAME: Onix,
+    Particl.NAME: Particl,
     Peercoin.NAME: Peercoin,
     Pesobit.NAME: Pesobit,
     Phore.NAME: Phore,
@@ -308,6 +329,7 @@ CRYPTOCURRENCIES: Dict[str, Type[ICryptocurrency]] = {
     Ravencoin.NAME: Ravencoin,
     Reddcoin.NAME: Reddcoin,
     Ripple.NAME: Ripple,
+    Ritocoin.NAME: Ritocoin,
     RSK.NAME: RSK,
     Rubycoin.NAME: Rubycoin,
     Safecoin.NAME: Safecoin,
@@ -335,7 +357,9 @@ CRYPTOCURRENCIES: Dict[str, Type[ICryptocurrency]] = {
     Vertcoin.NAME: Vertcoin,
     Viacoin.NAME: Viacoin,
     Vivo.NAME: Vivo,
+    Voxels.NAME: Voxels,
     VPNCoin.NAME: VPNCoin,
+    Wagerr.NAME: Wagerr,
     Whitecoin.NAME: Whitecoin,
     Wincoin.NAME: Wincoin,
     XinFin.NAME: XinFin,
@@ -344,7 +368,9 @@ CRYPTOCURRENCIES: Dict[str, Type[ICryptocurrency]] = {
     Zcash.NAME: Zcash,
     ZClassic.NAME: ZClassic,
     Zencash.NAME: Zencash,
-    Zilliqa.NAME: Zilliqa
+    Zetacoin.NAME: Zetacoin,
+    Zilliqa.NAME: Zilliqa,
+    ZooBC.NAME: ZooBC
 }
 
 __all__: List[str] = ["ICryptocurrency", "CRYPTOCURRENCIES"] + [

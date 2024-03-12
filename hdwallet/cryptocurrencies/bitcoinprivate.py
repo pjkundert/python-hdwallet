@@ -15,8 +15,8 @@ from .icryptocurrency import (
 
 class Mainnet(INetwork):
 
-    PUBLIC_KEY_ADDRESS_PREFIX = 0x4c
-    SCRIPT_ADDRESS_PREFIX = 0x10
+    PUBLIC_KEY_ADDRESS_PREFIX = 0x1325
+    SCRIPT_ADDRESS_PREFIX = 0x13af
     XPRIVATE_KEY_VERSIONS = XPrivateKeyVersions({
         "P2PKH": 0x488ade4,
         "P2SH": 0x488ade4
@@ -25,14 +25,14 @@ class Mainnet(INetwork):
         "P2PKH": 0x488b21e,
         "P2SH": 0x488b21e
     })
-    MESSAGE_PREFIX = "\x18Stash Signed Message:\n"
-    WIF_PREFIX = 0xcc
+    MESSAGE_PREFIX = "\x18BitcoinPrivate Signed Message:\n"
+    WIF_PREFIX = 0x80
 
 
 class Testnet(INetwork):
 
-    PUBLIC_KEY_ADDRESS_PREFIX = 0x8c
-    SCRIPT_ADDRESS_PREFIX = 0x13
+    PUBLIC_KEY_ADDRESS_PREFIX = 0x1957
+    SCRIPT_ADDRESS_PREFIX = 0x19e0
     XPRIVATE_KEY_VERSIONS = XPrivateKeyVersions({
         "P2PKH": 0x04358394,
         "P2SH": 0x04358394
@@ -41,24 +41,23 @@ class Testnet(INetwork):
         "P2PKH": 0x043587cf,
         "P2SH": 0x043587cf
     })
-    MESSAGE_PREFIX = "\x18Stash Test Signed Message:\n"
+    MESSAGE_PREFIX = "\x18BitcoinPrivate Signed Message:\n"
     WIF_PREFIX = 0xef
 
 
-class Stash(ICryptocurrency):
+class BitcoinPrivate(ICryptocurrency):
 
-    NAME = "Stash"
-    SYMBOL = "STASH"
+    NAME = "Bitcoin-Private"
+    SYMBOL = "BTCP"
     INFO = Info({
-        "SOURCE_CODE": "https://docs.stash.capital",
-        "WHITEPAPER": "https://docs.stash.capital",
+        "SOURCE_CODE": "https://github.com/BTCPrivate/BitcoinPrivate",
+        "WHITEPAPER": "https://btcprivate.org/whitepaper.pdf",
         "WEBSITES": [
-            "https://stash.capital",
-            "https://app.stash.capital/#/dashboard"
+            "https://btcprivate.org"
         ]
     })
     ECC = SLIP10Secp256k1ECC
-    COIN_TYPE = 49344
+    COIN_TYPE = 183
     NETWORKS = Networks({
         "MAINNET": Mainnet, "TESTNET": Testnet
     })
