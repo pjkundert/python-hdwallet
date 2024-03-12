@@ -6,7 +6,7 @@
 
 from ..ecc import SLIP10Secp256k1ECC
 from ..const import (
-    Info, Entropies, Mnemonics, Seeds, HDs, Addresses, Networks, Params, XPrivateKeyVersions, XPublicKeyVersions
+    Info, Entropies, Mnemonics, Seeds, HDs, Addresses, AddressTypes, Networks, Params, XPrivateKeyVersions, XPublicKeyVersions
 )
 from .icryptocurrency import (
     ICryptocurrency, INetwork
@@ -70,7 +70,12 @@ class Ergo(ICryptocurrency):
     ADDRESSES = Addresses({
         "ERGO": "Ergo"
     })
-    DEFAULT_ADDRESS = ADDRESSES.EOS
+    DEFAULT_ADDRESS = ADDRESSES.ERGO
+    ADDRESS_TYPES = AddressTypes({
+        "P2PKH": "p2pkh",
+        "P2SH": "p2sh"
+    })
+    DEFAULT_ADDRESS_TYPE = ADDRESS_TYPES.P_CHAIN
     PARAMS = Params({
         "CHECKSUM_LENGTH": 4,
         "ADDRESS_TYPES": {

@@ -5,7 +5,7 @@
 # file COPYING or https://opensource.org/license/mit
 
 from typing import (
-    Any, Union, Optional
+    Any, Union
 )
 
 from ..libs.base58 import (
@@ -19,14 +19,15 @@ from ..crypto import blake2b_256
 from ..utils import (
     integer_to_bytes, bytes_to_string
 )
+from ..exceptions import (
+    AddressTypeError, NetworkError
+)
 from .iaddress import IAddress
 
 
 class ErgoAddress(IAddress):
 
     checksum_length: int = Ergo.PARAMS.CHECKSUM_LENGTH
-    address_type: Optional[int] = None
-    network_type: Optional[int] = None
     address_types: dict = {
         "p2pkh": Ergo.PARAMS.ADDRESS_TYPES.P2PKH,
         "p2sh": Ergo.PARAMS.ADDRESS_TYPES.P2SH
@@ -48,28 +49,30 @@ class ErgoAddress(IAddress):
     def encode(cls, public_key: Union[bytes, str, IPublicKey], **kwargs: Any) -> str:
 
         if not kwargs.get("address_type"):
-            raise TypeError("Ergo address type is required")
-        elif kwargs.get("address_type") == "p2pkh":
-            cls.address_type = cls.address_types["p2pkh"]
-        elif kwargs.get("address_type") == "p2sh":
-            cls.address_type = cls.address_types["p2sh"]
+            address_type: str = cls.address_types[Ergo.DEFAULT_ADDRESS_TYPE]
         else:
-            raise ValueError("Wrong ergo address type")
+            if kwargs.get("address_type") not in Ergo.ADDRESS_TYPES.get_address_types():
+                raise AddressTypeError(
+                    f"Invalid {cls.name()} address type",
+                    expected=Ergo.ADDRESS_TYPES.get_address_types(),
+                    got=kwargs.get("address_type")
+                )
+            address_type: str = cls.address_types[kwargs.get("address_type")]
+
+        if not kwargs.get("network_type"):
+            raise NetworkError(f"{cls.name()} network type is required")
+        elif kwargs.get("network_type") not in Ergo.NETWORKS.get_networks():
+            raise NetworkError(
+                f"Invalid {cls.name()} network type",
+                expected=Ergo.NETWORKS.get_networks(),
+                got=kwargs.get("network_type")
+            )
+        network_type = cls.network_types[kwargs.get("network_type")]
 
         public_key: IPublicKey = validate_and_get_public_key(
             public_key=public_key, public_key_cls=SLIP10Secp256k1PublicKey
         )
-
-        if not kwargs.get("network_type"):
-            raise TypeError("Ergo address type is required")
-        elif kwargs.get("network_type") == "mainnet":
-            cls.network_type = cls.network_types["mainnet"]
-        elif kwargs.get("network_type") == "testnet":
-            cls.network_type = cls.network_types["testnet"]
-        else:
-            raise ValueError("Wrong ergo network type")
-
-        prefix: bytes = integer_to_bytes(cls.address_type + cls.network_type)
+        prefix: bytes = integer_to_bytes(address_type + network_type)
         address_payload: bytes = prefix + public_key.raw_compressed()
         checksum: bytes = cls.compute_checksum(address_payload)
 
@@ -81,24 +84,27 @@ class ErgoAddress(IAddress):
     def decode(cls, address: str, **kwargs: Any) -> str:
 
         if not kwargs.get("address_type"):
-            raise TypeError("Ergo address type is required")
-        elif kwargs.get("address_type") == "p2pkh":
-            cls.address_type = cls.address_types["p2pkh"]
-        elif kwargs.get("address_type") == "p2sh":
-            cls.address_type = cls.address_types["p2sh"]
+            address_type: str = cls.address_types[Ergo.DEFAULT_ADDRESS_TYPE]
         else:
-            raise ValueError("Wrong ergo address type")
+            if kwargs.get("address_type") not in Ergo.ADDRESS_TYPES.get_address_types():
+                raise AddressTypeError(
+                    f"Invalid {cls.name()} address type",
+                    expected=Ergo.ADDRESS_TYPES.get_address_types(),
+                    got=kwargs.get("address_type")
+                )
+            address_type: str = cls.address_types[kwargs.get("address_type")]
 
         if not kwargs.get("network_type"):
-            raise TypeError("Ergo address type is required")
-        elif kwargs.get("network_type") == "mainnet":
-            cls.network_type = cls.network_types["mainnet"]
-        elif kwargs.get("network_type") == "testnet":
-            cls.network_type = cls.network_types["testnet"]
-        else:
-            raise ValueError("Wrong ergo network type")
+            raise NetworkError(f"{cls.name()} network type is required")
+        elif kwargs.get("network_type") not in Ergo.NETWORKS.get_networks():
+            raise NetworkError(
+                f"Invalid {cls.name()} network type",
+                expected=Ergo.NETWORKS.get_networks(),
+                got=kwargs.get("network_type")
+            )
+        network_type = cls.network_types[kwargs.get("network_type")]
 
-        prefix: bytes = integer_to_bytes(cls.address_type + cls.network_type)
+        prefix: bytes = integer_to_bytes(address_type + network_type)
         address_decode: bytes = decode(address)
 
         expected_length: int = SLIP10Secp256k1PublicKey.compressed_length() + cls.checksum_length + 1
