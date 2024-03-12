@@ -17,6 +17,7 @@ from ..ecc import (
 from ..cryptocurrencies import Tezos
 from ..crypto import blake2b_160
 from ..utils import bytes_to_string
+from ..exceptions import AddressError
 from .iaddress import IAddress
 
 
@@ -35,14 +36,16 @@ class TezosAddress(IAddress):
     @classmethod
     def encode(cls, public_key: Union[bytes, str, IPublicKey], **kwargs: Any) -> str:
 
-        if kwargs.get("address_prefix") == "tz1":
-            address_prefix: bytes = cls.address_prefixes["tz1"]
-        elif kwargs.get("address_prefix") == "tz2":
-            address_prefix: bytes = cls.address_prefixes["tz2"]
-        elif kwargs.get("address_prefix") == "tz3":
-            address_prefix: bytes = cls.address_prefixes["tz3"]
+        if not kwargs.get("address_prefix"):
+            address_prefix: bytes = cls.address_prefixes[Tezos.DEFAULT_ADDRESS_PREFIX]
         else:
-            raise ValueError("Invalid Tezos address prefix")
+            if kwargs.get("address_prefix") not in Tezos.ADDRESS_PREFIXES.get_address_prefixes():
+                raise AddressError(
+                    f"Invalid {cls.name()} address prefix",
+                    expected=Tezos.ADDRESS_PREFIXES.get_address_prefixes(),
+                    got=kwargs.get("address_prefix")
+                )
+            address_prefix: bytes = cls.address_prefixes[kwargs.get("address_prefix")]
 
         public_key: IPublicKey = validate_and_get_public_key(
             public_key=public_key, public_key_cls=SLIP10Ed25519PublicKey
@@ -56,18 +59,18 @@ class TezosAddress(IAddress):
     @classmethod
     def decode(cls, address: str, **kwargs: Any) -> str:
 
-        if not kwargs.get("address_prefix") or \
-                kwargs.get("address_prefix") == "tz1":
-            address_prefix: bytes = cls.address_prefixes["tz1"]
-        elif kwargs.get("address_prefix") == "tz2":
-            address_prefix: bytes = cls.address_prefixes["tz2"]
-        elif kwargs.get("address_prefix") == "tz3":
-            address_prefix: bytes = cls.address_prefixes["tz3"]
+        if not kwargs.get("address_prefix"):
+            address_prefix: bytes = cls.address_prefixes[Tezos.DEFAULT_ADDRESS_PREFIX]
         else:
-            raise ValueError("Invalid Tezos address prefix")
+            if kwargs.get("address_prefix") not in Tezos.ADDRESS_PREFIXES.get_address_prefixes():
+                raise AddressError(
+                    f"Invalid {cls.name()} address prefix",
+                    expected=Tezos.ADDRESS_PREFIXES.get_address_prefixes(),
+                    got=kwargs.get("address_prefix")
+                )
+            address_prefix: bytes = cls.address_prefixes[kwargs.get("address_prefix")]
 
         address_decode: bytes = check_decode(address)
-
         expected_length: int = len(address_prefix) + 20
         if len(address_decode) != expected_length:
             raise ValueError(f"Invalid length (expected: {expected_length}, got: {len(address_decode)})")

@@ -19,6 +19,7 @@ from ..crypto import xmodem_crc
 from ..utils import (
     get_bytes, bytes_reverse, integer_to_bytes, bytes_to_string
 )
+from ..exceptions import AddressError
 from .iaddress import IAddress
 
 
@@ -41,13 +42,16 @@ class StellarAddress(IAddress):
     @classmethod
     def encode(cls, public_key: Union[bytes, str, IPublicKey], **kwargs: Any) -> str:
 
-        if not kwargs.get("address_type") or \
-                kwargs.get("address_type") == "public_key":
-            address_type: int = cls.address_types["public_key"]
-        elif kwargs.get("address_type") == "private_key":
-            address_type: int = cls.address_types["private_key"]
+        if not kwargs.get("address_type"):
+            address_type: int = cls.address_types[Stellar.DEFAULT_ADDRESS_TYPE]
         else:
-            raise ValueError("Invalid stellar address type")
+            if kwargs.get("address_type") not in Stellar.ADDRESS_TYPES.get_address_types():
+                raise AddressError(
+                    f"Invalid {cls.name()} address type",
+                    expected=Stellar.ADDRESS_TYPES.get_address_types(),
+                    got=kwargs.get("address_type")
+                )
+            address_type: int = cls.address_types[kwargs.get("address_type")]
 
         public_key: IPublicKey = validate_and_get_public_key(
             public_key=public_key, public_key_cls=SLIP10Ed25519PublicKey
@@ -60,16 +64,18 @@ class StellarAddress(IAddress):
     @classmethod
     def decode(cls, address: str, **kwargs: Any) -> str:
 
-        if not kwargs.get("address_type") or \
-                kwargs.get("address_type") == "public_key":
-            address_type: int = cls.address_types["public_key"]
-        elif kwargs.get("address_type") == "private_key":
-            address_type: int = cls.address_types["private_key"]
+        if not kwargs.get("address_type"):
+            address_type: int = cls.address_types[Stellar.DEFAULT_ADDRESS_TYPE]
         else:
-            raise ValueError("Invalid stellar address type")
+            if kwargs.get("address_type") not in Stellar.ADDRESS_TYPES.get_address_types():
+                raise AddressError(
+                    f"Invalid {cls.name()} address type",
+                    expected=Stellar.ADDRESS_TYPES.get_address_types(),
+                    got=kwargs.get("address_type")
+                )
+            address_type: int = cls.address_types[kwargs.get("address_type")]
 
         address_decode: bytes = get_bytes(decode(address))
-
         expected_length: int = (
             SLIP10Ed25519PublicKey.compressed_length() + cls.checksum_length
         )

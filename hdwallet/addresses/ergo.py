@@ -20,7 +20,7 @@ from ..utils import (
     integer_to_bytes, bytes_to_string
 )
 from ..exceptions import (
-    AddressTypeError, NetworkError
+    AddressError, NetworkError
 )
 from .iaddress import IAddress
 
@@ -52,7 +52,7 @@ class ErgoAddress(IAddress):
             address_type: str = cls.address_types[Ergo.DEFAULT_ADDRESS_TYPE]
         else:
             if kwargs.get("address_type") not in Ergo.ADDRESS_TYPES.get_address_types():
-                raise AddressTypeError(
+                raise AddressError(
                     f"Invalid {cls.name()} address type",
                     expected=Ergo.ADDRESS_TYPES.get_address_types(),
                     got=kwargs.get("address_type")
@@ -87,7 +87,7 @@ class ErgoAddress(IAddress):
             address_type: str = cls.address_types[Ergo.DEFAULT_ADDRESS_TYPE]
         else:
             if kwargs.get("address_type") not in Ergo.ADDRESS_TYPES.get_address_types():
-                raise AddressTypeError(
+                raise AddressError(
                     f"Invalid {cls.name()} address type",
                     expected=Ergo.ADDRESS_TYPES.get_address_types(),
                     got=kwargs.get("address_type")

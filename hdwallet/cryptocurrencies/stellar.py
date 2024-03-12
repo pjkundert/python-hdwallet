@@ -6,7 +6,7 @@
 
 from ..ecc import SLIP10Ed25519ECC
 from ..const import (
-    Info, Entropies, Mnemonics, Seeds, HDs, Addresses, Networks, Params, XPrivateKeyVersions, XPublicKeyVersions
+    Info, Entropies, Mnemonics, Seeds, HDs, Addresses, AddressTypes, Networks, Params, XPrivateKeyVersions, XPublicKeyVersions
 )
 from .icryptocurrency import (
     ICryptocurrency, INetwork
@@ -57,6 +57,11 @@ class Stellar(ICryptocurrency):
         "STELLAR": "Stellar"
     })
     DEFAULT_ADDRESS = ADDRESSES.STELLAR
+    ADDRESS_TYPES = AddressTypes({
+        "PRIVATE_KEY": "private_key",
+        "PUBLIC_KEY": "public_key"
+    })
+    DEFAULT_ADDRESS_TYPE = ADDRESS_TYPES.PRIVATE_KEY
     PARAMS = Params({
         "CHECKSUM_LENGTH": 2,
         "ADDRESS_TYPES": {

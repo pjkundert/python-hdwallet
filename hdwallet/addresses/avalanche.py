@@ -10,7 +10,7 @@ from typing import (
 
 from ..ecc import IPublicKey
 from ..cryptocurrencies import Avalanche
-from ..exceptions import AddressTypeError
+from ..exceptions import AddressError
 from .cosmos import CosmosAddress
 from .iaddress import IAddress
 
@@ -34,7 +34,7 @@ class AvalancheAddress(IAddress):
             address_type: str = cls.address_types[Avalanche.DEFAULT_ADDRESS_TYPE]
         else:
             if kwargs.get("address_type") not in Avalanche.ADDRESS_TYPES.get_address_types():
-                raise AddressTypeError(
+                raise AddressError(
                     f"Invalid {cls.name()} address type",
                     expected=Avalanche.ADDRESS_TYPES.get_address_types(),
                     got=kwargs.get("address_type")
@@ -52,7 +52,7 @@ class AvalancheAddress(IAddress):
             address_type: str = cls.address_types[Avalanche.DEFAULT_ADDRESS_TYPE]
         else:
             if kwargs.get("address_type") not in Avalanche.ADDRESS_TYPES.get_address_types():
-                raise AddressTypeError(
+                raise AddressError(
                     f"Invalid {cls.name()} address type",
                     expected=Avalanche.ADDRESS_TYPES.get_address_types(),
                     got=kwargs.get("address_type")

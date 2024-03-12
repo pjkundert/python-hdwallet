@@ -21,7 +21,7 @@ from ..crypto import (
 from ..utils import (
     get_bytes, integer_to_bytes, bytes_to_string
 )
-from ..exceptions import AddressTypeError
+from ..exceptions import AddressError
 from .iaddress import IAddress
 
 
@@ -55,10 +55,10 @@ class FilecoinAddress(IAddress):
         )
 
         if not kwargs.get("address_type"):
-            address_type: int = cls.address_types[Filecoin.PARAMS.DEFAULT_ADDRESS_TYPE]
+            address_type: int = cls.address_types[Filecoin.DEFAULT_ADDRESS_TYPE]
         else:
             if kwargs.get("address_type") not in Filecoin.ADDRESS_TYPES.get_address_types():
-                raise AddressTypeError(
+                raise AddressError(
                     f"Invalid {cls.name()} address type",
                     expected=Filecoin.ADDRESS_TYPES.get_address_types(),
                     got=kwargs.get("address_type")
@@ -85,7 +85,7 @@ class FilecoinAddress(IAddress):
             address_type: int = cls.address_types[Filecoin.PARAMS.DEFAULT_ADDRESS_TYPE]
         else:
             if kwargs.get("address_type") not in Filecoin.ADDRESS_TYPES.get_address_types():
-                raise AddressTypeError(
+                raise AddressError(
                     f"Invalid {cls.name()} address type",
                     expected=Filecoin.ADDRESS_TYPES.get_address_types(),
                     got=kwargs.get("address_type")

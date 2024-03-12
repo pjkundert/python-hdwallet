@@ -6,25 +6,11 @@
 
 from ..ecc import SLIP10Ed25519ECC
 from ..const import (
-    Info, NestedNamespace, Entropies, Mnemonics, Seeds, HDs, Addresses, Networks, Params, XPrivateKeyVersions, XPublicKeyVersions
+    Info, Entropies, Mnemonics, Seeds, HDs, Addresses, AddressPrefixes, Networks, Params, XPrivateKeyVersions, XPublicKeyVersions
 )
 from .icryptocurrency import (
     ICryptocurrency, INetwork
 )
-
-
-class TezosAddressPrefixes(NestedNamespace):
-
-    TZ1: str
-    TZ2: str
-    TZ3: str
-
-
-TEZOS_ADDRESS_PREFIXES: TezosAddressPrefixes = TezosAddressPrefixes({
-    "TZ1": "tz1",
-    "TZ2": "tz2",
-    "TZ3": "tz3"
-})
 
 
 class Mainnet(INetwork):
@@ -71,7 +57,12 @@ class Tezos(ICryptocurrency):
         "TEZOS": "Tezos"
     })
     DEFAULT_ADDRESS = ADDRESSES.TEZOS
-    PREFIXES = TEZOS_ADDRESS_PREFIXES
+    ADDRESS_PREFIXES = AddressPrefixes({
+        "TZ1": "tz1",
+        "TZ2": "tz2",
+        "TZ3": "tz3"
+    })
+    DEFAULT_ADDRESS_PREFIX = ADDRESS_PREFIXES.TZ1
     PARAMS = Params({
         "ADDRESS_PREFIXES": {
             "TZ1": b"\x06\xa1\x9f",
