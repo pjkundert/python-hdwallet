@@ -75,7 +75,7 @@ class Ergo(ICryptocurrency):
         "P2PKH": "p2pkh",
         "P2SH": "p2sh"
     })
-    DEFAULT_ADDRESS_TYPE = ADDRESS_TYPES.P_CHAIN
+    DEFAULT_ADDRESS_TYPE = ADDRESS_TYPES.P2PKH
     PARAMS = Params({
         "CHECKSUM_LENGTH": 4,
         "ADDRESS_TYPES": {

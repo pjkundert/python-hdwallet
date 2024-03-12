@@ -25,7 +25,7 @@ class IAddress(ABC):
 
     @classmethod
     @abstractmethod
-    def encode(cls, public_key: Union[bytes, IPublicKey], encode_type: Optional[str] = None, **kwargs) -> str:
+    def encode(cls, public_key: Union[bytes, str, IPublicKey], encode_type: Optional[str] = None, **kwargs) -> str:
         pass
 
     @classmethod

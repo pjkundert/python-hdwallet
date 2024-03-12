@@ -14,6 +14,7 @@ from ..libs.segwit_bech32 import (
 from ..ecc import (
     IPoint, IPublicKey, SLIP10Secp256k1ECC, SLIP10Secp256k1Point, SLIP10Secp256k1PublicKey, validate_and_get_public_key
 )
+from ..cryptocurrencies import Bitcoin
 from ..crypto import sha256
 from ..utils import (
     get_bytes, integer_to_bytes, bytes_to_integer, bytes_to_string
@@ -23,12 +24,10 @@ from .iaddress import IAddress
 
 class P2TRAddress(IAddress):
     
-    hrp: str = "bc"
-    field_size: int = 0xFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFEFFFFFC2F
-    tap_tweak_sha256: bytes = get_bytes(
-        "e80fe1639c9ca050e3af1b39c143c63e429cbceb15d940fbb5c5a1f4af57c5e9"
-    )
-    witness_version: int = 1
+    hrp: str = Bitcoin.NETWORKS.MAINNET.HRP
+    field_size: int = Bitcoin.PARAMS.FIELD_SIZE
+    tap_tweak_sha256: bytes = get_bytes(Bitcoin.PARAMS.TAP_TWEAK_SHA256)
+    witness_version: int = Bitcoin.NETWORKS.MAINNET.WITNESS_VERSIONS.P2TR
 
     @staticmethod
     def name() -> str:

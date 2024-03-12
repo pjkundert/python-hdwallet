@@ -11,7 +11,7 @@ from typing import (
 from ..ecc import IEllipticCurveCryptography
 from ..derivations.bip44 import BIP44Derivation
 from ..const import (
-    Info, WitnessVersions, Entropies, Mnemonics, Seeds, HDs, Addresses, Networks, Params, XPrivateKeyVersions, XPublicKeyVersions
+    Info, WitnessVersions, Entropies, Mnemonics, Seeds, HDs, Addresses, AddressTypes, AddressPrefixes, Networks, Params, XPrivateKeyVersions, XPublicKeyVersions
 )
 from ..exceptions import NetworkError
 
@@ -44,7 +44,7 @@ class ICryptocurrency:
     NAME: str
     SYMBOL: str
     INFO: Info
-    ECC: IEllipticCurveCryptography
+    ECC: Type[IEllipticCurveCryptography]
     COIN_TYPE: int
     NETWORKS: Networks
     DEFAULT_NETWORK: str
@@ -55,7 +55,11 @@ class ICryptocurrency:
     DEFAULT_HD: str
     ADDRESSES: Addresses
     DEFAULT_ADDRESS: str
-    PARAMS: Optional[Params]
+    ADDRESS_TYPES: Optional[AddressTypes] = None
+    DEFAULT_ADDRESS_TYPE: Optional[str] = None
+    ADDRESS_PREFIXES: Optional[AddressPrefixes] = None
+    DEFAULT_ADDRESS_PREFIX: Optional[str] = None
+    PARAMS: Optional[Params] = None
 
     @classmethod
     def get_default_path(cls, network: Union[str, Type[INetwork]]) -> str:

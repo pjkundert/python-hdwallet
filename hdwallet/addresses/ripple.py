@@ -4,12 +4,13 @@
 # Distributed under the MIT software license, see the accompanying
 # file COPYING or https://opensource.org/license/mit
 
+from ..cryptocurrencies import Ripple
 from .p2pkh import P2PKHAddress
 
 
 class RippleAddress(P2PKHAddress):
 
-    alphabet: str = "rpshnaf39wBUDNEGHJKLM4PQRST7VWXYZ2bcdeCg65jkm8oFqi1tuvAxyz"
+    alphabet: str = Ripple.PARAMS.ALPHABET
 
     @staticmethod
     def name() -> str:

@@ -16,6 +16,7 @@ from ..const import PUBLIC_KEY_TYPES
 from ..ecc import (
     IPublicKey, SLIP10Secp256k1PublicKey, validate_and_get_public_key
 )
+from ..cryptocurrencies import Bitcoin
 from ..crypto import sha256
 from ..utils import (
     get_bytes, bytes_to_string
@@ -24,6 +25,8 @@ from .p2wpkh import P2WPKHAddress
 
 
 class P2WSHAddress(P2WPKHAddress):
+
+    witness_version: int = Bitcoin.NETWORKS.MAINNET.WITNESS_VERSIONS.P2WSH
 
     @staticmethod
     def name() -> str:

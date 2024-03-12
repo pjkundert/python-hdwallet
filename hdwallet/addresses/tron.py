@@ -14,6 +14,7 @@ from ..libs.base58 import (
 from ..ecc import (
     IPublicKey, SLIP10Secp256k1PublicKey, validate_and_get_public_key
 )
+from ..cryptocurrencies import Tron
 from ..crypto import kekkak256
 from ..utils import (
     integer_to_bytes, bytes_to_string
@@ -23,8 +24,8 @@ from .iaddress import IAddress
 
 class TronAddress(IAddress):
 
-    public_key_address: int = 0x41
-    alphabet: str = "123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz"
+    public_key_address: int = Tron.NETWORKS.MAINNET.PUBLIC_KEY_ADDRESS_PREFIX
+    alphabet: str = Tron.PARAMS.ALPHABET
 
     @staticmethod
     def name() -> str:

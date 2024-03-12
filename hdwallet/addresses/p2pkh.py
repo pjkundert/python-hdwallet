@@ -15,6 +15,7 @@ from ..const import PUBLIC_KEY_TYPES
 from ..ecc import (
     IPublicKey, SLIP10Secp256k1PublicKey, validate_and_get_public_key
 )
+from ..cryptocurrencies import Bitcoin
 from ..crypto import hash160
 from ..utils import (
     integer_to_bytes, bytes_to_string
@@ -24,8 +25,8 @@ from .iaddress import IAddress
 
 class P2PKHAddress(IAddress):
     
-    network_version: int = 0x00
-    alphabet: str = "123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz"
+    network_version: int = Bitcoin.NETWORKS.MAINNET.PUBLIC_KEY_ADDRESS_PREFIX
+    alphabet: str = Bitcoin.PARAMS.ALPHABET
 
     @staticmethod
     def name() -> str:

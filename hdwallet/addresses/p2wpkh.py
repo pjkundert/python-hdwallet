@@ -16,6 +16,7 @@ from ..const import PUBLIC_KEY_TYPES
 from ..ecc import (
     IPublicKey, SLIP10Secp256k1PublicKey, validate_and_get_public_key
 )
+from ..cryptocurrencies import Bitcoin
 from ..crypto import hash160
 from ..utils import bytes_to_string
 from .iaddress import IAddress
@@ -23,8 +24,8 @@ from .iaddress import IAddress
 
 class P2WPKHAddress(IAddress):
     
-    hrp: str = "bc"
-    witness_version: int = 0
+    hrp: str = Bitcoin.NETWORKS.MAINNET.HRP
+    witness_version: int = Bitcoin.NETWORKS.MAINNET.WITNESS_VERSIONS.P2WPKH
 
     @staticmethod
     def name() -> str:
