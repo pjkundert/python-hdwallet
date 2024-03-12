@@ -122,6 +122,18 @@ class Addresses(NestedNamespace):
         return list(self.__dict__.values())
 
 
+class AddressTypes(NestedNamespace):
+
+    def get_address_types(self) -> List[str]:
+        return list(self.__dict__.values())
+
+
+class AddressPrefixes(NestedNamespace):
+
+    def get_address_prefixes(self) -> List[str]:
+        return list(self.__dict__.values())
+
+
 class Networks(NestedNamespace):
 
     def is_network(self, network: str) -> bool:
