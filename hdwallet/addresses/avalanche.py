@@ -5,19 +5,19 @@
 # file COPYING or https://opensource.org/license/mit
 
 from typing import (
-    Any, Union, Optional
+    Any, Union
 )
 
 from ..ecc import IPublicKey
 from ..cryptocurrencies import Avalanche
+from ..exceptions import AddressTypeError
 from .cosmos import CosmosAddress
 from .iaddress import IAddress
 
 
 class AvalancheAddress(IAddress):
 
-    hrp: str = Avalanche.NETWORKS.MAINNET.HPR
-    address_prefix: Optional[str] = None
+    hrp: str = Avalanche.NETWORKS.MAINNET.HRP
     address_types: dict = {
         "p-chain": Avalanche.PARAMS.ADDRESS_TYPES.P_CHAIN,
         "x-chain": Avalanche.PARAMS.ADDRESS_TYPES.X_CHAIN
@@ -30,39 +30,39 @@ class AvalancheAddress(IAddress):
     @classmethod
     def encode(cls, public_key: Union[bytes, str, IPublicKey], **kwargs: Any) -> str:
 
-        if cls.address_prefix:
-            pass
-        elif not kwargs.get("address_type"):
-            raise TypeError("Avalanche address type is required")
-        elif kwargs.get("address_type") in ["p", "p-chain", "platform-chain"]:
-            cls.address_prefix = cls.address_types["p-chain"]
-        elif kwargs.get("address_type") in ["x", "x-chain", "exchange-chain"]:
-            cls.address_prefix = cls.address_types["x-chain"]
+        if not kwargs.get("address_type"):
+            address_type: str = cls.address_types[Avalanche.DEFAULT_ADDRESS_TYPE]
         else:
-            raise ValueError("Wrong avalanche address type")
+            if kwargs.get("address_type") not in Avalanche.ADDRESS_TYPES.get_address_types():
+                raise AddressTypeError(
+                    f"Invalid {cls.name()} address type",
+                    expected=Avalanche.ADDRESS_TYPES.get_address_types(),
+                    got=kwargs.get("address_type")
+                )
+            address_type: str = cls.address_types[kwargs.get("address_type")]
 
-        return cls.address_prefix + CosmosAddress.encode(
+        return address_type + CosmosAddress.encode(
             public_key=public_key, hrp=cls.hrp
         )
 
     @classmethod
     def decode(cls, address: str, **kwargs: Any) -> str:
 
-        if cls.address_prefix:
-            pass
-        elif not kwargs.get("address_type"):
-            raise TypeError("Avalanche address type ie required")
-        elif kwargs.get("address_type") in ["p", "p-chain", "platform", "platform-chain"]:
-            cls.address_prefix = cls.address_types["p-chain"]
-        elif kwargs.get("address_type") in ["x", "x-chain", "exchange", "exchange-chain"]:
-            cls.address_prefix = cls.address_types["x-chain"]
+        if not kwargs.get("address_type"):
+            address_type: str = cls.address_types[Avalanche.DEFAULT_ADDRESS_TYPE]
         else:
-            raise ValueError("Wrong avalanche address type")
+            if kwargs.get("address_type") not in Avalanche.ADDRESS_TYPES.get_address_types():
+                raise AddressTypeError(
+                    f"Invalid {cls.name()} address type",
+                    expected=Avalanche.ADDRESS_TYPES.get_address_types(),
+                    got=kwargs.get("address_type")
+                )
+            address_type: str = cls.address_types[kwargs.get("address_type")]
 
-        prefix_got: str = address[:len(cls.address_prefix)]
-        if cls.address_prefix != prefix_got:
-            raise ValueError(f"Invalid prefix (expected: {cls.address_prefix}, got: {prefix_got})")
-        address_no_prefix: str = address[len(cls.address_prefix):]
+        prefix_got: str = address[:len(address_type)]
+        if address_type != prefix_got:
+            raise ValueError(f"Invalid prefix (expected: {address_type}, got: {prefix_got})")
+        address_no_prefix: str = address[len(address_type):]
 
         return CosmosAddress.decode(
             address=address_no_prefix, hrp=cls.hrp

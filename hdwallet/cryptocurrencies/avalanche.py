@@ -6,7 +6,7 @@
 
 from ..ecc import SLIP10Secp256k1ECC
 from ..const import (
-    Info, Entropies, Mnemonics, Seeds, HDs, Addresses, Networks, Params, XPrivateKeyVersions, XPublicKeyVersions
+    Info, Entropies, Mnemonics, Seeds, HDs, Addresses, AddressTypes, Networks, Params, XPrivateKeyVersions, XPublicKeyVersions
 )
 from .icryptocurrency import (
     ICryptocurrency, INetwork
@@ -60,6 +60,11 @@ class Avalanche(ICryptocurrency):
         "AVALANCHE": "Avalanche"
     })
     DEFAULT_ADDRESS = ADDRESSES.AVALANCHE
+    ADDRESS_TYPES = AddressTypes({
+        "P_CHAIN": "p-chain",
+        "X_CHAIN": "x-chain"
+    })
+    DEFAULT_ADDRESS_TYPE = ADDRESS_TYPES.P_CHAIN
     PARAMS = Params({
         "ADDRESS_TYPES": {
             "P_CHAIN": "P-",  # The Platform Chain (P-Chain) prefix
