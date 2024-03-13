@@ -64,7 +64,6 @@ from .edrcoin import EDRCoin
 from .egulden import EGulden
 from .einsteinium import Einsteinium
 from .elastos import Elastos
-from .elrond import Elrond
 from .energi import Energi
 from .eos import EOS
 from .ergo import Ergo
@@ -113,7 +112,6 @@ from .minexcoin import Minexcoin
 from .monacoin import Monacoin
 from .monero import Monero
 from .monk import Monk
-from .monkeyproject import MonkeyProject
 from .multiversx import MultiversX
 from .myriadcion import Myriadcoin
 from .namecoin import Namecoin
@@ -185,7 +183,6 @@ from .xuez import XUEZ
 from .ycash import Ycash
 from .zcash import Zcash
 from .zclassic import ZClassic
-from .zencash import Zencash
 from .zetacoin import Zetacoin
 from .zilliqa import Zilliqa
 from .zoobc import ZooBC
@@ -246,7 +243,6 @@ CRYPTOCURRENCIES: Dict[str, Type[ICryptocurrency]] = {
     EGulden.NAME: EGulden,
     Einsteinium.NAME: Einsteinium,
     Elastos.NAME: Elastos,
-    Elrond.NAME: Elrond,
     Energi.NAME: Energi,
     EOS.NAME: EOS,
     Ergo.NAME: Ergo,
@@ -295,7 +291,6 @@ CRYPTOCURRENCIES: Dict[str, Type[ICryptocurrency]] = {
     Monacoin.NAME: Monacoin,
     Monero.NAME: Monero,
     Monk.NAME: Monk,
-    MonkeyProject.NAME: MonkeyProject,
     MultiversX.NAME: MultiversX,
     Myriadcoin.NAME: Myriadcoin,
     Namecoin.NAME: Namecoin,
@@ -367,7 +362,6 @@ CRYPTOCURRENCIES: Dict[str, Type[ICryptocurrency]] = {
     Ycash.NAME: Ycash,
     Zcash.NAME: Zcash,
     ZClassic.NAME: ZClassic,
-    Zencash.NAME: Zencash,
     Zetacoin.NAME: Zetacoin,
     Zilliqa.NAME: Zilliqa,
     ZooBC.NAME: ZooBC

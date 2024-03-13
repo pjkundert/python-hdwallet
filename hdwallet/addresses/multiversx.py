@@ -14,18 +14,18 @@ from ..libs.bech32 import (
 from ..ecc import (
     IPublicKey, SLIP10Ed25519PublicKey, validate_and_get_public_key
 )
-from ..cryptocurrencies import Elrond
+from ..cryptocurrencies import MultiversX
 from ..utils import bytes_to_string
 from .iaddress import IAddress
 
 
-class ElrondAddress(IAddress):
+class MultiversXAddress(IAddress):
 
-    hrp: str = Elrond.NETWORKS.MAINNET.HRP
+    hrp: str = MultiversX.NETWORKS.MAINNET.HRP
 
     @staticmethod
     def name() -> str:
-        return "Elrond"
+        return "MultiversX"
 
     @classmethod
     def encode(cls, public_key: Union[bytes, str, IPublicKey], **kwargs: Any) -> str:

@@ -13,7 +13,6 @@ from .algorand import AlgorandAddress
 from .avalanche import AvalancheAddress
 from .cardano import CardanoAddress
 from .cosmos import CosmosAddress
-from .elrond import ElrondAddress
 from .eos import EOSAddress
 from .ergo import ErgoAddress
 from .ethereum import EthereumAddress
@@ -21,6 +20,7 @@ from .filecoin import FilecoinAddress
 from .harmony import HarmonyAddress
 from .icon import IconAddress
 from .monero import MoneroAddress
+from .multiversx import MultiversXAddress
 from .nano import NanoAddress
 from .neo import NeoAddress
 from .okt_chain import OKTChainAddress
@@ -44,7 +44,6 @@ ADDRESSES: Dict[str, Type[IAddress]] = {
     AvalancheAddress.name(): AvalancheAddress,
     CardanoAddress.name(): CardanoAddress,
     CosmosAddress.name(): CosmosAddress,
-    ElrondAddress.name(): ElrondAddress,
     EOSAddress.name(): EOSAddress,
     ErgoAddress.name(): ErgoAddress,
     EthereumAddress.name(): EthereumAddress,
@@ -52,6 +51,7 @@ ADDRESSES: Dict[str, Type[IAddress]] = {
     HarmonyAddress.name(): HarmonyAddress,
     IconAddress.name(): IconAddress,
     MoneroAddress.name(): MoneroAddress,
+    MultiversXAddress.name(): MultiversXAddress,
     NanoAddress.name(): NanoAddress,
     NeoAddress.name(): NeoAddress,
     OKTChainAddress.name(): OKTChainAddress,
