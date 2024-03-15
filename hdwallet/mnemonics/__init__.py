@@ -25,21 +25,22 @@ from .monero import (
     MoneroMnemonic, MONERO_MNEMONIC_WORDS, MONERO_MNEMONIC_LANGUAGES
 )
 
-
 MNEMONICS: Dict[str, Type[IMnemonic]] = {
-    "Algorand": AlgorandMnemonic,
-    "BIP39": BIP39Mnemonic,
-    "Electrum-V1": ElectrumV1Mnemonic,
-    "Electrum-V2": ElectrumV2Mnemonic,
-    "Monero": MoneroMnemonic
+    AlgorandMnemonic.name(): AlgorandMnemonic,
+    BIP39Mnemonic.name(): BIP39Mnemonic,
+    ElectrumV1Mnemonic.name(): ElectrumV1Mnemonic,
+    ElectrumV2Mnemonic.name(): ElectrumV2Mnemonic,
+    MoneroMnemonic.name(): MoneroMnemonic
 }
 
 __all__: List[str] = [
     "IMnemonic",
-    "AlgorandMnemonic", "ALGORAND_MNEMONIC_WORDS", "ALGORAND_MNEMONIC_LANGUAGES",
-    "BIP39Mnemonic", "BIP39_MNEMONIC_WORDS", "BIP39_MNEMONIC_LANGUAGES",
-    "ElectrumV1Mnemonic", "ELECTRUM_V1_MNEMONIC_WORDS", "ELECTRUM_V1_MNEMONIC_LANGUAGES",
-    "ElectrumV2Mnemonic", "ELECTRUM_V2_MNEMONIC_WORDS", "ELECTRUM_V2_MNEMONIC_LANGUAGES", "ELECTRUM_V2_MNEMONIC_TYPES",
-    "MoneroMnemonic", "MONERO_MNEMONIC_WORDS", "MONERO_MNEMONIC_LANGUAGES",
+    "ALGORAND_MNEMONIC_WORDS", "ALGORAND_MNEMONIC_LANGUAGES",
+    "BIP39_MNEMONIC_WORDS", "BIP39_MNEMONIC_LANGUAGES",
+    "ELECTRUM_V1_MNEMONIC_WORDS", "ELECTRUM_V1_MNEMONIC_LANGUAGES",
+    "ELECTRUM_V2_MNEMONIC_WORDS", "ELECTRUM_V2_MNEMONIC_LANGUAGES", "ELECTRUM_V2_MNEMONIC_TYPES",
+    "MONERO_MNEMONIC_WORDS", "MONERO_MNEMONIC_LANGUAGES",
     "MNEMONICS"
+] + [
+    mnemonic.__name__ for mnemonic in MNEMONICS.values()
 ]
