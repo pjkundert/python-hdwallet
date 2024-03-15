@@ -17,23 +17,15 @@ from .electrum import (
 )
 from .monero import MoneroSeed
 
-
 SEEDS: Dict[str, Type[ISeed]] = {
-    "Algorand": AlgorandSeed,
-    "BIP39": BIP39Seed,
-    "Cardano": CardanoSeed,
-    "Electrum-V1": ElectrumV1Seed,
-    "Electrum-V2": ElectrumV2Seed,
-    "Monero": MoneroSeed
+    AlgorandSeed.name(): AlgorandSeed,
+    BIP39Seed.name(): BIP39Seed,
+    CardanoSeed.name(): CardanoSeed,
+    ElectrumV1Seed.name(): ElectrumV1Seed,
+    ElectrumV2Seed.name(): ElectrumV2Seed,
+    MoneroSeed.name(): MoneroSeed
 }
 
-__all__: List[str] = [
-    "ISeed",
-    "AlgorandSeed",
-    "BIP39Seed",
-    "CardanoSeed",
-    "ElectrumV1Seed",
-    "ElectrumV2Seed",
-    "MoneroSeed",
-    "SEEDS"
+__all__: List[str] = ["ISeed", "SEEDS"] + [
+    seed.__name__ for seed in SEEDS.values()
 ]
