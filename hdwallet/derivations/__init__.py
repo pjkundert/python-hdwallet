@@ -18,13 +18,15 @@ from .custom import CustomDerivation
 from .electrum import ElectrumDerivation
 
 DERIVATIONS: Dict[str, Type[IDerivation]] = {
-    "BIP44": BIP44Derivation,
-    "BIP49": BIP49Derivation,
-    "BIP84": BIP84Derivation,
-    "BIP86": BIP86Derivation,
-    "CIP1852": CIP1852Derivation,
-    "Custom": CustomDerivation,
-    "Electrum": ElectrumDerivation
+    BIP44Derivation.name(): BIP44Derivation,
+    BIP49Derivation.name(): BIP49Derivation,
+    BIP84Derivation.name(): BIP84Derivation,
+    BIP86Derivation.name(): BIP86Derivation,
+    CIP1852Derivation.name(): CIP1852Derivation,
+    CustomDerivation.name(): CustomDerivation,
+    ElectrumDerivation.name(): ElectrumDerivation
 }
 
-__all__: List[Type[IDerivation]] = DERIVATIONS.values()
+__all__: List[str] = ["IDerivation", "DERIVATIONS"] + [
+    derivation.__name__ for derivation in DERIVATIONS.values()
+]
