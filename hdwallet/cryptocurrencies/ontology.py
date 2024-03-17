@@ -23,19 +23,19 @@ class Mainnet(INetwork):
     })
 
 
-class Neo(ICryptocurrency):
+class Ontology(ICryptocurrency):
 
-    NAME = "Neo"
-    SYMBOL = "NEO"
+    NAME = "Ontology"
+    SYMBOL = "ONT"
     INFO = Info({
-        "SOURCE_CODE": "https://github.com/neo-project/neo",
-        "WHITEPAPER": "https://docs.neo.org/docs/en-us/index.html",
+        "SOURCE_CODE": "https://github.com/ontio/ontology",
+        "WHITEPAPER": "https://docs.ont.io",
         "WEBSITES": [
-            "https://neo.org"
+            "https://ont.io"
         ]
     })
     ECC = SLIP10Nist256p1ECC
-    COIN_TYPE = 888
+    COIN_TYPE = 1024
     NETWORKS = Networks({
         "MAINNET": Mainnet
     })
@@ -58,8 +58,5 @@ class Neo(ICryptocurrency):
     })
     DEFAULT_ADDRESS = ADDRESSES.NEO
     PARAMS = Params({
-        "ADDRESS_PREFIX": 0x21,
-        "ADDRESS_SUFFIX": 0xAC,
-        "ADDRESS_VERSION": 0x17,
-        "ALPHABET": "123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz"
+        "ADDRESS_VERSION": 0x17
     })

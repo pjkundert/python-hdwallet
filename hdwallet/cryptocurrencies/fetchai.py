@@ -4,9 +4,9 @@
 # Distributed under the MIT software license, see the accompanying
 # file COPYING or https://opensource.org/license/mit
 
-from ..ecc import SLIP10Nist256p1ECC
+from ..ecc import SLIP10Secp256k1ECC
 from ..const import (
-    Info, Entropies, Mnemonics, Seeds, HDs, Addresses, Networks, Params, XPrivateKeyVersions, XPublicKeyVersions
+    Info, Entropies, Mnemonics, Seeds, HDs, Addresses, Networks, XPrivateKeyVersions, XPublicKeyVersions
 )
 from .icryptocurrency import (
     ICryptocurrency, INetwork
@@ -15,27 +15,30 @@ from .icryptocurrency import (
 
 class Mainnet(INetwork):
 
+    HRP = "fetch"
     XPRIVATE_KEY_VERSIONS = XPrivateKeyVersions({
-        "P2PKH": 0x0488ade4
+        "P2PKH": 0x488ade4
     })
     XPUBLIC_KEY_VERSIONS = XPublicKeyVersions({
-        "P2PKH": 0x0488b21e
+        "P2PKH": 0x488b21e
     })
+    WIF_PREFIX = 0x80
 
 
-class Neo(ICryptocurrency):
+class FetchAI(ICryptocurrency):
 
-    NAME = "Neo"
-    SYMBOL = "NEO"
+    NAME = "Fetch.ai"
+    SYMBOL = "FET"
     INFO = Info({
-        "SOURCE_CODE": "https://github.com/neo-project/neo",
-        "WHITEPAPER": "https://docs.neo.org/docs/en-us/index.html",
+        "SOURCE_CODE": "https://github.com/fetchai",
+        "WHITEPAPER": "https://www.dropbox.com/s/gxptsecwdl3jjtn/David%20Minarsch%20-%202021-04-26%2010.34.17%20-%20paper_21_finalversion.pdf?dl=0",
         "WEBSITES": [
-            "https://neo.org"
+            "https://fetch-ai.network",
+            "https://docs.fetch.ai"
         ]
     })
-    ECC = SLIP10Nist256p1ECC
-    COIN_TYPE = 888
+    ECC = SLIP10Secp256k1ECC
+    COIN_TYPE = 118  # Cosmos coin type
     NETWORKS = Networks({
         "MAINNET": Mainnet
     })
@@ -54,12 +57,6 @@ class Neo(ICryptocurrency):
     })
     DEFAULT_HD = HDS.BIP44
     ADDRESSES = Addresses({
-        "NEO": "Neo"
+        "COSMOS": "Cosmos"
     })
-    DEFAULT_ADDRESS = ADDRESSES.NEO
-    PARAMS = Params({
-        "ADDRESS_PREFIX": 0x21,
-        "ADDRESS_SUFFIX": 0xAC,
-        "ADDRESS_VERSION": 0x17,
-        "ALPHABET": "123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz"
-    })
+    DEFAULT_ADDRESS = ADDRESSES.COSMOS

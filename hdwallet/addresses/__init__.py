@@ -10,6 +10,7 @@ from typing import (
 
 from .iaddress import IAddress
 from .algorand import AlgorandAddress
+from .aptos import AptosAddress
 from .avalanche import AvalancheAddress
 from .cardano import CardanoAddress
 from .cosmos import CosmosAddress
@@ -19,9 +20,11 @@ from .ethereum import EthereumAddress
 from .filecoin import FilecoinAddress
 from .harmony import HarmonyAddress
 from .icon import IconAddress
+from .injective import InjectiveAddress
 from .monero import MoneroAddress
 from .multiversx import MultiversXAddress
 from .nano import NanoAddress
+from .near import NearAddress
 from .neo import NeoAddress
 from .okt_chain import OKTChainAddress
 from .p2pkh import P2PKHAddress
@@ -34,6 +37,7 @@ from .p2wsh_in_p2sh import P2WSHInP2SHAddress
 from .ripple import RippleAddress
 from .solana import SolanaAddress
 from .stellar import StellarAddress
+from .sui import SuiAddress
 from .tezos import TezosAddress
 from .tron import TronAddress
 from .xinfin import XinFinAddress
@@ -41,6 +45,7 @@ from .zilliqa import ZilliqaAddress
 
 ADDRESSES: Dict[str, Type[IAddress]] = {
     AlgorandAddress.name(): AlgorandAddress,
+    AptosAddress.name(): AptosAddress,
     AvalancheAddress.name(): AvalancheAddress,
     CardanoAddress.name(): CardanoAddress,
     CosmosAddress.name(): CosmosAddress,
@@ -50,9 +55,11 @@ ADDRESSES: Dict[str, Type[IAddress]] = {
     FilecoinAddress.name(): FilecoinAddress,
     HarmonyAddress.name(): HarmonyAddress,
     IconAddress.name(): IconAddress,
+    InjectiveAddress.name(): InjectiveAddress,
     MoneroAddress.name(): MoneroAddress,
     MultiversXAddress.name(): MultiversXAddress,
     NanoAddress.name(): NanoAddress,
+    NearAddress.name(): NearAddress,
     NeoAddress.name(): NeoAddress,
     OKTChainAddress.name(): OKTChainAddress,
     P2PKHAddress.name(): P2PKHAddress,
@@ -65,6 +72,7 @@ ADDRESSES: Dict[str, Type[IAddress]] = {
     RippleAddress.name(): RippleAddress,
     SolanaAddress.name(): SolanaAddress,
     StellarAddress.name(): StellarAddress,
+    SuiAddress.name(): SuiAddress,
     TezosAddress.name(): TezosAddress,
     TronAddress.name(): TronAddress,
     XinFinAddress.name(): XinFinAddress,

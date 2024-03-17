@@ -4,7 +4,7 @@
 # Distributed under the MIT software license, see the accompanying
 # file COPYING or https://opensource.org/license/mit
 
-from ..ecc import SLIP10Nist256p1ECC
+from ..ecc import SLIP10Ed25519ECC
 from ..const import (
     Info, Entropies, Mnemonics, Seeds, HDs, Addresses, Networks, Params, XPrivateKeyVersions, XPublicKeyVersions
 )
@@ -23,19 +23,19 @@ class Mainnet(INetwork):
     })
 
 
-class Neo(ICryptocurrency):
+class Aptos(ICryptocurrency):
 
-    NAME = "Neo"
-    SYMBOL = "NEO"
+    NAME = "Aptos"
+    SYMBOL = "APT"
     INFO = Info({
-        "SOURCE_CODE": "https://github.com/neo-project/neo",
-        "WHITEPAPER": "https://docs.neo.org/docs/en-us/index.html",
+        "SOURCE_CODE": "https://github.com/aptos-labs",
+        "WHITEPAPER": "https://aptosfoundation.org/whitepaper",
         "WEBSITES": [
-            "https://neo.org"
+            "https://aptosfoundation.org"
         ]
     })
-    ECC = SLIP10Nist256p1ECC
-    COIN_TYPE = 888
+    ECC = SLIP10Ed25519ECC
+    COIN_TYPE = 637
     NETWORKS = Networks({
         "MAINNET": Mainnet
     })
@@ -54,12 +54,10 @@ class Neo(ICryptocurrency):
     })
     DEFAULT_HD = HDS.BIP44
     ADDRESSES = Addresses({
-        "NEO": "Neo"
+        "APTOS": "Aptos"
     })
-    DEFAULT_ADDRESS = ADDRESSES.NEO
+    DEFAULT_ADDRESS = ADDRESSES.APTOS
     PARAMS = Params({
-        "ADDRESS_PREFIX": 0x21,
-        "ADDRESS_SUFFIX": 0xAC,
-        "ADDRESS_VERSION": 0x17,
-        "ALPHABET": "123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz"
+        "SUFFIX": 0x00,
+        "ADDRESS_PREFIX": "0x"
     })

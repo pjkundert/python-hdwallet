@@ -4,9 +4,9 @@
 # Distributed under the MIT software license, see the accompanying
 # file COPYING or https://opensource.org/license/mit
 
-from ..ecc import SLIP10Nist256p1ECC
+from ..ecc import SLIP10Ed25519ECC
 from ..const import (
-    Info, Entropies, Mnemonics, Seeds, HDs, Addresses, Networks, Params, XPrivateKeyVersions, XPublicKeyVersions
+    Info, Entropies, Mnemonics, Seeds, HDs, Addresses, AddressTypes, Networks, Params, XPrivateKeyVersions, XPublicKeyVersions
 )
 from .icryptocurrency import (
     ICryptocurrency, INetwork
@@ -23,19 +23,19 @@ class Mainnet(INetwork):
     })
 
 
-class Neo(ICryptocurrency):
+class PiNetwork(ICryptocurrency):
 
-    NAME = "Neo"
-    SYMBOL = "NEO"
+    NAME = "Pi-Network"
+    SYMBOL = "PI"
     INFO = Info({
-        "SOURCE_CODE": "https://github.com/neo-project/neo",
-        "WHITEPAPER": "https://docs.neo.org/docs/en-us/index.html",
+        "SOURCE_CODE": "https://github.com/pi-apps",
+        "WHITEPAPER": "https://minepi.com/white-paper",
         "WEBSITES": [
-            "https://neo.org"
+            "https://minepi.com"
         ]
     })
-    ECC = SLIP10Nist256p1ECC
-    COIN_TYPE = 888
+    ECC = SLIP10Ed25519ECC
+    COIN_TYPE = 314159
     NETWORKS = Networks({
         "MAINNET": Mainnet
     })
@@ -54,12 +54,18 @@ class Neo(ICryptocurrency):
     })
     DEFAULT_HD = HDS.BIP44
     ADDRESSES = Addresses({
-        "NEO": "Neo"
+        "STELLAR": "Stellar"
     })
-    DEFAULT_ADDRESS = ADDRESSES.NEO
+    DEFAULT_ADDRESS = ADDRESSES.STELLAR
+    ADDRESS_TYPES = AddressTypes({
+        "PRIVATE_KEY": "private_key",
+        "PUBLIC_KEY": "public_key"
+    })
+    DEFAULT_ADDRESS_TYPE = ADDRESS_TYPES.PUBLIC_KEY
     PARAMS = Params({
-        "ADDRESS_PREFIX": 0x21,
-        "ADDRESS_SUFFIX": 0xAC,
-        "ADDRESS_VERSION": 0x17,
-        "ALPHABET": "123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz"
+        "CHECKSUM_LENGTH": 2,
+        "ADDRESS_TYPES": {
+            "PRIVATE_KEY": 18 << 3,
+            "PUBLIC_KEY": 6 << 3
+        }
     })

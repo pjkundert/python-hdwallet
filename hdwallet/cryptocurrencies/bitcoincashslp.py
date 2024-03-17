@@ -6,7 +6,8 @@
 
 from ..ecc import SLIP10Secp256k1ECC
 from ..const import (
-    Info, WitnessVersions, Entropies, Mnemonics, Seeds, HDs, Addresses, AddressTypes, Networks, XPrivateKeyVersions, XPublicKeyVersions
+    Info, WitnessVersions, Entropies, Mnemonics, Seeds, HDs, Addresses, AddressTypes, Networks, XPrivateKeyVersions,
+    XPublicKeyVersions
 )
 from .icryptocurrency import (
     ICryptocurrency, INetwork
@@ -19,7 +20,7 @@ class Mainnet(INetwork):
     LEGACY_SCRIPT_ADDRESS_PREFIX = 0x05
     STANDARD_PUBLIC_KEY_ADDRESS_PREFIX = 0x00
     STANDARD_SCRIPT_ADDRESS_PREFIX = 0x08
-    HRP = "bitcoincash"
+    HRP = "simpleledger"
     WITNESS_VERSIONS = WitnessVersions({
         "P2WPKH": 0x00,
         "P2WSH": 0x00
@@ -49,7 +50,7 @@ class Testnet(INetwork):
     LEGACY_SCRIPT_ADDRESS_PREFIX = 0xc4
     STANDARD_PUBLIC_KEY_ADDRESS_PREFIX = 0x00
     STANDARD_SCRIPT_ADDRESS_PREFIX = 0x08
-    HRP = "bchtest"
+    HRP = "slptest"
     WITNESS_VERSIONS = WitnessVersions({
         "P2WPKH": 0x00,
         "P2WSH": 0x00
@@ -73,15 +74,10 @@ class Testnet(INetwork):
     WIF_PREFIX = 0xef
 
 
-class Regtest(INetwork):
+class BitcoinCashSLP(ICryptocurrency):
 
-    HRP = "bchreg"
-
-
-class BitcoinCash(ICryptocurrency):
-
-    NAME = "Bitcoin-Cash"
-    SYMBOL = "BCH"
+    NAME = "Bitcoin-Cash-SLP"
+    SYMBOL = "SLP"
     INFO = Info({
         "SOURCE_CODE": "https://github.com/bitcoincashorg/bitcoincash.org",
         "WEBSITES": [
@@ -89,9 +85,9 @@ class BitcoinCash(ICryptocurrency):
         ]
     })
     ECC = SLIP10Secp256k1ECC
-    COIN_TYPE = 145
+    COIN_TYPE = 145  # Bitcoin-Cash coin type
     NETWORKS = Networks({
-        "MAINNET": Mainnet, "TESTNET": Testnet, "REGTEST": Regtest
+        "MAINNET": Mainnet, "TESTNET": Testnet
     })
     DEFAULT_NETWORK = NETWORKS.MAINNET
     ENTROPIES = Entropies({

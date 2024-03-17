@@ -57,10 +57,11 @@ class Avalanche(ICryptocurrency):
     })
     DEFAULT_HD = HDS.BIP44
     ADDRESSES = Addresses({
-        "AVALANCHE": "Avalanche"
+        "AVALANCHE": "Avalanche", "ETHEREUM": "Ethereum"
     })
     DEFAULT_ADDRESS = ADDRESSES.AVALANCHE
     ADDRESS_TYPES = AddressTypes({
+        "C_CHAIN": "c-chain",
         "P_CHAIN": "p-chain",
         "X_CHAIN": "x-chain"
     })

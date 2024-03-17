@@ -4,9 +4,9 @@
 # Distributed under the MIT software license, see the accompanying
 # file COPYING or https://opensource.org/license/mit
 
-from ..ecc import SLIP10Nist256p1ECC
+from ..ecc import SLIP10Ed25519ECC
 from ..const import (
-    Info, Entropies, Mnemonics, Seeds, HDs, Addresses, Networks, Params, XPrivateKeyVersions, XPublicKeyVersions
+    Info, Entropies, Mnemonics, Seeds, HDs, Addresses, Networks, XPrivateKeyVersions, XPublicKeyVersions
 )
 from .icryptocurrency import (
     ICryptocurrency, INetwork
@@ -23,19 +23,19 @@ class Mainnet(INetwork):
     })
 
 
-class Neo(ICryptocurrency):
+class Near(ICryptocurrency):
 
-    NAME = "Neo"
-    SYMBOL = "NEO"
+    NAME = "Near"
+    SYMBOL = "NEAR"
     INFO = Info({
-        "SOURCE_CODE": "https://github.com/neo-project/neo",
-        "WHITEPAPER": "https://docs.neo.org/docs/en-us/index.html",
+        "SOURCE_CODE": "https://github.com/near/nearcore",
+        "WHITEPAPER": "https://near.org/papers/the-official-near-white-paper",
         "WEBSITES": [
-            "https://neo.org"
+            "https://near.org"
         ]
     })
-    ECC = SLIP10Nist256p1ECC
-    COIN_TYPE = 888
+    ECC = SLIP10Ed25519ECC
+    COIN_TYPE = 397
     NETWORKS = Networks({
         "MAINNET": Mainnet
     })
@@ -54,12 +54,6 @@ class Neo(ICryptocurrency):
     })
     DEFAULT_HD = HDS.BIP44
     ADDRESSES = Addresses({
-        "NEO": "Neo"
+        "NEAR": "Near"
     })
-    DEFAULT_ADDRESS = ADDRESSES.NEO
-    PARAMS = Params({
-        "ADDRESS_PREFIX": 0x21,
-        "ADDRESS_SUFFIX": 0xAC,
-        "ADDRESS_VERSION": 0x17,
-        "ALPHABET": "123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz"
-    })
+    DEFAULT_ADDRESS = ADDRESSES.NEAR
