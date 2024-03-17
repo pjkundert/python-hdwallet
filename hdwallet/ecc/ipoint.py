@@ -21,12 +21,12 @@ class IPoint(ABC):
 
     @classmethod
     @abstractmethod
-    def from_bytes(cls, point_bytes: bytes) -> 'IPoint':
+    def from_bytes(cls, point: bytes) -> "IPoint":
         pass
 
     @classmethod
     @abstractmethod
-    def from_coordinates(cls, x: int, y: int) -> 'IPoint':
+    def from_coordinates(cls, x: int, y: int) -> "IPoint":
         pass
 
     @abstractmethod
@@ -54,11 +54,11 @@ class IPoint(ABC):
         pass
 
     @abstractmethod
-    def __add__(self, point: 'IPoint') -> 'IPoint':
+    def __add__(self, point: "IPoint") -> "IPoint":
         pass
 
     @abstractmethod
-    def __radd__(self, point: 'IPoint') -> 'IPoint':
+    def __radd__(self, point: "IPoint") -> "IPoint":
         pass
 
     @abstractmethod

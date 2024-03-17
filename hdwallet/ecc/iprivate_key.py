@@ -23,7 +23,7 @@ class IPrivateKey(ABC):
 
     @classmethod
     @abstractmethod
-    def from_bytes(cls, key_bytes: bytes) -> 'IPrivateKey':
+    def from_bytes(cls, private_key: bytes) -> "IPrivateKey":
         pass
 
     @abstractmethod
@@ -44,9 +44,9 @@ class IPrivateKey(ABC):
         pass
 
     @classmethod
-    def is_valid_bytes(cls, key_bytes: bytes) -> bool:
+    def is_valid_bytes(cls, private_key: bytes) -> bool:
         try:
-            cls.from_bytes(key_bytes)
+            cls.from_bytes(private_key)
             return True
         except ValueError:
             return False

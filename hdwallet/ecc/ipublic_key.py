@@ -23,12 +23,12 @@ class IPublicKey(ABC):
 
     @classmethod
     @abstractmethod
-    def from_bytes(cls, key_bytes: bytes) -> 'IPublicKey':
+    def from_bytes(cls, public_key: bytes) -> "IPublicKey":
         pass
 
     @classmethod
     @abstractmethod
-    def from_point(cls, key_point: IPoint) -> 'IPublicKey':
+    def from_point(cls, point: IPoint) -> "IPublicKey":
         pass
 
     @abstractmethod
@@ -58,17 +58,17 @@ class IPublicKey(ABC):
         pass
 
     @classmethod
-    def is_valid_bytes(cls, key_bytes: bytes) -> bool:
+    def is_valid_bytes(cls, public_key: bytes) -> bool:
         try:
-            cls.from_bytes(key_bytes)
+            cls.from_bytes(public_key)
             return True
         except ValueError:
             return False
 
     @classmethod
-    def is_valid_point(cls, key_point: IPoint) -> bool:
+    def is_valid_point(cls, point: IPoint) -> bool:
         try:
-            cls.from_point(key_point)
+            cls.from_point(point)
             return True
         except ValueError:
             return False
