@@ -5,7 +5,7 @@
 # file COPYING or https://opensource.org/license/mit
 
 from typing import (
-    List, Dict, Type
+    List, Dict, Type, Optional
 )
 
 from .icryptocurrency import ICryptocurrency
@@ -429,6 +429,16 @@ CRYPTOCURRENCIES: Dict[str, Type[ICryptocurrency]] = {
     ZooBC.NAME: ZooBC
 }
 
-__all__: List[str] = ["ICryptocurrency", "CRYPTOCURRENCIES"] + [
+
+def get_cryptocurrency(symbol: str) -> Type[ICryptocurrency]:
+    for CRYPTOCURRENCY in CRYPTOCURRENCIES.values():
+        if symbol == CRYPTOCURRENCY.SYMBOL:
+            return CRYPTOCURRENCY
+    raise Exception(
+        f"Cryptocurrency not found with this {symbol} symbol"
+    )
+
+
+__all__: List[str] = ["ICryptocurrency", "CRYPTOCURRENCIES", "get_cryptocurrency"] + [
     cryptocurrency.__name__ for cryptocurrency in CRYPTOCURRENCIES.values()
 ]
