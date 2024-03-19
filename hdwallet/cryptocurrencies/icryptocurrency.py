@@ -28,6 +28,12 @@ class INetwork:
     MESSAGE_PREFIX: Optional[str] = None
     WIF_PREFIX: Optional[int] = None
 
+    # Bitcoin-Cash, Bitcoin-Cash-SLP and eCash network types
+    LEGACY_PUBLIC_KEY_ADDRESS_PREFIX: Optional[int] = None
+    STD_PUBLIC_KEY_ADDRESS_PREFIX: Optional[int] = None
+    LEGACY_SCRIPT_ADDRESS_PREFIX: Optional[int] = None
+    STD_SCRIPT_ADDRESS_PREFIX: Optional[int] = None
+
     # Monero network types
     STANDARD: Optional[int] = None
     INTEGRATED: Optional[int] = None

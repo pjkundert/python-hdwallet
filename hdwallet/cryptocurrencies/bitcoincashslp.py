@@ -48,8 +48,8 @@ class Testnet(INetwork):
 
     LEGACY_PUBLIC_KEY_ADDRESS_PREFIX = 0x6f
     LEGACY_SCRIPT_ADDRESS_PREFIX = 0xc4
-    STANDARD_PUBLIC_KEY_ADDRESS_PREFIX = 0x00
-    STANDARD_SCRIPT_ADDRESS_PREFIX = 0x08
+    STD_PUBLIC_KEY_ADDRESS_PREFIX = 0x00
+    STD_SCRIPT_ADDRESS_PREFIX = 0x08
     HRP = "slptest"
     WITNESS_VERSIONS = WitnessVersions({
         "P2WPKH": 0x00,
@@ -108,7 +108,7 @@ class BitcoinCashSLP(ICryptocurrency):
     ))
     DEFAULT_ADDRESS = ADDRESSES.P2PKH
     ADDRESS_TYPES = AddressTypes({
-        "STANDARD": "standard",
+        "STD": "std",
         "LEGACY": "legacy"
     })
-    DEFAULT_ADDRESS_TYPE = ADDRESS_TYPES.STANDARD
+    DEFAULT_ADDRESS_TYPE = ADDRESS_TYPES.STD
