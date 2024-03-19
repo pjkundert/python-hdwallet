@@ -40,7 +40,7 @@ class Mainnet(INetwork):
 
 class FujiCoin(ICryptocurrency):
 
-    NAME = "Fuji Coin"
+    NAME = "Fuji-Coin"
     SYMBOL = "FJC"
     INFO = Info({
         "SOURCE_CODE": "https://github.com/fujicoin/fujicoin",

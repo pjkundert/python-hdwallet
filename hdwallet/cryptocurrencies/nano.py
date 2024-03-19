@@ -4,7 +4,7 @@
 # Distributed under the MIT software license, see the accompanying
 # file COPYING or https://opensource.org/license/mit
 
-from ..ecc import SLIP10Secp256k1ECC
+from ..ecc import SLIP10Ed25519Blake2bECC
 from ..const import (
     Info, Entropies, Mnemonics, Seeds, HDs, Addresses, Networks, Params, XPrivateKeyVersions, XPublicKeyVersions
 )
@@ -21,7 +21,6 @@ class Mainnet(INetwork):
     XPUBLIC_KEY_VERSIONS = XPublicKeyVersions({
         "P2PKH": 0x0488b21e
     })
-    WIF_PREFIX = 0x80
 
 
 class Nano(ICryptocurrency):
@@ -35,7 +34,7 @@ class Nano(ICryptocurrency):
             "http://nano.org/en"
         ]
     })
-    ECC = SLIP10Secp256k1ECC
+    ECC = SLIP10Ed25519Blake2bECC
     COIN_TYPE = 165
     NETWORKS = Networks({
         "MAINNET": Mainnet

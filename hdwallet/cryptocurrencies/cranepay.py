@@ -40,7 +40,7 @@ class Mainnet(INetwork):
 
 class CranePay(ICryptocurrency):
 
-    NAME = "Crane Pay"
+    NAME = "Crane-Pay"
     SYMBOL = "CRP"
     INFO = Info({
         "SOURCE_CODE": "https://github.com/cranepay/cranepay-core",

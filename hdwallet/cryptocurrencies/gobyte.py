@@ -31,7 +31,7 @@ class Mainnet(INetwork):
 
 class GoByte(ICryptocurrency):
 
-    NAME = "Go Byte"
+    NAME = "Go-Byte"
     SYMBOL = "GBX"
     INFO = Info({
         "SOURCE_CODE": "https://github.com/gobytecoin/gobyte",

@@ -31,7 +31,7 @@ class Mainnet(INetwork):
 
 class EDRCoin(ICryptocurrency):
 
-    NAME = "EDR Coin"
+    NAME = "EDR-Coin"
     SYMBOL = "EDRC"
     INFO = Info({
         "SOURCE_CODE": "https://github.com/EDRCoin/EDRcoin-src",

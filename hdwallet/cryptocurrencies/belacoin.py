@@ -31,7 +31,7 @@ class Mainnet(INetwork):
 
 class BelaCoin(ICryptocurrency):
 
-    NAME = "Bela Coin"
+    NAME = "Bela-Coin"
     SYMBOL = "BELA"
     INFO = Info({
         "SOURCE_CODE": "https://github.com/TheAmbiaFund/erc20bela",

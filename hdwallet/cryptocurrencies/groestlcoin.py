@@ -65,7 +65,7 @@ class Testnet(INetwork):
 
 class GroestlCoin(ICryptocurrency):
 
-    NAME = "Groestl Coin"
+    NAME = "Groestl-Coin"
     SYMBOL = "GRS"
     INFO = Info({
         "SOURCE_CODE": "https://github.com/Groestlcoin/groestlcoin",

@@ -31,7 +31,7 @@ class Mainnet(INetwork):
 
 class CanadaECoin(ICryptocurrency):
 
-    NAME = "Canada eCoin"
+    NAME = "Canada-eCoin"
     SYMBOL = "CDN"
     INFO = Info({
         "SOURCE_CODE": "https://github.com/Canada-eCoin",

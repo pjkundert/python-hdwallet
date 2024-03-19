@@ -40,7 +40,7 @@ class Mainnet(INetwork):
 
 class CPUChain(ICryptocurrency):
 
-    NAME = "CPU Chain"
+    NAME = "CPU-Chain"
     SYMBOL = "CPU"
     INFO = Info({
         "SOURCE_CODE": "https://github.com/cpuchain/cpuchain",

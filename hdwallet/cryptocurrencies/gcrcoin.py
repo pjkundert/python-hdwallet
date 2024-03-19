@@ -31,7 +31,7 @@ class Mainnet(INetwork):
 
 class GCRCoin(ICryptocurrency):
 
-    NAME = "GCR Coin"  # Global Currency Reserve
+    NAME = "GCR-Coin"  # Global Currency Reserve
     SYMBOL = "GCR"
     INFO = Info({
         "WEBSITES": [

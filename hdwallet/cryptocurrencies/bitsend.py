@@ -31,7 +31,7 @@ class Mainnet(INetwork):
 
 class BitSend(ICryptocurrency):
 
-    NAME = "Bit Send"
+    NAME = "Bit-Send"
     SYMBOL = "BSD"
     INFO = Info({
         "SOURCE_CODE": "https://github.com/LIMXTEC/BitSend",

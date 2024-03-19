@@ -31,7 +31,7 @@ class Mainnet(INetwork):
 
 class InternetOfPeople(ICryptocurrency):
 
-    NAME = "Internet Of People"
+    NAME = "Internet-Of-People"
     SYMBOL = "IOP"
     INFO = Info({
         "SOURCE_CODE": "https://github.com/Internet-of-People",

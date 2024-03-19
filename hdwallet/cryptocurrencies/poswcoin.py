@@ -31,7 +31,7 @@ class Mainnet(INetwork):
 
 class PoSWCoin(ICryptocurrency):
 
-    NAME = "PoSW Coin"
+    NAME = "PoSW-Coin"
     SYMBOL = "POSW"
     INFO = Info({
         "WEBSITES": [

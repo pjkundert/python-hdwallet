@@ -31,7 +31,7 @@ class Mainnet(INetwork):
 
 class OKCash(ICryptocurrency):
 
-    NAME = "OK Cash"
+    NAME = "OK-Cash"
     SYMBOL = "OK"
     INFO = Info({
         "SOURCE_CODE": "https://github.com/okcashpro/okcash",

@@ -31,7 +31,7 @@ class Mainnet(INetwork):
 
 class BritCoin(ICryptocurrency):
 
-    NAME = "Brit Coin"
+    NAME = "Brit-Coin"
     SYMBOL = "BRIT"
     INFO = Info({
         "SOURCE_CODE": "https://github.com/britcoin3",

@@ -44,7 +44,7 @@ class Mainnet(INetwork):
 
 class BitcoinGold(ICryptocurrency):
 
-    NAME = "Bitcoin Gold"
+    NAME = "Bitcoin-Gold"
     SYMBOL = "BTG"
     INFO = Info({
         "SOURCE_CODE": "https://github.com/BTCGPU/BTCGPU",

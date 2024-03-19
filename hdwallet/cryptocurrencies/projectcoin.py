@@ -31,7 +31,7 @@ class Mainnet(INetwork):
 
 class ProjectCoin(ICryptocurrency):
 
-    NAME = "Project Coin"
+    NAME = "Project-Coin"
     SYMBOL = "PRJ"
     INFO = Info({
         "SOURCE_CODE": "https://github.com/projectcoincore/ProjectCoin",

@@ -31,7 +31,7 @@ class Mainnet(INetwork):
 
 class EuropeCoin(ICryptocurrency):
 
-    NAME = "Europe Coin"
+    NAME = "Europe-Coin"
     SYMBOL = "ERC"
     INFO = Info({
         "SOURCE_CODE": "https://github.com/LIMXTEC/Europecoin-V3",

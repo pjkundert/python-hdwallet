@@ -31,7 +31,7 @@ class Mainnet(INetwork):
 
 class BitcoinSV(ICryptocurrency):
 
-    NAME = "Bitcoin SV"
+    NAME = "Bitcoin-SV"
     SYMBOL = "BSV"
     INFO = Info({
         "SOURCE_CODE": "https://github.com/bitcoin-sv/bitcoin-sv",

@@ -47,7 +47,7 @@ class Testnet(INetwork):
 
 class ShadowCash(ICryptocurrency):
 
-    NAME = "Shadow Cash"
+    NAME = "Shadow-Cash"
     SYMBOL = "SDC"
     INFO = Info({
         "SOURCE_CODE": "https://github.com/shadowproject/shadow",

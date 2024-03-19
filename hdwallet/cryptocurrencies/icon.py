@@ -24,9 +24,9 @@ class Mainnet(INetwork):
     WIF_PREFIX = 0x80
 
 
-class ICON(ICryptocurrency):
+class Icon(ICryptocurrency):
 
-    NAME = "ICON"
+    NAME = "Icon"
     SYMBOL = "ICX"
     INFO = Info({
         "SOURCE_CODE": "https://github.com/icon-project",
@@ -56,7 +56,7 @@ class ICON(ICryptocurrency):
     })
     DEFAULT_HD = HDS.BIP44
     ADDRESSES = Addresses({
-        "ICON"
+        "ICON": "Icon"
     })
     DEFAULT_ADDRESS = ADDRESSES.ICON
     PARAMS = Params({

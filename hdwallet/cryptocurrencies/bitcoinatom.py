@@ -40,7 +40,7 @@ class Mainnet(INetwork):
 
 class BitcoinAtom(ICryptocurrency):
 
-    NAME = "Bitcoin Atom"
+    NAME = "Bitcoin-Atom"
     SYMBOL = "BCA"
     INFO = Info({
         "SOURCE_CODE": "https://github.com/bitcoin-atom/bitcoin-atom",

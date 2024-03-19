@@ -26,7 +26,7 @@ class Mainnet(INetwork):
 
 class HuobiToken(ICryptocurrency):
 
-    NAME = "Huobi Token"
+    NAME = "Huobi-Token"
     SYMBOL = "HT"
     INFO = Info({
         "WEBSITES": [

@@ -31,7 +31,7 @@ class Mainnet(INetwork):
 
 class VPNCoin(ICryptocurrency):
 
-    NAME = "Virtual Cash"
+    NAME = "Virtual-Cash"
     SYMBOL = "VASH"
     INFO = Info({
         "SOURCE_CODE": "https://github.com/Bit-Net/vash",

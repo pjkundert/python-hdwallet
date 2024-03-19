@@ -31,7 +31,7 @@ class Mainnet(INetwork):
 
 class LitecoinCash(ICryptocurrency):
 
-    NAME = "Litecoin Cash"
+    NAME = "Litecoin-Cash"
     SYMBOL = "LCC"
     INFO = Info({
         "SOURCE_CODE": "https://github.com/litecoincash-project/litecoincash",

@@ -31,7 +31,7 @@ class Mainnet(INetwork):
 
 class ThoughtAI(ICryptocurrency):
 
-    NAME = "Thought AI"
+    NAME = "Thought-AI"
     SYMBOL = "THT"
     INFO = Info({
         "SOURCE_CODE": "https://github.com/thoughtnetwork",

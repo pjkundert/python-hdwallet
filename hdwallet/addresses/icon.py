@@ -11,7 +11,7 @@ from typing import (
 from ..ecc import (
     IPublicKey, SLIP10Secp256k1PublicKey, validate_and_get_public_key
 )
-from ..cryptocurrencies import ICON
+from ..cryptocurrencies import Icon
 from ..crypto import sha3_256
 from ..utils import (
     get_bytes, bytes_to_string
@@ -21,8 +21,8 @@ from .iaddress import IAddress
 
 class IconAddress(IAddress):
 
-    address_prefix: str = ICON.PARAMS.ADDRESS_PREFIX
-    key_hash_length: int = ICON.PARAMS.KEY_HASH_LENGTH
+    address_prefix: str = Icon.PARAMS.ADDRESS_PREFIX
+    key_hash_length: int = Icon.PARAMS.KEY_HASH_LENGTH
 
     @staticmethod
     def name() -> str:

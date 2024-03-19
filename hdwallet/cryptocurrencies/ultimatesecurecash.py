@@ -31,7 +31,7 @@ class Mainnet(INetwork):
 
 class UltimateSecureCash(ICryptocurrency):
 
-    NAME = "Ultimate Secure Cash"
+    NAME = "Ultimate-Secure-Cash"
     SYMBOL = "USC"
     INFO = Info({
         "SOURCE_CODE": "https://github.com/SilentTrader/UltimateSecureCash",

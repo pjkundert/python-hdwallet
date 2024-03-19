@@ -40,7 +40,7 @@ class Mainnet(INetwork):
 
 class DigiByte(ICryptocurrency):
 
-    NAME = "Digi Byte"
+    NAME = "Digi-Byte"
     SYMBOL = "DGB"
     INFO = Info({
         "SOURCE_CODE": "https://github.com/DigiByte-Core/digibyte",

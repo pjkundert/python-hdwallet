@@ -31,7 +31,7 @@ class Mainnet(INetwork):
 
 class GameCredits(ICryptocurrency):
 
-    NAME = "Game Credits"
+    NAME = "Game-Credits"
     SYMBOL = "GAME"
     INFO = Info({
         "SOURCE_CODE": "https://github.com/gamecredits-project/GameCredits",

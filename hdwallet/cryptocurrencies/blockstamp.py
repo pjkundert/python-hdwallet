@@ -40,7 +40,7 @@ class Mainnet(INetwork):
 
 class BlockStamp(ICryptocurrency):
 
-    NAME = "Block Stamp"
+    NAME = "Block-Stamp"
     SYMBOL = "BST"
     INFO = Info({
         "SOURCE_CODE": "https://github.com/BlockStamp",

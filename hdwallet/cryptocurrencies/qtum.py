@@ -19,6 +19,7 @@ class Mainnet(INetwork):
     PUBLIC_KEY_ADDRESS_PREFIX = 0x3a
     HRP = "qc1"
     WITNESS_VERSIONS = WitnessVersions({
+        "P2TR": 0x01,
         "P2WPKH": 0x00,
         "P2WSH": 0x00
     })
@@ -48,6 +49,7 @@ class Testnet(INetwork):
     PUBLIC_KEY_ADDRESS_PREFIX = 0x78
     HRP = "tq1"
     WITNESS_VERSIONS = WitnessVersions({
+        "P2TR": 0x01,
         "P2WPKH": 0x00,
         "P2WSH": 0x00
     })

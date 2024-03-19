@@ -31,7 +31,7 @@ class Mainnet(INetwork):
 
 class ClubCoin(ICryptocurrency):
 
-    NAME = "Club Coin"
+    NAME = "Club-Coin"
     SYMBOL = "CLUB"
     INFO = Info({
         "SOURCE_CODE": "https://github.com/BitClubDev/ClubCoin",

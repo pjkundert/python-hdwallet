@@ -31,7 +31,7 @@ class Mainnet(INetwork):
 
 class TOACoin(ICryptocurrency):
 
-    NAME = "TOA Coin"
+    NAME = "TOA-Coin"
     SYMBOL = "TOA"
     INFO = Info({
         "SOURCE_CODE": "https://github.com/toacoin/TOA",

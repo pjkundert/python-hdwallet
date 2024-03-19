@@ -31,7 +31,7 @@ class Mainnet(INetwork):
 
 class NewYorkCoin(ICryptocurrency):
 
-    NAME = "New York Coin"
+    NAME = "New-York-Coin"
     SYMBOL = "NYC"
     INFO = Info({
         "SOURCE_CODE": "https://github.com/NewYorkCoinNYC/newyorkcoin",

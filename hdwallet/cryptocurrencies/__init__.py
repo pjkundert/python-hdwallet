@@ -5,7 +5,7 @@
 # file COPYING or https://opensource.org/license/mit
 
 from typing import (
-    List, Dict, Type, Optional
+    List, Dict, Type
 )
 
 from .icryptocurrency import ICryptocurrency
@@ -104,7 +104,7 @@ from .hempcoin import Hempcoin
 from .horizen import Horizen
 from .huobitoken import HuobiToken
 from .hush import Hush
-from .icon import ICON
+from .icon import Icon
 from .injective import Injective
 from .insanecoin import InsaneCoin
 from .internetofpeople import InternetOfPeople
@@ -314,7 +314,7 @@ CRYPTOCURRENCIES: Dict[str, Type[ICryptocurrency]] = {
     Horizen.NAME: Horizen,
     HuobiToken.NAME: HuobiToken,
     Hush.NAME: Hush,
-    ICON.NAME: ICON,
+    Icon.NAME: Icon,
     Injective.NAME: Injective,
     InsaneCoin.NAME: InsaneCoin,
     InternetOfPeople.NAME: InternetOfPeople,

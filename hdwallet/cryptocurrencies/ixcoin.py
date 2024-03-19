@@ -31,7 +31,7 @@ class Mainnet(INetwork):
 
 class IXCoin(ICryptocurrency):
 
-    NAME = "IX Coin"
+    NAME = "IX-Coin"
     SYMBOL = "IXC"
     INFO = Info({
         "SOURCE_CODE": "https://github.com/ixcore/ixcoin",

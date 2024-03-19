@@ -31,7 +31,7 @@ class Mainnet(INetwork):
 
 class BitcoinPlus(ICryptocurrency):
 
-    NAME = "Bitcoin Plus"
+    NAME = "Bitcoin-Plus"
     SYMBOL = "XBC"
     INFO = Info({
         "SOURCE_CODE": "https://github.com/bitcoinplusorg/xbcwalletsource",

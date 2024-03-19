@@ -31,7 +31,7 @@ class Mainnet(INetwork):
 
 class BeetleCoin(ICryptocurrency):
 
-    NAME = "Beetle Coin"
+    NAME = "Beetle-Coin"
     SYMBOL = "BEET"
     INFO = Info({
         "SOURCE_CODE": "https://github.com/beetledev/Wallet",

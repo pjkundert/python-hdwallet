@@ -31,7 +31,7 @@ class Mainnet(INetwork):
 
 class ExclusiveCoin(ICryptocurrency):
 
-    NAME = "Exclusive Coin"
+    NAME = "Exclusive-Coin"
     SYMBOL = "EXCL"
     INFO = Info({
         "SOURCE_CODE": "https://github.com/exclfork/excl-core",

@@ -31,7 +31,7 @@ class Mainnet(INetwork):
 
 class LBRYCredits(ICryptocurrency):
 
-    NAME = "LBRY Credits"
+    NAME = "LBRY-Credits"
     SYMBOL = "LBC"
     INFO = Info({
         "SOURCE_CODE": "https://github.com/lbryio/lbrycrd",

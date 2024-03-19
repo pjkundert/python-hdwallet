@@ -31,7 +31,7 @@ class Mainnet(INetwork):
 
 class BitCloud(ICryptocurrency):
 
-    NAME = "Bit Cloud"
+    NAME = "Bit-Cloud"
     SYMBOL = "BTDX"
     INFO = Info({
         "SOURCE_CODE": "https://github.com/LIMXTEC/Bitcloud",
