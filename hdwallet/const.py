@@ -88,8 +88,11 @@ class Info(NestedNamespace):
 
 class WitnessVersions(NestedNamespace):
 
-    def get_witness_version(self, address: str) -> int:
-        return self.__getattribute__(address.upper())
+    def get_witness_version(self, address: str) -> Optional[int]:
+        try:
+            return self.__getattribute__(address.upper())
+        except AttributeError:
+            return None
 
 
 class Entropies(NestedNamespace):
