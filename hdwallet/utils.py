@@ -43,6 +43,59 @@ def indexes_to_path(indexes: List[int]) -> str:
     return path
 
 
+def normalize_derivation(path: Optional[str] = None, indexes: Optional[List[int]] = None) -> Tuple[str, list, dict]:
+
+    _path: str = "m"
+    _indexes: List[int] = []
+    _depths: dict = {}
+
+    if not path and not indexes:
+        raise ValueError("Path/Indexes are required")
+    elif indexes:
+        path = indexes_to_path(indexes=indexes)
+
+    if path[0:2] != "m/":
+        raise ValueError(
+            f"Bad path, please insert like this type of path \"m/0'/0\"!, not: ({path})"
+        )
+
+    for depth, index in enumerate(path.lstrip("m/").split("/")):
+        if "'" in index:
+            if "-" in index:
+                _from_index, _to_index = index[:-1].split("-")
+                _index: int = int(_to_index)
+                if int(_from_index) >= int(_to_index):
+                    raise ValueError(
+                        f"On {depth} depth, the starting index {_from_index} must be less than the ending index {_to_index}"
+                    )
+                _depths.setdefault(depth, dict(
+                    from_index=(int(_from_index), True), to_index=(int(_to_index), True)
+                ))
+            else:
+                _index: int = int(index[:-1])
+                _depths.setdefault(depth, (_index, True))
+            _indexes.append(_index + 0x80000000)
+            _path += f"/{_index}'"
+        else:
+            if "-" in index:
+                _from_index, _to_index = index.split("-")
+                _index: int = int(_to_index)
+                if int(_from_index) >= int(_to_index):
+                    raise ValueError(
+                        f"On {depth} depth, the starting index {_from_index} must be less than the ending index {_to_index}"
+                    )
+                _depths.setdefault(depth, dict(
+                    from_index=(int(_from_index), False), to_index=(int(_to_index), False)
+                ))
+            else:
+                _index: int = int(index)
+                _depths.setdefault(depth, (_index, False))
+            _indexes.append(_index)
+            _path += f"/{_index}"
+
+    return _path, _indexes, _depths
+
+
 def index_tuple_to_integer(index: Tuple[int, bool]) -> int:
     return (index[0] + 0x80000000) if index[1] else index[0]
 
