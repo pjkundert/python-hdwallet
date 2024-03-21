@@ -124,6 +124,9 @@ class Addresses(NestedNamespace):
     def get_addresses(self) -> List[str]:
         return list(self.__dict__.values())
 
+    def length(self) -> int:
+        return len(self.get_addresses())
+
 
 class AddressTypes(NestedNamespace):
 
