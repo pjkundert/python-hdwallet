@@ -8,6 +8,7 @@ from typing import (
     Optional, List
 )
 
+from ..utils import normalize_derivation
 from .iderivation import IDerivation
 
 
@@ -22,16 +23,12 @@ class CustomDerivation(IDerivation):
 
     def from_path(self, path: str) -> "CustomDerivation":
 
-        if str(path)[0:2] != "m/":
-            raise ValueError(f"Bad path, please insert like this type of path \"m/0'/0\"!, not: ({path})")
+        if path[0:2] != "m/":
+            raise ValueError(
+                f"Bad path, please insert like this type of path \"m/0'/0\"!, not: ({path})"
+            )
 
-        for index in path.lstrip("m/").split("/"):
-            if "'" in index:
-                self._indexes.append(int(index[:-1]) + 0x80000000)
-                self._path += f"/{index}'"
-            else:
-                self._indexes.append(int(index))
-                self._path += f"/{index}"
+        self._path, self._indexes, self._derivations = normalize_derivation(path=path)
         return self
 
     def from_indexes(self, indexes: List[int]) -> "CustomDerivation":
@@ -39,20 +36,7 @@ class CustomDerivation(IDerivation):
         if not isinstance(indexes, list):
             raise ValueError("Bad indexes, please import only list of integer numbers")
 
-        for index in indexes:
-            if index & 0x80000000:
-                self._path += (
-                    f"{index - 0x80000000}'"
-                    if self._path == "m/" else
-                    f"/{index - 0x80000000}'"
-                )
-            else:
-                self._path += (
-                    f"{index}"
-                    if self._path == "m/"
-                    else f"/{index}"
-                )
-            self._indexes.append(index)
+        self._path, self._indexes, self._derivations = normalize_derivation(indexes=indexes)
         return self
 
     def from_index(self, index: int, hardened: bool = False) -> "CustomDerivation":
