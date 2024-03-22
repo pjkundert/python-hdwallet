@@ -5,24 +5,23 @@
 # file COPYING or https://opensource.org/license/mit
 
 from typing import (
-    Optional, Union, Any, Type, Literal, Tuple, Dict, List
+    Optional, Union, Any, Type, Literal, Tuple, Dict, List, Set
 )
 
-import struct
 
 from .libs.base58 import (
     check_encode, checksum_encode, check_decode, ensure_string
 )
 from .entropies import (
-    IEntropy, ENTROPIES, AlgorandEntropy, BIP39Entropy, ElectrumV1Entropy, ElectrumV2Entropy, MoneroEntropy
+    IEntropy, ENTROPIES
 )
 from .mnemonics import (
-    IMnemonic, MNEMONICS, AlgorandMnemonic, BIP39Mnemonic, ElectrumV1Mnemonic, ElectrumV2Mnemonic, MoneroMnemonic
+    IMnemonic, MNEMONICS
 )
 from .seeds import (
-    ISeed, SEEDS, AlgorandSeed, BIP39Seed, CardanoSeed, ElectrumV1Seed, ElectrumV2Seed, MoneroSeed
+    ISeed, SEEDS
 )
-from .ecc import (
+from .ecc.slip10 import (
     SLIP10Ed25519MoneroPrivateKey, SLIP10Ed25519MoneroPublicKey
 )
 from .hds import (
@@ -40,7 +39,7 @@ from .exceptions import (
     DerivationError, NetworkError, SymbolError, AddressError, SemanticError
 )
 from .utils import (
-    get_bytes, bytes_to_integer, integer_to_bytes, bytes_to_string
+    get_bytes, bytes_to_integer, integer_to_bytes, bytes_to_string, normalize_derivation, exclude_keys
 )
 from .derivations import (
     IDerivation, CustomDerivation, BIP44Derivation, BIP49Derivation, BIP84Derivation, BIP86Derivation, CIP1852Derivation, ElectrumDerivation
@@ -54,6 +53,7 @@ class HDWallet:
     _cryptocurrency: ICryptocurrency
     _network: INetwork
     _address: Type[IAddress]
+    _address_type: Optional[str] = None
 
     _entropy: Optional[IEntropy] = None
     _language: Optional[str] = None
@@ -139,6 +139,11 @@ class HDWallet:
                 got=address
             )
         self._address = ADDRESSES[address]
+
+        if self._cryptocurrency.DEFAULT_ADDRESS_TYPE:
+            self._address_type = kwargs.get(
+                "address_type", self._cryptocurrency.DEFAULT_ADDRESS_TYPE
+            )
 
         if hd.name() not in cryptocurrency.HDS.get_hds():
             raise Exception(f"{hd.name()} HD not implemented on {cryptocurrency.NAME} cryptocurrency")
@@ -482,7 +487,7 @@ class HDWallet:
 
         if address is None:
             address = self._address.name()
-        elif issubclass(address, IAddress):
+        elif not isinstance(address, str) and issubclass(address, IAddress):
             address = address.name()
         if address not in self._cryptocurrency.ADDRESSES.get_addresses():
             raise AddressError(
@@ -490,14 +495,16 @@ class HDWallet:
                 expected=self._cryptocurrency.ADDRESSES.get_addresses(),
                 got=address
             )
-
-        if self._cryptocurrency.NAME in [
-            "Algorand", "Elrond", "Solana", "Stellar", "Tezos"
-        ]:
-            return ADDRESSES[address].encode(
-                public_key=self.public_key(), **kwargs
+        if self._cryptocurrency.DEFAULT_ADDRESS_TYPE:
+            self._address_type = kwargs.get(
+                "address_type", self._cryptocurrency.DEFAULT_ADDRESS_TYPE
             )
-        elif self._cryptocurrency.NAME == "Cardano":
+        if self._network.WITNESS_VERSIONS:
+            kwargs.setdefault(
+                "witness_version", self._network.WITNESS_VERSIONS.get_witness_version(address)
+            )
+
+        if self._cryptocurrency.NAME == "Cardano":
             return self._hd.address(
                 network=self._network.__name__.lower(), **kwargs
             )
@@ -512,51 +519,20 @@ class HDWallet:
                 return self.sub_address(
                     minor_index=kwargs.get("minor_index"), major_index=kwargs.get("major_index", 0)
                 )
-        elif self._cryptocurrency.NAME in [
-            "Bitcoin"
-        ]:
-            if address == "P2PKH":
-                return ADDRESSES[address].encode(
-                    public_key=self.public_key(),
-                    network_version=self._network.PUBLIC_KEY_ADDRESS_PREFIX,
-                    public_key_type=self.public_key_type()
-                )
-            elif address in ["P2SH", "P2WPKH-In-P2SH", "P2WSH-In-P2SH"]:
-                return ADDRESSES[address].encode(
-                    public_key=self.public_key(),
-                    network_version=self._network.SCRIPT_ADDRESS_PREFIX,
-                    public_key_type=self.public_key_type()
-                )
-            elif address == "P2TR":
-                return ADDRESSES[address].encode(
-                    public_key=self.public_key(),
-                    hrp=self._network.HRP,
-                    witness_version=self._network.WITNESS_VERSIONS.get_witness_version(address)
-                )
-            elif address in ["P2WPKH", "P2WSH"]:
-                return ADDRESSES[address].encode(
-                    public_key=self.public_key(),
-                    hrp=self._network.HRP,
-                    witness_version=self._network.WITNESS_VERSIONS.get_witness_version(address),
-                    public_key_type=self.public_key_type()
-                )
+        else:
+            return ADDRESSES[address].encode(
+                public_key=self.public_key(),
+                public_key_address_prefix=self._network.PUBLIC_KEY_ADDRESS_PREFIX,
+                script_address_prefix=self._network.SCRIPT_ADDRESS_PREFIX,
+                network_type=self._network.__name__.lower(),
+                public_key_type=self.public_key_type(),
+                hrp=self._network.HRP,
+                **kwargs
+            )
 
-    def dump(self) -> dict:
-        return dict(
-            cryptocurrency=self.cryptocurrency(),
-            symbol=self.symbol(),
-            network=self.network(),
-            entropy=self.entropy(),
-            strength=self.strength(),
-            mnemonic=self.mnemonic(),
-            passphrase=self.passphrase(),
-            language=self.language(),
-            seed=self.seed(),
-            root_xprivate_key=self.root_xprivate_key(),
-            root_xpublic_key=self.root_xpublic_key(),
-            root_private_key=self.root_private_key(),
-            root_chain_code=self.root_chain_code(),
-            root_public_key=self.root_public_key(),
+    def dump(self, exclude: Optional[set] = None) -> dict:
+
+        _derivation: dict = dict(
             xprivate_key=self.xprivate_key(),
             xpublic_key=self.xpublic_key(),
             private_key=self.private_key(),
@@ -571,12 +547,55 @@ class HDWallet:
             indexes=self.indexes(),
             fingerprint=self.fingerprint(),
             parent_fingerprint=self.parent_fingerprint(),
-            address=self.address()
         )
+        if self._cryptocurrency.ADDRESSES.length() > 1 or self._cryptocurrency.NAME in ["Tezos"]:
+            addresses: dict = { }
+            if self._cryptocurrency.NAME == "Avalanche":
+                addresses[self._cryptocurrency.ADDRESS_TYPES.C_CHAIN] = self.address(address="Ethereum")
+                addresses[self._cryptocurrency.ADDRESS_TYPES.P_CHAIN] = self.address(
+                    address="Avalanche", address_type=self._cryptocurrency.ADDRESS_TYPES.P_CHAIN
+                )
+                addresses[self._cryptocurrency.ADDRESS_TYPES.X_CHAIN] = self.address(
+                    address="Avalanche", address_type=self._cryptocurrency.ADDRESS_TYPES.X_CHAIN
+                )
+            elif self._cryptocurrency.NAME == "Binance":
+                addresses[self._cryptocurrency.ADDRESS_TYPES.CHAIN] = self.address(address="Cosmos")
+                addresses[self._cryptocurrency.ADDRESS_TYPES.SMART_CHAIN] = self.address(address="Ethereum")
+            elif self._cryptocurrency.NAME in ["Bitcoin-Cash", "Bitcoin-Cash-SLP", "eCash"]:
+                for address_type in self._cryptocurrency.ADDRESS_TYPES.get_address_types():
+                    for address in self._cryptocurrency.ADDRESSES.get_addresses():
+                        addresses[f"{address_type}-{address.lower()}"] = ADDRESSES[address].encode(
+                            public_key=self.public_key(),
+                            public_key_address_prefix=getattr(
+                                self._network, f"{address_type.upper()}_PUBLIC_KEY_ADDRESS_PREFIX"
+                            ),
+                            script_address_prefix=getattr(
+                                self._network, f"{address_type.upper()}_SCRIPT_ADDRESS_PREFIX"
+                            ),
+                            public_key_type=self.public_key_type(),
+                            hrp=self._network.HRP
+                        )
+            elif self._cryptocurrency.NAME == "Tezos":
+                addresses[self._cryptocurrency.ADDRESS_PREFIXES.TZ1] = self.address(
+                    address_prefix=self._cryptocurrency.ADDRESS_PREFIXES.TZ1
+                )
+                addresses[self._cryptocurrency.ADDRESS_PREFIXES.TZ2] = self.address(
+                    address_prefix=self._cryptocurrency.ADDRESS_PREFIXES.TZ2
+                )
+                addresses[self._cryptocurrency.ADDRESS_PREFIXES.TZ3] = self.address(
+                    address_prefix=self._cryptocurrency.ADDRESS_PREFIXES.TZ3
+                )
+            else:
+                for address in self._cryptocurrency.ADDRESSES.get_addresses():
+                    addresses[address.lower()] = self.address(address=address)
+            _derivation["addresses"] = addresses
+        else:
+            _derivation["address"] = self.address()
 
-    def dumps(self, **kwargs) -> dict:
+        if "root" in exclude:
+            return exclude_keys(_derivation, exclude)
 
-        dumps: dict = dict(
+        _root: dict = dict(
             cryptocurrency=self.cryptocurrency(),
             symbol=self.symbol(),
             network=self.network(),
@@ -586,6 +605,7 @@ class HDWallet:
             passphrase=self.passphrase(),
             language=self.language(),
             seed=self.seed(),
+            ecc=self.ecc(),
             root_xprivate_key=self.root_xprivate_key(),
             root_xpublic_key=self.root_xpublic_key(),
             root_private_key=self.root_private_key(),
@@ -593,68 +613,46 @@ class HDWallet:
             root_public_key=self.root_public_key()
         )
 
-        def get_derivation() -> dict:
-            return dict(
-                xprivate_key=self.xprivate_key(),
-                xpublic_key=self.xpublic_key(),
-                private_key=self.private_key(),
-                chain_code=self.chain_code(),
-                public_key=self.public_key(),
-                uncompressed=self.uncompressed(),
-                compressed=self.compressed(),
-                hash=self.hash(),
-                depth=self.depth(),
-                path=self.path(),
-                index=self.index(),
-                indexes=self.indexes(),
-                fingerprint=self.fingerprint(),
-                parent_fingerprint=self.parent_fingerprint(),
-                address=self.address()
-            )
+        if "derivation" not in exclude:
+            _root["derivation"] = _derivation
 
-        derivations: List[dict] = []
-        if self._derivation.name() in ["BIP44", "BIP49", "BIP84", "BIP86", "CIP1852"]:
-            from_account_index: int = kwargs.get("from_account_index", 0)
-            to_account_index: int = kwargs.get("to_account_index", 2)
-            from_address_index: int = kwargs.get("from_address_index", 0)
-            to_address_index: int = kwargs.get("to_address_index", 2)
-            derivation: Union[
-                IDerivation, BIP44Derivation, BIP49Derivation, BIP84Derivation, BIP86Derivation, CIP1852Derivation
-            ] = self._derivation
+        return exclude_keys(_root, exclude)
 
-            derivations: List[dict] = []
-            for account_index in range(from_account_index, to_account_index):
-                for address_index in range(from_address_index, to_address_index):
-                    derivation.from_account(account=account_index)
-                    derivation.from_address(address=address_index)
-                    self.update_derivation(derivation=derivation)
-                    derivations.append(get_derivation())
-        elif self._derivation.name() == "Electrum":
-            from_change_index: int = kwargs.get("from_change_index", 0)
-            to_change_index: int = kwargs.get("to_change_index", 2)
-            from_address_index: int = kwargs.get("from_address_index", 0)
-            to_address_index: int = kwargs.get("to_address_index", 2)
-            derivation: Union[
-                IDerivation, ElectrumDerivation
-            ] = self._derivation
+    def dumps(self, exclude: Optional[set] = None) -> Union[dict, List[dict]]:
 
-            derivations: List[dict] = []
-            for change_index in range(from_change_index, to_change_index):
-                for address_index in range(from_address_index, to_address_index):
-                    derivation.from_change(change=change_index)
-                    derivation.from_address(address=address_index)
-                    self.update_derivation(derivation=derivation)
-                    derivations.append(get_derivation())
-        else:
-            from_index: int = kwargs.get("from_index", 0)
-            to_index: int = kwargs.get("to_index", 5)
-            indexes: List[int] = self.indexes()
+        _derivations: List[dict] = []
 
-            for index in range(from_index, to_index):
-                custom_derivation: CustomDerivation = CustomDerivation(indexes=indexes)
-                custom_derivation.from_index(index=index)
-                self.update_derivation(derivation=custom_derivation)
-                derivations.append(get_derivation())
+        def drive(*args) -> List[str]:
+            def drive_helper(derivations, current_derivation: List[Tuple[int, bool]] = []) -> List[str]:
+                if not derivations:
+                    custom_derivation: CustomDerivation = CustomDerivation(
+                        path="m/" + "/".join([str(item[0]) + "'" if item[1] else str(item[0]) for item in current_derivation])
+                    )
+                    self.update_derivation(derivation=custom_derivation)
+                    _derivations.append(self.dump(exclude={"root", *exclude}))
+                    return [custom_derivation.path()]
 
-        dumps.setdefault("derivations", derivations)
-        return dumps
+                path: List[str] = []
+                if len(derivations[0]) == 3:
+                    for value in range(derivations[0][0], derivations[0][1] + 1):
+                        path += drive_helper(
+                            derivations[1:], current_derivation + [(value, derivations[0][2])]
+                        )
+                else:
+                    path += drive_helper(
+                        derivations[1:], current_derivation + [derivations[0]]
+                    )
+                return path
+            return drive_helper(args)
+
+        drive(*self._derivation.derivations())
+
+        if "root" in exclude:
+            return _derivations
+
+        _root: dict = self.dump(exclude={"derivation"})
+
+        if "derivations" not in exclude:
+            _root["derivations"] = _derivations
+
+        return exclude_keys(_root, exclude)
