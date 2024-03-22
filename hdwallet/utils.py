@@ -12,6 +12,8 @@ from typing import (
 import binascii
 import string
 
+from .exceptions import DerivationError
+
 # Alphabet and digits.
 LETTERS: str = (
     string.ascii_letters + string.digits
@@ -27,7 +29,7 @@ def path_to_indexes(path: str) -> List[int]:
     if path in ["m", "m/"]:
         return []
     elif path[0:2] != "m/":
-        raise ValueError(f"Bad path, please insert like this type of path \"m/0'/0\"!, not: ({path})")
+        raise DerivationError(f"Bad path, please insert like this type of path \"m/0'/0\"!, not: ({path})")
 
     indexes: List[int] = []
     for index in path.lstrip("m/").split("/"):
@@ -47,23 +49,21 @@ def normalize_derivation(
     path: Optional[str] = None, indexes: Optional[List[int]] = None
 ) -> Tuple[str, List[int], List[tuple]]:
 
-    _path: str = "m/"
+    _path: str = "m"
     _indexes: List[int] = []
     _derivations: List[tuple] = []
 
     if indexes:
-        _path = indexes_to_path(indexes=indexes)
+        path = indexes_to_path(indexes=indexes)
     elif path:
-        if path[0:2] != "m/":
-            raise ValueError(
+        if path in ["m", "m/"]:
+            return f"{_path}/", _indexes, _derivations
+        elif path[0:2] != "m/":
+            raise DerivationError(
                 f"Bad path, please insert like this type of path \"m/0'/0\"!, not: ({path})"
             )
-        _path = path
 
-    if _path in ["m", "m/"]:
-        return _path, _indexes, _derivations
-
-    for depth, index in enumerate(_path.lstrip("m/").split("/")):
+    for depth, index in enumerate(path.lstrip("m/").split("/")):
         if "'" in index:
             if "-" in index:
                 _from_index, _to_index = index[:-1].split("-")
@@ -96,13 +96,26 @@ def normalize_derivation(
     return _path, _indexes, _derivations
 
 
-def index_tuple_to_integer(index: Tuple[int, bool]) -> int:
-    return (index[0] + 0x80000000) if index[1] else index[0]
+def index_tuple_to_integer(index: Union[Tuple[int, bool], Tuple[int, int, bool]]) -> int:
+    if not isinstance(index, tuple):
+        raise DerivationError("Invalid index instance", expected=tuple, got=type(index))
+    elif len(index) == 3:
+        return (index[1] + 0x80000000) if index[2] else index[0]
+    elif len(index) == 2:
+        return (index[0] + 0x80000000) if index[1] else index[0]
+    raise DerivationError("Wrong index length", expected=[2, 3], got=len(index))
 
 
-def index_tuple_to_string(index: Tuple[int, bool]) -> str:
-    _index, _hardened = index[0], "'" if index[1] else ""
-    return f"{_index}{_hardened}"
+def index_tuple_to_string(index: Union[Tuple[int, bool], Tuple[int, int, bool]]) -> str:
+    if not isinstance(index, tuple):
+        raise DerivationError("Invalid index instance", expected=tuple, got=type(index))
+    elif len(index) == 3:
+        _from_index, _to_index, _hardened = index[0], index[1], "'" if index[2] else ""
+        return f"{_from_index}-{_to_index}{_hardened}"
+    elif len(index) == 2:
+        _index, _hardened = index[0], "'" if index[1] else ""
+        return f"{_index}{_hardened}"
+    raise DerivationError("Wrong index length", expected=[2, 3], got=len(index))
 
 
 def index_string_to_tuple(index: str) -> Tuple[int, bool]:
