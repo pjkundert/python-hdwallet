@@ -19,12 +19,24 @@ def generate_passphrase(length: int = 32) -> str:
     return "".join(choice(string.ascii_letters + string.digits) for _ in range(length))
 
 
+def exclude_keys(nested: dict, keys: set) -> dict:
+    new: dict = { }
+    for _key, _value in nested.items():
+        if isinstance(_value, dict):
+            new[_key] = exclude_keys(_value, keys)
+        elif _key not in [key.replace("-", "_") if isinstance(key, str) else key for key in keys]:
+            new[_key] = _value
+    return new
+
+
 def path_to_indexes(path: str) -> List[int]:
 
     if path in ["m", "m/"]:
         return []
     elif path[0:2] != "m/":
-        raise DerivationError(f"Bad path, please insert like this type of path \"m/0'/0\"!, not: ({path})")
+        raise DerivationError(
+            f"Bad path format", expected="like this type of path \"m/0'/0\"", got=path
+        )
 
     indexes: List[int] = []
     for index in path.lstrip("m/").split("/"):
