@@ -33,11 +33,11 @@ class Error(Exception):
 
     def __str__(self):
         if self._expected and self._got and self._detail:
-            return f"{self._message}, (expected: {self._expected} | got: {self._got}), {self._detail}"
+            return f"{self._message}, (expected: {self._expected} | got: {self._got}) {self._detail}"
         elif self._expected and self._got and not self._detail:
             return f"{self._message}, (expected: {self._expected} | got: {self._got})"
         elif self._detail:
-            return f"{self._message}, {self._detail}"
+            return f"{self._message} {self._detail}"
         else:
             return f"{self._message}"
 
