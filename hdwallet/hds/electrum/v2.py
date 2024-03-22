@@ -19,6 +19,7 @@ from ...cryptocurrencies import Bitcoin
 from ...const import (
     PUBLIC_KEY_TYPES, ELECTRUM_V2_MODES, WIF_TYPES
 )
+from ...exceptions import DerivationError
 from ..bip32 import BIP32HD
 from ..ihd import IHD
 
@@ -70,12 +71,20 @@ class ElectrumV2HD(IHD):
     def update_derivation(self, derivation: IDerivation) -> "ElectrumV2HD":
 
         if not isinstance(derivation, ElectrumDerivation):
-            raise TypeError(
-                f"Invalid Electrum-V2 derivation type, (expected: '{ElectrumDerivation.name()}', got: '{derivation.name()}')"
+            raise DerivationError(
+                f"Invalid Electrum V1 derivation instance", expected=ElectrumDerivation.name(), got=derivation.name()
             )
         return self.drive(
-            change_index=derivation.change(only_index=True),
-            address_index=derivation.address(only_index=True)
+            change_index=(
+                derivation.change()[1]
+                if len(derivation.change()) == 3 else
+                derivation.change()[0]
+            ),
+            address_index=(
+                derivation.address()[1]
+                if len(derivation.address()) == 3 else
+                derivation.address()[0]
+            )
         )
 
     def drive(self, change_index: int, address_index: int) -> "ElectrumV2HD":

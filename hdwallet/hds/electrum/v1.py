@@ -24,6 +24,7 @@ from ...derivations import (
 )
 from ...crypto import double_sha256
 from ...cryptocurrencies import Bitcoin
+from ...exceptions import DerivationError
 from ...utils import (
     get_bytes, encode, bytes_to_string, bytes_to_integer, integer_to_bytes
 )
@@ -109,12 +110,20 @@ class ElectrumV1HD(IHD):
     def update_derivation(self, derivation: IDerivation) -> "ElectrumV1HD":
 
         if not isinstance(derivation, ElectrumDerivation):
-            raise TypeError(
-                f"Invalid Electrum V1 derivation type, (expected: '{ElectrumDerivation.name()}', got: '{derivation.name()}')"
+            raise DerivationError(
+                f"Invalid Electrum V1 derivation instance", expected=ElectrumDerivation.name(), got=derivation.name()
             )
         return self.drive(
-            change_index=derivation.change(only_index=True),
-            address_index=derivation.address(only_index=True)
+            change_index=(
+                derivation.change()[1]
+                if len(derivation.change()) == 3 else
+                derivation.change()[0]
+            ),
+            address_index=(
+                derivation.address()[1]
+                if len(derivation.address()) == 3 else
+                derivation.address()[0]
+            )
         )
 
     def drive(self, change_index: int, address_index: int) -> "ElectrumV1HD":
