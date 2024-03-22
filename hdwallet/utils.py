@@ -14,14 +14,9 @@ import string
 
 from .exceptions import DerivationError
 
-# Alphabet and digits.
-LETTERS: str = (
-    string.ascii_letters + string.digits
-)
-
 
 def generate_passphrase(length: int = 32) -> str:
-    return "".join(choice(LETTERS) for _ in range(length))
+    return "".join(choice(string.ascii_letters + string.digits) for _ in range(length))
 
 
 def path_to_indexes(path: str) -> List[int]:
@@ -60,7 +55,7 @@ def normalize_derivation(
             return f"{_path}/", _indexes, _derivations
         elif path[0:2] != "m/":
             raise DerivationError(
-                f"Bad path, please insert like this type of path \"m/0'/0\"!, not: ({path})"
+                f"Bad path format", expected="like this type of path \"m/0'/0\"", got=path
             )
 
     for depth, index in enumerate(path.lstrip("m/").split("/")):
@@ -69,8 +64,8 @@ def normalize_derivation(
                 _from_index, _to_index = index[:-1].split("-")
                 _index: int = int(_to_index)
                 if int(_from_index) >= int(_to_index):
-                    raise ValueError(
-                        f"On {depth} depth, the starting index {_from_index} must be less than the ending index {_to_index}"
+                    raise DerivationError(
+                        f"On {depth} depth, the starting {_from_index} must be less than the ending {_to_index} index"
                     )
                 _derivations.append((int(_from_index), int(_to_index), True))
             else:
@@ -83,8 +78,8 @@ def normalize_derivation(
                 _from_index, _to_index = index.split("-")
                 _index: int = int(_to_index)
                 if int(_from_index) >= int(_to_index):
-                    raise ValueError(
-                        f"On {depth} depth, the starting index {_from_index} must be less than the ending index {_to_index}"
+                    raise DerivationError(
+                        f"On {depth} depth, the starting {_from_index} must be less than the ending {_to_index} index"
                     )
                 _derivations.append((int(_from_index), int(_to_index), False))
             else:
@@ -189,7 +184,7 @@ def bytes_reverse(data: bytes) -> bytes:
     return bytes(tmp)
 
 
-def bytes_to_string(data: bytes) -> str:
+def bytes_to_string(data: Union[bytes, str]) -> str:
     if not data:
         return ''
     try:
