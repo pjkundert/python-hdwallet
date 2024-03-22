@@ -9,47 +9,50 @@ from typing import (
 )
 
 from ..utils import (
-    indexes_to_path, index_tuple_to_integer
+    normalize_derivation, index_tuple_to_string
 )
 from .iderivation import IDerivation
 
 
 class ElectrumDerivation(IDerivation):
 
-    _change: Tuple[int, bool]
-    _address: Tuple[int, bool]
+    _change: Union[Tuple[int, bool], Tuple[int, int, bool]]
+    _address: Union[Tuple[int, bool], Tuple[int, int, bool]]
 
     def __init__(
-        self, change: int = 0, address: int = 0
+        self, change: Union[int, Tuple[int, int]] = 0, address: Union[int, Tuple[int, int]] = 0
     ) -> None:
-        super(ElectrumDerivation, self).__init__()
 
-        self._change = (change, False)
-        self._address = (address, False)
-        self._indexes = [
-            index_tuple_to_integer(index=self._change),
-            index_tuple_to_integer(index=self._address)
-        ]
-        self._path = indexes_to_path(indexes=self._indexes)
+        self._change = (*change, False) if isinstance(change, tuple) else (change, False)
+        self._address = (*address, False) if isinstance(address, tuple) else (address, False)
+        self._path, self._indexes, self._derivations = normalize_derivation(path=(
+            f"m/{index_tuple_to_string(index=self._change)}/"
+            f"{index_tuple_to_string(index=self._address)}"
+        ))
+        super(ElectrumDerivation, self).__init__(path=self._path)
 
     @classmethod
     def name(cls) -> str:
         return "Electrum"
 
-    def from_change(self, change: int) -> "ElectrumDerivation":
-        self._change = (change, False)
-        self._indexes[0] = index_tuple_to_integer(index=self._change)
-        self._path = indexes_to_path(indexes=self._indexes)
+    def from_change(self, change: Union[int, Tuple[int, int]]) -> "ElectrumDerivation":
+        self._change = (*change, False) if isinstance(change, tuple) else (change, False)
+        self._path, self._indexes, self._derivations = normalize_derivation(path=(
+            f"m/{index_tuple_to_string(index=self._change)}/"
+            f"{index_tuple_to_string(index=self._address)}"
+        ))
         return self
 
-    def from_address(self, address: int) -> "ElectrumDerivation":
-        self._address = (address, False)
-        self._indexes[1] = index_tuple_to_integer(index=self._address)
-        self._path = indexes_to_path(indexes=self._indexes)
+    def from_address(self, address: Union[int, Tuple[int, int]]) -> "ElectrumDerivation":
+        self._address = (*address, False) if isinstance(address, tuple) else (address, False)
+        self._path, self._indexes, self._derivations = normalize_derivation(path=(
+            f"m/{index_tuple_to_string(index=self._change)}/"
+            f"{index_tuple_to_string(index=self._address)}"
+        ))
         return self
 
-    def change(self, only_index=False) -> Union[Tuple[int, bool], int]:
-        return self._change[0] if not only_index else self._change
+    def change(self) -> Union[Tuple[int, bool], Tuple[int, int, bool]]:
+        return self._change
 
-    def address(self, only_index=False) -> Union[Tuple[int, bool], int]:
-        return self._address[0] if not only_index else self._address
+    def address(self) -> Union[Tuple[int, bool], Tuple[int, int, bool]]:
+        return self._address

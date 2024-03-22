@@ -9,6 +9,7 @@ from typing import (
 )
 
 from ..utils import normalize_derivation
+from ..exceptions import DerivationError
 from .iderivation import IDerivation
 
 
@@ -23,9 +24,11 @@ class CustomDerivation(IDerivation):
 
     def from_path(self, path: str) -> "CustomDerivation":
 
-        if path[0:2] != "m/":
-            raise ValueError(
-                f"Bad path, please insert like this type of path \"m/0'/0\"!, not: ({path})"
+        if not isinstance(path, str):
+            raise DerivationError("Bad path instance", expected=str, got=type(path))
+        elif path[0:2] != "m/":
+            raise DerivationError(
+                f"Bad path format", expected="like this type of path \"m/0'/0\"", got=path
             )
 
         self._path, self._indexes, self._derivations = normalize_derivation(path=path)
@@ -34,7 +37,7 @@ class CustomDerivation(IDerivation):
     def from_indexes(self, indexes: List[int]) -> "CustomDerivation":
 
         if not isinstance(indexes, list):
-            raise ValueError("Bad indexes, please import only list of integer numbers")
+            raise DerivationError("Bad indexes instance", expected=list, got=type(indexes))
 
         self._path, self._indexes, self._derivations = normalize_derivation(indexes=indexes)
         return self
@@ -42,7 +45,7 @@ class CustomDerivation(IDerivation):
     def from_index(self, index: int, hardened: bool = False) -> "CustomDerivation":
 
         if not isinstance(index, int):
-            raise ValueError("Bad index, please import only integer number")
+            raise DerivationError("Bad index instance", expected=int, got=type(index))
 
         self._indexes.append(index + 0x80000000) if hardened else self._indexes.append(index)
         self._path += (

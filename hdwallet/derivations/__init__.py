@@ -9,11 +9,15 @@ from typing import (
 )
 
 from .iderivation import IDerivation
-from .bip44 import BIP44Derivation
+from .bip44 import (
+    BIP44Derivation, CHANGES
+)
 from .bip49 import BIP49Derivation
 from .bip84 import BIP84Derivation
 from .bip86 import BIP86Derivation
-from .cip1852 import CIP1852Derivation
+from .cip1852 import (
+    CIP1852Derivation, ROLES
+)
 from .custom import CustomDerivation
 from .electrum import ElectrumDerivation
 
@@ -27,6 +31,6 @@ DERIVATIONS: Dict[str, Type[IDerivation]] = {
     ElectrumDerivation.name(): ElectrumDerivation
 }
 
-__all__: List[str] = ["IDerivation", "DERIVATIONS"] + [
+__all__: List[str] = ["IDerivation", "CHANGES", "ROLES", "DERIVATIONS"] + [
     derivation.__name__ for derivation in DERIVATIONS.values()
 ]
