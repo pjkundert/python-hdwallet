@@ -4,8 +4,6 @@
 # Distributed under the MIT software license, see the accompanying
 # file COPYING or https://opensource.org/license/mit
 
-from __future__ import annotations
-
 from .ipoint import IPoint
 from .ipublic_key import IPublicKey
 from .iprivate_key import IPrivateKey
