@@ -5,7 +5,7 @@
 # file COPYING or https://opensource.org/license/mit
 
 from typing import (
-    Optional, Union, List
+    Optional, Union, List, Type
 )
 from hashlib import sha256
 
@@ -16,15 +16,9 @@ import struct
 from ..libs.ripemd160 import ripemd160
 from ..libs.base58 import check_decode
 from ..ecc import (
-    IPoint,
-    IPublicKey,
-    IPrivateKey,
-    IEllipticCurveCryptography,
-    KholawEd25519PrivateKey,
-    SLIP10Ed25519PublicKey,
-    SLIP10Ed25519PrivateKey,
-    ECCS
+    IPoint, IPublicKey, IPrivateKey, IEllipticCurveCryptography, KholawEd25519PrivateKey, SLIP10Ed25519PublicKey, SLIP10Ed25519PrivateKey
 )
+from ..seeds import ISeed
 from ..derivations import IDerivation
 from ..addresses import (
     P2PKHAddress, P2SHAddress, P2TRAddress, P2WPKHAddress, P2WPKHInP2SHAddress, P2WSHAddress, P2WSHInP2SHAddress
@@ -39,9 +33,11 @@ from ..wif import (
 from ..keys import (
     serialize, deserialize
 )
-from ..exceptions import AddressError
+from ..exceptions import (
+    Error, AddressError, DerivationError, ExtendedKeyError
+)
 from ..utils import (
-    get_bytes, bytes_to_integer, integer_to_bytes, bytes_to_string, reset_bits, set_bits
+    get_bytes, get_hmac, bytes_to_integer, integer_to_bytes, bytes_to_string, reset_bits, set_bits
 )
 from .ihd import IHD
 
@@ -49,53 +45,40 @@ from .ihd import IHD
 class BIP32HD(IHD):
 
     _ecc: IEllipticCurveCryptography
-
     _seed: Optional[bytes] = None
     _hmac: Optional[bytes] = None
-
     _root_private_key: Optional[IPrivateKey] = None
     _root_chain_code: Optional[bytes] = None
     _root_public_key: Optional[IPublicKey] = None
     _private_key: Optional[IPrivateKey] = None
     _chain_code: Optional[bytes] = None
     _public_key: Optional[IPublicKey] = None
-
-    _wif_type: str
-    _public_key_type: str
-
+    _public_key_type: str = PUBLIC_KEY_TYPES.COMPRESSED
+    _wif_type: str = WIF_TYPES.WIF_COMPRESSED
     _fingerprint: Optional[bytes] = None
     _parent_fingerprint: Optional[bytes] = None
     _indexes: List[int] = []
     _path: str = "m/"
-
     _root_depth: int = 0
     _root_index: int = 0
     _depth: int = 0
     _index: int = 0
+    
+    def __init__(
+        self, ecc: Type[IEllipticCurveCryptography], public_key_type: str = PUBLIC_KEY_TYPES.COMPRESSED, **kwargs
+    ):
+        super(BIP32HD, self).__init__(**kwargs)
 
-    @staticmethod
-    def get_hmac(ecc: IEllipticCurveCryptography) -> bytes:
-        if ecc.NAME in [
-            "Kholaw-Ed25519", "SLIP10-Ed25519", "SLIP10-Ed25519-Blake2b", "SLIP10-Ed25519-Monero"
-        ]:
-            return b"ed25519 seed"
-        elif ecc.NAME == "SLIP10-Nist256p1":
-            return b"Nist256p1 seed"
-        elif ecc.NAME == "SLIP10-Secp256k1":
-            return b"Bitcoin seed"
-
-    def __init__(self, ecc_name: str, public_key_type: str = PUBLIC_KEY_TYPES.COMPRESSED, **kwargs):
-        super().__init__(**kwargs)
-
-        self._ecc_name: str = ecc_name
-        self._ecc: IEllipticCurveCryptography = ECCS[ecc_name].__call__()
+        self._ecc: IEllipticCurveCryptography = ecc.__call__()
         if public_key_type == PUBLIC_KEY_TYPES.UNCOMPRESSED:
             self._wif_type = WIF_TYPES.WIF
         elif public_key_type == PUBLIC_KEY_TYPES.COMPRESSED:
             self._wif_type = WIF_TYPES.WIF_COMPRESSED
         else:
-            raise ValueError(
-                f"Invalid Electrum v1 public key type, (expected: 'uncompressed' or 'compressed' types, got: '{public_key_type}')"
+            raise Error(
+                f"Invalid {self.name()} public key type",
+                expected=PUBLIC_KEY_TYPES.get_types(),
+                got=public_key_type
             )
         self._public_key_type = public_key_type
 
@@ -103,11 +86,16 @@ class BIP32HD(IHD):
     def name(cls) -> str:
         return "BIP32"
 
-    def from_seed(self, seed: Union[bytes, str], **kwargs) -> "BIP32HD":
+    def __update__(self) -> "BIP32HD":
+        return self
 
-        self._seed = get_bytes(seed)
+    def from_seed(self, seed: Union[bytes, str, ISeed], **kwargs) -> "BIP32HD":
+
+        self._seed = get_bytes(
+            seed.seed() if isinstance(seed, ISeed) else seed
+        )
         if len(self._seed) < 16:
-            raise ValueError(f"Invalid seed length ({len(self._seed)})")
+            raise Error(f"Invalid seed length", expected="< 16", got=len(self._seed))
 
         hmac_half_length: int = hashlib.sha512().digest_size // 2
 
@@ -117,9 +105,9 @@ class BIP32HD(IHD):
 
         while not success:
             self._hmac = hmac.digest(
-                self.get_hmac(ecc=self._ecc), hmac_data, "sha512"
+                get_hmac(ecc_name=self._ecc.NAME), hmac_data, "sha512"
             ) if hasattr(hmac, "digest") else hmac.new(
-                self.get_hmac(ecc=self._ecc), hmac_data, hashlib.sha512
+                get_hmac(ecc_name=self._ecc.NAME), hmac_data, hashlib.sha512
             ).digest()
 
             if self._ecc.NAME == "Kholaw-Ed25519":
@@ -148,9 +136,9 @@ class BIP32HD(IHD):
             kl_bytes = tweak_master_key_bits(kl_bytes)
 
             chain_code_bytes = hmac.digest(
-                self.get_hmac(ecc=self._ecc), b"\x01" + self._seed, "sha256"
+                get_hmac(ecc_name=self._ecc.NAME), b"\x01" + self._seed, "sha256"
             ) if hasattr(hmac, "digest") else hmac.new(
-                self.get_hmac(ecc=self._ecc), b"\x01" + self._seed, hashlib.sha256
+                get_hmac(ecc_name=self._ecc.NAME), b"\x01" + self._seed, hashlib.sha256
             ).digest()
 
             self._root_private_key, self._root_chain_code = (
@@ -170,12 +158,13 @@ class BIP32HD(IHD):
         )
         self._root_public_key = self._root_private_key.public_key()
         self._public_key = self._root_public_key
+        self.__update__()
         return self
 
     def from_xprivate_key(self, xprivate_key: str, encoded: bool = True) -> "BIP32HD":
 
         if len(check_decode(xprivate_key) if encoded else xprivate_key) != 78:
-            raise Exception(f"Invalid extended(x) private key")
+            raise ExtendedKeyError("Invalid extended(x) private key")
 
         version, depth, parent_fingerprint, index, chain_code, key = deserialize(
             key=xprivate_key, encoded=encoded
@@ -192,12 +181,13 @@ class BIP32HD(IHD):
         self._public_key = self._root_public_key
         self._depth = self._root_depth
         self._index = self._root_index
+        self.__update__()
         return self
 
     def from_xpublic_key(self, xpublic_key: str, encoded: bool = True) -> "BIP32HD":
 
         if len(check_decode(xpublic_key) if encoded else xpublic_key) != 78:
-            raise Exception(f"Invalid extended(x) public key")
+            raise ExtendedKeyError("Invalid extended(x) public key")
 
         version, depth, parent_fingerprint, index, chain_code, key = deserialize(
             key=xpublic_key, encoded=encoded
@@ -212,24 +202,29 @@ class BIP32HD(IHD):
         self._public_key = self._root_public_key
         self._depth = self._root_depth
         self._index = self._root_index
+        self.__update__()
         return self
 
     def from_wif(self, wif: str) -> "BIP32HD":
-        return self.from_private_key(private_key=wif_to_private_key(wif=wif))
+        self.from_private_key(private_key=wif_to_private_key(wif=wif))
+        self.__update__()
+        return self
 
     def from_private_key(self, private_key: str) -> "BIP32HD":
         self._private_key = SLIP10Ed25519PrivateKey.from_bytes(get_bytes(private_key))
         self._public_key = self._private_key.public_key()
+        self.__update__()
         return self
 
     def from_public_key(self, public_key: str) -> "BIP32HD":
         self._public_key = SLIP10Ed25519PublicKey.from_bytes(get_bytes(public_key))
+        self.__update__()
         return self
 
     def from_derivation(self, derivation: IDerivation) -> "BIP32HD":
 
         if not isinstance(derivation, IDerivation):
-            raise ValueError("Invalid derivation class")
+            raise DerivationError("Invalid derivation instance", expected=IDerivation, got=type(derivation))
 
         for index in derivation.indexes():
             self._path += ((
@@ -246,9 +241,6 @@ class BIP32HD(IHD):
         return self
 
     def update_derivation(self, derivation: IDerivation) -> "BIP32HD":
-
-        if not isinstance(derivation, IDerivation):
-            raise ValueError("Invalid derivation class")
 
         self.clean_derivation()
         self.from_derivation(
@@ -286,7 +278,7 @@ class BIP32HD(IHD):
             if self._private_key:
                 if index & 0x80000000:
                     if self._private_key is None:
-                        raise ValueError("Hardened derivation path is invalid for xpublic key")
+                        raise DerivationError("Hardened derivation path is invalid for xpublic key")
                     z_hmac: bytes = hmac_sha512(self._chain_code, (
                         b"\x00" + self._private_key.raw() + index_bytes
                     ))
@@ -307,7 +299,7 @@ class BIP32HD(IHD):
 
                     private_key_left: int = (zl * 8) + kl
                     if private_key_left % ecc.ORDER == 0:
-                        raise ValueError("Computed child key is not valid, very unlucky index")
+                        raise Error("Computed child key is not valid, very unlucky index")
 
                     return integer_to_bytes(
                         private_key_left, bytes_num=(
@@ -351,7 +343,7 @@ class BIP32HD(IHD):
                 )
             else:
                 if index & 0x80000000:
-                    raise ValueError("Hardened derivation path is invalid for xpublic key")
+                    raise DerivationError("Hardened derivation path is invalid for xpublic key")
                 z_hmac: bytes = hmac_sha512(self._chain_code, (
                     b"\x02" + self._public_key.raw_compressed()[1:] + index_bytes
                 ))
@@ -372,7 +364,7 @@ class BIP32HD(IHD):
                     public_key=self._public_key, zl=z_hmacl, ecc=self._ecc
                 )
                 if new_public_key_point.x() == 0 and new_public_key_point.y() == 1:
-                    raise ValueError("Computed public child key is not valid, very unlucky index")
+                    raise Error("Computed public child key is not valid, very unlucky index")
                 new_public_key: IPublicKey = self._ecc.PUBLIC_KEY.from_point(
                     new_public_key_point
                 )
@@ -418,13 +410,13 @@ class BIP32HD(IHD):
         ]:
             index_bytes: bytes = struct.pack(">L", index)
             if not self._root_private_key and not self._root_public_key:
-                raise ValueError("You can't drive this master key")
+                raise DerivationError("You can't drive this master key")
             if not self._chain_code:
-                raise ValueError("You can't drive xprivate_key and private_key")
+                raise DerivationError("You can't drive xprivate_key and private_key")
 
             if index & 0x80000000:
                 if self._private_key is None:
-                    raise ValueError("Hardened derivation path is invalid for xpublic key")
+                    raise DerivationError("Hardened derivation path is invalid for xpublic key")
                 data_bytes: bytes = (
                     integer_to_bytes(0x00) + self._private_key.raw() + index_bytes
                 )
@@ -527,8 +519,10 @@ class BIP32HD(IHD):
 
         if public_key_type:
             if public_key_type not in PUBLIC_KEY_TYPES.get_types():
-                raise Exception(
-                    f"Invalid public key type, (expected: '{PUBLIC_KEY_TYPES.get_types()}', got: '{public_key_type}')"
+                raise Error(
+                    f"Invalid {self.name()} public key type",
+                    expected=PUBLIC_KEY_TYPES.get_types(),
+                    got=public_key_type
                 )
             _public_key_type: str = public_key_type
         else:
@@ -538,7 +532,6 @@ class BIP32HD(IHD):
             return bytes_to_string(self._root_public_key.raw_uncompressed())
         elif _public_key_type == PUBLIC_KEY_TYPES.COMPRESSED:
             return bytes_to_string(self._root_public_key.raw_compressed())
-        raise ValueError("Invalid public key type")
 
     def xprivate_key(self, version: Union[str, bytes, int], encoded: bool = True) -> Optional[str]:
 
@@ -576,8 +569,10 @@ class BIP32HD(IHD):
     def wif(self, wif_type: Optional[str] = None) -> Optional[str]:
         if wif_type:
             if wif_type not in WIF_TYPES.get_types():
-                raise Exception(
-                    f"Invalid WIF type, (expected: '{WIF_TYPES.get_types()}', got: '{wif_type}')"
+                raise Error(
+                    f"Invalid {self.name()} WIF type",
+                    expected=WIF_TYPES.get_types(),
+                    got=wif_type
                 )
             _wif_type: str = wif_type
         else:
@@ -593,8 +588,10 @@ class BIP32HD(IHD):
     def public_key(self, public_key_type: Optional[str] = None):
         if public_key_type:
             if public_key_type not in PUBLIC_KEY_TYPES.get_types():
-                raise Exception(
-                    f"Invalid public key type, (expected: '{PUBLIC_KEY_TYPES.get_types()}', got: '{public_key_type}')"
+                raise Error(
+                    f"Invalid {self.name()} public key type",
+                    expected=PUBLIC_KEY_TYPES.get_types(),
+                    got=public_key_type
                 )
             _public_key_type: str = public_key_type
         else:
@@ -636,18 +633,24 @@ class BIP32HD(IHD):
         return self._indexes
 
     def address(
-        self, address: str = "P2PKH", address_prefix: int = 0x00, hrp: str = "bc", witness_version: int = 0x00
+        self,
+        address: str = P2PKHAddress.name(),
+        public_key_address_prefix: int = P2PKHAddress.public_key_address_prefix,
+        script_address_prefix: int = P2SHAddress.script_address_prefix,
+        hrp: str = P2WPKHAddress.hrp,
+        witness_version: int = P2WPKHAddress.witness_version,
+        **kwargs
     ) -> str:
         if address == P2PKHAddress.name():
             return P2PKHAddress.encode(
                 public_key=self._public_key,
-                public_key_address_prefix=address_prefix,
+                public_key_address_prefix=public_key_address_prefix,
                 public_key_type=self._public_key_type
             )
         elif address == P2SHAddress.name():
             return P2SHAddress.encode(
                 public_key=self._public_key,
-                script_address_prefix=address_prefix,
+                script_address_prefix=script_address_prefix,
                 public_key_type=self._public_key_type
             )
         elif address == P2TRAddress.name():
@@ -667,7 +670,7 @@ class BIP32HD(IHD):
         elif address == P2WPKHInP2SHAddress.name():
             return P2WPKHInP2SHAddress.encode(
                 public_key=self._public_key,
-                script_address_prefix=address_prefix,
+                script_address_prefix=script_address_prefix,
                 public_key_type=self._public_key_type
             )
         elif address == P2WSHAddress.name():
@@ -680,10 +683,19 @@ class BIP32HD(IHD):
         elif address == P2WSHInP2SHAddress.name():
             return P2WSHInP2SHAddress.encode(
                 public_key=self._public_key,
-                script_address_prefix=address_prefix,
+                script_address_prefix=script_address_prefix,
                 public_key_type=self._public_key_type
             )
-        raise AddressError(f"Invalid {self.name()} address", expected=[
-            P2PKHAddress.name(), P2SHAddress.name(), P2TRAddress.name(), P2WPKHAddress.name(),
-            P2WPKHInP2SHAddress.name(), P2WSHAddress.name(), P2WSHInP2SHAddress.name()
-        ], got=address)
+        raise AddressError(
+            f"Invalid {self.name()} address",
+            expected=[
+                P2PKHAddress.name(),
+                P2SHAddress.name(),
+                P2TRAddress.name(),
+                P2WPKHAddress.name(),
+                P2WPKHInP2SHAddress.name(),
+                P2WSHAddress.name(),
+                P2WSHInP2SHAddress.name()
+            ],
+            got=address
+        )
