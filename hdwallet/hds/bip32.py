@@ -4,9 +4,9 @@
 # Distributed under the MIT software license, see the accompanying
 # file COPYING or https://opensource.org/license/mit
 
-from __future__ import annotations
-
-from typing import Optional, Type, Union, Tuple, List
+from typing import (
+    Optional, Union, List
+)
 from hashlib import sha256
 
 import hmac
@@ -14,17 +14,16 @@ import hashlib
 import struct
 
 from ..libs.ripemd160 import ripemd160
-from ..libs.base58 import (
-    check_encode, checksum_encode, check_decode, ensure_string
-)
+from ..libs.base58 import check_decode
 from ..ecc import (
-    IPoint, IPublicKey, IPrivateKey, IEllipticCurveCryptography,
-    KholawEd25519ECC, KholawEd25519Point, KholawEd25519PublicKey, KholawEd25519PrivateKey,
-    SLIP10Ed25519ECC, SLIP10Ed25519Point, SLIP10Ed25519PublicKey, SLIP10Ed25519PrivateKey,
-    SLIP10Ed25519Blake2bECC, SLIP10Ed25519Blake2bPoint, SLIP10Ed25519Blake2bPublicKey, SLIP10Ed25519Blake2bPrivateKey,
-    SLIP10Ed25519MoneroECC, SLIP10Ed25519MoneroPoint, SLIP10Ed25519MoneroPublicKey, SLIP10Ed25519MoneroPrivateKey,
-    SLIP10Nist256p1ECC, SLIP10Nist256p1Point, SLIP10Nist256p1PublicKey, SLIP10Nist256p1PrivateKey,
-    SLIP10Secp256k1ECC, SLIP10Secp256k1Point, SLIP10Secp256k1PublicKey, SLIP10Secp256k1PrivateKey
+    IPoint,
+    IPublicKey,
+    IPrivateKey,
+    IEllipticCurveCryptography,
+    KholawEd25519PrivateKey,
+    SLIP10Ed25519PublicKey,
+    SLIP10Ed25519PrivateKey,
+    ECCS
 )
 from ..derivations import IDerivation
 from ..addresses import (
@@ -33,21 +32,18 @@ from ..addresses import (
 from ..const import (
     PUBLIC_KEY_TYPES, WIF_TYPES
 )
+from ..crypto import hmac_sha512
 from ..wif import (
     private_key_to_wif, wif_to_private_key
 )
 from ..keys import (
     serialize, deserialize
 )
-from ..crypto import hmac_sha512
+from ..exceptions import AddressError
 from ..utils import (
     get_bytes, bytes_to_integer, integer_to_bytes, bytes_to_string, reset_bits, set_bits
 )
 from .ihd import IHD
-
-
-FINGERPRINT_MASTER_KEY: bytes = b"\x00\x00\x00\x00"
-PRIVATE_KEY_PREFIX: bytes = b"\x00"
 
 
 class BIP32HD(IHD):
@@ -88,30 +84,11 @@ class BIP32HD(IHD):
         elif ecc.NAME == "SLIP10-Secp256k1":
             return b"Bitcoin seed"
 
-    @staticmethod
-    def get_ecc(name: str) -> Type[IEllipticCurveCryptography]:
-        if name == "Kholaw-Ed25519":
-            return KholawEd25519ECC
-        elif name == "SLIP10-Ed25519":
-            return SLIP10Ed25519ECC
-        elif name == "SLIP10-Ed25519-Blake2b":
-            return SLIP10Ed25519Blake2bECC
-        elif name == "SLIP10-Ed25519-Monero":
-            return SLIP10Ed25519MoneroECC
-        elif name == "SLIP10-Nist256p1":
-            return SLIP10Nist256p1ECC
-        elif name == "SLIP10-Secp256k1":
-            return SLIP10Secp256k1ECC
-        else:
-            raise Exception(
-                f"Invalid Elliptic Curve Cryptography (ECC) name {name}"
-            )
-
     def __init__(self, ecc_name: str, public_key_type: str = PUBLIC_KEY_TYPES.COMPRESSED, **kwargs):
         super().__init__(**kwargs)
 
         self._ecc_name: str = ecc_name
-        self._ecc: IEllipticCurveCryptography = self.get_ecc(name=ecc_name).__call__()
+        self._ecc: IEllipticCurveCryptography = ECCS[ecc_name].__call__()
         if public_key_type == PUBLIC_KEY_TYPES.UNCOMPRESSED:
             self._wif_type = WIF_TYPES.WIF
         elif public_key_type == PUBLIC_KEY_TYPES.COMPRESSED:
@@ -134,7 +111,6 @@ class BIP32HD(IHD):
 
         hmac_half_length: int = hashlib.sha512().digest_size // 2
 
-        # Compute HMAC, retry if the resulting private key is not valid
         self._hmac: bytes = b""
         hmac_data: bytes = self._seed
         success: bool = False
@@ -147,13 +123,11 @@ class BIP32HD(IHD):
             ).digest()
 
             if self._ecc.NAME == "Kholaw-Ed25519":
-                # Compute kL and kR
                 success = ((self._hmac[:hmac_half_length][31] & 0x20) == 0)
                 if not success:
                     hmac_data = self._hmac
             else:
                 private_key_class: IPrivateKey = self._ecc.PRIVATE_KEY
-                # If private key is not valid, the new HMAC data is the current HMAC
                 success = private_key_class.is_valid_bytes(self._hmac[:hmac_half_length])
                 if not success:
                     hmac_data = self._hmac
@@ -161,21 +135,16 @@ class BIP32HD(IHD):
         def tweak_master_key_bits(data: bytes) -> bytes:
 
             data: bytearray = bytearray(data)
-            # Clear the lowest 3 bits of the first byte of kL
             data[0] = reset_bits(data[0], 0x07)
-            # Clear the highest bit of the last byte of kL
             data[31] = reset_bits(data[31], 0x80)
-            # Set the second-highest bit of the last byte of kL
             data[31] = set_bits(data[31], 0x40)
 
             return bytes(data)
 
         if self._ecc.NAME == "Kholaw-Ed25519":
-            # Compute kL and kR
             kl_bytes, kr_bytes = (
                 self._hmac[:hmac_half_length], self._hmac[hmac_half_length:]
             )
-            # Tweak kL bytes
             kl_bytes = tweak_master_key_bits(kl_bytes)
 
             chain_code_bytes = hmac.digest(
@@ -197,13 +166,13 @@ class BIP32HD(IHD):
             )
 
         self._private_key, self._chain_code, self._parent_fingerprint = (
-            self._root_private_key, self._root_chain_code, FINGERPRINT_MASTER_KEY
+            self._root_private_key, self._root_chain_code, (integer_to_bytes(0x00) * 4)
         )
         self._root_public_key = self._root_private_key.public_key()
         self._public_key = self._root_public_key
         return self
 
-    def from_xprivate_key(self, xprivate_key: str, encoded: bool = True) -> "BIP32":
+    def from_xprivate_key(self, xprivate_key: str, encoded: bool = True) -> "BIP32HD":
 
         if len(check_decode(xprivate_key) if encoded else xprivate_key) != 78:
             raise Exception(f"Invalid extended(x) private key")
@@ -337,7 +306,6 @@ class BIP32HD(IHD):
                     kl: int = bytes_to_integer(kl, endianness="little")
 
                     private_key_left: int = (zl * 8) + kl
-                    # Discard child if multiple of curve order
                     if private_key_left % ecc.ORDER == 0:
                         raise ValueError("Computed child key is not valid, very unlucky index")
 
@@ -403,7 +371,6 @@ class BIP32HD(IHD):
                 new_public_key_point: IPoint = new_public_key_point(
                     public_key=self._public_key, zl=z_hmacl, ecc=self._ecc
                 )
-                # If the public key is the identity point (0, 1) discard the child
                 if new_public_key_point.x() == 0 and new_public_key_point.y() == 1:
                     raise ValueError("Computed public child key is not valid, very unlucky index")
                 new_public_key: IPublicKey = self._ecc.PUBLIC_KEY.from_point(
@@ -424,7 +391,7 @@ class BIP32HD(IHD):
         ]:
             index_bytes: bytes = struct.pack(">L", index)
             data_bytes: bytes = (
-                PRIVATE_KEY_PREFIX + self._private_key.raw() + index_bytes
+                integer_to_bytes(0x00) + self._private_key.raw() + index_bytes
             )
 
             _hmac: bytes = (
@@ -459,7 +426,7 @@ class BIP32HD(IHD):
                 if self._private_key is None:
                     raise ValueError("Hardened derivation path is invalid for xpublic key")
                 data_bytes: bytes = (
-                    PRIVATE_KEY_PREFIX + self._private_key.raw() + index_bytes
+                    integer_to_bytes(0x00) + self._private_key.raw() + index_bytes
                 )
             else:
                 data_bytes: bytes = (
@@ -486,7 +453,7 @@ class BIP32HD(IHD):
                     return None
 
                 new_private_key: IPrivateKey = self._ecc.PRIVATE_KEY.from_bytes((
-                    PRIVATE_KEY_PREFIX * 32 + integer_to_bytes(key_int)
+                    integer_to_bytes(0x00) * 32 + integer_to_bytes(key_int)
                 )[-32:])
 
                 self._parent_fingerprint = get_bytes(self.fingerprint())
@@ -523,7 +490,7 @@ class BIP32HD(IHD):
                 integer_to_bytes(version) if isinstance(version, int) else get_bytes(version)
             ),
             depth=self._root_depth,
-            parent_fingerprint=FINGERPRINT_MASTER_KEY,
+            parent_fingerprint=(integer_to_bytes(0x00) * 4),
             index=self._root_index,
             chain_code=self.root_chain_code(),
             key=(
@@ -539,7 +506,7 @@ class BIP32HD(IHD):
                 integer_to_bytes(version) if isinstance(version, int) else get_bytes(version)
             ),
             depth=self._root_depth,
-            parent_fingerprint=FINGERPRINT_MASTER_KEY,
+            parent_fingerprint=(integer_to_bytes(0x00) * 4),
             index=self._root_index,
             chain_code=self.root_chain_code(),
             key=self.root_public_key(
@@ -668,22 +635,55 @@ class BIP32HD(IHD):
     def indexes(self) -> List[int]:
         return self._indexes
 
-    def address(self, address_type: str = "P2PKH", network_version: int = 0x00) -> str:
-        if address_type == "P2PKH":
+    def address(
+        self, address: str = "P2PKH", address_prefix: int = 0x00, hrp: str = "bc", witness_version: int = 0x00
+    ) -> str:
+        if address == P2PKHAddress.name():
             return P2PKHAddress.encode(
                 public_key=self._public_key,
-                network_version=network_version,
+                public_key_address_prefix=address_prefix,
                 public_key_type=self._public_key_type
             )
-        elif address_type == "P2SH":
+        elif address == P2SHAddress.name():
             return P2SHAddress.encode(
                 public_key=self._public_key,
-                network_version=network_version,
+                script_address_prefix=address_prefix,
                 public_key_type=self._public_key_type
             )
-        elif address_type == "P2TR":
+        elif address == P2TRAddress.name():
             return P2TRAddress.encode(
                 public_key=self._public_key,
-                network_version=network_version,
+                hrp=hrp,
+                witness_version=witness_version,
                 public_key_type=self._public_key_type
             )
+        elif address == P2WPKHAddress.name():
+            return P2WPKHAddress.encode(
+                public_key=self._public_key,
+                hrp=hrp,
+                witness_version=witness_version,
+                public_key_type=self._public_key_type
+            )
+        elif address == P2WPKHInP2SHAddress.name():
+            return P2WPKHInP2SHAddress.encode(
+                public_key=self._public_key,
+                script_address_prefix=address_prefix,
+                public_key_type=self._public_key_type
+            )
+        elif address == P2WSHAddress.name():
+            return P2WSHAddress.encode(
+                public_key=self._public_key,
+                hrp=hrp,
+                witness_version=witness_version,
+                public_key_type=self._public_key_type
+            )
+        elif address == P2WSHInP2SHAddress.name():
+            return P2WSHInP2SHAddress.encode(
+                public_key=self._public_key,
+                script_address_prefix=address_prefix,
+                public_key_type=self._public_key_type
+            )
+        raise AddressError(f"Invalid {self.name()} address", expected=[
+            P2PKHAddress.name(), P2SHAddress.name(), P2TRAddress.name(), P2WPKHAddress.name(),
+            P2WPKHInP2SHAddress.name(), P2WSHAddress.name(), P2WSHInP2SHAddress.name()
+        ], got=address)
