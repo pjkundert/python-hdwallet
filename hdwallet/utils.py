@@ -19,6 +19,17 @@ def generate_passphrase(length: int = 32) -> str:
     return "".join(choice(string.ascii_letters + string.digits) for _ in range(length))
 
 
+def get_hmac(ecc_name: str) -> bytes:
+    if ecc_name in [
+        "Kholaw-Ed25519", "SLIP10-Ed25519", "SLIP10-Ed25519-Blake2b", "SLIP10-Ed25519-Monero"
+    ]:
+        return b"ed25519 seed"
+    elif ecc_name == "SLIP10-Nist256p1":
+        return b"Nist256p1 seed"
+    elif ecc_name == "SLIP10-Secp256k1":
+        return b"Bitcoin seed"
+
+
 def exclude_keys(nested: dict, keys: set) -> dict:
     new: dict = { }
     for _key, _value in nested.items():
