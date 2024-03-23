@@ -50,6 +50,10 @@ class SemanticError(Error):
     pass
 
 
+class ExtendedKeyError(Error):
+    pass
+
+
 class AddressError(Error):
     pass
 
