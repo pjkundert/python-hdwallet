@@ -4,15 +4,15 @@
 # Distributed under the MIT software license, see the accompanying
 # file COPYING or https://opensource.org/license/mit
 
-from ...utils import bytes_to_string, encode
 from ...crypto import sha256
+from ...exceptions import MnemonicError
 from ...mnemonics.electrum.v1 import ElectrumV1Mnemonic
+from ...utils import bytes_to_string, encode
 from ..iseed import ISeed
 
 
 class ElectrumV1Seed(ISeed):
 
-    # Number of hash iteration
     hash_iteration_number: int = 10 ** 5
 
     @classmethod
@@ -23,7 +23,7 @@ class ElectrumV1Seed(ISeed):
     def generate(cls, mnemonic: str, **kwargs) -> str:
 
         if not ElectrumV1Mnemonic.is_valid(mnemonic=mnemonic):
-            ValueError("Invalid Electrum V1 mnemonic words")
+            raise MnemonicError(f"Invalid {cls.name()} mnemonic words")
 
         entropy: str = ElectrumV1Mnemonic.decode(mnemonic)
         entropy_hash: bytes = encode(entropy)

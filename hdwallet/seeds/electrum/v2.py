@@ -8,17 +8,16 @@ from typing import Optional
 
 import unicodedata
 
-from ...utils import bytes_to_string
 from ...crypto import pbkdf2_hmac_sha512
+from ...exceptions import MnemonicError
+from ...utils import bytes_to_string
 from ...mnemonics.electrum.v2 import ElectrumV2Mnemonic
 from ..iseed import ISeed
 
 
 class ElectrumV2Seed(ISeed):
 
-    # Salt modifier for seed generation
     seed_salt_modifier: str = "electrum"
-    # PBKDF2 round for seed generation
     seed_pbkdf2_rounds: int = 2048
 
     @classmethod
@@ -29,7 +28,7 @@ class ElectrumV2Seed(ISeed):
     def generate(cls, mnemonic: str, passphrase: Optional[str] = None) -> str:
 
         if not ElectrumV2Mnemonic.is_valid(mnemonic=mnemonic):
-            ValueError("Invalid Electrum V2 mnemonic words")
+            raise MnemonicError(f"Invalid {cls.name()} mnemonic words")
 
         salt: str = unicodedata.normalize("NFKD", (
             (cls.seed_salt_modifier + passphrase) if passphrase else cls.seed_salt_modifier
