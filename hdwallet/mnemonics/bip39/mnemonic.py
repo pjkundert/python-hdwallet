@@ -5,11 +5,18 @@
 # file COPYING or https://opensource.org/license/mit
 
 from typing import (
-    Union, Dict, List, Optional, Type
+    Union, Dict, List, Optional
 )
 
 import unicodedata
 
+from ...entropies import (
+    IEntropy, BIP39Entropy, BIP39_ENTROPY_STRENGTHS
+)
+from ...crypto import sha256
+from ...exceptions import (
+    Error, EntropyError, MnemonicError
+)
 from ...utils import (
     get_bytes,
     bytes_to_binary_string,
@@ -17,10 +24,6 @@ from ...utils import (
     binary_string_to_integer,
     integer_to_binary_string,
     binary_string_to_bytes
-)
-from ...crypto import sha256
-from ...entropies import (
-    IEntropy, BIP39Entropy, BIP39_ENTROPY_STRENGTHS
 )
 from ..imnemonic import IMnemonic
 
@@ -104,7 +107,7 @@ class BIP39Mnemonic(IMnemonic):
     @classmethod
     def from_words(cls, words: int, language: str, **kwargs) -> str:
         if words not in cls.words:
-            raise ValueError(f"Invalid words number for mnemonic (expected {cls.words}, got {words})")
+            raise MnemonicError("Invalid mnemonic words number", expected=cls.words, got=words)
 
         return cls.from_entropy(
             entropy=BIP39Entropy.generate(cls.words_to_entropy_strength[words]), language=language
@@ -116,14 +119,18 @@ class BIP39Mnemonic(IMnemonic):
             return cls.encode(entropy=entropy, language=language)
         elif isinstance(entropy, BIP39Entropy):
             return cls.encode(entropy=entropy.entropy(), language=language)
-        raise Exception("Invalid entropy, only accept str, bytes, or BIP39 entropy class")
+        raise EntropyError(
+            "Invalid entropy instance", expected=[str, bytes, BIP39Entropy], got=type(entropy)
+        )
 
     @classmethod
     def encode(cls, entropy: Union[str, bytes], language: str) -> str:
 
         entropy: bytes = get_bytes(entropy)
         if not BIP39Entropy.is_valid_bytes_strength(len(entropy)):
-            raise ValueError(f"Wrong entropy length (expected {BIP39Entropy.strengths}, got {len(entropy) * 8})")
+            raise EntropyError(
+                "Wrong entropy strength", expected=BIP39Entropy.strengths, got=(len(entropy) * 8)
+            )
 
         entropy_binary_string: str = bytes_to_binary_string(get_bytes(entropy), len(entropy) * 8)
         entropy_hash_binary_string: str = bytes_to_binary_string(sha256(entropy), 32 * 8)
@@ -132,7 +139,9 @@ class BIP39Mnemonic(IMnemonic):
         mnemonic: List[str] = []
         words_list: List[str] = cls.get_words_list_by_language(language=language)
         if len(words_list) != cls.words_list_number:
-            raise ValueError(f"Invalid number of loaded words list (expected {cls.words_list_number}, got {len(words_list)})")
+            raise Error(
+                "Invalid number of loaded words list", expected=cls.words_list_number, got=len(words_list)
+            )
 
         for index in range(len(mnemonic_bin) // cls.word_bit_length):
             word_bin: str = mnemonic_bin[index * cls.word_bit_length:(index + 1) * cls.word_bit_length]
@@ -147,18 +156,22 @@ class BIP39Mnemonic(IMnemonic):
     ) -> str:
         words: list = cls.normalize(mnemonic)
         if len(words) not in cls.words:
-            raise ValueError(f"Invalid mnemonic words count (expected {cls.words}, got {len(words)})")
+            raise MnemonicError("Invalid mnemonic words count", expected=cls.words, got=len(words))
 
         if not words_list or not words_list_with_index:
             words_list, language = cls.find_language(mnemonic=words)
             if len(words_list) != cls.words_list_number:
-                raise ValueError(f"Invalid number of loaded words list (expected {cls.words_list_number}, got {len(words_list)})")
+                raise Error(
+                    "Invalid number of loaded words list", expected=cls.words_list_number, got=len(words_list)
+                )
             words_list_with_index: dict = {
                 words_list[i]: i for i in range(len(words_list))
             }
 
         if len(words_list) != cls.words_list_number:
-            raise ValueError(f"Invalid number of loaded words list (expected {cls.words_list_number}, got {len(words_list)})")
+            raise Error(
+                "Invalid number of loaded words list", expected=cls.words_list_number, got=len(words_list)
+            )
 
         mnemonic_bin: str = "".join(map(
             lambda word: integer_to_binary_string(
@@ -177,8 +190,8 @@ class BIP39Mnemonic(IMnemonic):
         )
         checksum_bin_got: str = entropy_hash_bin[:checksum_length]
         if checksum_bin != checksum_bin_got:
-            raise ValueError(
-                f"Invalid checksum (expected {checksum_bin}, got {checksum_bin_got})"
+            raise Error(
+                "Invalid checksum", expected=checksum_bin, got=checksum_bin_got
             )
 
         if checksum:

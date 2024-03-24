@@ -15,7 +15,9 @@ from ..mnemonics import (
 )
 from ..cryptocurrencies import Cardano
 from ..crypto import blake2b_256
-from ..exceptions import Error
+from ..exceptions import (
+    Error, MnemonicError
+)
 from ..utils import (
     get_bytes, bytes_to_string
 )
@@ -48,7 +50,7 @@ class CardanoSeed(ISeed):
 
     @classmethod
     def generate(
-            cls, mnemonic: Union[str, IMnemonic], cardano_type: str = Cardano.TYPES.BYRON_ICARUS, **kwargs
+        cls, mnemonic: Union[str, IMnemonic], cardano_type: str = Cardano.TYPES.BYRON_ICARUS, **kwargs
     ) -> str:
 
         if cardano_type == Cardano.TYPES.BYRON_ICARUS:
@@ -78,7 +80,7 @@ class CardanoSeed(ISeed):
             mnemonic
         )
         if not BIP39Mnemonic.is_valid(mnemonic=mnemonic):
-            raise Error("Invalid BIP39 mnemonic words")
+            raise MnemonicError(f"Invalid {BIP39Mnemonic.name()} mnemonic words")
 
         return BIP39Mnemonic.decode(mnemonic=mnemonic)
 
@@ -100,7 +102,7 @@ class CardanoSeed(ISeed):
             mnemonic
         )
         if not BIP39Mnemonic.is_valid(mnemonic=mnemonic):
-            raise Error("Invalid BIP39 mnemonic words")
+            raise MnemonicError(f"Invalid {BIP39Mnemonic.name()} mnemonic words")
 
         return bytes_to_string(blake2b_256(
             cbor2.dumps(get_bytes(BIP39Mnemonic.decode(mnemonic=mnemonic)))

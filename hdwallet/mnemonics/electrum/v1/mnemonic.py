@@ -10,11 +10,14 @@ from typing import (
 
 import unicodedata
 
-from ....utils import (
-    get_bytes, integer_to_bytes, bytes_to_integer, bytes_to_string
-)
 from ....entropies import (
     IEntropy, ElectrumV1Entropy, ELECTRUM_V1_ENTROPY_STRENGTHS
+)
+from ....exceptions import (
+    EntropyError, MnemonicError
+)
+from ....utils import (
+    get_bytes, integer_to_bytes, bytes_to_integer, bytes_to_string
 )
 from ...imnemonic import IMnemonic
 
@@ -52,7 +55,7 @@ class ElectrumV1Mnemonic(IMnemonic):
     @classmethod
     def from_words(cls, words: int, language: str, **kwargs) -> str:
         if words not in cls.words:
-            raise ValueError(f"Invalid words number for mnemonic (expected {cls.words}, got {words})")
+            raise MnemonicError("Invalid mnemonic words number", expected=cls.words, got=words)
 
         return cls.from_entropy(
             entropy=ElectrumV1Entropy.generate(cls.words_to_entropy_strength[words]), language=language
@@ -64,14 +67,18 @@ class ElectrumV1Mnemonic(IMnemonic):
             return cls.encode(entropy=entropy, language=language)
         elif isinstance(entropy, ElectrumV1Entropy):
             return cls.encode(entropy=entropy.entropy(), language=language)
-        raise Exception("Invalid entropy, only accept str, bytes, or Electrum-V1 entropy class")
+        raise EntropyError(
+            "Invalid entropy instance", expected=[str, bytes, ElectrumV1Entropy], got=type(entropy)
+        )
 
     @classmethod
     def encode(cls, entropy: Union[str, bytes], language: str) -> str:
 
         entropy: bytes = get_bytes(entropy)
         if not ElectrumV1Entropy.is_valid_bytes_strength(len(entropy)):
-            raise ValueError(f"Wrong entropy length (expected {ElectrumV1Entropy.strengths}, got {len(entropy) * 8})")
+            raise EntropyError(
+                "Wrong entropy strength", expected=ElectrumV1Entropy.strengths, got=(len(entropy) * 8)
+            )
 
         mnemonic: List[str] = []
         words_list: List[str] = cls.get_words_list_by_language(language=language)
@@ -98,7 +105,7 @@ class ElectrumV1Mnemonic(IMnemonic):
 
         words: list = cls.normalize(mnemonic)
         if len(words) not in cls.words:
-            raise ValueError(f"Invalid mnemonic words count (expected {cls.words}, got {len(words)})")
+            raise MnemonicError("Invalid mnemonic words count", expected=cls.words, got=len(words))
 
         if not words_list or not words_list_with_index:
             words_list, language = cls.find_language(mnemonic=words)

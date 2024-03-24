@@ -10,15 +10,18 @@ from typing import (
 
 import unicodedata
 
-from ....utils import (
-    get_bytes, integer_to_bytes, bytes_to_string, bytes_to_integer
-)
-from ....crypto import hmac_sha512
-from ....mnemonics.bip39 import BIP39Mnemonic
-from ....mnemonics.electrum.v1 import ElectrumV1Mnemonic
 from ....entropies import (
     IEntropy, ElectrumV2Entropy, ELECTRUM_V2_ENTROPY_STRENGTHS
 )
+from ....crypto import hmac_sha512
+from ....exceptions import (
+    Error, EntropyError, MnemonicError
+)
+from ....utils import (
+    get_bytes, integer_to_bytes, bytes_to_string, bytes_to_integer
+)
+from ....mnemonics.bip39 import BIP39Mnemonic
+from ....mnemonics.electrum.v1 import ElectrumV1Mnemonic
 from ...imnemonic import IMnemonic
 
 
@@ -81,7 +84,7 @@ class ElectrumV2Mnemonic(IMnemonic):
     @classmethod
     def from_words(cls, words: int, language: str, **kwargs) -> str:
         if words not in cls.words:
-            raise ValueError(f"Invalid words number for mnemonic (expected {cls.words}, got {words})")
+            raise MnemonicError("Invalid mnemonic words number", expected=cls.words, got=words)
 
         return cls.from_entropy(
             entropy=ElectrumV2Entropy.generate(
@@ -92,14 +95,16 @@ class ElectrumV2Mnemonic(IMnemonic):
         )
 
     @classmethod
-    def from_entropy(cls, entropy: Union[str, bytes], language: str, **kwargs) -> str:
+    def from_entropy(cls, entropy: Union[str, bytes, IEntropy], language: str, **kwargs) -> str:
 
         if isinstance(entropy, str) or isinstance(entropy, bytes):
             entropy: bytes = get_bytes(entropy)
         elif isinstance(entropy, ElectrumV2Entropy):
             entropy: bytes = get_bytes(entropy.entropy())
         else:
-            raise Exception("Invalid entropy, only accept str, bytes, or Electrum-V2 entropy class")
+            raise EntropyError(
+                "Invalid entropy instance", expected=[str, bytes, ElectrumV2Entropy], got=type(entropy)
+            )
 
         if ElectrumV2Entropy.are_entropy_bits_enough(entropy):
 
@@ -136,7 +141,7 @@ class ElectrumV2Mnemonic(IMnemonic):
                 except ValueError:
                     continue
 
-        raise ValueError("Unable to generate a valid mnemonic")
+        raise Error("Unable to generate a valid mnemonic")
 
     @classmethod
     def encode(
@@ -153,7 +158,7 @@ class ElectrumV2Mnemonic(IMnemonic):
 
         entropy: int = bytes_to_integer(get_bytes(entropy))
         if not ElectrumV2Entropy.are_entropy_bits_enough(entropy):
-            raise ValueError("Entropy bit length is not enough for generating a valid mnemonic")
+            raise EntropyError("Entropy bit length is not enough for generating a valid mnemonic")
 
         mnemonic: List[str] = []
         if not words_list:
@@ -171,7 +176,7 @@ class ElectrumV2Mnemonic(IMnemonic):
             electrum_v1_words_list=electrum_v1_words_list,
             electrum_v1_words_list_with_index=electrum_v1_words_list_with_index
         ):
-            raise ValueError("Entropy bytes are not suitable for generating a valid mnemonic")
+            raise EntropyError("Entropy bytes are not suitable for generating a valid mnemonic")
 
         return " ".join(cls.normalize(mnemonic))
 
@@ -180,10 +185,10 @@ class ElectrumV2Mnemonic(IMnemonic):
 
         words: list = cls.normalize(mnemonic)
         if len(words) not in cls.words:
-            raise ValueError(f"Invalid mnemonic words count (expected {cls.words}, got {len(words)})")
+            raise MnemonicError("Invalid mnemonic words count", expected=cls.words, got=len(words))
 
         if not cls.is_valid(mnemonic, mnemonic_type=mnemonic_type):
-            raise ValueError(f"Invalid {mnemonic_type} mnemonic type words")
+            raise MnemonicError(f"Invalid {mnemonic_type} mnemonic type words")
 
         words_list, language = cls.find_language(mnemonic=words)
         words_list_with_index: dict = {

@@ -4,6 +4,7 @@
 # Distributed under the MIT software license, see the accompanying
 # file COPYING or https://opensource.org/license/mit
 
+from ..exceptions import MnemonicError
 from ..mnemonics.algorand import AlgorandMnemonic
 from .iseed import ISeed
 
@@ -18,6 +19,6 @@ class AlgorandSeed(ISeed):
     def generate(cls, mnemonic: str, **kwargs) -> str:
 
         if not AlgorandMnemonic.is_valid(mnemonic=mnemonic):
-            ValueError("Invalid Algorand mnemonic words")
+            raise MnemonicError(f"Invalid {cls.name()} mnemonic words")
 
         return AlgorandMnemonic.decode(mnemonic=mnemonic)

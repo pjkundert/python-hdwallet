@@ -11,6 +11,7 @@ from typing import (
 import secrets
 import os
 
+from ..exceptions import EntropyError
 from ..utils import (
     get_bytes, integer_to_bytes, bytes_to_string
 )
@@ -27,11 +28,11 @@ class IEntropy:
         try:
             strength: int = len(get_bytes(entropy))
             if not self.is_valid_bytes_strength(strength):
-                raise Exception("Unsupported entropy strength")
+                raise EntropyError("Unsupported entropy strength")
             self._entropy = bytes_to_string(entropy)
             self._strength = strength * 8
         except ValueError:
-            raise Exception("Invalid entropy data")
+            raise EntropyError("Invalid entropy data")
 
     @classmethod
     def name(cls) -> str:

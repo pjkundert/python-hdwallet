@@ -10,14 +10,16 @@ from typing import (
 
 import unicodedata
 
-from ...utils import (
-    get_bytes, bytes_to_string, bytes_to_integer
-)
-from ...crypto import crc32
 from ...entropies import (
     IEntropy, MoneroEntropy, MONERO_ENTROPY_STRENGTHS
 )
-from ...utils import bytes_chunk_to_words, words_to_bytes_chunk
+from ...crypto import crc32
+from ...exceptions import (
+    Error, EntropyError, MnemonicError
+)
+from ...utils import (
+    get_bytes, bytes_to_string, bytes_to_integer, bytes_chunk_to_words, words_to_bytes_chunk
+)
 from ..imnemonic import IMnemonic
 
 
@@ -107,7 +109,7 @@ class MoneroMnemonic(IMnemonic):
     @classmethod
     def from_words(cls, words: int, language: str, **kwargs) -> str:
         if words not in cls.words:
-            raise ValueError(f"Invalid words number for mnemonic (expected {cls.words}, got {words})")
+            raise MnemonicError("Invalid mnemonic words number", expected=cls.words, got=words)
 
         return cls.from_entropy(
             entropy=MoneroEntropy.generate(cls.words_to_entropy_strength[words]),
@@ -127,19 +129,25 @@ class MoneroMnemonic(IMnemonic):
             return cls.encode(
                 entropy=entropy.entropy(), language=language, checksum=kwargs.get("checksum", False)
             )
-        raise Exception("Invalid entropy, only accept str, bytes, or Monero entropy class")
+        raise EntropyError(
+            "Invalid entropy instance", expected=[str, bytes, MoneroEntropy], got=type(entropy)
+        )
 
     @classmethod
     def encode(cls, entropy: Union[str, bytes], language: str, checksum: bool = False) -> str:
 
         entropy: bytes = get_bytes(entropy)
         if not MoneroEntropy.is_valid_bytes_strength(len(entropy)):
-            raise ValueError(f"Wrong entropy length (expected {MoneroEntropy.strengths}, got {len(entropy) * 8})")
+            raise EntropyError(
+                "Wrong entropy strength", expected=MoneroEntropy.strengths, got=(len(entropy) * 8)
+            )
 
         mnemonic: List[str] = []
         words_list: List[str] = cls.get_words_list_by_language(language=language)
         if len(words_list) != cls.words_list_number:
-            raise ValueError(f"Invalid number of loaded words list (expected {cls.words_list_number}, got {len(words_list)})")
+            raise Error(
+                "Invalid number of loaded words list", expected=cls.words_list_number, got=len(words_list)
+            )
 
         for index in range(len(get_bytes(entropy)) // 4):
             mnemonic += bytes_chunk_to_words(
@@ -160,11 +168,13 @@ class MoneroMnemonic(IMnemonic):
     def decode(cls, mnemonic: str) -> str:
         words: list = cls.normalize(mnemonic)
         if len(words) not in cls.words:
-            raise ValueError(f"Invalid mnemonic words count (expected {cls.words}, got {len(words)})")
+            raise MnemonicError("Invalid mnemonic words count", expected=cls.words, got=len(words))
 
         words_list, language = cls.find_language(mnemonic=words)
         if len(words_list) != cls.words_list_number:
-            raise ValueError(f"Invalid number of loaded words list (expected {cls.words_list_number}, got {len(words_list)})")
+            raise Error(
+                "Invalid number of loaded words list", expected=cls.words_list_number, got=len(words_list)
+            )
 
         if len(words) in cls.words_checksum:
             mnemonic: list = words[:-1]
@@ -174,7 +184,9 @@ class MoneroMnemonic(IMnemonic):
                 bytes_to_integer(crc32(prefixes)) % len(mnemonic)
             ]
             if words[-1] != checksum_word:
-                raise ValueError(f"Invalid checksum (expected {checksum_word}, got {words[-1]})")
+                raise Error(
+                    "Invalid checksum", expected=checksum_word, got=words[-1]
+                )
 
         entropy: bytes = b""
         for index in range(len(words) // 3):

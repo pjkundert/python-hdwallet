@@ -8,8 +8,9 @@ from typing import Optional
 
 import unicodedata
 
-from ..utils import bytes_to_string
 from ..crypto import pbkdf2_hmac_sha512
+from ..exceptions import MnemonicError
+from ..utils import bytes_to_string
 from ..mnemonics.bip39 import BIP39Mnemonic
 from .iseed import ISeed
 
@@ -29,7 +30,7 @@ class BIP39Seed(ISeed):
     def generate(cls, mnemonic: str, passphrase: Optional[str] = None) -> str:
 
         if not BIP39Mnemonic.is_valid(mnemonic=mnemonic):
-            ValueError("Invalid BIP39 mnemonic words")
+            raise MnemonicError(f"Invalid {cls.name()} mnemonic words")
 
         salt: str = unicodedata.normalize("NFKD", (
             (cls.seed_salt_modifier + passphrase) if passphrase else cls.seed_salt_modifier
