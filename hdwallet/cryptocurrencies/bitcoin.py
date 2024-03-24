@@ -26,6 +26,7 @@ class Mainnet(INetwork):
     XPRIVATE_KEY_VERSIONS = XPrivateKeyVersions({
         "P2PKH": 0x0488ade4,
         "P2SH": 0x0488ade4,
+        "P2TR": 0x0488ade4,
         "P2WPKH": 0x04b2430c,
         "P2WPKH_IN_P2SH": 0x049d7878,
         "P2WSH": 0x02aa7a99,
@@ -34,6 +35,7 @@ class Mainnet(INetwork):
     XPUBLIC_KEY_VERSIONS = XPublicKeyVersions({
         "P2PKH": 0x0488b21e,
         "P2SH": 0x0488b21e,
+        "P2TR": 0x0488b21e,
         "P2WPKH": 0x04b24746,
         "P2WPKH_IN_P2SH": 0x049d7cb2,
         "P2WSH": 0x02aa7ed3,
@@ -56,6 +58,7 @@ class Testnet(INetwork):
     XPRIVATE_KEY_VERSIONS = XPrivateKeyVersions({
         "P2PKH": 0x04358394,
         "P2SH": 0x04358394,
+        "P2TR": 0x04358394,
         "P2WPKH": 0x045f18bc,
         "P2WPKH_IN_P2SH": 0x044a4e28,
         "P2WSH": 0x02575048,
@@ -64,6 +67,7 @@ class Testnet(INetwork):
     XPUBLIC_KEY_VERSIONS = XPublicKeyVersions({
         "P2PKH": 0x043587cf,
         "P2SH": 0x043587cf,
+        "P2TR": 0x043587cf,
         "P2WPKH": 0x045f1cf6,
         "P2WPKH_IN_P2SH": 0x044a5262,
         "P2WSH": 0x02575483,
