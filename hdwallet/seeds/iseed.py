@@ -26,5 +26,5 @@ class ISeed(ABC):
 
     @classmethod
     @abstractmethod
-    def generate(cls, mnemonic: str, **kwargs) -> str:
+    def from_mnemonic(cls, mnemonic: str, **kwargs) -> str:
         pass

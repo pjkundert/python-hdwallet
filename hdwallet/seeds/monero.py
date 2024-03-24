@@ -16,7 +16,7 @@ class MoneroSeed(ISeed):
         return "Monero"
 
     @classmethod
-    def generate(cls, mnemonic: str, **kwargs) -> str:
+    def from_mnemonic(cls, mnemonic: str, **kwargs) -> str:
 
         if not MoneroMnemonic.is_valid(mnemonic=mnemonic):
             raise MnemonicError(f"Invalid {cls.name()} mnemonic words")

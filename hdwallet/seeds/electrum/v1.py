@@ -20,7 +20,7 @@ class ElectrumV1Seed(ISeed):
         return "Electrum-V1"
 
     @classmethod
-    def generate(cls, mnemonic: str, **kwargs) -> str:
+    def from_mnemonic(cls, mnemonic: str, **kwargs) -> str:
 
         if not ElectrumV1Mnemonic.is_valid(mnemonic=mnemonic):
             raise MnemonicError(f"Invalid {cls.name()} mnemonic words")

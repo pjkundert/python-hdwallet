@@ -25,7 +25,7 @@ class ElectrumV2Seed(ISeed):
         return "Electrum-V2"
 
     @classmethod
-    def generate(cls, mnemonic: str, passphrase: Optional[str] = None) -> str:
+    def from_mnemonic(cls, mnemonic: str, passphrase: Optional[str] = None) -> str:
 
         if not ElectrumV2Mnemonic.is_valid(mnemonic=mnemonic):
             raise MnemonicError(f"Invalid {cls.name()} mnemonic words")

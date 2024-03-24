@@ -17,9 +17,7 @@ from .iseed import ISeed
 
 class BIP39Seed(ISeed):
 
-    # Salt modifier for seed generation
     seed_salt_modifier: str = "mnemonic"
-    # PBKDF2 round for seed generation
     seed_pbkdf2_rounds: int = 2048
 
     @classmethod
@@ -27,7 +25,7 @@ class BIP39Seed(ISeed):
         return "BIP39"
 
     @classmethod
-    def generate(cls, mnemonic: str, passphrase: Optional[str] = None) -> str:
+    def from_mnemonic(cls, mnemonic: str, passphrase: Optional[str] = None) -> str:
 
         if not BIP39Mnemonic.is_valid(mnemonic=mnemonic):
             raise MnemonicError(f"Invalid {cls.name()} mnemonic words")

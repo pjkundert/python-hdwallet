@@ -16,7 +16,7 @@ class AlgorandSeed(ISeed):
         return "Algorand"
 
     @classmethod
-    def generate(cls, mnemonic: str, **kwargs) -> str:
+    def from_mnemonic(cls, mnemonic: str, **kwargs) -> str:
 
         if not AlgorandMnemonic.is_valid(mnemonic=mnemonic):
             raise MnemonicError(f"Invalid {cls.name()} mnemonic words")

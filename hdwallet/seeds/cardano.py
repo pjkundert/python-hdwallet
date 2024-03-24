@@ -49,7 +49,7 @@ class CardanoSeed(ISeed):
         return self._cardano_type
 
     @classmethod
-    def generate(
+    def from_mnemonic(
         cls, mnemonic: Union[str, IMnemonic], cardano_type: str = Cardano.TYPES.BYRON_ICARUS, **kwargs
     ) -> str:
 
@@ -91,7 +91,7 @@ class CardanoSeed(ISeed):
             if isinstance(mnemonic, IMnemonic) else
             mnemonic
         )
-        return BIP39Seed.generate(mnemonic=mnemonic, passphrase=passphrase)
+        return BIP39Seed.from_mnemonic(mnemonic=mnemonic, passphrase=passphrase)
 
     @classmethod
     def generate_byron_legacy(cls, mnemonic: Union[str, IMnemonic]) -> str:
