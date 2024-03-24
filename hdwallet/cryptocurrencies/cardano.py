@@ -8,14 +8,14 @@ from typing import List
 
 from ..ecc import KholawEd25519ECC
 from ..const import (
-    Info, NestedNamespace, Entropies, Mnemonics, Seeds, HDs, Addresses, Networks, Params, XPrivateKeyVersions, XPublicKeyVersions
+    Info, NestedNamespace, Entropies, Mnemonics, Seeds, HDs, Addresses, AddressTypes, Networks, Params, XPrivateKeyVersions, XPublicKeyVersions
 )
 from .icryptocurrency import (
     ICryptocurrency, INetwork
 )
 
 
-class CardanoTypes(NestedNamespace):
+class Types(NestedNamespace):
 
     BYRON_ICARUS: str
     BYRON_LEDGER: str
@@ -28,15 +28,6 @@ class CardanoTypes(NestedNamespace):
 
     def is_cardano_type(self, cardano_type) -> bool:
         return cardano_type in self.get_cardano_types()
-
-
-CARDANO_TYPES: CardanoTypes = CardanoTypes({
-    "BYRON_ICARUS": "byron-icarus",
-    "BYRON_LEDGER": "byron-ledger",
-    "BYRON_LEGACY": "byron-legacy",
-    "SHELLEY_ICARUS": "shelley-icarus",
-    "SHELLEY_LEDGER":  "shelley-ledger"
-})
 
 
 class Mainnet(INetwork):
@@ -95,11 +86,24 @@ class Cardano(ICryptocurrency):
         "CARDANO": "Cardano"
     })
     DEFAULT_HD = HDS.CARDANO
+    TYPES = Types({
+        "BYRON_ICARUS": "byron-icarus",
+        "BYRON_LEDGER": "byron-ledger",
+        "BYRON_LEGACY": "byron-legacy",
+        "SHELLEY_ICARUS": "shelley-icarus",
+        "SHELLEY_LEDGER": "shelley-ledger"
+    })
     ADDRESSES = Addresses((
         {"CARDANO": "Cardano"}, "BIP32", "BIP44"
     ))
     DEFAULT_ADDRESS = ADDRESSES.CARDANO
-    TYPES = CARDANO_TYPES
+    ADDRESS_TYPES = AddressTypes({
+        "PUBLIC_KEY": "public-key",
+        "REDEMPTION": "redemption",
+        "PAYMENT": "payment",
+        "STAKING": "staking",
+        "REWARD": "reward"
+    })
     PARAMS = Params({
         "PUBLIC_KEY_ADDRESS": 0,
         "REDEMPTION_ADDRESS": 2,

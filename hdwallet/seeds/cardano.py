@@ -4,15 +4,21 @@
 # Distributed under the MIT software license, see the accompanying
 # file COPYING or https://opensource.org/license/mit
 
-from typing import Optional
+from typing import (
+    Optional, Union
+)
 
 import cbor2
 
+from ..mnemonics import (
+    IMnemonic, BIP39Mnemonic
+)
+from ..cryptocurrencies import Cardano
+from ..crypto import blake2b_256
+from ..exceptions import Error
 from ..utils import (
     get_bytes, bytes_to_string
 )
-from ..crypto import blake2b_256
-from ..mnemonics.bip39 import BIP39Mnemonic
 from . import (
     ISeed, BIP39Seed
 )
@@ -20,16 +26,15 @@ from . import (
 
 class CardanoSeed(ISeed):
 
-    _cardano_type: str = "byron-icarus"
-    _cardano_types: list = [
-        "byron-icarus", "byron-ledger", "byron-legacy", "shelley-icarus", "shelley-ledger"
-    ]
+    _cardano_type: str
 
-    def __init__(self, seed: str, cardano_type: str = "byron-icarus", **kwargs) -> None:
+    def __init__(self, seed: str, cardano_type: str = Cardano.TYPES.BYRON_ICARUS, **kwargs) -> None:
         super(CardanoSeed, self).__init__(seed, **kwargs)
 
-        if cardano_type not in self._cardano_types:
-            raise ValueError(f"Invalid Cardano type (expected: {self._cardano_types}, got: {cardano_type!r})")
+        if cardano_type not in Cardano.TYPES.get_cardano_types():
+            raise Error(
+                "Invalid Cardano type", expected=Cardano.TYPES.get_cardano_types(), got=cardano_type
+            )
 
         self._cardano_type = cardano_type
         self._seed = seed
@@ -42,49 +47,67 @@ class CardanoSeed(ISeed):
         return self._cardano_type
 
     @classmethod
-    def generate(cls, mnemonic: str, cardano_type: str = "byron-icarus", **kwargs) -> str:
+    def generate(
+            cls, mnemonic: Union[str, IMnemonic], cardano_type: str = Cardano.TYPES.BYRON_ICARUS, **kwargs
+    ) -> str:
 
-        if cardano_type == "byron-icarus":
+        if cardano_type == Cardano.TYPES.BYRON_ICARUS:
             return cls.generate_byron_icarus(mnemonic=mnemonic)
-        if cardano_type == "byron-ledger":
+        if cardano_type == Cardano.TYPES.BYRON_LEDGER:
             return cls.generate_byron_ledger(
                 mnemonic=mnemonic, passphrase=kwargs.get("passphrase", None)
             )
-        if cardano_type == "byron-legacy":
+        if cardano_type == Cardano.TYPES.BYRON_LEGACY:
             return cls.generate_byron_legacy(mnemonic=mnemonic)
-        if cardano_type == "shelley-icarus":
+        if cardano_type == Cardano.TYPES.SHELLEY_ICARUS:
             return cls.generate_shelley_icarus(mnemonic=mnemonic)
-        elif cardano_type == "shelley-ledger":
+        elif cardano_type == Cardano.TYPES.SHELLEY_LEDGER:
             return cls.generate_shelley_ledger(
                 mnemonic=mnemonic, passphrase=kwargs.get("passphrase", None)
             )
-        else:
-            raise ValueError(f"Invalid Cardano type (expected: {cls._cardano_types}, got: {cardano_type!r})")
+        raise Error(
+            "Invalid Cardano type", expected=Cardano.TYPES.get_cardano_types(), got=cardano_type
+        )
 
     @classmethod
-    def generate_byron_icarus(cls, mnemonic: str) -> str:
+    def generate_byron_icarus(cls, mnemonic: Union[str, IMnemonic]) -> str:
 
+        mnemonic = (
+            mnemonic.mnemonic()
+            if isinstance(mnemonic, IMnemonic) else
+            mnemonic
+        )
         if not BIP39Mnemonic.is_valid(mnemonic=mnemonic):
-            ValueError("Invalid BIP39 mnemonic words")
+            raise Error("Invalid BIP39 mnemonic words")
 
         return BIP39Mnemonic.decode(mnemonic=mnemonic)
 
     @classmethod
-    def generate_byron_ledger(cls, mnemonic: str, passphrase: Optional[str] = None) -> str:
+    def generate_byron_ledger(cls, mnemonic: Union[str, IMnemonic], passphrase: Optional[str] = None) -> str:
+        mnemonic = (
+            mnemonic.mnemonic()
+            if isinstance(mnemonic, IMnemonic) else
+            mnemonic
+        )
         return BIP39Seed.generate(mnemonic=mnemonic, passphrase=passphrase)
 
     @classmethod
-    def generate_byron_legacy(cls, mnemonic: str) -> str:
+    def generate_byron_legacy(cls, mnemonic: Union[str, IMnemonic]) -> str:
 
+        mnemonic = (
+            mnemonic.mnemonic()
+            if isinstance(mnemonic, IMnemonic) else
+            mnemonic
+        )
         if not BIP39Mnemonic.is_valid(mnemonic=mnemonic):
-            ValueError("Invalid BIP39 mnemonic words")
+            raise Error("Invalid BIP39 mnemonic words")
 
         return bytes_to_string(blake2b_256(
             cbor2.dumps(get_bytes(BIP39Mnemonic.decode(mnemonic=mnemonic)))
         ))
 
     @classmethod
-    def generate_shelley_icarus(cls, mnemonic: str) -> str:
+    def generate_shelley_icarus(cls, mnemonic: Union[str, IMnemonic]) -> str:
         return cls.generate_byron_icarus(
             mnemonic=mnemonic
         )

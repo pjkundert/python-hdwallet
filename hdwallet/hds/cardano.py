@@ -4,20 +4,26 @@
 # Distributed under the MIT software license, see the accompanying
 # file COPYING or https://opensource.org/license/mit
 
-from typing import Optional
+from typing import (
+    Optional, Union
+)
 
 import hashlib
 import cbor2
 
 from ..ecc import (
-    IEllipticCurveCryptography, IPoint, IPublicKey, KholawEd25519PrivateKey
+    IEllipticCurveCryptography, IPoint, IPublicKey, KholawEd25519ECC, KholawEd25519PrivateKey
 )
+from ..seeds import ISeed
 from ..crypto import (
     pbkdf2_hmac_sha512, hmac_sha512, hmac_sha256, sha512
 )
 from ..cryptocurrencies import Cardano
+from ..exceptions import (
+    Error, AddressError, DerivationError
+)
 from ..utils import (
-    get_bytes, reset_bits, set_bits, add_no_carry, multiply_scalar_no_carry, bytes_to_string, are_bits_set, integer_to_bytes, bytes_to_integer
+    get_bytes, get_hmac, reset_bits, set_bits, add_no_carry, multiply_scalar_no_carry, bytes_to_string, are_bits_set, integer_to_bytes, bytes_to_integer
 )
 from ..addresses.cardano import CardanoAddress
 from .bip32 import BIP32HD
@@ -25,27 +31,31 @@ from .bip32 import BIP32HD
 
 class CardanoHD(BIP32HD):
 
-    cardano_type: str
+    _cardano_type: str
 
     def __init__(self, cardano_type: str) -> None:
         super(CardanoHD, self).__init__(
-            ecc_name="Kholaw-Ed25519"
+            ecc=KholawEd25519ECC
         )
-        if cardano_type not in Cardano.TYPES.__dict__.values():
-            raise ValueError("Invalid Cardano type")
-        self.cardano_type = cardano_type
+        if cardano_type not in Cardano.TYPES.get_cardano_types():
+            raise Error(
+                "Invalid Cardano type", expected=Cardano.TYPES.get_cardano_types(), got=cardano_type
+            )
+        self._cardano_type = cardano_type
 
     @classmethod
     def name(cls) -> str:
         return "Cardano"
 
-    def from_seed(self, seed: str, passphrase: Optional[str] = None) -> "CardanoHD":
+    def from_seed(self, seed: Union[str, ISeed], passphrase: Optional[str] = None) -> "CardanoHD":
 
-        self._seed = get_bytes(seed)
+        self._seed = get_bytes(
+            seed.seed() if isinstance(seed, ISeed) else seed
+        )
 
-        if self.cardano_type == "byron-legacy":
+        if self._cardano_type == Cardano.TYPES.BYRON_LEGACY:
             if len(self._seed) != 32:
-                raise ValueError(f"Invalid seed length ({len(self._seed)})")
+                raise Error(f"Invalid seed length", expected=32, got=len(self._seed))
 
             def tweak_master_key_bits(data: bytes) -> bytes:
                 data: bytearray = bytearray(data)
@@ -77,11 +87,11 @@ class CardanoHD(BIP32HD):
                 self._root_private_key = self._ecc.PRIVATE_KEY.from_bytes(il)
                 self._root_chain_code = ir
 
-        elif self.cardano_type in [
-            "byron-icarus", "shelley-icarus"
+        elif self._cardano_type in [
+            Cardano.TYPES.BYRON_ICARUS, Cardano.TYPES.SHELLEY_ICARUS
         ]:
             if len(self._seed) < 16:
-                raise ValueError(f"Invalid seed length ({len(self._seed)})")
+                raise Error(f"Invalid seed length", expected="< 16", got=len(self._seed))
 
             pbkdf2_passphrase, pbkdf2_rounds, pbkdf2_output_length = (
                 (passphrase if passphrase else ""), 4096, 96
@@ -109,11 +119,11 @@ class CardanoHD(BIP32HD):
                 ), key[KholawEd25519PrivateKey.length():]
             )
 
-        elif self.cardano_type in [
-            "byron-ledger", "shelley-ledger"
+        elif self._cardano_type in [
+            Cardano.TYPES.BYRON_LEDGER, Cardano.TYPES.SHELLEY_LEDGER
         ]:
             if len(self._seed) < 16:
-                raise ValueError(f"Invalid seed length ({len(self._seed)})")
+                raise Error(f"Invalid seed length", expected="< 16", got=len(self._seed))
 
             hmac_half_length: int = hashlib.sha512().digest_size // 2
 
@@ -124,7 +134,7 @@ class CardanoHD(BIP32HD):
 
             while not success:
                 self._hmac = hmac_sha512(
-                    self.get_hmac(ecc=self._ecc), hmac_data
+                    get_hmac(ecc_name=self._ecc.NAME), hmac_data
                 )
                 # Compute kL and kR
                 success = ((self._hmac[:hmac_half_length][31] & 0x20) == 0)
@@ -149,7 +159,7 @@ class CardanoHD(BIP32HD):
             # Tweak kL bytes
             kl: bytes = tweak_master_key_bits(kl)
             chain_code: bytes = hmac_sha256(
-                self.get_hmac(ecc=self._ecc), b"\x01" + self._seed
+                get_hmac(ecc_name=self._ecc.NAME), b"\x01" + self._seed
             )
             self._root_private_key, self._root_chain_code = (
                 self._ecc.PRIVATE_KEY.from_bytes(
@@ -169,7 +179,7 @@ class CardanoHD(BIP32HD):
 
         hmac_half_length: int = hashlib.sha512().digest_size // 2
 
-        if self.cardano_type == "byron-legacy":
+        if self._cardano_type == Cardano.TYPES.BYRON_LEGACY:
             index_bytes: bytes = integer_to_bytes(
                 data=index, bytes_num=4, endianness="big"
             )
@@ -181,7 +191,7 @@ class CardanoHD(BIP32HD):
         if self._private_key:
             if index & 0x80000000:
                 if self._private_key is None:
-                    raise ValueError("Hardened derivation path is invalid for xpublic key")
+                    raise DerivationError("Hardened derivation path is invalid for xpublic key")
                 z_hmac: bytes = hmac_sha512(self._chain_code, (
                     b"\x00" + self._private_key.raw() + index_bytes
                 ))
@@ -197,7 +207,7 @@ class CardanoHD(BIP32HD):
                 ))
 
             def new_private_key_left_part(zl: bytes, kl: bytes, ecc: IEllipticCurveCryptography) -> bytes:
-                if self.cardano_type == "byron-legacy":
+                if self._cardano_type == Cardano.TYPES.BYRON_LEGACY:
                     zl: int = bytes_to_integer(
                         multiply_scalar_no_carry(zl, 8), endianness="little"
                     )
@@ -213,7 +223,7 @@ class CardanoHD(BIP32HD):
                     private_key_left: int = (zl * 8) + kl
                     # Discard child if multiple of curve order
                     if private_key_left % ecc.ORDER == 0:
-                        raise ValueError("Computed child key is not valid, very unlucky index")
+                        raise Error("Computed child key is not valid, very unlucky index")
 
                     return integer_to_bytes(
                         private_key_left, bytes_num=(
@@ -222,7 +232,7 @@ class CardanoHD(BIP32HD):
                     )
 
             def new_private_key_right_part(zr: bytes, kr: bytes) -> bytes:
-                if self.cardano_type == "byron-legacy":
+                if self._cardano_type == Cardano.TYPES.BYRON_LEGACY:
                     return add_no_carry(zr, kr)
                 else:
                     zr: int = bytes_to_integer(zr, endianness="little")
@@ -260,7 +270,7 @@ class CardanoHD(BIP32HD):
             )
         else:
             if index & 0x80000000:
-                raise ValueError("Hardened derivation path is invalid for xpublic key")
+                raise DerivationError("Hardened derivation path is invalid for xpublic key")
             z_hmac: bytes = hmac_sha512(self._chain_code, (
                 b"\x02" + self._public_key.raw_compressed()[1:] + index_bytes
             ))
@@ -269,7 +279,7 @@ class CardanoHD(BIP32HD):
             ))
 
             def new_public_key_point(public_key: IPublicKey, zl: bytes, ecc: IEllipticCurveCryptography) -> IPoint:
-                if self.cardano_type == "byron-legacy":
+                if self._cardano_type == Cardano.TYPES.BYRON_LEGACY:
                     zl: int = bytes_to_integer(multiply_scalar_no_carry(zl, 8), endianness="little")
                     return public_key.point() + (zl * ecc.GENERATOR)
                 else:
@@ -285,7 +295,7 @@ class CardanoHD(BIP32HD):
             )
             # If the public key is the identity point (0, 1) discard the child
             if new_public_key_point.x() == 0 and new_public_key_point.y() == 1:
-                raise ValueError("Computed public child key is not valid, very unlucky index")
+                raise Error("Computed public child key is not valid, very unlucky index")
             new_public_key: IPublicKey = self._ecc.PUBLIC_KEY.from_point(
                 new_public_key_point
             )
@@ -299,7 +309,7 @@ class CardanoHD(BIP32HD):
         return self
 
     def path_key(self) -> Optional[str]:
-        if self.cardano_type == "byron-legacy":
+        if self._cardano_type == Cardano.TYPES.BYRON_LEGACY:
             self._root_public_key = self._root_private_key.public_key()
             return bytes_to_string(pbkdf2_hmac_sha512(
                 (self._root_public_key.raw_compressed()[1:] + self._root_chain_code), "address-hashing", 500, 32
@@ -307,26 +317,30 @@ class CardanoHD(BIP32HD):
         return None
 
     def address(self, **kwargs) -> str:
-        if self.cardano_type == "byron-legacy":
+        if self._cardano_type == Cardano.TYPES.BYRON_LEGACY:
             return CardanoAddress.encode_byron_legacy(
                 public_key=self._public_key,
                 path=self.path(),
                 path_key=self.path_key(),
                 chain_code=self._chain_code,
                 address_type=kwargs.get(
-                    "address_type", "public-key"
+                    "address_type", Cardano.ADDRESS_TYPES.PUBLIC_KEY
                 )
             )
-        elif self.cardano_type in ["byron-icarus", "byron-ledger"]:
+        elif self._cardano_type in [
+            Cardano.TYPES.BYRON_ICARUS, Cardano.TYPES.BYRON_LEDGER
+        ]:
             return CardanoAddress.encode_byron_icarus(
                 public_key=self._public_key,
                 chain_code=self._chain_code,
                 address_type=kwargs.get(
-                    "address_type", "public-key"
+                    "address_type", Cardano.ADDRESS_TYPES.PUBLIC_KEY
                 )
             )
-        elif self.cardano_type in ["shelley-icarus", "shelley-ledger"]:
-            if kwargs.get("address_type") in ["payment", "shelley-payment"]:
+        elif self._cardano_type in [
+            Cardano.TYPES.SHELLEY_ICARUS, Cardano.TYPES.SHELLEY_LEDGER
+        ]:
+            if kwargs.get("address_type") == Cardano.ADDRESS_TYPES.PAYMENT:
                 if not kwargs.get("staking_public_key"):
                     raise ValueError("staking_public_key param is required for payment address type")
                 return CardanoAddress.encode_shelley(
@@ -334,11 +348,15 @@ class CardanoHD(BIP32HD):
                     staking_public_key=kwargs.get("staking_public_key"),
                     network=kwargs.get("network", "mainnet")
                 )
-            elif kwargs.get("address_type") in ["staking", "shelley-staking", "reward", "shelley-reward"]:
+            elif kwargs.get("address_type") in [
+                Cardano.ADDRESS_TYPES.STAKING, Cardano.ADDRESS_TYPES.REWARD
+            ]:
                 return CardanoAddress.encode_shelley_staking(
                     public_key=self._public_key,
                     network=kwargs.get("network", "mainnet")
                 )
-            raise ValueError(
-                f"address_type param is required for Cardano {self.cardano_type} type, with 'payment', 'staking', or 'reward' values"
+            raise AddressError(
+                f"Invalid Cardano {self._cardano_type} address type", expected=[
+                    Cardano.ADDRESS_TYPES.PAYMENT, Cardano.ADDRESS_TYPES.STAKING, Cardano.ADDRESS_TYPES.REWARD
+                ], got=kwargs.get("address_type")
             )

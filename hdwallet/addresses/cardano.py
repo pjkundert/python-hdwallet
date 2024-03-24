@@ -23,6 +23,9 @@ from ..cryptocurrencies.cardano import Cardano
 from ..crypto import (
     chacha20_poly1305_encrypt, blake2b_224, sha3_256, crc32
 )
+from ..exceptions import (
+    Error, AddressError
+)
 from ..utils import (
     get_bytes, bytes_to_integer, bytes_to_string, integer_to_bytes, path_to_indexes
 )
@@ -61,64 +64,92 @@ class CardanoAddress(IAddress):
 
     @classmethod
     def encode(
-        cls, public_key: Union[bytes, str, IPublicKey], encode_type: str = "shelley", **kwargs: Any
+        cls, public_key: Union[bytes, str, IPublicKey], encode_type: str = Cardano.ADDRESS_TYPES.PAYMENT, **kwargs: Any
     ):
-        if encode_type == "byron_legacy":
+        if encode_type == Cardano.TYPES.BYRON_LEGACY:
             return cls.encode_byron_legacy(
                 public_key=public_key,
                 path=kwargs.get("path"),
                 path_key=kwargs.get("path_key"),
                 chain_code=kwargs.get("chain_code"),
-                address_type=kwargs.get("address_type", "public-key")
+                address_type=kwargs.get("address_type", Cardano.ADDRESS_TYPES.PUBLIC_KEY)
             )
-        elif encode_type == "byron_icarus":
+        elif encode_type == Cardano.TYPES.BYRON_ICARUS:
             return cls.encode_byron_icarus(
                 public_key=public_key,
                 chain_code=kwargs.get("chain_code"),
-                address_type=kwargs.get("address_type", "public-key")
+                address_type=kwargs.get("address_type", Cardano.ADDRESS_TYPES.PUBLIC_KEY)
             )
-        elif encode_type in ["shelley", "shelley_payment"]:
+        elif encode_type == Cardano.ADDRESS_TYPES.PAYMENT:
             return cls.encode_shelley(
                 public_key=public_key,
                 staking_public_key=kwargs.get("staking_public_key"),
                 network=kwargs.get("network", "mainnet")
             )
-        elif encode_type in ["shelley_staking", "shelley_reward"]:
+        elif encode_type in [
+            Cardano.ADDRESS_TYPES.STAKING, Cardano.ADDRESS_TYPES.REWARD
+        ]:
             return cls.encode_shelley_staking(
                 public_key=public_key,
                 network=kwargs.get("network", "mainnet")
             )
-        else:
-            expected: tuple = ("byron_legacy", "byron_icarus", "shelley", "shelley_payment", "shelley_staking", "shelley_reward")
-            raise ValueError(f"Invalid encode type (expected: {expected}, got: {encode_type})")
+        raise AddressError(
+            "Invalid encode type", expected=[
+                Cardano.TYPES.BYRON_LEGACY,
+                Cardano.TYPES.BYRON_ICARUS,
+                Cardano.ADDRESS_TYPES.PAYMENT,
+                Cardano.ADDRESS_TYPES.STAKING,
+                Cardano.ADDRESS_TYPES.REWARD
+            ], got=encode_type
+        )
 
     @classmethod
     def decode(
-        cls, address: str, decode_type: str = "shelley", **kwargs: Any
+        cls, address: str, decode_type: str = Cardano.ADDRESS_TYPES.PAYMENT, **kwargs: Any
     ) -> str:
-        if decode_type in ["byron_icarus", "byron_legacy"]:
+        if decode_type in [
+            Cardano.TYPES.BYRON_LEGACY, Cardano.TYPES.BYRON_ICARUS
+        ]:
             return cls.decode_byron(
-                address=address, address_type=kwargs.get("address_type", "public-key")
+                address=address, address_type=kwargs.get("address_type", Cardano.ADDRESS_TYPES.PUBLIC_KEY)
             )
-        elif decode_type in ["shelley", "shelley_payment"]:
+        elif decode_type == Cardano.ADDRESS_TYPES.PAYMENT:
             return cls.decode_shelley(
                 address=address, network=kwargs.get("network", "mainnet")
             )
-        elif decode_type in ["shelley_staking", "shelley_reward"]:
+        elif decode_type in [
+            Cardano.ADDRESS_TYPES.STAKING, Cardano.ADDRESS_TYPES.REWARD
+        ]:
             return cls.decode_shelley_staking(
                 address=address, network=kwargs.get("network", "mainnet")
             )
-        else:
-            expected: tuple = ("byron_icarus", "byron_legacy", "shelley", "shelley_payment", "shelley_staking", "shelley_reward")
-            raise ValueError(f"Invalid decode type, (expected: {expected}, got: {decode_type})")
+        raise AddressError(
+            "Invalid decode type", expected=[
+                Cardano.TYPES.BYRON_LEGACY,
+                Cardano.TYPES.BYRON_ICARUS,
+                Cardano.ADDRESS_TYPES.PAYMENT,
+                Cardano.ADDRESS_TYPES.STAKING,
+                Cardano.ADDRESS_TYPES.REWARD
+            ], got=decode_type
+        )
 
     @classmethod
     def encode_byron(
-        cls, public_key: IPublicKey, chain_code: Union[bytes, str], address_attributes: dict, address_type: str = "public-key"
+        cls,
+        public_key: IPublicKey,
+        chain_code: Union[bytes, str],
+        address_attributes: dict,
+        address_type: str = Cardano.ADDRESS_TYPES.PUBLIC_KEY
     ) -> str:
 
-        if address_type not in ["public-key", "redemption"]:
-            raise ValueError(f"Invalid address type, (expected: {'public-key', 'redemption'}, got: {address_type})")
+        if address_type not in [
+            Cardano.ADDRESS_TYPES.PUBLIC_KEY, Cardano.ADDRESS_TYPES.REDEMPTION
+        ]:
+            raise AddressError(
+                "Invalid address type", expected=[
+                    Cardano.ADDRESS_TYPES.PUBLIC_KEY, Cardano.ADDRESS_TYPES.REDEMPTION
+                ], got=address_type
+            )
 
         serialize: bytes = cbor2.dumps([
             cls.address_types[address_type],
@@ -137,11 +168,20 @@ class CardanoAddress(IAddress):
 
     @classmethod
     def encode_byron_icarus(
-        cls, public_key: Union[bytes, str, IPublicKey], chain_code: Union[bytes, str], address_type: str = "public-key"
+        cls,
+        public_key: Union[bytes, str, IPublicKey],
+        chain_code: Union[bytes, str],
+        address_type: str = Cardano.ADDRESS_TYPES.PUBLIC_KEY
     ) -> str:
 
-        if address_type not in ["public-key", "redemption"]:
-            raise ValueError(f"Invalid address type, (expected: {'public-key', 'redemption'}, got: {address_type})")
+        if address_type not in [
+            Cardano.ADDRESS_TYPES.PUBLIC_KEY, Cardano.ADDRESS_TYPES.REDEMPTION
+        ]:
+            raise AddressError(
+                "Invalid address type", expected=[
+                    Cardano.ADDRESS_TYPES.PUBLIC_KEY, Cardano.ADDRESS_TYPES.REDEMPTION
+                ], got=address_type
+            )
 
         chain_code: bytes = get_bytes(chain_code)
         public_key: IPublicKey = validate_and_get_public_key(
@@ -163,16 +203,22 @@ class CardanoAddress(IAddress):
         path: str,
         path_key: Union[bytes, str],
         chain_code: Union[bytes, str],
-        address_type: str = "public-key"
+        address_type: str = Cardano.ADDRESS_TYPES.PUBLIC_KEY
     ) -> str:
 
-        if address_type not in ["public-key", "redemption"]:
-            raise ValueError(f"Invalid address type, (expected: {'public-key', 'redemption'}, got: {address_type})")
+        if address_type not in [
+            Cardano.ADDRESS_TYPES.PUBLIC_KEY, Cardano.ADDRESS_TYPES.REDEMPTION
+        ]:
+            raise AddressError(
+                "Invalid address type", expected=[
+                    Cardano.ADDRESS_TYPES.PUBLIC_KEY, Cardano.ADDRESS_TYPES.REDEMPTION
+                ], got=address_type
+            )
 
         chain_code: bytes = get_bytes(chain_code)
         path_key: bytes = get_bytes(path_key)
         if len(path_key) != 32:
-            raise ValueError("HD path key shall be 32-byte long")
+            raise Error("Invalid HD path key length", expected=32, got=len(path_key))
 
         public_key: IPublicKey = validate_and_get_public_key(
             public_key=public_key, public_key_cls=KholawEd25519PublicKey
@@ -202,10 +248,16 @@ class CardanoAddress(IAddress):
         )
 
     @classmethod
-    def decode_byron(cls, address: str, address_type: str = "public-key") -> str:
+    def decode_byron(cls, address: str, address_type: str = Cardano.ADDRESS_TYPES.PUBLIC_KEY) -> str:
 
-        if address_type not in ["public-key", "redemption"]:
-            raise ValueError(f"Invalid address type, (expected: {'public-key', 'redemption'}, got: {address_type})")
+        if address_type not in [
+            Cardano.ADDRESS_TYPES.PUBLIC_KEY, Cardano.ADDRESS_TYPES.REDEMPTION
+        ]:
+            raise AddressError(
+                "Invalid address type", expected=[
+                    Cardano.ADDRESS_TYPES.PUBLIC_KEY, Cardano.ADDRESS_TYPES.REDEMPTION
+                ], got=address_type
+            )
 
         try:
             address_decode: bytes = decode(address)
@@ -213,35 +265,36 @@ class CardanoAddress(IAddress):
             if (len(address) != 2
                     or not isinstance(address[0], cbor2.CBORTag)
                     or not isinstance(address[1], int)):
-                raise ValueError("Invalid address encoding")
+                raise AddressError("Invalid address encoding")
             # Get and check CBOR tag
             cbor_tag = address[0]
             if cbor_tag.tag != cls.payload_tag:
-                raise ValueError(f"Invalid CBOR tag ({cbor_tag.tag})")
+                raise AddressError(f"Invalid CBOR tag ({cbor_tag.tag})")
             # Check CRC
             crc32_got = bytes_to_integer(crc32(cbor_tag.value))
             if crc32_got != address[1]:
-                raise ValueError(f"Invalid CRC (expected: {address[1]}, got: {crc32_got})")
+                raise AddressError(f"Invalid CRC (expected: {address[1]}, got: {crc32_got})")
 
             address_payload: list = cbor2.loads(cbor_tag.value)
             if (len(address_payload) != 3
                     or not isinstance(address_payload[0], bytes)
                     or not isinstance(address_payload[1], dict)
                     or not isinstance(address_payload[2], int)):
-                raise ValueError("Invalid address payload")
+                raise AddressError("Invalid address payload")
             # Check root hash length
-            expected_length: int = 28
-            if len(address_payload[0]) != expected_length:
-                raise ValueError(f"Invalid length (expected {expected_length}, got {len(address_payload[0])})")
+            if len(address_payload[0]) != 28:
+                raise AddressError("Invalid length", expected=28, got=len(address_payload[0]))
             # Check address attributes
             if len(address_payload[1]) > 2 or \
                     (len(address_payload[1]) != 0
                      and 1 not in address_payload[1]
                      and 2 not in address_payload[1]):
-                raise ValueError("Invalid address attributes")
+                raise AddressError("Invalid address attributes")
             # Check address type
             if address_payload[2] != cls.address_types[address_type]:
-                raise ValueError(f"Invalid address type (expected: {cls.address_types[address_type]}, got: {address_payload[2]})")
+                raise AddressError(
+                    "Invalid address type", expected=cls.address_types[address_type], got=address_payload[2]
+                )
 
             address_attributes: tuple = (
                 # hd path encrypted bytes
@@ -253,7 +306,7 @@ class CardanoAddress(IAddress):
                 address_attributes[0] if address_attributes[0] else b""
             ))
         except cbor2.CBORDecodeValueError as ex:
-            raise ValueError("Invalid CBOR encoding") from ex
+            raise AddressError("Invalid CBOR encoding") from ex
 
     @classmethod
     def decode_byron_icarus(cls, address: str, address_type: str = "public-key") -> str:
@@ -297,14 +350,14 @@ class CardanoAddress(IAddress):
 
         expected_length: int = (28 * 2) + 1
         if len(address_decode) != expected_length:
-            raise ValueError(f"Invalid length (expected: {expected_length}, got: {len(address_decode)})")
+            raise AddressError("Invalid length", expected=expected_length, got=len(address_decode))
 
         prefix: bytes = integer_to_bytes(
             (cls.prefix_types["payment"] << 4) + cls.network_types[network]
         )
         prefix_got = address_decode[:len(prefix)]
         if prefix != prefix_got:
-            raise ValueError(f"Invalid prefix (expected: {prefix}, got: {prefix_got})")
+            raise AddressError("Invalid prefix", expected=prefix, got=prefix_got)
 
         return bytes_to_string(address_decode[len(prefix):])
 
@@ -337,13 +390,13 @@ class CardanoAddress(IAddress):
 
         expected_length: int = (28 * 1) + 1
         if len(address_decode) != expected_length:
-            raise ValueError(f"Invalid length (expected: {expected_length}, got: {len(address_decode)})")
+            raise AddressError("Invalid length", expected=expected_length, got=len(address_decode))
 
         prefix: bytes = integer_to_bytes(
             (cls.prefix_types["reward"] << 4) + cls.network_types[network]
         )
         prefix_got = address_decode[:len(prefix)]
         if prefix != prefix_got:
-            raise ValueError(f"Invalid prefix (expected: {prefix}, got: {prefix_got})")
+            raise AddressError("Invalid prefix", expected=prefix, got=prefix_got)
 
         return bytes_to_string(address_decode[len(prefix):])
