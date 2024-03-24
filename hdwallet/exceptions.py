@@ -42,6 +42,18 @@ class Error(Exception):
             return f"{self._message}"
 
 
+class EntropyError(Error):
+    pass
+
+
+class MnemonicError(Error):
+    pass
+
+
+class SeedError(Error):
+    pass
+
+
 class DerivationError(Error):
     pass
 
