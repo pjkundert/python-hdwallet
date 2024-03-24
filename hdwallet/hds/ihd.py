@@ -56,6 +56,9 @@ class IHD:
     def seed(self) -> Optional[str]:
         pass
 
+    def semantic(self) -> Optional[str]:
+        return None
+
     def root_xprivate_key(self, *args, **kwargs) -> Optional[str]:
         pass
 

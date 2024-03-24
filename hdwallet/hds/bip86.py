@@ -4,14 +4,36 @@
 # Distributed under the MIT software license, see the accompanying
 # file COPYING or https://opensource.org/license/mit
 
-from ..addresses.p2tr import P2TRAddress
+from typing import (
+    Type, Union, Optional
+)
+
+from ..cryptocurrencies import Bitcoin
+from ..ecc import IEllipticCurveCryptography
+from ..const import PUBLIC_KEY_TYPES
+from ..addresses import P2TRAddress
+from ..exceptions import DerivationError
 from ..derivations import (
     IDerivation, BIP86Derivation
 )
-from .bip32 import BIP32HD
+from .bip44 import BIP44HD
 
 
-class BIP86HD(BIP32HD):
+class BIP86HD(BIP44HD):
+
+    _derivation: BIP86Derivation
+
+    def __init__(
+        self, ecc: Type[IEllipticCurveCryptography], public_key_type: str = PUBLIC_KEY_TYPES.COMPRESSED, **kwargs
+    ) -> None:
+        super(BIP86HD, self).__init__(ecc=ecc, public_key_type=public_key_type, **kwargs)
+
+        self._derivation = BIP86Derivation(
+            coin_type=kwargs.get("coin_type", 0),
+            account=kwargs.get("account", 0),
+            change=kwargs.get("change", "external-chain"),
+            address=kwargs.get("address", 0)
+        )
 
     @classmethod
     def name(cls) -> str:
@@ -20,8 +42,11 @@ class BIP86HD(BIP32HD):
     def from_derivation(self, derivation: IDerivation) -> "BIP86HD":
 
         if not isinstance(derivation, BIP86Derivation):
-            raise ValueError(f"Invalid derivation class, (expected: {BIP86Derivation}, got: {type(derivation)})")
+            raise DerivationError(
+                "Invalid derivation instance", expected=BIP86Derivation, got=type(derivation)
+            )
 
+        self.clean_derivation()
         for index in derivation.indexes():
             self._path += ((
                f"{index - 0x80000000}'"
@@ -36,16 +61,33 @@ class BIP86HD(BIP32HD):
             self.drive(index)
         return self
 
-    def update_derivation(self, derivation: IDerivation) -> "BIP86HD":
+    def root_xprivate_key(
+        self, version: Union[bytes, int] = Bitcoin.NETWORKS.MAINNET.XPRIVATE_KEY_VERSIONS.P2TR, encoded: bool = True
+    ) -> Optional[str]:
+        return super(BIP44HD, self).root_xprivate_key(version=version, encoded=encoded)
 
-        if not isinstance(derivation, BIP86Derivation):
-            raise ValueError(f"Invalid derivation class, (expected: {BIP86Derivation}, got: {type(derivation)})")
+    def root_xpublic_key(
+        self, version: Union[bytes, int] = Bitcoin.NETWORKS.MAINNET.XPUBLIC_KEY_VERSIONS.P2TR, encoded: bool = True
+    ) -> Optional[str]:
+        return super(BIP44HD, self).root_xpublic_key(version=version, encoded=encoded)
 
-        self.clean_derivation()
-        self.from_derivation(
-            derivation=derivation
+    def xprivate_key(
+        self, version: Union[bytes, int] = Bitcoin.NETWORKS.MAINNET.XPRIVATE_KEY_VERSIONS.P2TR, encoded: bool = True
+    ) -> Optional[str]:
+        return super(BIP44HD, self).xprivate_key(version=version, encoded=encoded)
+
+    def xpublic_key(
+        self, version: Union[bytes, int] = Bitcoin.NETWORKS.MAINNET.XPUBLIC_KEY_VERSIONS.P2TR, encoded: bool = True
+    ) -> Optional[str]:
+        return super(BIP44HD, self).xpublic_key(version=version, encoded=encoded)
+
+    def address(
+        self, hrp: str = Bitcoin.NETWORKS.MAINNET.HRP,
+        witness_version: int = Bitcoin.NETWORKS.MAINNET.WITNESS_VERSIONS.P2TR, **kwargs
+    ) -> str:
+        return P2TRAddress.encode(
+            public_key=self._public_key,
+            hrp=hrp,
+            witness_version=witness_version,
+            public_key_type=self._public_key_type
         )
-        return self
-
-    def address(self, **kwargs) -> str:
-        pass

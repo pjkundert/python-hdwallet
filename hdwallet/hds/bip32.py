@@ -26,6 +26,7 @@ from ..addresses import (
 from ..const import (
     PUBLIC_KEY_TYPES, WIF_TYPES
 )
+from ..cryptocurrencies import Bitcoin
 from ..crypto import hmac_sha512
 from ..wif import (
     private_key_to_wif, wif_to_private_key
@@ -66,7 +67,7 @@ class BIP32HD(IHD):
     
     def __init__(
         self, ecc: Type[IEllipticCurveCryptography], public_key_type: str = PUBLIC_KEY_TYPES.COMPRESSED, **kwargs
-    ):
+    ) -> None:
         super(BIP32HD, self).__init__(**kwargs)
 
         self._ecc: IEllipticCurveCryptography = ecc.__call__()
@@ -475,7 +476,9 @@ class BIP32HD(IHD):
     def seed(self) -> Optional[str]:
         return bytes_to_string(self._seed)
 
-    def root_xprivate_key(self, version: Union[str, bytes, int], encoded: bool = True) -> Optional[str]:
+    def root_xprivate_key(
+        self, version: Union[bytes, int] = Bitcoin.NETWORKS.MAINNET.XPRIVATE_KEY_VERSIONS.P2PKH, encoded: bool = True
+    ) -> Optional[str]:
 
         return serialize(
             version=(
@@ -491,7 +494,9 @@ class BIP32HD(IHD):
             encoded=encoded
         ) if self.root_private_key() else None
 
-    def root_xpublic_key(self, version: Union[str, bytes, int], encoded: bool = True) -> Optional[str]:
+    def root_xpublic_key(
+        self, version: Union[bytes, int] = Bitcoin.NETWORKS.MAINNET.XPUBLIC_KEY_VERSIONS.P2PKH, encoded: bool = True
+    ) -> Optional[str]:
 
         return serialize(
             version=(
@@ -533,7 +538,9 @@ class BIP32HD(IHD):
         elif _public_key_type == PUBLIC_KEY_TYPES.COMPRESSED:
             return bytes_to_string(self._root_public_key.raw_compressed())
 
-    def xprivate_key(self, version: Union[str, bytes, int], encoded: bool = True) -> Optional[str]:
+    def xprivate_key(
+        self, version: Union[bytes, int] = Bitcoin.NETWORKS.MAINNET.XPRIVATE_KEY_VERSIONS.P2PKH, encoded: bool = True
+    ) -> Optional[str]:
 
         return serialize(
             version=(
@@ -547,7 +554,9 @@ class BIP32HD(IHD):
             encoded=encoded
         ) if self.private_key() else None
 
-    def xpublic_key(self, version: Union[str, bytes, int], encoded: bool = True) -> Optional[str]:
+    def xpublic_key(
+        self, version: Union[bytes, int] = Bitcoin.NETWORKS.MAINNET.XPUBLIC_KEY_VERSIONS.P2PKH, encoded: bool = True
+    ) -> Optional[str]:
 
         return serialize(
             version=(
@@ -634,11 +643,11 @@ class BIP32HD(IHD):
 
     def address(
         self,
-        address: str = P2PKHAddress.name(),
-        public_key_address_prefix: int = P2PKHAddress.public_key_address_prefix,
-        script_address_prefix: int = P2SHAddress.script_address_prefix,
-        hrp: str = P2WPKHAddress.hrp,
-        witness_version: int = P2WPKHAddress.witness_version,
+        address: str = Bitcoin.ADDRESSES.P2PKH,
+        public_key_address_prefix: int = Bitcoin.NETWORKS.MAINNET.PUBLIC_KEY_ADDRESS_PREFIX,
+        script_address_prefix: int = Bitcoin.NETWORKS.MAINNET.SCRIPT_ADDRESS_PREFIX,
+        hrp: str = Bitcoin.NETWORKS.MAINNET.HRP,
+        witness_version: int = Bitcoin.NETWORKS.MAINNET.WITNESS_VERSIONS.P2WPKH,
         **kwargs
     ) -> str:
         if address == P2PKHAddress.name():
