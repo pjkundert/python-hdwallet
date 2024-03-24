@@ -58,7 +58,7 @@ print("BIP32 Root Public Key:", bip32_hd.root_public_key())
 
 # Initialize Custom derivation
 custom_derivation: CustomDerivation = CustomDerivation(
-    path="m/782'/32'/657567'/0/90"
+    path="m/49'/0'/0'/0/0"
 )
 
 # Update current BIP32 HD derivation
