@@ -17,24 +17,23 @@ entropy: str = BIP39Entropy.generate(
     strength=BIP39_ENTROPY_STRENGTHS.ONE_HUNDRED_TWENTY_EIGHT
 )
 bip39_entropy: BIP39Entropy = BIP39Entropy(entropy=entropy)
-print(f"BIP39 Entropy {bip39_entropy.entropy()}")
-print(f"BIP39 Strength {bip39_entropy.strength()}")
+print("BIP39 Entropy:", bip39_entropy.entropy())
+print("BIP39 Strength:", bip39_entropy.strength())
 
 # Get BIP39 mnemonic from entropy
 mnemonic: str = BIP39Mnemonic.from_entropy(
-    entropy=bip39_entropy, language=BIP39_MNEMONIC_LANGUAGES.JAPANESE
+    entropy=bip39_entropy, language=BIP39_MNEMONIC_LANGUAGES.CHINESE_TRADITIONAL
 )
 bip39_mnemonic: BIP39Mnemonic = BIP39Mnemonic(mnemonic=mnemonic)
-print(f"BIP39 Mnemonic {bip39_mnemonic.mnemonic()}")
-print(f"BIP39 Language {bip39_mnemonic.language()}")
-print(f"BIP39 Word {bip39_mnemonic.word()}")
+print("BIP39 Mnemonic:", bip39_mnemonic.mnemonic())
+print("BIP39 Language:", bip39_mnemonic.language())
+print("BIP39 Word:", bip39_mnemonic.word())
 
-# Generate BIP39 Seed from mnemonic
-seed: str = BIP39Seed.generate(
-    mnemonic=bip39_mnemonic.mnemonic(), passphrase=None
+# Get BIP39 seed
+seed: str = BIP39Seed.from_mnemonic(
+    mnemonic=bip39_mnemonic, passphrase=None
 )
 bip39_seed: BIP39Seed = BIP39Seed(seed=seed)
-print(f"BIP39 Seed {bip39_seed.seed()}")
 
 # Initialize BIP32 HD
 bip32_hd: BIP32HD = BIP32HD(
@@ -46,6 +45,7 @@ bip32_hd.from_seed(
 )
 
 # Dump root keys
+print("BIP32 Seed:", bip32_hd.seed())
 print("BIP32 Root XPrivate Key:", bip32_hd.root_xprivate_key(
     version=Cryptocurrency.NETWORKS.MAINNET.XPRIVATE_KEY_VERSIONS.P2PKH
 ))
@@ -58,7 +58,7 @@ print("BIP32 Root Public Key:", bip32_hd.root_public_key())
 
 # Initialize Custom derivation
 custom_derivation: CustomDerivation = CustomDerivation(
-    path="m/49'/0'/0'/0/0"
+    path="m/3215'/7888'/0'/0/0"
 )
 
 # Update current BIP32 HD derivation
