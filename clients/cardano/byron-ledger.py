@@ -20,7 +20,7 @@ bip39_entropy: BIP39Entropy = BIP39Entropy(entropy=entropy)
 print("BIP39 Entropy:", bip39_entropy.entropy())
 print("BIP39 Strength:", bip39_entropy.strength())
 
-# Get BIP39 mnemonic from entropy
+# Get BIP39 mnemonic
 mnemonic: str = BIP39Mnemonic.from_entropy(
     entropy=bip39_entropy, language=BIP39_MNEMONIC_LANGUAGES.CHINESE_TRADITIONAL
 )
