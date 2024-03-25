@@ -14,7 +14,8 @@ from ...ecc import (
 from ...ecc.slip10.secp256k1 import (
     SLIP10Secp256k1ECC, SLIP10Secp256k1PrivateKey, SLIP10Secp256k1PublicKey
 )
-from ...addresses.p2pkh import P2PKHAddress
+from ...seeds import ISeed
+from ...addresses import P2PKHAddress
 from ...wif import (
     private_key_to_wif, wif_to_private_key
 )
@@ -24,7 +25,9 @@ from ...derivations import (
 )
 from ...crypto import double_sha256
 from ...cryptocurrencies import Bitcoin
-from ...exceptions import DerivationError
+from ...exceptions import (
+    Error, DerivationError
+)
 from ...utils import (
     get_bytes, encode, bytes_to_string, bytes_to_integer, integer_to_bytes
 )
@@ -34,23 +37,24 @@ from ..ihd import IHD
 
 class ElectrumV1HD(IHD):
 
+    _seed: Optional[bytes] = None
     _master_private_key: Optional[IPrivateKey]
     _master_public_key: IPublicKey
     _private_key: Optional[IPrivateKey]
-    _wif_type: str
     _public_key: IPublicKey
     _public_key_type: str
+    _wif_type: str
 
     def __init__(self, public_key_type: str = PUBLIC_KEY_TYPES.UNCOMPRESSED, **kwargs) -> None:
-        super().__init__(**kwargs)
+        super(ElectrumV1HD, self).__init__(public_key_type=public_key_type, **kwargs)
 
         if public_key_type == PUBLIC_KEY_TYPES.UNCOMPRESSED:
             self._wif_type = WIF_TYPES.WIF
         elif public_key_type == PUBLIC_KEY_TYPES.COMPRESSED:
             self._wif_type = WIF_TYPES.WIF_COMPRESSED
         else:
-            raise ValueError(
-                f"Invalid public key type, (expected: '{PUBLIC_KEY_TYPES.get_types()}', got: '{public_key_type}')"
+            raise Error(
+                "Invalid public key type", expected=PUBLIC_KEY_TYPES.get_types(), got=public_key_type
             )
         self._public_key_type = public_key_type
         self._master_private_key = None
@@ -60,8 +64,11 @@ class ElectrumV1HD(IHD):
     def name(cls) -> str:
         return "Electrum-V1"
 
-    def from_seed(self, seed: Union[bytes, str], **kwargs) -> "ElectrumV1HD":
-        return self.from_private_key(private_key=seed)
+    def from_seed(self, seed: Union[bytes, str, ISeed], **kwargs) -> "ElectrumV1HD":
+        self._seed = get_bytes(
+            seed.seed() if isinstance(seed, ISeed) else seed
+        )
+        return self.from_private_key(private_key=self._seed)
 
     def from_private_key(self, private_key: Union[bytes, str, IPrivateKey]) -> "ElectrumV1HD":
 
@@ -90,6 +97,24 @@ class ElectrumV1HD(IHD):
         self._master_public_key = public_key
         return self
 
+    def seed(self) -> Optional[str]:
+        return bytes_to_string(self._seed)
+
+    def master_wif(self, wif_type: Optional[str] = None) -> Optional[str]:
+
+        if wif_type:
+            if wif_type not in WIF_TYPES.get_types():
+                raise Error(
+                    "Invalid WIF type", expected=WIF_TYPES.get_types(), got=wif_type
+                )
+            _wif_type: str = wif_type
+        else:
+            _wif_type: str = self._wif_type
+
+        return private_key_to_wif(
+            private_key=self.master_private_key(), wif_type=_wif_type
+        )
+
     def master_private_key(self) -> Optional[str]:
 
         if not self._master_private_key:
@@ -105,14 +130,17 @@ class ElectrumV1HD(IHD):
             return bytes_to_string(self._master_public_key.raw_uncompressed())
         elif _public_key_type == PUBLIC_KEY_TYPES.COMPRESSED:
             return bytes_to_string(self._master_public_key.raw_compressed())
-        raise ValueError("Invalid public key type")
+        raise Error(
+            "Invalid public key type", expected=PUBLIC_KEY_TYPES.get_types(), got=public_key_type
+        )
 
-    def update_derivation(self, derivation: IDerivation) -> "ElectrumV1HD":
+    def from_derivation(self, derivation: IDerivation) -> "ElectrumV1HD":
 
         if not isinstance(derivation, ElectrumDerivation):
             raise DerivationError(
-                f"Invalid Electrum V1 derivation instance", expected=ElectrumDerivation.name(), got=derivation.name()
+                "Invalid derivation instance", expected=ElectrumDerivation, got=type(derivation)
             )
+
         return self.drive(
             change_index=(
                 derivation.change()[1]
@@ -125,6 +153,9 @@ class ElectrumV1HD(IHD):
                 derivation.address()[0]
             )
         )
+
+    def update_derivation(self, derivation: IDerivation) -> "ElectrumV1HD":
+        return self.from_derivation(derivation=derivation)
 
     def drive(self, change_index: int, address_index: int) -> "ElectrumV1HD":
 
@@ -157,8 +188,8 @@ class ElectrumV1HD(IHD):
 
         if wif_type:
             if wif_type not in WIF_TYPES.get_types():
-                raise Exception(
-                    f"Invalid WIF type, (expected: '{WIF_TYPES.get_types()}', got: '{wif_type}')"
+                raise Error(
+                    "Invalid WIF type", expected=WIF_TYPES.get_types(), got=wif_type
                 )
             _wif_type: str = wif_type
         else:
@@ -174,8 +205,8 @@ class ElectrumV1HD(IHD):
     def public_key(self, public_key_type: Optional[str] = None) -> str:
         if public_key_type:
             if public_key_type not in PUBLIC_KEY_TYPES.get_types():
-                raise Exception(
-                    f"Invalid public key type, (expected: '{PUBLIC_KEY_TYPES.get_types()}', got: '{public_key_type}')"
+                raise Error(
+                    "Invalid public key type", expected=PUBLIC_KEY_TYPES.get_types(), got=public_key_type
                 )
             _public_key_type: str = public_key_type
         else:
