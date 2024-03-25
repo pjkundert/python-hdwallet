@@ -25,7 +25,6 @@ print("BIP39 Strength:", bip39_entropy.strength())
 mnemonic: str = BIP39Mnemonic.from_entropy(
     entropy=bip39_entropy, language=BIP39_MNEMONIC_LANGUAGES.CZECH
 )
-mnemonic: str = "shield make describe spread view rich sudden slogan bridge clutch lawsuit toss kit square island"
 bip39_mnemonic: BIP39Mnemonic = BIP39Mnemonic(mnemonic=mnemonic)
 print("BIP39 Mnemonic:", bip39_mnemonic.mnemonic())
 print("BIP39 Language:", bip39_mnemonic.language())
@@ -36,8 +35,8 @@ cardano_hd: CardanoHD = CardanoHD(
     cardano_type=Cardano.TYPES.SHELLEY_LEDGER
 )
 
-# Generate Shelley-Ledger Cardano seed from mnemonic
-seed: str = CardanoSeed.generate(
+# Get Shelley-Ledger Cardano seed
+seed: str = CardanoSeed.from_mnemonic(
     mnemonic=bip39_mnemonic, cardano_type=Cardano.TYPES.SHELLEY_LEDGER
 )
 cardano_seed: CardanoSeed = CardanoSeed(seed=seed)

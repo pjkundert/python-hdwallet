@@ -34,8 +34,8 @@ cardano_hd: CardanoHD = CardanoHD(
     cardano_type=Cardano.TYPES.BYRON_LEGACY
 )
 
-# Generate Byron-Legacy Cardano seed from mnemonic
-seed: str = CardanoSeed.generate(
+# Get Byron-Legacy Cardano seed
+seed: str = CardanoSeed.from_mnemonic(
     mnemonic=bip39_mnemonic, cardano_type=Cardano.TYPES.BYRON_LEGACY
 )
 cardano_seed: CardanoSeed = CardanoSeed(seed=seed)

@@ -35,8 +35,8 @@ cardano_hd: CardanoHD = CardanoHD(
     cardano_type=Cardano.TYPES.SHELLEY_ICARUS
 )
 
-# Generate Shelley-Icarus Cardano seed from mnemonic
-seed: str = CardanoSeed.generate(
+# Get Shelley-Icarus Cardano seed
+seed: str = CardanoSeed.from_mnemonic(
     mnemonic=bip39_mnemonic, cardano_type=Cardano.TYPES.SHELLEY_ICARUS
 )
 cardano_seed: CardanoSeed = CardanoSeed(seed=seed)
