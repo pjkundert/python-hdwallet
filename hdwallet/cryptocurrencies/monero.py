@@ -6,7 +6,7 @@
 
 from ..ecc import SLIP10Ed25519MoneroECC
 from ..const import (
-    Info, Entropies, Mnemonics, Seeds, HDs, Addresses, Networks
+    Info, Entropies, Mnemonics, Seeds, HDs, Addresses, AddressTypes, Networks, Params
 )
 from .icryptocurrency import (
     ICryptocurrency, INetwork
@@ -68,3 +68,13 @@ class Monero(ICryptocurrency):
         "MONERO": "Monero"
     })
     DEFAULT_ADDRESS = ADDRESSES.MONERO
+    ADDRESS_TYPES = AddressTypes({
+        "STANDARD": "standard",
+        "INTEGRATED": "integrated",
+        "SUB_ADDRESS": "sub-address"
+    })
+    DEFAULT_ADDRESS_TYPE = ADDRESS_TYPES.STANDARD
+    PARAMS = Params({
+        "CHECKSUM_LENGTH": 4,
+        "PAYMENT_ID_LENGTH": 8
+    })

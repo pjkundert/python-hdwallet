@@ -5,24 +5,30 @@
 # file COPYING or https://opensource.org/license/mit
 
 from typing import (
-    Optional, Union, Tuple
+    Optional, Union, Tuple, Type
 )
 
 from ..libs.ed25519 import scalar_reduce, int_decode
 from ..ecc import (
     SLIP10Ed25519MoneroECC, IPoint, IPublicKey, IPrivateKey, SLIP10Ed25519MoneroPublicKey, SLIP10Ed25519MoneroPrivateKey
 )
+from ..seeds import ISeed
 from ..crypto import kekkak256
+from ..cryptocurrencies.icryptocurrency import INetwork
+from ..cryptocurrencies import Monero
+from ..exceptions import (
+    NetworkError, DerivationError, AddressError
+)
 from ..utils import (
     get_bytes, bytes_to_string, integer_to_bytes, bytes_to_integer
 )
-from ..addresses.monero import MoneroAddress
+from ..addresses import MoneroAddress
 from .ihd import IHD
 
 
 class MoneroHD(IHD):
 
-    _network: str
+    _network: INetwork
     _seed: Optional[bytes] = None
     _private_key: Optional[bytes] = None
 
@@ -31,23 +37,35 @@ class MoneroHD(IHD):
     _spend_public_key: Union[IPublicKey]
     _view_public_key: Union[IPublicKey]
 
-    def __init__(self, network: str = "mainnet", **kwargs) -> None:
+    def __init__(self, network: Union[str, Type[INetwork]] = "mainnet", **kwargs) -> None:
         super().__init__(**kwargs)
 
-        if network not in ["mainnet", "stagenet", "testnet"]:
-            raise ValueError(f"Invalid network type, (expected: 'mainnet', 'stagenet', or 'testnet' networks, got: '{network}')")
-
-        self._network = network
+        try:
+            if not isinstance(network, str) and issubclass(network, INetwork):
+                network = network.__name__.lower()
+            if not Monero.NETWORKS.is_network(network=network):
+                raise NetworkError(
+                    f"Wrong {Monero.NAME} network",
+                    expected=Monero.NETWORKS.get_networks(),
+                    got=network
+                )
+            self._network = Monero.NETWORKS.get_network(network=network)
+        except TypeError:
+            raise NetworkError(
+                "Invalid network type", expected=[str, INetwork], got=type(network)
+            )
 
     @classmethod
     def name(cls) -> str:
         return "Monero"
 
-    def from_seed(self, seed: Union[bytes, str], **kwargs) -> "MoneroHD":
+    def from_seed(self, seed: Union[bytes, str, ISeed], **kwargs) -> "MoneroHD":
 
-        self._seed = seed
+        self._seed = get_bytes(
+            seed.seed() if isinstance(seed, ISeed) else seed
+        )
         spend_private_key: bytes = (
-            get_bytes(seed) if len(get_bytes(seed)) == SLIP10Ed25519MoneroPrivateKey.length() else kekkak256(get_bytes(seed))
+            self._seed if len(self._seed) == SLIP10Ed25519MoneroPrivateKey.length() else kekkak256(self._seed)
         )
         return self.from_spend_private_key(
             spend_private_key=scalar_reduce(spend_private_key)
@@ -94,9 +112,13 @@ class MoneroHD(IHD):
 
         maximum_index: int = 2 ** 32 - 1
         if minor_index < 0 or minor_index > maximum_index:
-            raise ValueError(f"Invalid minor index (expected: 0-{maximum_index}, got: {minor_index})")
+            raise DerivationError(
+                f"Invalid minor index range", expected=f"0-{maximum_index}", got=minor_index
+            )
         if major_index < 0 or major_index > maximum_index:
-            raise ValueError(f"Invalid major index (expected: 0-{maximum_index}, got: {major_index})")
+            raise DerivationError(
+                f"Invalid major index range", expected=f"0-{maximum_index}", got=major_index
+            )
 
         if minor_index == 0 and major_index == 0:
             return self._spend_public_key, self._view_public_key
@@ -151,8 +173,8 @@ class MoneroHD(IHD):
         return MoneroAddress.encode(
             spend_public_key=self._spend_public_key,
             view_public_key=self._view_public_key,
-            network_type=self._network,
-            version_type="standard",
+            network=self._network.__name__.lower(),
+            address_type=Monero.ADDRESS_TYPES.STANDARD,
             payment_id=None
         )
 
@@ -160,8 +182,8 @@ class MoneroHD(IHD):
         return MoneroAddress.encode(
             spend_public_key=self._spend_public_key,
             view_public_key=self._view_public_key,
-            network_type=self._network,
-            version_type="integrated",
+            network=self._network.__name__.lower(),
+            address_type=Monero.ADDRESS_TYPES.INTEGRATED,
             payment_id=get_bytes(payment_id)
         )
 
@@ -177,23 +199,25 @@ class MoneroHD(IHD):
         return MoneroAddress.encode(
             spend_public_key=spend_public_key,
             view_public_key=view_public_key,
-            network_type=self._network,
-            version_type="sub-address",
+            network=self._network.__name__.lower(),
+            address_type="sub-address",
             payment_id=None
         )
 
-    def address(self, version_type: str, **kwargs) -> str:
+    def address(self, address_type: str, **kwargs) -> str:
 
-        if version_type == "standard":
+        if address_type == Monero.ADDRESS_TYPES.STANDARD:
             return self.primary_address()
-        elif version_type == "integrated":
+        elif address_type == Monero.ADDRESS_TYPES.INTEGRATED:
             return self.integrated_address(
                 payment_id=kwargs.get("payment_id")
             )
-        elif version_type == "sub-address":
+        elif address_type == Monero.ADDRESS_TYPES.SUB_ADDRESS:
             return self.sub_address(
                 minor_index=kwargs.get("minor_index"), major_index=kwargs.get("major_index", 0)
             )
-        raise ValueError(
-            f"Invalid version type, (expected: 'standard', 'integrated', and 'sub-address' types, got: '{version_type}')"
+        raise AddressError(
+            f"Invalid {self.name()} address type",
+            expected=Monero.ADDRESS_TYPES.get_address_types(),
+            got=address_type
         )

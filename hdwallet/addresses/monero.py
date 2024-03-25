@@ -14,10 +14,11 @@ from ..libs.base58 import (
 from ..ecc import (
     IPublicKey, SLIP10Ed25519MoneroPublicKey, validate_and_get_public_key
 )
-from ..cryptocurrencies.monero import (
-    Mainnet, Stagenet, Testnet
-)
+from ..cryptocurrencies import Monero
 from ..crypto import kekkak256
+from ..exceptions import (
+    Error, AddressError
+)
 from ..utils import (
     bytes_to_string, integer_to_bytes
 )
@@ -25,22 +26,28 @@ from ..utils import (
 
 class MoneroAddress:
 
-    checksum_length: int = 4
-    payment_id_length: int = 8
-    network_types: Dict[str, Dict[str, Dict[str, int]]] = {
+    checksum_length: int = Monero.PARAMS.CHECKSUM_LENGTH
+    payment_id_length: int = Monero.PARAMS.PAYMENT_ID_LENGTH
+    networks: Dict[str, Dict[str, Dict[str, int]]] = {
         "mainnet": {
-            "version_types": {
-                "standard": Mainnet.STANDARD, "integrated": Mainnet.INTEGRATED, "sub-address": Mainnet.SUB_ADDRESS
+            "address_types": {
+                "standard": Monero.NETWORKS.MAINNET.STANDARD,
+                "integrated": Monero.NETWORKS.MAINNET.INTEGRATED,
+                "sub-address": Monero.NETWORKS.MAINNET.SUB_ADDRESS
             }
         },
         "stagenet": {
-            "version_types": {
-                "standard": Stagenet.STANDARD, "integrated": Stagenet.INTEGRATED, "sub-address": Stagenet.SUB_ADDRESS
+            "address_types": {
+                "standard": Monero.NETWORKS.STAGENET.STANDARD,
+                "integrated": Monero.NETWORKS.STAGENET.INTEGRATED,
+                "sub-address": Monero.NETWORKS.STAGENET.SUB_ADDRESS
             }
         },
         "testnet": {
-            "version_types": {
-                "standard": Testnet.STANDARD, "integrated": Testnet.INTEGRATED, "sub-address": Testnet.SUB_ADDRESS
+            "address_types": {
+                "standard": Monero.NETWORKS.TESTNET.STANDARD,
+                "integrated": Monero.NETWORKS.TESTNET.INTEGRATED,
+                "sub-address": Monero.NETWORKS.TESTNET.SUB_ADDRESS
             }
         }
     }
@@ -58,8 +65,8 @@ class MoneroAddress:
         cls,
         spend_public_key: Union[bytes, str, IPublicKey],
         view_public_key: Union[bytes, str, IPublicKey],
-        network_type: str = "mainnet",
-        version_type: str = "standard",
+        network: str = "mainnet",
+        address_type: str = Monero.ADDRESS_TYPES.STANDARD,
         payment_id: Optional[bytes] = None
     ) -> str:
 
@@ -71,10 +78,10 @@ class MoneroAddress:
         )
 
         if payment_id is not None and len(payment_id) != cls.payment_id_length:
-            raise ValueError("Invalid payment ID length")
+            raise Error("Invalid payment ID length")
 
         version: bytes = integer_to_bytes(
-            cls.network_types[network_type]["version_types"][version_type]
+            cls.networks[network]["address_types"][address_type]
         )
         payload: bytes = (
             version + spend_public_key.raw_compressed() +
@@ -88,8 +95,8 @@ class MoneroAddress:
     def decode(
         cls,
         address: str,
-        network_type: str = "mainnet",
-        version_type: str = "standard",
+        network: str = "mainnet",
+        address_type: str = Monero.ADDRESS_TYPES.STANDARD,
         payment_id: Optional[bytes] = None
     ) -> Tuple[str, str]:
 
@@ -100,40 +107,54 @@ class MoneroAddress:
 
         checksum_got: bytes = cls.compute_checksum(payload_with_prefix)
         if checksum != checksum_got:
-            raise ValueError(f"Invalid checksum (expected: {bytes_to_string(checksum)}, got: {bytes_to_string(checksum_got)})")
+            raise AddressError(
+                "Invalid checksum", expected=bytes_to_string(checksum), got=bytes_to_string(checksum_got)
+            )
 
         version: bytes = integer_to_bytes(
-            cls.network_types[network_type]["version_types"][version_type]
+            cls.networks[network]["address_types"][address_type]
         )
         version_got = payload_with_prefix[:len(version)]
         if version != version_got:
-            raise ValueError(f"Invalid version (expected: {version}, got: {version_got})")
+            raise AddressError(
+                "Invalid version", expected=version, got=version_got
+            )
 
         payload_without_prefix: bytes = payload_with_prefix[len(version):]
 
         expected_length: int = SLIP10Ed25519MoneroPublicKey.compressed_length() * 2
         try:
             if len(payload_without_prefix) != expected_length:
-                raise ValueError(f"Invalid length (expected: {expected_length}, got: {len(payload_without_prefix)})")
+                raise AddressError(
+                    "Invalid length", expected=expected_length, got=len(payload_without_prefix)
+                )
         except ValueError as ex:
             if len(payload_without_prefix) != expected_length + cls.payment_id_length:
-                raise ValueError(f"Invalid length (expected: {expected_length + cls.payment_id_length}, got: {len(payload_without_prefix)})")
+                raise AddressError(
+                    "Invalid length",
+                    expected=(expected_length + cls.payment_id_length),
+                    got=len(payload_without_prefix)
+                )
 
             if payment_id is None or len(payment_id) != cls.payment_id_length:
-                raise ValueError("Invalid payment ID")
+                raise Error("Invalid payment ID")
 
             payment_id_got_bytes = payload_without_prefix[-cls.payment_id_length:]
             if payment_id != payment_id_got_bytes:
-                raise ValueError(f"Invalid payment ID (expected: {bytes_to_string(payment_id_got_bytes)}, got: {bytes_to_string(payment_id_got_bytes)})")
+                raise Error(
+                    "Invalid payment ID",
+                    expected=bytes_to_string(payment_id_got_bytes),
+                    got=bytes_to_string(payment_id_got_bytes)
+                )
 
         length: int = SLIP10Ed25519MoneroPublicKey.compressed_length()
 
         spend_public_key: bytes = payload_without_prefix[:length]
         if not SLIP10Ed25519MoneroPublicKey.is_valid_bytes(spend_public_key):
-            raise ValueError(f"Invalid {SLIP10Ed25519MoneroPublicKey.name()} public key {bytes_to_string(spend_public_key)}")
+            raise Error(f"Invalid {SLIP10Ed25519MoneroPublicKey.name()} public key {bytes_to_string(spend_public_key)}")
 
         view_public_key: bytes = payload_without_prefix[length:(length * 2)]
         if not SLIP10Ed25519MoneroPublicKey.is_valid_bytes(view_public_key):
-            raise ValueError(f"Invalid {SLIP10Ed25519MoneroPublicKey.name()} public key {bytes_to_string(view_public_key)}")
+            raise Error(f"Invalid {SLIP10Ed25519MoneroPublicKey.name()} public key {bytes_to_string(view_public_key)}")
 
         return bytes_to_string(spend_public_key), bytes_to_string(view_public_key)
