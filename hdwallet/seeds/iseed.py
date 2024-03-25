@@ -7,6 +7,9 @@
 from abc import (
     ABC, abstractmethod
 )
+from typing import Union
+
+from ..mnemonics import IMnemonic
 
 
 class ISeed(ABC):
@@ -26,5 +29,5 @@ class ISeed(ABC):
 
     @classmethod
     @abstractmethod
-    def from_mnemonic(cls, mnemonic: str, **kwargs) -> str:
+    def from_mnemonic(cls, mnemonic: Union[str, IMnemonic], **kwargs) -> str:
         pass

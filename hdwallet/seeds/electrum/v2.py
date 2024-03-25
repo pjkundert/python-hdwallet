@@ -4,14 +4,18 @@
 # Distributed under the MIT software license, see the accompanying
 # file COPYING or https://opensource.org/license/mit
 
-from typing import Optional
+from typing import (
+    Optional, Union
+)
 
 import unicodedata
 
 from ...crypto import pbkdf2_hmac_sha512
 from ...exceptions import MnemonicError
 from ...utils import bytes_to_string
-from ...mnemonics.electrum.v2 import ElectrumV2Mnemonic
+from ...mnemonics import (
+    IMnemonic, ElectrumV2Mnemonic
+)
 from ..iseed import ISeed
 
 
@@ -25,8 +29,10 @@ class ElectrumV2Seed(ISeed):
         return "Electrum-V2"
 
     @classmethod
-    def from_mnemonic(cls, mnemonic: str, passphrase: Optional[str] = None) -> str:
-
+    def from_mnemonic(cls, mnemonic: Union[str, IMnemonic], passphrase: Optional[str] = None) -> str:
+        mnemonic = (
+            mnemonic.mnemonic() if isinstance(mnemonic, IMnemonic) else mnemonic
+        )
         if not ElectrumV2Mnemonic.is_valid(mnemonic=mnemonic):
             raise MnemonicError(f"Invalid {cls.name()} mnemonic words")
 

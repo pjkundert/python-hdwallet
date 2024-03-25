@@ -4,9 +4,13 @@
 # Distributed under the MIT software license, see the accompanying
 # file COPYING or https://opensource.org/license/mit
 
+from typing import Union
+
 from ...crypto import sha256
 from ...exceptions import MnemonicError
-from ...mnemonics.electrum.v1 import ElectrumV1Mnemonic
+from ...mnemonics import (
+    IMnemonic, ElectrumV1Mnemonic
+)
 from ...utils import bytes_to_string, encode
 from ..iseed import ISeed
 
@@ -20,8 +24,10 @@ class ElectrumV1Seed(ISeed):
         return "Electrum-V1"
 
     @classmethod
-    def from_mnemonic(cls, mnemonic: str, **kwargs) -> str:
-
+    def from_mnemonic(cls, mnemonic: Union[str, IMnemonic], **kwargs) -> str:
+        mnemonic = (
+            mnemonic.mnemonic() if isinstance(mnemonic, IMnemonic) else mnemonic
+        )
         if not ElectrumV1Mnemonic.is_valid(mnemonic=mnemonic):
             raise MnemonicError(f"Invalid {cls.name()} mnemonic words")
 
