@@ -9,10 +9,7 @@ from typing import (
 )
 
 from ...ecc import (
-    IPublicKey, IPrivateKey
-)
-from ...ecc.slip10.secp256k1 import (
-    SLIP10Secp256k1ECC, SLIP10Secp256k1PrivateKey, SLIP10Secp256k1PublicKey
+    IPublicKey, IPrivateKey, SLIP10Secp256k1ECC, SLIP10Secp256k1PrivateKey, SLIP10Secp256k1PublicKey
 )
 from ...seeds import ISeed
 from ...addresses import P2PKHAddress
@@ -97,48 +94,11 @@ class ElectrumV1HD(IHD):
         self._master_public_key = public_key
         return self
 
-    def seed(self) -> Optional[str]:
-        return bytes_to_string(self._seed)
-
-    def master_wif(self, wif_type: Optional[str] = None) -> Optional[str]:
-
-        if wif_type:
-            if wif_type not in WIF_TYPES.get_types():
-                raise Error(
-                    "Invalid WIF type", expected=WIF_TYPES.get_types(), got=wif_type
-                )
-            _wif_type: str = wif_type
-        else:
-            _wif_type: str = self._wif_type
-
-        return private_key_to_wif(
-            private_key=self.master_private_key(), wif_type=_wif_type
-        )
-
-    def master_private_key(self) -> Optional[str]:
-
-        if not self._master_private_key:
-            return None
-
-        return bytes_to_string(self._master_private_key.raw())
-
-    def master_public_key(self, public_key_type: Optional[str] = None) -> str:
-        _public_key_type: str = (
-            public_key_type if public_key_type in PUBLIC_KEY_TYPES.get_types() else self._public_key_type
-        )
-        if _public_key_type == PUBLIC_KEY_TYPES.UNCOMPRESSED:
-            return bytes_to_string(self._master_public_key.raw_uncompressed())
-        elif _public_key_type == PUBLIC_KEY_TYPES.COMPRESSED:
-            return bytes_to_string(self._master_public_key.raw_compressed())
-        raise Error(
-            "Invalid public key type", expected=PUBLIC_KEY_TYPES.get_types(), got=public_key_type
-        )
-
     def from_derivation(self, derivation: IDerivation) -> "ElectrumV1HD":
 
         if not isinstance(derivation, ElectrumDerivation):
             raise DerivationError(
-                "Invalid derivation instance", expected=ElectrumDerivation, got=type(derivation)
+                f"Invalid {self.name()} derivation instance", expected=ElectrumDerivation, got=type(derivation)
             )
 
         return self.drive(
@@ -177,6 +137,43 @@ class ElectrumV1HD(IHD):
             )
         return self
 
+    def seed(self) -> str:
+        return bytes_to_string(self._seed)
+
+    def master_private_key(self) -> Optional[str]:
+
+        if not self._master_private_key:
+            return None
+
+        return bytes_to_string(self._master_private_key.raw())
+
+    def master_wif(self, wif_type: Optional[str] = None) -> Optional[str]:
+
+        if wif_type:
+            if wif_type not in WIF_TYPES.get_types():
+                raise Error(
+                    f"Invalid {self.name()} WIF type", expected=WIF_TYPES.get_types(), got=wif_type
+                )
+            _wif_type: str = wif_type
+        else:
+            _wif_type: str = self._wif_type
+
+        return private_key_to_wif(
+            private_key=self.master_private_key(), wif_type=_wif_type
+        )
+
+    def master_public_key(self, public_key_type: Optional[str] = None) -> str:
+        _public_key_type: str = (
+            public_key_type if public_key_type in PUBLIC_KEY_TYPES.get_types() else self._public_key_type
+        )
+        if _public_key_type == PUBLIC_KEY_TYPES.UNCOMPRESSED:
+            return bytes_to_string(self._master_public_key.raw_uncompressed())
+        elif _public_key_type == PUBLIC_KEY_TYPES.COMPRESSED:
+            return bytes_to_string(self._master_public_key.raw_compressed())
+        raise Error(
+            f"Invalid {self.name()} public key type", expected=PUBLIC_KEY_TYPES.get_types(), got=public_key_type
+        )
+
     def private_key(self) -> Optional[str]:
         if not self._private_key:
             return None
@@ -189,7 +186,7 @@ class ElectrumV1HD(IHD):
         if wif_type:
             if wif_type not in WIF_TYPES.get_types():
                 raise Error(
-                    "Invalid WIF type", expected=WIF_TYPES.get_types(), got=wif_type
+                    f"Invalid {self.name()} WIF type", expected=WIF_TYPES.get_types(), got=wif_type
                 )
             _wif_type: str = wif_type
         else:
@@ -206,7 +203,7 @@ class ElectrumV1HD(IHD):
         if public_key_type:
             if public_key_type not in PUBLIC_KEY_TYPES.get_types():
                 raise Error(
-                    "Invalid public key type", expected=PUBLIC_KEY_TYPES.get_types(), got=public_key_type
+                    f"Invalid {self.name()} public key type", expected=PUBLIC_KEY_TYPES.get_types(), got=public_key_type
                 )
             _public_key_type: str = public_key_type
         else:
@@ -229,5 +226,7 @@ class ElectrumV1HD(IHD):
     def address(self, network_version: int = Bitcoin.NETWORKS.MAINNET.PUBLIC_KEY_ADDRESS_PREFIX) -> str:
 
         return P2PKHAddress.encode(
-            public_key=self._public_key, network_version=network_version, public_key_type=self._public_key_type
+            public_key=self._public_key,
+            network_version=network_version,
+            public_key_type=self._public_key_type
         )
