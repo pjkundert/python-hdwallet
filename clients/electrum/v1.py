@@ -46,8 +46,9 @@ electrum_v1_hd.from_seed(
 )
 
 # Dump master keys
-print("Electrum-V1 Master WIF:", electrum_v1_hd.master_wif())
+print("Electrum-V2 Seed:", electrum_v1_hd.seed())
 print("Electrum-V1 Master Private Key:", electrum_v1_hd.master_private_key())
+print("Electrum-V1 Master WIF:", electrum_v1_hd.master_wif())
 print("Electrum-V1 Master Public Key:", electrum_v1_hd.master_public_key())
 print("Electrum-V1 Public Key Type:", electrum_v1_hd.public_key_type())
 print("Electrum-V1 WIF Type:", electrum_v1_hd.wif_type())
