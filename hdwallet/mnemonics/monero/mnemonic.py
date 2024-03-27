@@ -165,7 +165,7 @@ class MoneroMnemonic(IMnemonic):
         return " ".join(cls.normalize(mnemonic))
 
     @classmethod
-    def decode(cls, mnemonic: str) -> str:
+    def decode(cls, mnemonic: str, **kwargs) -> str:
         words: list = cls.normalize(mnemonic)
         if len(words) not in cls.words:
             raise MnemonicError("Invalid mnemonic words count", expected=cls.words, got=len(words))

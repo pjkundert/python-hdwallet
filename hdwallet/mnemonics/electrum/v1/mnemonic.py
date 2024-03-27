@@ -101,7 +101,9 @@ class ElectrumV1Mnemonic(IMnemonic):
         return " ".join(cls.normalize(mnemonic))
 
     @classmethod
-    def decode(cls, mnemonic: str, words_list: Optional[List[str]] = None, words_list_with_index: Optional[dict] = None) -> str:
+    def decode(
+        cls, mnemonic: str, words_list: Optional[List[str]] = None, words_list_with_index: Optional[dict] = None
+    ) -> str:
 
         words: list = cls.normalize(mnemonic)
         if len(words) not in cls.words:

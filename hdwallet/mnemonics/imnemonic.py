@@ -26,10 +26,10 @@ class IMnemonic(ABC):
     languages: List[str]
     wordlist_path: Dict[str, str]
 
-    def __init__(self, mnemonic: Union[str, List[str]]) -> None:
+    def __init__(self, mnemonic: Union[str, List[str]], **kwargs) -> None:
 
         self._mnemonic: List[str] = self.normalize(mnemonic)
-        if not self.is_valid(self._mnemonic):
+        if not self.is_valid(self._mnemonic, **kwargs):
             raise Exception("Invalid mnemonic words")
 
         _, self._language = self.find_language(self._mnemonic)
@@ -68,7 +68,7 @@ class IMnemonic(ABC):
 
     @classmethod
     @abstractmethod
-    def decode(cls, mnemonic: Union[str, List[str]]) -> str:
+    def decode(cls, mnemonic: Union[str, List[str]], **kwargs) -> str:
         pass
 
     @classmethod
@@ -99,9 +99,9 @@ class IMnemonic(ABC):
         raise ValueError(f"Invalid language for mnemonic '{mnemonic}'")
 
     @classmethod
-    def is_valid(cls, mnemonic: Union[str, List[str]]) -> bool:
+    def is_valid(cls, mnemonic: Union[str, List[str]], **kwargs) -> bool:
         try:
-            cls.decode(mnemonic=mnemonic)
+            cls.decode(mnemonic=mnemonic, **kwargs)
             return True
         except ValueError:
             return False
