@@ -207,12 +207,17 @@ class BIP39Mnemonic(IMnemonic):
 
     @classmethod
     def is_valid(
-        cls, mnemonic: Union[str, List[str]], words_list: Optional[List[str]] = None, words_list_with_index: Optional[dict] = None
+        cls,
+        mnemonic: Union[str, List[str]],
+        words_list: Optional[List[str]] = None,
+        words_list_with_index: Optional[dict] = None
     ) -> bool:
         try:
-            cls.decode(mnemonic=mnemonic, words_list=words_list, words_list_with_index=words_list_with_index)
+            cls.decode(
+                mnemonic=mnemonic, words_list=words_list, words_list_with_index=words_list_with_index
+            )
             return True
-        except (ValueError, KeyError):
+        except (Error, KeyError):
             return False
 
     @classmethod
