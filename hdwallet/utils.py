@@ -80,6 +80,8 @@ def normalize_derivation(
             raise DerivationError(
                 f"Bad path format", expected="like this type of path \"m/0'/0\"", got=path
             )
+    elif not path:
+        return f"{_path}/", _indexes, _derivations
 
     for depth, index in enumerate(path.lstrip("m/").split("/")):
         if "'" in index:
