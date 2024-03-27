@@ -27,8 +27,12 @@ class IEntropy:
     def __init__(self, entropy: Union[bytes, str]) -> None:
         try:
             strength: int = len(get_bytes(entropy))
-            if not self.is_valid_bytes_strength(strength):
-                raise EntropyError("Unsupported entropy strength")
+            if self.name() == "Electrum-V2":
+                if not self.are_entropy_bits_enough(get_bytes(entropy)):
+                    raise EntropyError("Entropy bits are not enough")
+            else:
+                if not self.is_valid_bytes_strength(strength):
+                    raise EntropyError("Unsupported entropy strength")
             self._entropy = bytes_to_string(entropy)
             self._strength = strength * 8
         except ValueError:
@@ -61,3 +65,6 @@ class IEntropy:
     @classmethod
     def is_valid_bytes_strength(cls, bytes_strength: int) -> bool:
         return cls.is_valid_strength(bytes_strength * 8)
+
+    def are_entropy_bits_enough(self, entropy: Union[bytes, int]) -> bool:
+        pass
