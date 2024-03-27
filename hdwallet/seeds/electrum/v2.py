@@ -14,7 +14,7 @@ from ...crypto import pbkdf2_hmac_sha512
 from ...exceptions import MnemonicError
 from ...utils import bytes_to_string
 from ...mnemonics import (
-    IMnemonic, ElectrumV2Mnemonic
+    IMnemonic, ElectrumV2Mnemonic, ELECTRUM_V2_MNEMONIC_TYPES
 )
 from ..iseed import ISeed
 
@@ -29,11 +29,16 @@ class ElectrumV2Seed(ISeed):
         return "Electrum-V2"
 
     @classmethod
-    def from_mnemonic(cls, mnemonic: Union[str, IMnemonic], passphrase: Optional[str] = None) -> str:
+    def from_mnemonic(
+        cls,
+        mnemonic: Union[str, IMnemonic],
+        passphrase: Optional[str] = None,
+        mnemonic_type=ELECTRUM_V2_MNEMONIC_TYPES.STANDARD
+    ) -> str:
         mnemonic = (
             mnemonic.mnemonic() if isinstance(mnemonic, IMnemonic) else mnemonic
         )
-        if not ElectrumV2Mnemonic.is_valid(mnemonic=mnemonic):
+        if not ElectrumV2Mnemonic.is_valid(mnemonic=mnemonic, mnemonic_type=mnemonic_type):
             raise MnemonicError(f"Invalid {cls.name()} mnemonic words")
 
         salt: str = unicodedata.normalize("NFKD", (
