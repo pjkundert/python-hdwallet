@@ -21,6 +21,7 @@ class IMnemonic(ABC):
     _mnemonic: List[str]
     _word: int
     _language: str
+    _mnemonic_type: Optional[str] = None
 
     words: List[int]
     languages: List[str]
@@ -33,6 +34,7 @@ class IMnemonic(ABC):
             raise Exception("Invalid mnemonic words")
 
         _, self._language = self.find_language(self._mnemonic)
+        self._mnemonic_type = kwargs.get("mnemonic_type", None)
         self._word = len(self._mnemonic)
 
     @classmethod

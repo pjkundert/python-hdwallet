@@ -240,6 +240,9 @@ class ElectrumV2Mnemonic(IMnemonic):
             cls.mnemonic_types[mnemonic_type]
         )
 
+    def mnemonic_type(self) -> str:
+        return self._mnemonic_type
+
     @classmethod
     def normalize(cls, mnemonic: Union[str, List[str]]) -> List[str]:
         mnemonic: list = mnemonic.split() if isinstance(mnemonic, str) else mnemonic
