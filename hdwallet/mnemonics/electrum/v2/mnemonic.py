@@ -82,7 +82,9 @@ class ElectrumV2Mnemonic(IMnemonic):
         return "Electrum-V2"
 
     @classmethod
-    def from_words(cls, words: int, language: str, **kwargs) -> str:
+    def from_words(
+        cls, words: int, language: str, mnemonic_type: str = ELECTRUM_V2_MNEMONIC_TYPES.STANDARD, **kwargs
+    ) -> str:
         if words not in cls.words:
             raise MnemonicError("Invalid mnemonic words number", expected=cls.words, got=words)
 
@@ -91,11 +93,17 @@ class ElectrumV2Mnemonic(IMnemonic):
                 cls.words_to_entropy_strength[words]
             ),
             language=language,
-            mnemonic_type=kwargs.get("mnemonic_type", "standard")
+            mnemonic_type=mnemonic_type
         )
 
     @classmethod
-    def from_entropy(cls, entropy: Union[str, bytes, IEntropy], language: str, **kwargs) -> str:
+    def from_entropy(
+        cls,
+        entropy: Union[str, bytes, IEntropy],
+        language: str,
+        mnemonic_type: str = ELECTRUM_V2_MNEMONIC_TYPES.STANDARD,
+        **kwargs
+    ) -> str:
 
         if isinstance(entropy, str) or isinstance(entropy, bytes):
             entropy: bytes = get_bytes(entropy)
@@ -131,14 +139,14 @@ class ElectrumV2Mnemonic(IMnemonic):
                     return cls.encode(
                         entropy=integer_to_bytes(new_entropy),
                         language=language,
-                        mnemonic_type=kwargs.get("mnemonic_type", "standard"),
+                        mnemonic_type=mnemonic_type,
                         words_list=words_list,
                         bip39_words_list=bip39_words_list,
                         bip39_words_list_with_index=bip39_words_list_with_index,
                         electrum_v1_words_list=electrum_v1_words_list,
                         electrum_v1_words_list_with_index=electrum_v1_words_list_with_index
                     )
-                except ValueError:
+                except EntropyError:
                     continue
 
         raise Error("Unable to generate a valid mnemonic")
@@ -148,7 +156,7 @@ class ElectrumV2Mnemonic(IMnemonic):
         cls,
         entropy: Union[str, bytes],
         language: str,
-        mnemonic_type: str = "standard",
+        mnemonic_type: str = ELECTRUM_V2_MNEMONIC_TYPES.STANDARD,
         words_list: Optional[List[str]] = None,
         bip39_words_list: Optional[List[str]] = None,
         bip39_words_list_with_index: Optional[dict] = None,
@@ -181,7 +189,7 @@ class ElectrumV2Mnemonic(IMnemonic):
         return " ".join(cls.normalize(mnemonic))
 
     @classmethod
-    def decode(cls, mnemonic: str, mnemonic_type: str = "standard") -> str:
+    def decode(cls, mnemonic: str, mnemonic_type: str = ELECTRUM_V2_MNEMONIC_TYPES.STANDARD) -> str:
 
         words: list = cls.normalize(mnemonic)
         if len(words) not in cls.words:
@@ -205,7 +213,7 @@ class ElectrumV2Mnemonic(IMnemonic):
     def is_valid(
         cls,
         mnemonic: Union[str, List[str]],
-        mnemonic_type: str = "standard",
+        mnemonic_type: str = ELECTRUM_V2_MNEMONIC_TYPES.STANDARD,
         bip39_words_list: Optional[List[str]] = None,
         bip39_words_list_with_index: Optional[dict] = None,
         electrum_v1_words_list: Optional[List[str]] = None,
@@ -223,7 +231,9 @@ class ElectrumV2Mnemonic(IMnemonic):
         )
 
     @classmethod
-    def is_type(cls, mnemonic: Union[str, List[str]], mnemonic_type: str = "standard") -> bool:
+    def is_type(
+        cls, mnemonic: Union[str, List[str]], mnemonic_type: str = ELECTRUM_V2_MNEMONIC_TYPES.STANDARD
+    ) -> bool:
         return bytes_to_string(hmac_sha512(
             b"Seed version", " ".join(cls.normalize(mnemonic))
         )).startswith(
