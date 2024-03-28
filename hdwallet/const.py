@@ -38,45 +38,26 @@ class NestedNamespace(SimpleNamespace):
                     self.__setattr__(key, value)
 
 
-class Ed25519Const(NestedNamespace):
+class SLIP10_ED25519_CONST:
 
-    PRIVATE_KEY_BYTE_LENGTH: int
-    PUBLIC_KEY_PREFIX: bytes
-    PUBLIC_KEY_BYTE_LENGTH: int
-
-
-SLIP10_ED25519_CONST: Ed25519Const = Ed25519Const({
-    "PRIVATE_KEY_BYTE_LENGTH": 32,
-    "PUBLIC_KEY_PREFIX": b"\x00",
-    "PUBLIC_KEY_BYTE_LENGTH": 32
-})
+    PRIVATE_KEY_BYTE_LENGTH: int = 32
+    PUBLIC_KEY_PREFIX: bytes = b"\x00"
+    PUBLIC_KEY_BYTE_LENGTH: int = 32
 
 
-KHOLAW_ED25519_CONST: Ed25519Const = Ed25519Const({
-    "PRIVATE_KEY_BYTE_LENGTH": 64,
-    "PUBLIC_KEY_PREFIX": b"\x00",
-    "PUBLIC_KEY_BYTE_LENGTH": 32
-})
+class KHOLAW_ED25519_CONST(SLIP10_ED25519_CONST):
+
+    PRIVATE_KEY_BYTE_LENGTH: int = 64
 
 
-class Secp256k1Const(NestedNamespace):
+class SLIP10_SECP256K1_CONST:
 
-    USE: Literal["coincurve", "ecdsa"]
-    POINT_COORDINATE_BYTE_LENGTH: int
-    PRIVATE_KEY_BYTE_LENGTH: int
-    PUBLIC_KEY_UNCOMPRESSED_PREFIX: bytes
-    PUBLIC_KEY_COMPRESSED_BYTE_LENGTH: int
-    PUBLIC_KEY_UNCOMPRESSED_BYTE_LENGTH: int
-
-
-SLIP10_SECP256K1_CONST: Secp256k1Const = Secp256k1Const({
-    "USE": "coincurve",
-    "POINT_COORDINATE_BYTE_LENGTH": 32,
-    "PRIVATE_KEY_BYTE_LENGTH": 32,
-    "PUBLIC_KEY_UNCOMPRESSED_PREFIX": b"\x04",
-    "PUBLIC_KEY_COMPRESSED_BYTE_LENGTH": 33,
-    "PUBLIC_KEY_UNCOMPRESSED_BYTE_LENGTH": 65,
-})
+    USE: Literal["coincurve", "ecdsa"] = "coincurve"
+    POINT_COORDINATE_BYTE_LENGTH: int = 32
+    PRIVATE_KEY_BYTE_LENGTH: int = 32
+    PUBLIC_KEY_UNCOMPRESSED_PREFIX: bytes = b"\x04"
+    PUBLIC_KEY_COMPRESSED_BYTE_LENGTH: int = 33
+    PUBLIC_KEY_UNCOMPRESSED_BYTE_LENGTH: int = 65
 
 
 class Info(NestedNamespace):
@@ -184,52 +165,39 @@ class XPublicKeyVersions(ExtendedKeyVersions):
     pass
 
 
-class PublicKeyTypes(NestedNamespace):
+class PUBLIC_KEY_TYPES:
 
-    UNCOMPRESSED: str
-    COMPRESSED: str
+    UNCOMPRESSED: str = "uncompressed"
+    COMPRESSED: str = "compressed"
 
-    def get_types(self) -> List[str]:
+    @classmethod
+    def get_types(cls) -> List[str]:
         return [
-            self.UNCOMPRESSED, self.COMPRESSED
+            cls.UNCOMPRESSED, cls.COMPRESSED
         ]
 
 
-PUBLIC_KEY_TYPES: PublicKeyTypes = PublicKeyTypes({
-    "UNCOMPRESSED": "uncompressed",
-    "COMPRESSED": "compressed"
-})
+class WIF_TYPES:
 
+    WIF: str = "wif"
+    WIF_COMPRESSED: str = "wif-compressed"
 
-class WIFTypes(NestedNamespace):
-
-    WIF: str
-    WIF_COMPRESSED: str
-
-    def get_types(self) -> List[str]:
+    @classmethod
+    def get_types(cls) -> List[str]:
         return [
-            self.WIF, self.WIF_COMPRESSED
+            cls.WIF, cls.WIF_COMPRESSED
         ]
 
 
-WIF_TYPES: WIFTypes = WIFTypes({
-    "WIF": "wif",
-    "WIF_COMPRESSED": "wif-compressed"
-})
+class ELECTRUM_V2_MODES:
 
+    STANDARD: str = "standard"
+    SEGWIT: str = "segwit"
 
-class ElectrumV2Modes(NestedNamespace):
-
-    STANDARD: str
-    SEGWIT: str
-
-    def get_modes(self) -> List[str]:
+    @classmethod
+    def get_modes(cls) -> List[str]:
         return [
-            self.STANDARD, self.SEGWIT
+            cls.STANDARD, cls.SEGWIT
         ]
 
 
-ELECTRUM_V2_MODES: ElectrumV2Modes = ElectrumV2Modes({
-    "STANDARD": "standard",
-    "SEGWIT": "segwit"
-})
