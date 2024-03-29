@@ -38,6 +38,7 @@ class BIP44Derivation(IDerivation):  # https://github.com/bitcoin/bips/blob/mast
         change: str = "external-chain",
         address: Union[int, Tuple[int, int]] = 0
     ) -> None:
+        super(BIP44Derivation, self).__init__(indexes=[])
 
         self._coin_type = (coin_type, True)
         self._account = (*account, True) if isinstance(account, tuple) else (account, True)
@@ -50,7 +51,6 @@ class BIP44Derivation(IDerivation):  # https://github.com/bitcoin/bips/blob/mast
             f"{index_tuple_to_string(index=self._change)}/"
             f"{index_tuple_to_string(index=self._address)}"
         ))
-        super(BIP44Derivation, self).__init__(path=self._path)
 
     @classmethod
     def name(cls) -> str:
