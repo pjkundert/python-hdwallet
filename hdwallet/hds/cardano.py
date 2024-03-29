@@ -23,7 +23,16 @@ from ..exceptions import (
     Error, AddressError, DerivationError
 )
 from ..utils import (
-    get_bytes, get_hmac, reset_bits, set_bits, add_no_carry, multiply_scalar_no_carry, bytes_to_string, are_bits_set, integer_to_bytes, bytes_to_integer
+    get_bytes,
+    get_hmac,
+    reset_bits,
+    set_bits,
+    add_no_carry,
+    multiply_scalar_no_carry,
+    bytes_to_string,
+    are_bits_set,
+    integer_to_bytes,
+    bytes_to_integer
 )
 from ..addresses.cardano import CardanoAddress
 from .bip32 import BIP32HD

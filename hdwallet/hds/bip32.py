@@ -591,6 +591,9 @@ class BIP32HD(IHD):
             private_key=self.private_key(), wif_type=_wif_type
         ) if self.private_key() else None
 
+    def wif_type(self) -> str:
+        return self._wif_type
+
     def chain_code(self) -> Optional[str]:
         return bytes_to_string(self._chain_code)
 
