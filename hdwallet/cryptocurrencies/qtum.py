@@ -101,7 +101,7 @@ class Qtum(ICryptocurrency):
         "BIP39"
     })
     HDS = HDs({
-        "BIP32", "BIP44"
+        "BIP32", "BIP44", "BIP49", "BIP84", "BIP86", "BIP141"
     })
     DEFAULT_HD = HDS.BIP44
     ADDRESSES = Addresses((
