@@ -117,5 +117,13 @@ class IMnemonic(ABC):
             return False
 
     @classmethod
+    def is_valid_language(cls, language: str) -> bool:
+        return language in cls.languages
+
+    @classmethod
+    def is_valid_words(cls, words: int) -> bool:
+        return words in cls.words
+
+    @classmethod
     def normalize(cls, mnemonic: Union[str, List[str]]) -> List[str]:
         return mnemonic.split() if isinstance(mnemonic, str) else mnemonic
