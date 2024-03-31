@@ -29,7 +29,7 @@ class BIP39Seed(ISeed):
         return "BIP39"
 
     @classmethod
-    def from_mnemonic(cls, mnemonic: Union[str, IMnemonic], passphrase: Optional[str] = None) -> str:
+    def from_mnemonic(cls, mnemonic: Union[str, IMnemonic], passphrase: Optional[str] = None, **kwargs) -> str:
         mnemonic = (
             mnemonic.mnemonic() if isinstance(mnemonic, IMnemonic) else mnemonic
         )
