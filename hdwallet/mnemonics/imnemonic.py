@@ -74,7 +74,9 @@ class IMnemonic(ABC):
         pass
 
     @classmethod
-    def get_words_list_by_language(cls, language: str, wordlist_path: Optional[Dict[str, str]] = None) -> List[str]:
+    def get_words_list_by_language(
+        cls, language: str, wordlist_path: Optional[Dict[str, str]] = None
+    ) -> List[str]:
         wordlist_path = cls.wordlist_path if wordlist_path is None else wordlist_path
         with open(os.path.join(os.path.dirname(__file__), wordlist_path[language]), "r", encoding="utf-8") as fin:
             words_list: List[str] = [
@@ -83,10 +85,16 @@ class IMnemonic(ABC):
         return words_list
 
     @classmethod
-    def find_language(cls, mnemonic: List[str], wordlist_path: Optional[Dict[str, str]] = None) -> Union[str, Tuple[List[str], str]]:
+    def find_language(
+        cls, mnemonic: List[str], wordlist_path: Optional[Dict[str, str]] = None
+    ) -> Union[str, Tuple[List[str], str]]:
         for language in cls.languages:
             try:
-                words_list: list = cls.get_words_list_by_language(language=language, wordlist_path=wordlist_path)
+                words_list: list = cls.normalize(
+                    cls.get_words_list_by_language(
+                        language=language, wordlist_path=wordlist_path
+                    )
+                )
                 words_list_with_index: dict = {
                     words_list[i]: i for i in range(len(words_list))
                 }
