@@ -49,3 +49,4 @@ def generate_entropy(name: str, strength: Optional[int]) -> None:
 
     except Exception as exception:
         click.echo(click.style(f"Error: {str(exception)}"), err=True)
+        sys.exit()

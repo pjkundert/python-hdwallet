@@ -32,3 +32,4 @@ def generate_seed(name: str, mnemonic: str, passphrase: Optional[str], **kwargs)
 
     except Exception as exception:
         click.echo(click.style(f"Error: {str(exception)}"), err=True)
+        sys.exit()

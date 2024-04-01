@@ -19,7 +19,7 @@ from ...mnemonics import (
 )
 
 
-def generate_mnemonic(name: str, language: Optional[str], words: Optional[str]) -> None:
+def generate_mnemonic(name: str, language: Optional[str], entropy: Optional[str], words: Optional[str]) -> None:
     try:
         if name not in MNEMONICS.keys():
             click.echo(click.style(
@@ -63,9 +63,15 @@ def generate_mnemonic(name: str, language: Optional[str], words: Optional[str]) 
             ), err=True)
             sys.exit()
 
-        click.echo(MNEMONICS[name].from_words(
-            words=words, language=language
-        ))
+        if entropy:
+            click.echo(MNEMONICS[name].from_entropy(
+                entropy=entropy, language=language
+            ))
+        else:
+            click.echo(MNEMONICS[name].from_words(
+                words=words, language=language
+            ))
 
     except Exception as exception:
         click.echo(click.style(f"Error: {str(exception)}"), err=True)
+        sys.exit()
