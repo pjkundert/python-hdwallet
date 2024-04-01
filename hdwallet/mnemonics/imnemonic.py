@@ -19,7 +19,7 @@ from ..entropies import IEntropy
 class IMnemonic(ABC):
 
     _mnemonic: List[str]
-    _word: int
+    _words: int
     _language: str
     _mnemonic_type: Optional[str] = None
 
@@ -35,7 +35,7 @@ class IMnemonic(ABC):
 
         _, self._language = self.find_language(self._mnemonic)
         self._mnemonic_type = kwargs.get("mnemonic_type", None)
-        self._word = len(self._mnemonic)
+        self._words = len(self._mnemonic)
 
     @classmethod
     def name(cls) -> str:
@@ -50,17 +50,17 @@ class IMnemonic(ABC):
             language += _.title() if index == 0 else f"-{_.title()}"
         return language
 
-    def word(self) -> int:
-        return self._word
+    def words(self) -> int:
+        return self._words
 
     @classmethod
     @abstractmethod
-    def from_words(cls, words: int, language: str, **kwargs) -> str:
+    def from_words(cls, words: int, language: str) -> str:
         pass
 
     @classmethod
     @abstractmethod
-    def from_entropy(cls, entropy: Union[str, bytes, IEntropy], language: str, **kwargs) -> str:
+    def from_entropy(cls, entropy: Union[str, bytes, IEntropy], language: str) -> str:
         pass
 
     @classmethod

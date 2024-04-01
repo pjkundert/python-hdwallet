@@ -107,7 +107,7 @@ class MoneroMnemonic(IMnemonic):
         return "Monero"
 
     @classmethod
-    def from_words(cls, words: int, language: str, **kwargs) -> str:
+    def from_words(cls, words: int, language: str) -> str:
         if words not in cls.words:
             raise MnemonicError("Invalid mnemonic words number", expected=cls.words, got=words)
 
@@ -120,14 +120,14 @@ class MoneroMnemonic(IMnemonic):
         )
 
     @classmethod
-    def from_entropy(cls, entropy: Union[str, bytes, IEntropy], language: str, **kwargs) -> str:
+    def from_entropy(cls, entropy: Union[str, bytes, IEntropy], language: str, checksum: bool = False) -> str:
         if isinstance(entropy, str) or isinstance(entropy, bytes):
             return cls.encode(
-                entropy=entropy, language=language, checksum=kwargs.get("checksum", False)
+                entropy=entropy, language=language, checksum=checksum
             )
         elif isinstance(entropy, MoneroEntropy):
             return cls.encode(
-                entropy=entropy.entropy(), language=language, checksum=kwargs.get("checksum", False)
+                entropy=entropy.entropy(), language=language, checksum=checksum
             )
         raise EntropyError(
             "Invalid entropy instance", expected=[str, bytes, MoneroEntropy], got=type(entropy)

@@ -83,7 +83,7 @@ class ElectrumV2Mnemonic(IMnemonic):
 
     @classmethod
     def from_words(
-        cls, words: int, language: str, mnemonic_type: str = ELECTRUM_V2_MNEMONIC_TYPES.STANDARD, **kwargs
+        cls, words: int, language: str, mnemonic_type: str = ELECTRUM_V2_MNEMONIC_TYPES.STANDARD
     ) -> str:
         if words not in cls.words:
             raise MnemonicError("Invalid mnemonic words number", expected=cls.words, got=words)
@@ -101,8 +101,7 @@ class ElectrumV2Mnemonic(IMnemonic):
         cls,
         entropy: Union[str, bytes, IEntropy],
         language: str,
-        mnemonic_type: str = ELECTRUM_V2_MNEMONIC_TYPES.STANDARD,
-        **kwargs
+        mnemonic_type: str = ELECTRUM_V2_MNEMONIC_TYPES.STANDARD
     ) -> str:
 
         if isinstance(entropy, str) or isinstance(entropy, bytes):
