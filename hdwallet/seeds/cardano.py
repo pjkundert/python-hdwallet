@@ -30,8 +30,8 @@ class CardanoSeed(ISeed):
 
     _cardano_type: str
 
-    def __init__(self, seed: str, cardano_type: str = Cardano.TYPES.BYRON_ICARUS, **kwargs) -> None:
-        super(CardanoSeed, self).__init__(seed, **kwargs)
+    def __init__(self, seed: str, cardano_type: str = Cardano.TYPES.BYRON_ICARUS) -> None:
+        super(CardanoSeed, self).__init__(seed=seed, cardano_type=cardano_type)
 
         if cardano_type not in Cardano.TYPES.get_cardano_types():
             raise Error(

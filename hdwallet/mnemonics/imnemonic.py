@@ -21,7 +21,7 @@ class IMnemonic(ABC):
     _mnemonic: List[str]
     _words: int
     _language: str
-    _mnemonic_type: Optional[str] = None
+    _mnemonic_type: Optional[str]
 
     words_list: List[int]
     languages: List[str]

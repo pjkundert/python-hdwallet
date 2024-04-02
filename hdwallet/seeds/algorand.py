@@ -20,7 +20,7 @@ class AlgorandSeed(ISeed):
         return "Algorand"
 
     @classmethod
-    def from_mnemonic(cls, mnemonic: Union[str, IMnemonic], **kwargs) -> str:
+    def from_mnemonic(cls, mnemonic: Union[str, IMnemonic]) -> str:
         mnemonic = (
             mnemonic.mnemonic() if isinstance(mnemonic, IMnemonic) else mnemonic
         )
