@@ -34,7 +34,7 @@ class ELECTRUM_V1_MNEMONIC_LANGUAGES:
 
 class ElectrumV1Mnemonic(IMnemonic):
 
-    words: List[int] = [
+    words_list: List[int] = [
         ELECTRUM_V1_MNEMONIC_WORDS.TWELVE
     ]
     words_to_entropy_strength: Dict[int, int] = {
@@ -54,8 +54,8 @@ class ElectrumV1Mnemonic(IMnemonic):
 
     @classmethod
     def from_words(cls, words: int, language: str) -> str:
-        if words not in cls.words:
-            raise MnemonicError("Invalid mnemonic words number", expected=cls.words, got=words)
+        if words not in cls.words_list:
+            raise MnemonicError("Invalid mnemonic words number", expected=cls.words_list, got=words)
 
         return cls.from_entropy(
             entropy=ElectrumV1Entropy.generate(cls.words_to_entropy_strength[words]), language=language
@@ -106,8 +106,8 @@ class ElectrumV1Mnemonic(IMnemonic):
     ) -> str:
 
         words: list = cls.normalize(mnemonic)
-        if len(words) not in cls.words:
-            raise MnemonicError("Invalid mnemonic words count", expected=cls.words, got=len(words))
+        if len(words) not in cls.words_list:
+            raise MnemonicError("Invalid mnemonic words count", expected=cls.words_list, got=len(words))
 
         if not words_list or not words_list_with_index:
             words_list, language = cls.find_language(mnemonic=words)

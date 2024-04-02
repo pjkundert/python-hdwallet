@@ -57,7 +57,7 @@ class BIP39Mnemonic(IMnemonic):
 
     word_bit_length: int = 11
     words_list_number: int = 2048
-    words: List[int] = [
+    words_list: List[int] = [
         BIP39_MNEMONIC_WORDS.TWELVE,
         BIP39_MNEMONIC_WORDS.FIFTEEN,
         BIP39_MNEMONIC_WORDS.EIGHTEEN,
@@ -106,8 +106,8 @@ class BIP39Mnemonic(IMnemonic):
 
     @classmethod
     def from_words(cls, words: int, language: str) -> str:
-        if words not in cls.words:
-            raise MnemonicError("Invalid mnemonic words number", expected=cls.words, got=words)
+        if words not in cls.words_list:
+            raise MnemonicError("Invalid mnemonic words number", expected=cls.words_list, got=words)
 
         return cls.from_entropy(
             entropy=BIP39Entropy.generate(cls.words_to_entropy_strength[words]), language=language
@@ -155,8 +155,8 @@ class BIP39Mnemonic(IMnemonic):
         cls, mnemonic: str, checksum: bool = False, words_list: Optional[List[str]] = None, words_list_with_index: Optional[dict] = None
     ) -> str:
         words: list = cls.normalize(mnemonic)
-        if len(words) not in cls.words:
-            raise MnemonicError("Invalid mnemonic words count", expected=cls.words, got=len(words))
+        if len(words) not in cls.words_list:
+            raise MnemonicError("Invalid mnemonic words count", expected=cls.words_list, got=len(words))
 
         if not words_list or not words_list_with_index:
             words_list, language = cls.find_language(mnemonic=words)

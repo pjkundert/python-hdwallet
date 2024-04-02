@@ -23,7 +23,7 @@ class IMnemonic(ABC):
     _language: str
     _mnemonic_type: Optional[str] = None
 
-    words: List[int]
+    words_list: List[int]
     languages: List[str]
     wordlist_path: Dict[str, str]
 
@@ -122,7 +122,7 @@ class IMnemonic(ABC):
 
     @classmethod
     def is_valid_words(cls, words: int) -> bool:
-        return words in cls.words
+        return words in cls.words_list
 
     @classmethod
     def normalize(cls, mnemonic: Union[str, List[str]]) -> List[str]:

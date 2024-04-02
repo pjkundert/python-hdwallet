@@ -49,7 +49,7 @@ class MoneroMnemonic(IMnemonic):
 
     word_bit_length: int = 11
     words_list_number: int = 1626
-    words: List[int] = [
+    words_list: List[int] = [
         MONERO_MNEMONIC_WORDS.TWELVE,
         MONERO_MNEMONIC_WORDS.THIRTEEN,
         MONERO_MNEMONIC_WORDS.TWENTY_FOUR,
@@ -108,8 +108,8 @@ class MoneroMnemonic(IMnemonic):
 
     @classmethod
     def from_words(cls, words: int, language: str) -> str:
-        if words not in cls.words:
-            raise MnemonicError("Invalid mnemonic words number", expected=cls.words, got=words)
+        if words not in cls.words_list:
+            raise MnemonicError("Invalid mnemonic words number", expected=cls.words_list, got=words)
 
         return cls.from_entropy(
             entropy=MoneroEntropy.generate(cls.words_to_entropy_strength[words]),
@@ -167,8 +167,8 @@ class MoneroMnemonic(IMnemonic):
     @classmethod
     def decode(cls, mnemonic: str, **kwargs) -> str:
         words: list = cls.normalize(mnemonic)
-        if len(words) not in cls.words:
-            raise MnemonicError("Invalid mnemonic words count", expected=cls.words, got=len(words))
+        if len(words) not in cls.words_list:
+            raise MnemonicError("Invalid mnemonic words count", expected=cls.words_list, got=len(words))
 
         words_list, language = cls.find_language(mnemonic=words)
         if len(words_list) != cls.words_list_number:

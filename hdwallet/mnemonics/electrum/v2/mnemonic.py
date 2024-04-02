@@ -50,7 +50,7 @@ class ELECTRUM_V2_MNEMONIC_TYPES:
 class ElectrumV2Mnemonic(IMnemonic):
 
     word_bit_length: int = 11
-    words: List[int] = [
+    words_list: List[int] = [
         ELECTRUM_V2_MNEMONIC_WORDS.TWELVE,
         ELECTRUM_V2_MNEMONIC_WORDS.TWENTY_FOUR
     ]
@@ -85,8 +85,8 @@ class ElectrumV2Mnemonic(IMnemonic):
     def from_words(
         cls, words: int, language: str, mnemonic_type: str = ELECTRUM_V2_MNEMONIC_TYPES.STANDARD
     ) -> str:
-        if words not in cls.words:
-            raise MnemonicError("Invalid mnemonic words number", expected=cls.words, got=words)
+        if words not in cls.words_list:
+            raise MnemonicError("Invalid mnemonic words number", expected=cls.words_list, got=words)
 
         return cls.from_entropy(
             entropy=ElectrumV2Entropy.generate(
@@ -101,7 +101,8 @@ class ElectrumV2Mnemonic(IMnemonic):
         cls,
         entropy: Union[str, bytes, IEntropy],
         language: str,
-        mnemonic_type: str = ELECTRUM_V2_MNEMONIC_TYPES.STANDARD
+        mnemonic_type: str = ELECTRUM_V2_MNEMONIC_TYPES.STANDARD,
+        max_attempts: int = 10 ** 60
     ) -> str:
 
         if isinstance(entropy, str) or isinstance(entropy, bytes):
@@ -132,7 +133,7 @@ class ElectrumV2Mnemonic(IMnemonic):
             }
 
             entropy: int = bytes_to_integer(entropy)
-            for index in range(kwargs.get("max_attempts", 10 ** 60)):
+            for index in range(max_attempts):
                 new_entropy: int = entropy + index
                 try:
                     return cls.encode(
@@ -191,8 +192,8 @@ class ElectrumV2Mnemonic(IMnemonic):
     def decode(cls, mnemonic: str, mnemonic_type: str = ELECTRUM_V2_MNEMONIC_TYPES.STANDARD) -> str:
 
         words: list = cls.normalize(mnemonic)
-        if len(words) not in cls.words:
-            raise MnemonicError("Invalid mnemonic words count", expected=cls.words, got=len(words))
+        if len(words) not in cls.words_list:
+            raise MnemonicError("Invalid mnemonic words count", expected=cls.words_list, got=len(words))
 
         if not cls.is_valid(mnemonic, mnemonic_type=mnemonic_type):
             raise MnemonicError(f"Invalid {mnemonic_type} mnemonic type words")

@@ -36,7 +36,7 @@ class ALGORAND_MNEMONIC_LANGUAGES:
 class AlgorandMnemonic(IMnemonic):
 
     checksum_length: int = 2
-    words: List[int] = [
+    words_list: List[int] = [
         ALGORAND_MNEMONIC_WORDS.TWENTY_FIVE
     ]
     words_to_entropy_strength: Dict[int, int] = {
@@ -55,8 +55,8 @@ class AlgorandMnemonic(IMnemonic):
 
     @classmethod
     def from_words(cls, words: int, language: str) -> str:
-        if words not in cls.words:
-            raise MnemonicError("Invalid mnemonic words number", expected=cls.words, got=words)
+        if words not in cls.words_list:
+            raise MnemonicError("Invalid mnemonic words number", expected=cls.words_list, got=words)
 
         return cls.from_entropy(
             entropy=AlgorandEntropy.generate(cls.words_to_entropy_strength[words]), language=language
@@ -93,8 +93,8 @@ class AlgorandMnemonic(IMnemonic):
     @classmethod
     def decode(cls, mnemonic: str, **kwargs) -> str:
         words: list = cls.normalize(mnemonic)
-        if len(words) not in cls.words:
-            raise MnemonicError("Invalid mnemonic words count", expected=cls.words, got=len(words))
+        if len(words) not in cls.words_list:
+            raise MnemonicError("Invalid mnemonic words count", expected=cls.words_list, got=len(words))
 
         words_list, language = cls.find_language(mnemonic=words)
         words_list_with_index: dict = {
