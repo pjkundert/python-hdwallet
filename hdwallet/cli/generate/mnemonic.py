@@ -108,7 +108,7 @@ def generate_mnemonic(**kwargs) -> None:
             "words": mnemonic.words()
         }
         if mnemonic.name() == ElectrumV2Mnemonic.name():
-            output["mnemonic-type"] = mnemonic.mnemonic_type()
+            output["mnemonic_type"] = kwargs.get("mnemonic_type")
         click.echo(json.dumps(
             output, indent=kwargs.get("indent", 4), ensure_ascii=kwargs.get("ensure_ascii", False)
         ))

@@ -43,7 +43,7 @@ def generate_seed(**kwargs) -> None:
                     cardano_type=kwargs.get("cardano_type")
                 )
             )
-        elif kwargs.get("name") == CardanoSeed.name():
+        elif kwargs.get("name") == ElectrumV2Seed.name():
             seed: ISeed = ElectrumV2Seed(
                 seed=ElectrumV2Seed.from_mnemonic(
                     mnemonic=kwargs.get("mnemonic"),
@@ -57,13 +57,16 @@ def generate_seed(**kwargs) -> None:
                     mnemonic=kwargs.get("mnemonic")
                 )
             )
+        output: dict = {
+            "name": seed.name(),
+            "seed": seed.seed()
+        }
+        if seed.name() == CardanoSeed.name():
+            output["cardano_type"] = kwargs.get("cardano_type")
+        elif seed.name() == ElectrumV2Seed.name():
+            output["mnemonic_type"] = kwargs.get("mnemonic_type")
         click.echo(json.dumps(
-            {
-                "name": seed.name(),
-                "seed": seed.seed()
-            },
-            indent=kwargs.get("indent", 4),
-            ensure_ascii=kwargs.get("ensure_ascii", False)
+            output, indent=kwargs.get("indent", 4), ensure_ascii=kwargs.get("ensure_ascii", False)
         ))
 
     except Exception as exception:
