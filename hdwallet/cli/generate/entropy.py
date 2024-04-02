@@ -6,6 +6,7 @@
 
 from typing import Optional
 
+import json
 import click
 import sys
 
@@ -19,7 +20,7 @@ from ...entropies import (
 )
 
 
-def generate_entropy(name: str, strength: Optional[int]) -> None:
+def generate_entropy(name: str, strength: Optional[int], **kwargs) -> None:
     try:
         if name not in ENTROPIES.keys():
             click.echo(click.style(
@@ -45,7 +46,20 @@ def generate_entropy(name: str, strength: Optional[int]) -> None:
             ), err=True)
             sys.exit()
 
-        click.echo(ENTROPIES[name].generate(strength=strength))
+        entropy: ENTROPIES[name] = ENTROPIES[name].__call__(
+            entropy=ENTROPIES[name].generate(
+                strength=strength
+            )
+        )
+        click.echo(json.dumps(
+            {
+                "name": entropy.name(),
+                "entropy": entropy.entropy(),
+                "strength": entropy.strength()
+            },
+            indent=kwargs.get("indent", 4),
+            ensure_ascii=kwargs.get("ensure_ascii", False)
+        ))
 
     except Exception as exception:
         click.echo(click.style(f"Error: {str(exception)}"), err=True)
