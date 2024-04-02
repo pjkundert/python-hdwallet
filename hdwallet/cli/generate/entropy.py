@@ -4,13 +4,12 @@
 # Distributed under the MIT software license, see the accompanying
 # file COPYING or https://opensource.org/license/mit
 
-from typing import Optional
-
 import json
 import click
 import sys
 
 from ...entropies import (
+    IEntropy,
     AlgorandEntropy, ALGORAND_ENTROPY_STRENGTHS,
     BIP39Entropy, BIP39_ENTROPY_STRENGTHS,
     ElectrumV1Entropy, ELECTRUM_V1_ENTROPY_STRENGTHS,
@@ -20,34 +19,36 @@ from ...entropies import (
 )
 
 
-def generate_entropy(name: str, strength: Optional[int], **kwargs) -> None:
+def generate_entropy(**kwargs) -> None:
     try:
-        if name not in ENTROPIES.keys():
+        if kwargs.get("name") not in ENTROPIES.keys():
             click.echo(click.style(
-                f"Wrong entropy name, (expected={list(ENTROPIES.keys())}, got='{name}')"
+                f"Wrong entropy name, (expected={list(ENTROPIES.keys())}, got='{kwargs.get('name')}')"
             ), err=True)
             sys.exit()
 
-        if strength is None:  # Set default strength
-            if name == AlgorandEntropy.name():
-                strength = ALGORAND_ENTROPY_STRENGTHS.TWO_HUNDRED_FIFTY_SIX
-            elif name == BIP39Entropy.name():
-                strength = BIP39_ENTROPY_STRENGTHS.ONE_HUNDRED_TWENTY_EIGHT
-            elif name == ElectrumV1Entropy.name():
-                strength = ELECTRUM_V1_ENTROPY_STRENGTHS.ONE_HUNDRED_TWENTY_EIGHT
-            elif name == ElectrumV2Entropy.name():
-                strength = ELECTRUM_V2_ENTROPY_STRENGTHS.ONE_HUNDRED_THIRTY_TWO
-            elif name == MoneroEntropy.name():
-                strength = MONERO_ENTROPY_STRENGTHS.ONE_HUNDRED_TWENTY_EIGHT
+        if kwargs.get("strength") is None:  # Set default strength
+            if kwargs.get("name") == AlgorandEntropy.name():
+                strength: int = ALGORAND_ENTROPY_STRENGTHS.TWO_HUNDRED_FIFTY_SIX
+            elif kwargs.get("name") == BIP39Entropy.name():
+                strength: int = BIP39_ENTROPY_STRENGTHS.ONE_HUNDRED_TWENTY_EIGHT
+            elif kwargs.get("name") == ElectrumV1Entropy.name():
+                strength: int = ELECTRUM_V1_ENTROPY_STRENGTHS.ONE_HUNDRED_TWENTY_EIGHT
+            elif kwargs.get("name") == ElectrumV2Entropy.name():
+                strength: int = ELECTRUM_V2_ENTROPY_STRENGTHS.ONE_HUNDRED_THIRTY_TWO
+            elif kwargs.get("name") == MoneroEntropy.name():
+                strength: int = MONERO_ENTROPY_STRENGTHS.ONE_HUNDRED_TWENTY_EIGHT
+        else:
+            strength: int = kwargs.get("strength")
 
-        if not ENTROPIES[name].is_valid_strength(strength=strength):
+        if not ENTROPIES[kwargs.get("name")].is_valid_strength(strength=strength):
             click.echo(click.style(
-                f"Wrong {name} entropy strength, (expected={ENTROPIES[name].strengths}, got='{strength}')"
+                f"Wrong {kwargs.get('name')} entropy strength, (expected={ENTROPIES[kwargs.get('name')].strengths}, got='{strength}')"
             ), err=True)
             sys.exit()
 
-        entropy: ENTROPIES[name] = ENTROPIES[name].__call__(
-            entropy=ENTROPIES[name].generate(
+        entropy: IEntropy = ENTROPIES[kwargs.get("name")].__call__(
+            entropy=ENTROPIES[kwargs.get("name")].generate(
                 strength=strength
             )
         )
