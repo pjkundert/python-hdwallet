@@ -4,12 +4,12 @@
 # Distributed under the MIT software license, see the accompanying
 # file COPYING or https://opensource.org/license/mit
 
-from typing import Optional
-
+import json
 import click
 import sys
 
 from ...mnemonics import (
+    IMnemonic,
     AlgorandMnemonic, ALGORAND_MNEMONIC_WORDS, ALGORAND_MNEMONIC_LANGUAGES,
     BIP39Mnemonic, BIP39_MNEMONIC_WORDS, BIP39_MNEMONIC_LANGUAGES,
     ElectrumV1Mnemonic, ELECTRUM_V1_MNEMONIC_WORDS, ELECTRUM_V1_MNEMONIC_LANGUAGES,
@@ -19,58 +19,99 @@ from ...mnemonics import (
 )
 
 
-def generate_mnemonic(name: str, language: Optional[str], entropy: Optional[str], words: Optional[str]) -> None:
+def generate_mnemonic(**kwargs) -> None:
     try:
-        if name not in MNEMONICS.keys():
+        if kwargs.get("name") not in MNEMONICS.keys():
             click.echo(click.style(
-                f"Wrong mnemonic name, (expected={list(MNEMONICS.keys())}, got='{name}')"
+                f"Wrong mnemonic name, (expected={list(MNEMONICS.keys())}, got='{kwargs.get('name')}')"
             ), err=True)
             sys.exit()
 
-        if language is None:  # Set default language
-            if name == AlgorandMnemonic.name():
-                language = ALGORAND_MNEMONIC_LANGUAGES.ENGLISH
-            elif name == BIP39Mnemonic.name():
-                language = BIP39_MNEMONIC_LANGUAGES.ENGLISH
-            elif name == ElectrumV1Mnemonic.name():
-                language = ELECTRUM_V1_MNEMONIC_LANGUAGES.ENGLISH
-            elif name == ElectrumV2Mnemonic.name():
-                language = ELECTRUM_V2_MNEMONIC_LANGUAGES.ENGLISH
-            elif name == MoneroMnemonic.name():
-                language = MONERO_MNEMONIC_LANGUAGES.ENGLISH
-
-        if words is None:  # Set default words
-            if name == AlgorandMnemonic.name():
-                words = ALGORAND_MNEMONIC_WORDS.TWENTY_FIVE
-            elif name == BIP39Mnemonic.name():
-                words = BIP39_MNEMONIC_WORDS.TWELVE
-            elif name == ElectrumV1Mnemonic.name():
-                words = ELECTRUM_V1_MNEMONIC_WORDS.TWELVE
-            elif name == ElectrumV2Mnemonic.name():
-                words = ELECTRUM_V2_MNEMONIC_WORDS.TWELVE
-            elif name == MoneroMnemonic.name():
-                words = MONERO_MNEMONIC_WORDS.TWELVE
-
-        if not MNEMONICS[name].is_valid_language(language=language):
-            click.echo(click.style(
-                f"Wrong {name} mnemonic language, (expected={MNEMONICS[name].languages}, got='{language}')"
-            ), err=True)
-            sys.exit()
-
-        if not MNEMONICS[name].is_valid_words(words=words):
-            click.echo(click.style(
-                f"Wrong {name} mnemonic words, (expected={MNEMONICS[name].words}, got='{words}')"
-            ), err=True)
-            sys.exit()
-
-        if entropy:
-            click.echo(MNEMONICS[name].from_entropy(
-                entropy=entropy, language=language
-            ))
+        if kwargs.get("language") is None:  # Set default language
+            if kwargs.get("name") == AlgorandMnemonic.name():
+                language: str = ALGORAND_MNEMONIC_LANGUAGES.ENGLISH
+            elif kwargs.get("name") == BIP39Mnemonic.name():
+                language: str = BIP39_MNEMONIC_LANGUAGES.ENGLISH
+            elif kwargs.get("name") == ElectrumV1Mnemonic.name():
+                language: str = ELECTRUM_V1_MNEMONIC_LANGUAGES.ENGLISH
+            elif kwargs.get("name") == ElectrumV2Mnemonic.name():
+                language: str = ELECTRUM_V2_MNEMONIC_LANGUAGES.ENGLISH
+            elif kwargs.get("name") == MoneroMnemonic.name():
+                language: str = MONERO_MNEMONIC_LANGUAGES.ENGLISH
         else:
-            click.echo(MNEMONICS[name].from_words(
-                words=words, language=language
-            ))
+            language: str = kwargs.get("language")
+
+        if kwargs.get("words") is None:  # Set default words
+            if kwargs.get("name") == AlgorandMnemonic.name():
+                words: int = ALGORAND_MNEMONIC_WORDS.TWENTY_FIVE
+            elif kwargs.get("name") == BIP39Mnemonic.name():
+                words: int = BIP39_MNEMONIC_WORDS.TWELVE
+            elif kwargs.get("name") == ElectrumV1Mnemonic.name():
+                words: int = ELECTRUM_V1_MNEMONIC_WORDS.TWELVE
+            elif kwargs.get("name") == ElectrumV2Mnemonic.name():
+                words: int = ELECTRUM_V2_MNEMONIC_WORDS.TWELVE
+            elif kwargs.get("name") == MoneroMnemonic.name():
+                words: int = MONERO_MNEMONIC_WORDS.TWELVE
+        else:
+            words: int = kwargs.get("words")
+
+        if not MNEMONICS[kwargs.get("name")].is_valid_language(language=language):
+            click.echo(click.style(
+                f"Wrong {kwargs.get('name')} mnemonic language, (expected={MNEMONICS[kwargs.get('name')].languages}, got='{language}')"
+            ), err=True)
+            sys.exit()
+
+        if not MNEMONICS[kwargs.get("name")].is_valid_words(words=words):
+            click.echo(click.style(
+                f"Wrong {kwargs.get('name')} mnemonic words, (expected={MNEMONICS[kwargs.get('name')].words}, got='{words}')"
+            ), err=True)
+            sys.exit()
+
+        if kwargs.get("entropy"):
+            if kwargs.get("name") == ElectrumV2Mnemonic.name():
+                mnemonic: IMnemonic = ElectrumV2Mnemonic(
+                    mnemonic=ElectrumV2Mnemonic.from_entropy(
+                        entropy=kwargs.get("entropy"),
+                        language=language,
+                        mnemonic_type=kwargs.get("mnemonic_type"),
+                        max_attempts=kwargs.get("max_attempts")
+                    ),
+                    mnemonic_type=kwargs.get("mnemonic_type")
+                )
+            else:
+                mnemonic: IMnemonic = MNEMONICS[kwargs.get("name")].__call__(
+                    mnemonic=MNEMONICS[kwargs.get("name")].from_entropy(
+                        entropy=kwargs.get("entropy"), language=language
+                    )
+                )
+        else:
+            if kwargs.get("name") == ElectrumV2Mnemonic.name():
+                mnemonic: IMnemonic = ElectrumV2Mnemonic(
+                    mnemonic=ElectrumV2Mnemonic.from_words(
+                        words=words,
+                        language=language,
+                        mnemonic_type=kwargs.get("mnemonic_type"),
+                        max_attempts=kwargs.get("max_attempts")
+                    ),
+                    mnemonic_type=kwargs.get("mnemonic_type")
+                )
+            else:
+                mnemonic: IMnemonic = MNEMONICS[kwargs.get("name")].__call__(
+                    mnemonic=MNEMONICS[kwargs.get("name")].from_words(
+                        words=words, language=language
+                    )
+                )
+        output: dict = {
+            "name": mnemonic.name(),
+            "mnemonic": mnemonic.mnemonic(),
+            "language": mnemonic.language(),
+            "words": mnemonic.words()
+        }
+        if mnemonic.name() == ElectrumV2Mnemonic.name():
+            output["mnemonic-type"] = mnemonic.mnemonic_type()
+        click.echo(json.dumps(
+            output, indent=kwargs.get("indent", 4), ensure_ascii=kwargs.get("ensure_ascii", False)
+        ))
 
     except Exception as exception:
         click.echo(click.style(f"Error: {str(exception)}"), err=True)
