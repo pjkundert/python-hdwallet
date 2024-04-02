@@ -53,6 +53,9 @@ class IMnemonic(ABC):
     def words(self) -> int:
         return self._words
 
+    def mnemonic_type(self) -> Optional[str]:
+        return self._mnemonic_type
+
     @classmethod
     @abstractmethod
     def from_words(cls, words: int, language: str) -> str:

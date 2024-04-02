@@ -83,7 +83,11 @@ class ElectrumV2Mnemonic(IMnemonic):
 
     @classmethod
     def from_words(
-        cls, words: int, language: str, mnemonic_type: str = ELECTRUM_V2_MNEMONIC_TYPES.STANDARD
+        cls,
+        words: int,
+        language: str,
+        mnemonic_type: str = ELECTRUM_V2_MNEMONIC_TYPES.STANDARD,
+        max_attempts: int = 10 ** 60
     ) -> str:
         if words not in cls.words_list:
             raise MnemonicError("Invalid mnemonic words number", expected=cls.words_list, got=words)
@@ -93,7 +97,8 @@ class ElectrumV2Mnemonic(IMnemonic):
                 cls.words_to_entropy_strength[words]
             ),
             language=language,
-            mnemonic_type=mnemonic_type
+            mnemonic_type=mnemonic_type,
+            max_attempts=max_attempts
         )
 
     @classmethod
