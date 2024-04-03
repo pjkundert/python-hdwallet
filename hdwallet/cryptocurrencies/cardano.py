@@ -79,9 +79,9 @@ class Cardano(ICryptocurrency):
     MNEMONICS = Mnemonics({
         "BIP39"
     })
-    SEEDS = Seeds((
-        {"CARDANO": "Cardano"}, "BIP39"
-    ))
+    SEEDS = Seeds({
+        "CARDANO": "Cardano"
+    })
     HDS = HDs({
         "CARDANO": "Cardano"
     })
@@ -93,9 +93,9 @@ class Cardano(ICryptocurrency):
         "SHELLEY_ICARUS": "shelley-icarus",
         "SHELLEY_LEDGER": "shelley-ledger"
     })
-    ADDRESSES = Addresses((
-        {"CARDANO": "Cardano"}, "BIP32", "BIP44"
-    ))
+    ADDRESSES = Addresses({
+        "CARDANO": "Cardano"
+    })
     DEFAULT_ADDRESS = ADDRESSES.CARDANO
     ADDRESS_TYPES = AddressTypes({
         "PUBLIC_KEY": "public-key",
