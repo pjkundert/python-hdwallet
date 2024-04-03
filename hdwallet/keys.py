@@ -61,3 +61,17 @@ def deserialize(
     return (
         version, depth, parent_fingerprint, index, chain_code, key
     )
+
+
+def is_root_key(
+    key: str, encoded: bool = True
+) -> bool:
+
+    version, depth, parent_fingerprint, index, chain_code, key = deserialize(
+        key=key, encoded=encoded
+    )
+    return (
+        depth == 0 and
+        parent_fingerprint == (integer_to_bytes(0x00) * 4) and
+        index == 0
+    )
