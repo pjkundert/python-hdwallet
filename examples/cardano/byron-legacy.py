@@ -25,12 +25,11 @@ hdwallet: HDWallet = HDWallet(
 
 # Update Byron-Legacy Cardano HDWallet
 hdwallet.from_entropy(
-    entropy=bip39_entropy, cardano_type=Cardano.TYPES.BYRON_LEGACY
+    entropy=bip39_entropy
 )
 
 print("Cryptocurrency:", hdwallet.cryptocurrency())
 print("Symbol:", hdwallet.symbol())
-print("Type:", hdwallet.type())
 print("Network:", hdwallet.network())
 print("Entropy:", hdwallet.entropy())
 print("Strength:", hdwallet.strength())
@@ -38,6 +37,7 @@ print("Mnemonic:", hdwallet.mnemonic())
 print("Passphrase:", hdwallet.passphrase())
 print("Language:", hdwallet.language())
 print("Seed:", hdwallet.seed())
+print("Cardano Type:", hdwallet.cardano_type())
 print("Root XPrivate Key:", hdwallet.root_xprivate_key())
 print("Root XPublic Key:", hdwallet.root_xpublic_key())
 print("Root Chain Code:", hdwallet.root_chain_code())
