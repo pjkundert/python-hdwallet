@@ -20,6 +20,7 @@ from .cip1852 import (
 )
 from .custom import CustomDerivation
 from .electrum import ElectrumDerivation
+from .monero import MoneroDerivation
 
 DERIVATIONS: Dict[str, Type[IDerivation]] = {
     BIP44Derivation.name(): BIP44Derivation,
@@ -28,7 +29,8 @@ DERIVATIONS: Dict[str, Type[IDerivation]] = {
     BIP86Derivation.name(): BIP86Derivation,
     CIP1852Derivation.name(): CIP1852Derivation,
     CustomDerivation.name(): CustomDerivation,
-    ElectrumDerivation.name(): ElectrumDerivation
+    ElectrumDerivation.name(): ElectrumDerivation,
+    MoneroDerivation.name(): MoneroDerivation
 }
 
 __all__: List[str] = ["IDerivation", "CHANGES", "ROLES", "DERIVATIONS"] + [
