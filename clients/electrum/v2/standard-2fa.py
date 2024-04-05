@@ -33,7 +33,7 @@ electrum_v2_mnemonic: ElectrumV2Mnemonic = ElectrumV2Mnemonic(
 )
 print("Electrum-V2 Mnemonic:", electrum_v2_mnemonic.mnemonic())
 print("Electrum-V2 Language:", electrum_v2_mnemonic.language())
-print("Electrum-V2 Word:", electrum_v2_mnemonic.word())
+print("Electrum-V2 Words:", electrum_v2_mnemonic.words())
 print("Electrum-V2 Mnemonic Type:", electrum_v2_mnemonic.mnemonic_type())
 
 # Get Electrum-V2 seed

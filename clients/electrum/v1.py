@@ -27,7 +27,7 @@ mnemonic: str = ElectrumV1Mnemonic.from_entropy(
 electrum_v1_mnemonic: ElectrumV1Mnemonic = ElectrumV1Mnemonic(mnemonic=mnemonic)
 print("Electrum-V1 Mnemonic:", electrum_v1_mnemonic.mnemonic())
 print("Electrum-V1 Language:", electrum_v1_mnemonic.language())
-print("Electrum-V1 Word:", electrum_v1_mnemonic.word())
+print("Electrum-V1 Words:", electrum_v1_mnemonic.words())
 
 # Get Electrum-V1 seed
 seed: str = ElectrumV1Seed.from_mnemonic(

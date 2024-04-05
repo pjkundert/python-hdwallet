@@ -27,7 +27,7 @@ mnemonic: str = BIP39Mnemonic.from_entropy(
 bip39_mnemonic: BIP39Mnemonic = BIP39Mnemonic(mnemonic=mnemonic)
 print("BIP39 Mnemonic:", bip39_mnemonic.mnemonic())
 print("BIP39 Language:", bip39_mnemonic.language())
-print("BIP39 Word:", bip39_mnemonic.word())
+print("BIP39 Words:", bip39_mnemonic.words())
 
 # Get BIP39 seed
 seed: str = BIP39Seed.from_mnemonic(

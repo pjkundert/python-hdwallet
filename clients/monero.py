@@ -30,7 +30,7 @@ mnemonic: str = MoneroMnemonic.from_entropy(
 monero_mnemonic: MoneroMnemonic = MoneroMnemonic(mnemonic=mnemonic)
 print("Monero Mnemonic:", monero_mnemonic.mnemonic())
 print("Monero Language:", monero_mnemonic.language())
-print("Monero Word:", monero_mnemonic.word())
+print("Monero Words:", monero_mnemonic.words())
 
 # Get Monero seed
 seed: str = MoneroSeed.from_mnemonic(
