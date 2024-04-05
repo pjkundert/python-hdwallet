@@ -5,7 +5,7 @@
 # file COPYING or https://opensource.org/license/mit
 
 from typing import (
-    Tuple, Union
+    Tuple, Union, Optional
 )
 
 from ..utils import (
@@ -100,17 +100,39 @@ class BIP44Derivation(IDerivation):  # https://github.com/bitcoin/bips/blob/mast
         ))
         return self
 
-    def purpose(self) -> Tuple[int, bool]:
-        return self._purpose
+    def clean(self) -> "BIP44Derivation":
+        self._account = (0, True)
+        self._change = (self.changes["external-chain"], False)
+        self._address = (0, False)
+        self._path, self._indexes, self._derivations = normalize_derivation(path=(
+            f"m/{index_tuple_to_string(index=self._purpose)}/"
+            f"{index_tuple_to_string(index=self._coin_type)}/"
+            f"{index_tuple_to_string(index=self._account)}/"
+            f"{index_tuple_to_string(index=self._change)}/"
+            f"{index_tuple_to_string(index=self._address)}"
+        ))
+        return self
 
-    def coin_type(self) -> Tuple[int, bool]:
-        return self._coin_type
+    def purpose(self) -> int:
+        return self._purpose[0]
 
-    def account(self) -> Union[Tuple[int, bool], Tuple[int, int, bool]]:
-        return self._account
+    def coin_type(self) -> int:
+        return self._coin_type[0]
 
-    def change(self) -> Tuple[int, bool]:
-        return self._change
+    def account(self) -> int:
+        return (
+            self._account[1] if len(self._account) == 3 else self._account[0]
+        )
 
-    def address(self) -> Union[Tuple[int, bool], Tuple[int, int, bool]]:
-        return self._address
+    def change(self) -> Optional[None]:
+        _change: Optional[str] = None
+        for key, value in self.changes.items():
+            if value == self._change[0]:
+                _change = key
+                break
+        return _change
+
+    def address(self) -> int:
+        return (
+            self._address[1] if len(self._address) == 3 else self._address[0]
+        )

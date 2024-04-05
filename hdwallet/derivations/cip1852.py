@@ -5,7 +5,7 @@
 # file COPYING or https://opensource.org/license/mit
 
 from typing import (
-    Tuple, Union
+    Tuple, Union, Optional
 )
 
 from ..utils import (
@@ -101,17 +101,39 @@ class CIP1852Derivation(IDerivation):  # https://github.com/cardano-foundation/C
         ))
         return self
 
-    def purpose(self) -> Tuple[int, bool]:
-        return self._purpose
+    def clean(self) -> "CIP1852Derivation":
+        self._account = (0, True)
+        self._role = (self.roles["external-chain"], False)
+        self._address = (0, False)
+        self._path, self._indexes, self._derivations = normalize_derivation(path=(
+            f"m/{index_tuple_to_string(index=self._purpose)}/"
+            f"{index_tuple_to_string(index=self._coin_type)}/"
+            f"{index_tuple_to_string(index=self._account)}/"
+            f"{index_tuple_to_string(index=self._role)}/"
+            f"{index_tuple_to_string(index=self._address)}"
+        ))
+        return self
 
-    def coin_type(self) -> Tuple[int, bool]:
-        return self._coin_type
+    def purpose(self) -> int:
+        return self._purpose[0]
 
-    def account(self) -> Union[Tuple[int, bool], Tuple[int, int, bool]]:
-        return self._account
+    def coin_type(self) -> int:
+        return self._coin_type[0]
 
-    def role(self) -> Tuple[int, bool]:
-        return self._role
+    def account(self) -> int:
+        return (
+            self._account[1] if len(self._account) == 3 else self._account[0]
+        )
 
-    def address(self) -> Union[Tuple[int, bool], Tuple[int, int, bool]]:
-        return self._address
+    def role(self) -> Optional[None]:
+        _role: Optional[str] = None
+        for key, value in self.roles.items():
+            if value == self._role[0]:
+                _role = key
+                break
+        return _role
+
+    def address(self) -> int:
+        return (
+            self._address[1] if len(self._address) == 3 else self._address[0]
+        )

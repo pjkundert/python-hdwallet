@@ -42,3 +42,6 @@ class IDerivation:
 
     def depth(self) -> int:
         return len(self._derivations)
+
+    def clean(self) -> "IDerivation":
+        pass

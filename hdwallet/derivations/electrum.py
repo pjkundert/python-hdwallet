@@ -51,8 +51,21 @@ class ElectrumDerivation(IDerivation):
         ))
         return self
 
-    def change(self) -> Union[Tuple[int, bool], Tuple[int, int, bool]]:
-        return self._change
+    def clean(self) -> "ElectrumDerivation":
+        self._change = (0, False)
+        self._address = (0, False)
+        self._path, self._indexes, self._derivations = normalize_derivation(path=(
+            f"m/{index_tuple_to_string(index=self._change)}/"
+            f"{index_tuple_to_string(index=self._address)}"
+        ))
+        return self
 
-    def address(self) -> Union[Tuple[int, bool], Tuple[int, int, bool]]:
-        return self._address
+    def change(self) -> int:
+        return (
+            self._change[1] if len(self._change) == 3 else self._change[0]
+        )
+
+    def address(self) -> int:
+        return (
+            self._address[1] if len(self._address) == 3 else self._address[0]
+        )

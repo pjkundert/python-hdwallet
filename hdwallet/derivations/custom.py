@@ -15,7 +15,9 @@ from .iderivation import IDerivation
 
 class CustomDerivation(IDerivation):
 
-    def __init__(self, path: Optional[str] = None, indexes: Optional[List[int]] = None) -> None:
+    def __init__(
+        self, path: Optional[str] = None, indexes: Optional[List[int]] = None
+    ) -> None:
         super(CustomDerivation, self).__init__(path, indexes)
 
     @classmethod
@@ -52,5 +54,11 @@ class CustomDerivation(IDerivation):
             (f"{index}'" if hardened else f"{index}")
             if self._path == "m/" else
             (f"/{index}'" if hardened else f"/{index}")
+        )
+        return self
+
+    def clean(self) -> "CustomDerivation":
+        self._path, self._indexes, self._derivations = normalize_derivation(
+            path=None, indexes=None
         )
         return self

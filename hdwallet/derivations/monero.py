@@ -20,7 +20,7 @@ class MoneroDerivation(IDerivation):
     _major: Union[Tuple[int, bool], Tuple[int, int, bool]]
 
     def __init__(
-        self, minor: Union[int, Tuple[int, int]] = 0, major: Union[int, Tuple[int, int]] = 0
+        self, minor: Union[int, Tuple[int, int]] = 1, major: Union[int, Tuple[int, int]] = 0
     ) -> None:
 
         self._minor = (*minor, False) if isinstance(minor, tuple) else (minor, False)
@@ -51,8 +51,21 @@ class MoneroDerivation(IDerivation):
         ))
         return self
 
-    def minor(self) -> Union[Tuple[int, bool], Tuple[int, int, bool]]:
-        return self._minor
+    def clean(self) -> "MoneroDerivation":
+        self._minor = (1, False)
+        self._major = (0, False)
+        self._path, self._indexes, self._derivations = normalize_derivation(path=(
+            f"m/{index_tuple_to_string(index=self._minor)}/"
+            f"{index_tuple_to_string(index=self._major)}"
+        ))
+        return self
 
-    def major(self) -> Union[Tuple[int, bool], Tuple[int, int, bool]]:
-        return self._major
+    def minor(self) -> int:
+        return (
+            self._minor[1] if len(self._minor) == 3 else self._minor[0]
+        )
+
+    def major(self) -> int:
+        return (
+            self._major[1] if len(self._major) == 3 else self._major[0]
+        )
