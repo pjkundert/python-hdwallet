@@ -66,4 +66,6 @@ electrum_v1_hd.from_derivation(
 print("Electrum-V1 Private Key:", electrum_v1_hd.private_key())
 print("Electrum-V1 WIF:", electrum_v1_hd.wif())
 print("Electrum-V1 Public Key:", electrum_v1_hd.public_key())
+print("Electrum-V1 Uncompressed:", electrum_v1_hd.uncompressed())
+print("Electrum-V1 Compressed:", electrum_v1_hd.compressed())
 print("Electrum-V1 Address:", electrum_v1_hd.address())
