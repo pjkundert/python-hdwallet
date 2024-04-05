@@ -5,7 +5,7 @@
 # file COPYING or https://opensource.org/license/mit
 
 from typing import (
-    Optional, List, Tuple
+    Optional, List, Tuple, Union
 )
 
 from ..utils import normalize_derivation
@@ -31,6 +31,9 @@ class IDerivation:
     def name(cls) -> str:
         pass
 
+    def clean(self) -> "IDerivation":
+        pass
+
     def path(self) -> str:
         return self._path
 
@@ -43,5 +46,26 @@ class IDerivation:
     def depth(self) -> int:
         return len(self._derivations)
 
-    def clean(self) -> "IDerivation":
+    def purpose(self) -> int:
+        pass
+
+    def coin_type(self) -> int:
+        pass
+
+    def account(self) -> int:
+        pass
+
+    def change(self) -> Union[int, str]:
+        pass
+
+    def role(self) -> str:
+        pass
+
+    def address(self) -> int:
+        pass
+
+    def minor(self) -> int:
+        pass
+
+    def major(self) -> int:
         pass
