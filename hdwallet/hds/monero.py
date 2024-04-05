@@ -16,6 +16,9 @@ from ..seeds import ISeed
 from ..crypto import kekkak256
 from ..cryptocurrencies.icryptocurrency import INetwork
 from ..cryptocurrencies import Monero
+from ..derivations import (
+    IDerivation, MoneroDerivation
+)
 from ..exceptions import (
     NetworkError, DerivationError, AddressError
 )
@@ -37,6 +40,8 @@ class MoneroHD(IHD):
     _spend_public_key: Union[IPublicKey]
     _view_public_key: Union[IPublicKey]
 
+    _derivation: MoneroDerivation
+
     def __init__(self, network: Union[str, Type[INetwork]] = "mainnet", **kwargs) -> None:
         super().__init__(**kwargs)
 
@@ -55,9 +60,17 @@ class MoneroHD(IHD):
                 "Invalid network type", expected=[str, INetwork], got=type(network)
             )
 
+        self._derivation = MoneroDerivation(
+            minor=kwargs.get("minor", 1), major=kwargs.get("major", 0)
+        )
+
     @classmethod
     def name(cls) -> str:
         return "Monero"
+
+    def __update__(self) -> "MoneroHD":
+        self.from_derivation(derivation=self._derivation)
+        return self
 
     def from_seed(self, seed: Union[bytes, str, ISeed], **kwargs) -> "MoneroHD":
 
@@ -79,6 +92,24 @@ class MoneroHD(IHD):
         return self.from_spend_private_key(
             spend_private_key=scalar_reduce(kekkak256(self._private_key))
         )
+
+    def from_derivation(self, derivation: IDerivation) -> "MoneroHD":
+
+        if not isinstance(derivation, MoneroDerivation):
+            raise DerivationError(
+                f"Invalid {self.name()} derivation instance", expected=MoneroDerivation, got=type(derivation)
+            )
+
+        self._derivation = derivation
+        return self
+
+    def update_derivation(self, derivation: IDerivation) -> "MoneroHD":
+        return self.from_derivation(derivation=derivation)
+
+    def clean_derivation(self) -> "MoneroHD":
+        self._derivation.clean()
+        self.__update__()
+        return self
 
     def from_spend_private_key(self, spend_private_key: Union[bytes, str, IPrivateKey]) -> "MoneroHD":
 
@@ -187,13 +218,18 @@ class MoneroHD(IHD):
             payment_id=get_bytes(payment_id)
         )
 
-    def sub_address(self, minor_index: int, major_index: int = 0) -> str:
+    def sub_address(self, minor: Optional[int] = None, major: Optional[int] = None) -> str:
 
-        if minor_index == 0 and major_index == 0:
+        if minor is None and major is None:
+            minor, major = self._derivation.minor(), self._derivation.major()
+        elif (minor and major is None) or (minor is None and major):
+            raise DerivationError("Both minor and major indexes are required")
+
+        if minor == 0 and major == 0:
             return self.primary_address()
 
         spend_public_key, view_public_key = self.drive(
-            minor_index=minor_index, major_index=major_index
+            minor_index=minor, major_index=major
         )
 
         return MoneroAddress.encode(
@@ -214,7 +250,8 @@ class MoneroHD(IHD):
             )
         elif address_type == Monero.ADDRESS_TYPES.SUB_ADDRESS:
             return self.sub_address(
-                minor_index=kwargs.get("minor_index"), major_index=kwargs.get("major_index", 0)
+                minor=kwargs.get("minor", self._derivation.minor()),
+                major=kwargs.get("major", self._derivation.major())
             )
         raise AddressError(
             f"Invalid {self.name()} address type",

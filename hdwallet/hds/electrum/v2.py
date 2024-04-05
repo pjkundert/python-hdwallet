@@ -33,6 +33,7 @@ class ElectrumV2HD(IHD):
     _mode: str
     _wif_type: str
     _public_key_type: str
+    _derivation: ElectrumDerivation
 
     def __init__(
         self, mode: str = ELECTRUM_V2_MODES.STANDARD, public_key_type: str = PUBLIC_KEY_TYPES.UNCOMPRESSED, **kwargs
@@ -57,13 +58,22 @@ class ElectrumV2HD(IHD):
         self._bip32_hd: BIP32HD = BIP32HD(
             ecc=Bitcoin.ECC, public_key_type=self._public_key_type
         )
+        self._derivation = ElectrumDerivation(
+            change=kwargs.get("change", 0),
+            address=kwargs.get("address", 0)
+        )
 
     @classmethod
     def name(cls) -> str:
         return "Electrum-V2"
 
+    def __update__(self) -> "ElectrumV2HD":
+        self.from_derivation(derivation=self._derivation)
+        return self
+
     def from_seed(self, seed: Union[bytes, str, ISeed], **kwargs) -> "ElectrumV2HD":
         self._bip32_hd.from_seed(seed=seed)
+        self.__update__()
         return self
     
     def from_derivation(self, derivation: IDerivation) -> "ElectrumV2HD":
@@ -73,21 +83,20 @@ class ElectrumV2HD(IHD):
                 f"Invalid {self.name()} derivation instance", expected=ElectrumDerivation.name(), got=derivation.name()
             )
 
-        return self.drive(
-            change_index=(
-                derivation.change()[1]
-                if len(derivation.change()) == 3 else
-                derivation.change()[0]
-            ),
-            address_index=(
-                derivation.address()[1]
-                if len(derivation.address()) == 3 else
-                derivation.address()[0]
-            )
+        self._derivation = derivation
+        self.drive(
+            change_index=self._derivation.change(),
+            address_index=self._derivation.address(),
         )
+        return self
 
     def update_derivation(self, derivation: IDerivation) -> "ElectrumV2HD":
         return self.from_derivation(derivation=derivation)
+
+    def clean_derivation(self) -> "ElectrumV2HD":
+        self._derivation.clean()
+        self.__update__()
+        return self
 
     def drive(self, change_index: int, address_index: int) -> "ElectrumV2HD":
         custom_derivation: CustomDerivation = CustomDerivation()
@@ -122,9 +131,12 @@ class ElectrumV2HD(IHD):
             private_key=self.master_private_key(), wif_type=_wif_type
         )
 
-    def master_public_key(self) -> str:
+    def master_public_key(self, public_key_type: Optional[str] = None) -> str:
+        _public_key_type: str = (
+            public_key_type if public_key_type in PUBLIC_KEY_TYPES.get_types() else self._public_key_type
+        )
         return self._bip32_hd.root_public_key(
-            public_key_type=self._public_key_type
+            public_key_type=_public_key_type
         )
 
     def private_key(self) -> Optional[str]:
@@ -148,8 +160,11 @@ class ElectrumV2HD(IHD):
         return self._wif_type
 
     def public_key(self, public_key_type: Optional[str] = None) -> str:
+        _public_key_type: str = (
+            public_key_type if public_key_type in PUBLIC_KEY_TYPES.get_types() else self._public_key_type
+        )
         return self._bip32_hd.public_key(
-            public_key_type=public_key_type
+            public_key_type=_public_key_type
         )
 
     def public_key_type(self) -> str:

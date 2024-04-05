@@ -71,17 +71,8 @@ class BIP44HD(BIP32HD):
             )
 
         self.clean_derivation()
-        for index in derivation.indexes():
-            self._path += ((
-               f"{index - 0x80000000}'"
-               if self._path == "m/" else
-               f"/{index - 0x80000000}'"
-            ) if index & 0x80000000 else (
-                f"{index}"
-                if self._path == "m/" else
-                f"/{index}"
-            ))
-            self._indexes.append(index)
+        self._derivation = derivation
+        for index in self._derivation.indexes():
             self.drive(index)
         return self
 

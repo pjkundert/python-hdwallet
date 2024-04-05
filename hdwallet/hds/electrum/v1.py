@@ -41,6 +41,7 @@ class ElectrumV1HD(IHD):
     _public_key: IPublicKey
     _public_key_type: str
     _wif_type: str
+    _derivation: ElectrumDerivation
 
     def __init__(self, public_key_type: str = PUBLIC_KEY_TYPES.UNCOMPRESSED, **kwargs) -> None:
         super(ElectrumV1HD, self).__init__(public_key_type=public_key_type, **kwargs)
@@ -56,16 +57,25 @@ class ElectrumV1HD(IHD):
         self._public_key_type = public_key_type
         self._master_private_key = None
         self._private_key = None
+        self._derivation = ElectrumDerivation(
+            change=kwargs.get("change", 0),
+            address=kwargs.get("address", 0)
+        )
 
     @classmethod
     def name(cls) -> str:
         return "Electrum-V1"
 
+    def __update__(self) -> "ElectrumV1HD":
+        self.from_derivation(derivation=self._derivation)
+        return self
+
     def from_seed(self, seed: Union[bytes, str, ISeed], **kwargs) -> "ElectrumV1HD":
         self._seed = get_bytes(
             seed.seed() if isinstance(seed, ISeed) else seed
         )
-        return self.from_private_key(private_key=self._seed)
+        self.from_private_key(private_key=self._seed)
+        return self
 
     def from_private_key(self, private_key: Union[bytes, str, IPrivateKey]) -> "ElectrumV1HD":
 
@@ -77,6 +87,7 @@ class ElectrumV1HD(IHD):
         self._master_private_key, self._master_public_key = (
             private_key, private_key.public_key()
         )
+        self.__update__()
         return self
 
     def from_wif(self, wif: str) -> "ElectrumV1HD":
@@ -101,21 +112,20 @@ class ElectrumV1HD(IHD):
                 f"Invalid {self.name()} derivation instance", expected=ElectrumDerivation, got=type(derivation)
             )
 
-        return self.drive(
-            change_index=(
-                derivation.change()[1]
-                if len(derivation.change()) == 3 else
-                derivation.change()[0]
-            ),
-            address_index=(
-                derivation.address()[1]
-                if len(derivation.address()) == 3 else
-                derivation.address()[0]
-            )
+        self._derivation = derivation
+        self.drive(
+            change_index=self._derivation.change(),
+            address_index=self._derivation.address(),
         )
+        return self
 
     def update_derivation(self, derivation: IDerivation) -> "ElectrumV1HD":
         return self.from_derivation(derivation=derivation)
+
+    def clean_derivation(self) -> "ElectrumV1HD":
+        self._derivation.clean()
+        self.__update__()
+        return self
 
     def drive(self, change_index: int, address_index: int) -> "ElectrumV1HD":
 

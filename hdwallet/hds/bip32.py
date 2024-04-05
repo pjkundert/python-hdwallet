@@ -16,10 +16,12 @@ import struct
 from ..libs.ripemd160 import ripemd160
 from ..libs.base58 import check_decode
 from ..ecc import (
-    IPoint, IPublicKey, IPrivateKey, IEllipticCurveCryptography, KholawEd25519PrivateKey, SLIP10Ed25519PublicKey, SLIP10Ed25519PrivateKey
+    IPoint, IPublicKey, IPrivateKey, IEllipticCurveCryptography, KholawEd25519PrivateKey
 )
 from ..seeds import ISeed
-from ..derivations import IDerivation
+from ..derivations import (
+    IDerivation, CustomDerivation
+)
 from ..addresses import (
     P2PKHAddress, P2SHAddress, P2TRAddress, P2WPKHAddress, P2WPKHInP2SHAddress, P2WSHAddress, P2WSHInP2SHAddress
 )
@@ -32,7 +34,7 @@ from ..wif import (
     private_key_to_wif, wif_to_private_key
 )
 from ..keys import (
-    serialize, deserialize
+    serialize, deserialize, is_root_key
 )
 from ..exceptions import (
     Error, AddressError, DerivationError, ExtendedKeyError
@@ -58,8 +60,8 @@ class BIP32HD(IHD):
     _wif_type: str = WIF_TYPES.WIF_COMPRESSED
     _fingerprint: Optional[bytes] = None
     _parent_fingerprint: Optional[bytes] = None
-    _indexes: List[int] = []
-    _path: str = "m/"
+    _strict: Optional[bool] = None
+    _derivation: IDerivation
     _root_depth: int = 0
     _root_index: int = 0
     _depth: int = 0
@@ -82,12 +84,16 @@ class BIP32HD(IHD):
                 got=public_key_type
             )
         self._public_key_type = public_key_type
+        self._derivation = CustomDerivation(
+            path=kwargs.get("path", None), indexes=kwargs.get("indexes", None)
+        )
 
     @classmethod
     def name(cls) -> str:
         return "BIP32"
 
     def __update__(self) -> "BIP32HD":
+        self.from_derivation(derivation=self._derivation)
         return self
 
     def from_seed(self, seed: Union[bytes, str, ISeed], **kwargs) -> "BIP32HD":
@@ -137,9 +143,9 @@ class BIP32HD(IHD):
             kl_bytes = tweak_master_key_bits(kl_bytes)
 
             chain_code_bytes = hmac.digest(
-                get_hmac(ecc_name=self._ecc.NAME), b"\x01" + self._seed, "sha256"
+                get_hmac(ecc_name=self._ecc.NAME), integer_to_bytes(0x01) + self._seed, "sha256"
             ) if hasattr(hmac, "digest") else hmac.new(
-                get_hmac(ecc_name=self._ecc.NAME), b"\x01" + self._seed, hashlib.sha256
+                get_hmac(ecc_name=self._ecc.NAME), integer_to_bytes(0x01) + self._seed, hashlib.sha256
             ).digest()
 
             self._root_private_key, self._root_chain_code = (
@@ -159,18 +165,23 @@ class BIP32HD(IHD):
         )
         self._root_public_key = self._root_private_key.public_key()
         self._public_key = self._root_public_key
+        self._strict = True
         self.__update__()
         return self
 
-    def from_xprivate_key(self, xprivate_key: str, encoded: bool = True) -> "BIP32HD":
+    def from_xprivate_key(
+        self, xprivate_key: str, encoded: bool = True, strict: bool = False
+    ) -> "BIP32HD":
 
-        if len(check_decode(xprivate_key) if encoded else xprivate_key) != 78:
+        if len(check_decode(xprivate_key) if encoded else xprivate_key) not in [78, 110]:
             raise ExtendedKeyError("Invalid extended(x) private key")
+        elif not is_root_key(key=xprivate_key, encoded=encoded):
+            if strict:
+                raise ExtendedKeyError("Invalid root extended(x) private key")
 
         version, depth, parent_fingerprint, index, chain_code, key = deserialize(
             key=xprivate_key, encoded=encoded
         )
-
         self._root_chain_code = chain_code
         self._root_private_key = self._ecc.PRIVATE_KEY.from_bytes(key[1:])
         self._root_public_key = self._root_private_key.public_key()
@@ -182,13 +193,21 @@ class BIP32HD(IHD):
         self._public_key = self._root_public_key
         self._depth = self._root_depth
         self._index = self._root_index
+        self._strict = is_root_key(
+            key=xprivate_key, encoded=encoded
+        )
         self.__update__()
         return self
 
-    def from_xpublic_key(self, xpublic_key: str, encoded: bool = True) -> "BIP32HD":
+    def from_xpublic_key(
+        self, xpublic_key: str, encoded: bool = True, strict: bool = False
+    ) -> "BIP32HD":
 
         if len(check_decode(xpublic_key) if encoded else xpublic_key) != 78:
             raise ExtendedKeyError("Invalid extended(x) public key")
+        elif not is_root_key(key=xpublic_key, encoded=encoded):
+            if strict:
+                raise ExtendedKeyError("Invalid root extended(x) public key")
 
         version, depth, parent_fingerprint, index, chain_code, key = deserialize(
             key=xpublic_key, encoded=encoded
@@ -203,23 +222,31 @@ class BIP32HD(IHD):
         self._public_key = self._root_public_key
         self._depth = self._root_depth
         self._index = self._root_index
+        self._strict = is_root_key(
+            key=xpublic_key, encoded=encoded
+        )
         self.__update__()
         return self
 
     def from_wif(self, wif: str) -> "BIP32HD":
         self.from_private_key(private_key=wif_to_private_key(wif=wif))
-        self.__update__()
+        self._strict = None
         return self
 
     def from_private_key(self, private_key: str) -> "BIP32HD":
-        self._private_key = SLIP10Ed25519PrivateKey.from_bytes(get_bytes(private_key))
+        self._private_key = self._ecc.PRIVATE_KEY.from_bytes(get_bytes(private_key))
         self._public_key = self._private_key.public_key()
-        self.__update__()
+        self._strict = None
         return self
 
     def from_public_key(self, public_key: str) -> "BIP32HD":
-        self._public_key = SLIP10Ed25519PublicKey.from_bytes(get_bytes(public_key))
-        self.__update__()
+        public_key: bytes = get_bytes(public_key)
+        self._public_key = self._ecc.PUBLIC_KEY.from_bytes(public_key)
+        if self._public_key.raw_uncompressed() == public_key:
+            self._public_key_type = PUBLIC_KEY_TYPES.UNCOMPRESSED
+        elif self._public_key.raw_compressed() == public_key:
+            self._public_key_type = PUBLIC_KEY_TYPES.COMPRESSED
+        self._strict = None
         return self
 
     def from_derivation(self, derivation: IDerivation) -> "BIP32HD":
@@ -227,17 +254,8 @@ class BIP32HD(IHD):
         if not isinstance(derivation, IDerivation):
             raise DerivationError("Invalid derivation instance", expected=IDerivation, got=type(derivation))
 
-        for index in derivation.indexes():
-            self._path += ((
-                f"{index - 0x80000000}'"
-                if self._path == "m/" else
-                f"/{index - 0x80000000}'"
-            ) if index & 0x80000000 else (
-                f"{index}"
-                if self._path == "m/" else
-                f"/{index}"
-            ))
-            self._indexes.append(index)
+        self._derivation = derivation
+        for index in self._derivation.indexes():
             self.drive(index)
         return self
 
@@ -252,20 +270,17 @@ class BIP32HD(IHD):
     def clean_derivation(self) -> "BIP32HD":
         if self._root_private_key:
             self._private_key, self._chain_code, self._parent_fingerprint = (
-                self._root_private_key, self._root_chain_code, b"\x00\x00\x00\x00"
+                self._root_private_key, self._root_chain_code, (integer_to_bytes(0x00) * 4)
             )
             self._public_key = self._private_key.public_key()
-            self._indexes = []
-            self._path = "m/"
+            self._derivation.clean()
             self._depth = 0
         elif self._root_public_key:
             self._public_key, self._chain_code, self._parent_fingerprint = (
-                self._root_public_key, self._root_chain_code, b"\x00\x00\x00\x00"
+                self._root_public_key, self._root_chain_code, (integer_to_bytes(0x00) * 4)
             )
-            self._indexes = []
-            self._path = "m/"
+            self._derivation.clean()
             self._depth = 0
-
         return self
 
     def drive(self, index: int) -> Optional["BIP32HD"]:
@@ -281,17 +296,17 @@ class BIP32HD(IHD):
                     if self._private_key is None:
                         raise DerivationError("Hardened derivation path is invalid for xpublic key")
                     z_hmac: bytes = hmac_sha512(self._chain_code, (
-                        b"\x00" + self._private_key.raw() + index_bytes
+                        integer_to_bytes(0x00) + self._private_key.raw() + index_bytes
                     ))
                     _hmac: bytes = hmac_sha512(self._chain_code, (
-                        b"\x01" + self._private_key.raw() + index_bytes
+                        integer_to_bytes(0x01) + self._private_key.raw() + index_bytes
                     ))
                 else:
                     z_hmac: bytes = hmac_sha512(self._chain_code, (
-                        b"\x02" + self._public_key.raw_compressed()[1:] + index_bytes
+                        integer_to_bytes(0x02) + self._public_key.raw_compressed()[1:] + index_bytes
                     ))
                     _hmac: bytes = hmac_sha512(self._chain_code, (
-                        b"\x03" + self._public_key.raw_compressed()[1:] + index_bytes
+                        integer_to_bytes(0x03) + self._public_key.raw_compressed()[1:] + index_bytes
                     ))
 
                 def new_private_key_left_part(zl: bytes, kl: bytes, ecc: IEllipticCurveCryptography) -> bytes:
@@ -346,10 +361,10 @@ class BIP32HD(IHD):
                 if index & 0x80000000:
                     raise DerivationError("Hardened derivation path is invalid for xpublic key")
                 z_hmac: bytes = hmac_sha512(self._chain_code, (
-                    b"\x02" + self._public_key.raw_compressed()[1:] + index_bytes
+                    integer_to_bytes(0x02) + self._public_key.raw_compressed()[1:] + index_bytes
                 ))
                 _hmac: bytes = hmac_sha512(self._chain_code, (
-                    b"\x03" + self._public_key.raw_compressed()[1:] + index_bytes
+                    integer_to_bytes(0x03) + self._public_key.raw_compressed()[1:] + index_bytes
                 ))
 
                 def new_public_key_point(public_key: IPublicKey, zl: bytes, ecc: IEllipticCurveCryptography) -> IPoint:
@@ -382,6 +397,11 @@ class BIP32HD(IHD):
         elif self._ecc.NAME in [
             "SLIP10-Ed25519", "SLIP10-Ed25519-Blake2b", "SLIP10-Ed25519-Monero"
         ]:
+            if not self._private_key:
+                raise DerivationError(
+                    f"On {self._ecc.NAME} ECC, public key derivation is not supported"
+                )
+
             index_bytes: bytes = struct.pack(">L", index)
             data_bytes: bytes = (
                 integer_to_bytes(0x00) + self._private_key.raw() + index_bytes
@@ -474,11 +494,14 @@ class BIP32HD(IHD):
         return self
 
     def seed(self) -> Optional[str]:
-        return bytes_to_string(self._seed)
+        return bytes_to_string(self._seed) if self._seed else None
 
     def root_xprivate_key(
         self, version: Union[bytes, int] = Bitcoin.NETWORKS.MAINNET.XPRIVATE_KEY_VERSIONS.P2PKH, encoded: bool = True
     ) -> Optional[str]:
+
+        if not self.root_private_key():
+            return None
 
         return serialize(
             version=(
@@ -488,11 +511,9 @@ class BIP32HD(IHD):
             parent_fingerprint=(integer_to_bytes(0x00) * 4),
             index=self._root_index,
             chain_code=self.root_chain_code(),
-            key=(
-                "00" + self.root_private_key()
-            ),
+            key=("00" + self.root_private_key()),
             encoded=encoded
-        ) if self.root_private_key() else None
+        ) if self.root_chain_code() else None
 
     def root_xpublic_key(
         self, version: Union[bytes, int] = Bitcoin.NETWORKS.MAINNET.XPUBLIC_KEY_VERSIONS.P2PKH, encoded: bool = True
@@ -507,16 +528,31 @@ class BIP32HD(IHD):
             index=self._root_index,
             chain_code=self.root_chain_code(),
             key=self.root_public_key(
-                public_key_type="compressed"
+                public_key_type=PUBLIC_KEY_TYPES.COMPRESSED
             ),
             encoded=encoded
-        ) if self.root_public_key(public_key_type="compressed") else None
+        ) if self.root_chain_code() else None
 
     def root_private_key(self) -> Optional[str]:
         return bytes_to_string(self._root_private_key.raw()) if self._root_private_key else None
 
+    def root_wif(self, wif_type: Optional[str] = None) -> Optional[str]:
+
+        if wif_type:
+            if wif_type not in WIF_TYPES.get_types():
+                raise Error(
+                    f"Invalid {self.name()} WIF type", expected=WIF_TYPES.get_types(), got=wif_type
+                )
+            _wif_type: str = wif_type
+        else:
+            _wif_type: str = self._wif_type
+
+        return private_key_to_wif(
+            private_key=self.root_private_key(), wif_type=_wif_type
+        ) if self.root_private_key() else None
+
     def root_chain_code(self) -> Optional[str]:
-        return bytes_to_string(self._root_chain_code)
+        return bytes_to_string(self._root_chain_code) if self._root_chain_code else None
 
     def root_public_key(self, public_key_type: Optional[str] = None) -> Optional[str]:
         if not self._root_public_key:
@@ -542,6 +578,9 @@ class BIP32HD(IHD):
         self, version: Union[bytes, int] = Bitcoin.NETWORKS.MAINNET.XPRIVATE_KEY_VERSIONS.P2PKH, encoded: bool = True
     ) -> Optional[str]:
 
+        if not self.private_key():
+            return None
+
         return serialize(
             version=(
                 integer_to_bytes(version) if isinstance(version, int) else get_bytes(version)
@@ -552,7 +591,7 @@ class BIP32HD(IHD):
             chain_code=self.chain_code(),
             key=("00" + self.private_key()),
             encoded=encoded
-        ) if self.private_key() else None
+        ) if self.chain_code() else None
 
     def xpublic_key(
         self, version: Union[bytes, int] = Bitcoin.NETWORKS.MAINNET.XPUBLIC_KEY_VERSIONS.P2PKH, encoded: bool = True
@@ -567,10 +606,10 @@ class BIP32HD(IHD):
             index=self._index,
             chain_code=self.chain_code(),
             key=self.public_key(
-                public_key_type="compressed"
+                public_key_type=PUBLIC_KEY_TYPES.COMPRESSED
             ),
             encoded=encoded
-        ) if self.public_key(public_key_type="compressed") else None
+        ) if self.chain_code() else None
 
     def private_key(self) -> Optional[str]:
         return bytes_to_string(self._private_key.raw()) if self._private_key else None
@@ -591,11 +630,11 @@ class BIP32HD(IHD):
             private_key=self.private_key(), wif_type=_wif_type
         ) if self.private_key() else None
 
-    def wif_type(self) -> str:
-        return self._wif_type
+    def wif_type(self) -> Optional[str]:
+        return self._wif_type if self.wif() else None
 
     def chain_code(self) -> Optional[str]:
-        return bytes_to_string(self._chain_code)
+        return bytes_to_string(self._chain_code) if self._chain_code else None
 
     def public_key(self, public_key_type: Optional[str] = None):
         if public_key_type:
@@ -629,20 +668,23 @@ class BIP32HD(IHD):
     def fingerprint(self) -> str:
         return self.hash()[:8]
 
-    def parent_fingerprint(self) -> str:
-        return bytes_to_string(self._parent_fingerprint)
+    def parent_fingerprint(self) -> Optional[str]:
+        return bytes_to_string(self._parent_fingerprint) if self._parent_fingerprint else None
 
     def depth(self) -> int:
         return self._depth
 
     def path(self) -> str:
-        return self._path
+        return self._derivation.path()
 
     def index(self) -> int:
         return self._index
 
     def indexes(self) -> List[int]:
-        return self._indexes
+        return self._derivation.indexes()
+
+    def strict(self) -> Optional[bool]:
+        return self._strict
 
     def address(
         self,

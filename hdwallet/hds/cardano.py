@@ -181,7 +181,7 @@ class CardanoHD(BIP32HD):
             self._root_private_key, self._root_chain_code, b"\x00\x00\x00\x00"
         )
         self._public_key = self._private_key.public_key()
-
+        self._strict = True
         return self
 
     def drive(self, index: int) -> Optional["CardanoHD"]:

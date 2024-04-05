@@ -23,10 +23,14 @@ class IHD:
     def from_seed(self, seed: Union[bytes, str], **kwargs) -> "IHD":
         pass
 
-    def from_xprivate_key(self, xprivate_key: str, encoded: bool = True) -> "IHD":
+    def from_xprivate_key(
+        self, xprivate_key: str, encoded: bool = True, strict: bool = False
+    ) -> "IHD":
         pass
 
-    def from_xpublic_key(self, xpublic_key: str, encoded: bool = True) -> "IHD":
+    def from_xpublic_key(
+        self, xpublic_key: str, encoded: bool = True, strict: bool = False
+    ) -> "IHD":
         pass
 
     def from_wif(self, wif: str) -> "IHD":
@@ -74,6 +78,9 @@ class IHD:
     def root_private_key(self, *args, **kwargs) -> Optional[str]:
         pass
 
+    def root_wif(self, *args, **kwargs) -> Optional[str]:
+        pass
+
     def root_chain_code(self) -> Optional[str]:
         pass
 
@@ -81,6 +88,9 @@ class IHD:
         pass
 
     def master_private_key(self, *args, **kwargs) -> Optional[str]:
+        pass
+
+    def master_wif(self, *args, **kwargs) -> Optional[str]:
         pass
 
     def master_chain_code(self) -> Optional[str]:
@@ -156,6 +166,9 @@ class IHD:
         pass
 
     def indexes(self) -> List[int]:
+        pass
+
+    def strict(self) -> Optional[bool]:
         pass
 
     def integrated_address(self, **kwargs) -> str:

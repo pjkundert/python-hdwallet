@@ -119,32 +119,35 @@ class BIP141HD(BIP32HD):
 
     def address(
         self,
+        address: Optional[str] = None,
         script_address_prefix: int = Bitcoin.NETWORKS.MAINNET.SCRIPT_ADDRESS_PREFIX,
         hrp: str = Bitcoin.NETWORKS.MAINNET.HRP,
         witness_version: int = Bitcoin.NETWORKS.MAINNET.WITNESS_VERSIONS.P2WPKH,
         **kwargs
     ) -> str:
-        if self._address == P2WPKHAddress.name():
+        if address is None:
+            address = self._address
+        if address == P2WPKHAddress.name():
             return P2WPKHAddress.encode(
                 public_key=self._public_key,
                 hrp=hrp,
                 witness_version=witness_version,
                 public_key_type=self._public_key_type
             )
-        elif self._address == P2WPKHInP2SHAddress.name():
+        elif address == P2WPKHInP2SHAddress.name():
             return P2WPKHInP2SHAddress.encode(
                 public_key=self._public_key,
                 script_address_prefix=script_address_prefix,
                 public_key_type=self._public_key_type
             )
-        elif self._address == P2WSHAddress.name():
+        elif address == P2WSHAddress.name():
             return P2WSHAddress.encode(
                 public_key=self._public_key,
                 hrp=hrp,
                 witness_version=witness_version,
                 public_key_type=self._public_key_type
             )
-        elif self._address == P2WSHInP2SHAddress.name():
+        elif address == P2WSHInP2SHAddress.name():
             return P2WSHInP2SHAddress.encode(
                 public_key=self._public_key,
                 script_address_prefix=script_address_prefix,
