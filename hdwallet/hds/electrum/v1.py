@@ -233,10 +233,12 @@ class ElectrumV1HD(IHD):
     def compressed(self) -> str:
         return bytes_to_string(self._public_key.raw_compressed())
 
-    def address(self, network_version: int = Bitcoin.NETWORKS.MAINNET.PUBLIC_KEY_ADDRESS_PREFIX) -> str:
+    def address(
+        self, public_key_address_prefix: int = Bitcoin.NETWORKS.MAINNET.PUBLIC_KEY_ADDRESS_PREFIX
+    ) -> str:
 
         return P2PKHAddress.encode(
             public_key=self._public_key,
-            network_version=network_version,
+            public_key_address_prefix=public_key_address_prefix,
             public_key_type=self._public_key_type
         )

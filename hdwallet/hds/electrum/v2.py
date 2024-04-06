@@ -178,7 +178,7 @@ class ElectrumV2HD(IHD):
 
     def address(
         self,
-        network_version: int = Bitcoin.NETWORKS.MAINNET.PUBLIC_KEY_ADDRESS_PREFIX,
+        public_key_address_prefix: int = Bitcoin.NETWORKS.MAINNET.PUBLIC_KEY_ADDRESS_PREFIX,
         hrp: str = Bitcoin.NETWORKS.MAINNET.HRP,
         witness_version: str = Bitcoin.NETWORKS.MAINNET.WITNESS_VERSIONS.P2WPKH,
     ) -> str:
@@ -186,7 +186,7 @@ class ElectrumV2HD(IHD):
         if self._mode == ELECTRUM_V2_MODES.STANDARD:
             return P2PKHAddress.encode(
                 public_key=self.public_key(),
-                network_version=network_version,
+                public_key_address_prefix=public_key_address_prefix,
                 public_key_type=self._public_key_type
             )
         elif self._mode == ELECTRUM_V2_MODES.SEGWIT:
