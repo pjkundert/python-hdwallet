@@ -139,7 +139,7 @@ class ElectrumV1Mnemonic(IMnemonic):
         try:
             cls.decode(mnemonic=mnemonic, words_list=words_list, words_list_with_index=words_list_with_index)
             return True
-        except (ValueError, KeyError):
+        except (ValueError, KeyError, MnemonicError):
             return False
 
     @classmethod

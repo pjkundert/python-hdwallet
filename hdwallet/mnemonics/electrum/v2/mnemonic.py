@@ -130,12 +130,16 @@ class ElectrumV2Mnemonic(IMnemonic):
             bip39_words_list_with_index: dict = {
                 bip39_words_list[i]: i for i in range(len(bip39_words_list))
             }
-            electrum_v1_words_list: List[str] = cls.get_words_list_by_language(
-                language=language, wordlist_path=ElectrumV1Mnemonic.wordlist_path
-            )
-            electrum_v1_words_list_with_index: dict = {
-                electrum_v1_words_list[i]: i for i in range(len(electrum_v1_words_list))
-            }
+            try:
+                electrum_v1_words_list: List[str] = cls.get_words_list_by_language(
+                    language=language, wordlist_path=ElectrumV1Mnemonic.wordlist_path
+                )
+                electrum_v1_words_list_with_index: dict = {
+                    electrum_v1_words_list[i]: i for i in range(len(electrum_v1_words_list))
+                }
+            except KeyError:
+                electrum_v1_words_list: List[str] = [ ]
+                electrum_v1_words_list_with_index: dict = { }
 
             entropy: int = bytes_to_integer(entropy)
             for index in range(max_attempts):
