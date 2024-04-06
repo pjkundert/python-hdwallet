@@ -22,6 +22,7 @@ class ElectrumDerivation(IDerivation):
     def __init__(
         self, change: Union[int, Tuple[int, int]] = 0, address: Union[int, Tuple[int, int]] = 0
     ) -> None:
+        super(ElectrumDerivation, self).__init__()
 
         self._change = (*change, False) if isinstance(change, tuple) else (change, False)
         self._address = (*address, False) if isinstance(address, tuple) else (address, False)
@@ -29,7 +30,6 @@ class ElectrumDerivation(IDerivation):
             f"m/{index_tuple_to_string(index=self._change)}/"
             f"{index_tuple_to_string(index=self._address)}"
         ))
-        super(ElectrumDerivation, self).__init__(path=self._path)
 
     @classmethod
     def name(cls) -> str:

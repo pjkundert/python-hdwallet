@@ -18,7 +18,7 @@ class IDerivation:
     _derivations: List[Tuple[int, bool]] = { }
 
     def __init__(
-        self, path: Optional[str] = None, indexes: Optional[List[int]] = None
+        self, path: Optional[str] = None, indexes: Optional[List[int]] = None, **kwargs
     ) -> None:
         self._path, self._indexes, self._derivations = normalize_derivation(
             path=path, indexes=indexes

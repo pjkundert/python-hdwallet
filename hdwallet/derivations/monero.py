@@ -22,6 +22,7 @@ class MoneroDerivation(IDerivation):
     def __init__(
         self, minor: Union[int, Tuple[int, int]] = 1, major: Union[int, Tuple[int, int]] = 0
     ) -> None:
+        super(MoneroDerivation, self).__init__()
 
         self._minor = (*minor, False) if isinstance(minor, tuple) else (minor, False)
         self._major = (*major, False) if isinstance(major, tuple) else (major, False)
@@ -29,7 +30,6 @@ class MoneroDerivation(IDerivation):
             f"m/{index_tuple_to_string(index=self._minor)}/"
             f"{index_tuple_to_string(index=self._major)}"
         ))
-        super(MoneroDerivation, self).__init__(path=self._path)
 
     @classmethod
     def name(cls) -> str:

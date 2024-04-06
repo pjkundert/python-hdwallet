@@ -34,15 +34,16 @@ class CIP1852Derivation(IDerivation):  # https://github.com/cardano-foundation/C
 
     def __init__(
         self,
-        coin_type: int = 1815,
+        coin_type: Union[int, Tuple[int, bool]] = 1815,
         account: Union[int, Tuple[int, int]] = 0,
-        role: str = "external-chain",
+        role: Union[str, Tuple[int, bool]] = "external-chain",
         address: Union[int, Tuple[int, int]] = 0
     ) -> None:
+        super(CIP1852Derivation, self).__init__()
 
-        self._coin_type = (coin_type, True)
+        self._coin_type = (coin_type, True) if isinstance(coin_type, int) else coin_type
         self._account = (*account, True) if isinstance(account, tuple) else (account, True)
-        self._role = (self.roles[role], False)
+        self._role = (self.roles[role], False) if isinstance(role, str) else role
         self._address = (*address, False) if isinstance(address, tuple) else (address, False)
         self._path, self._indexes, self._derivations = normalize_derivation(path=(
             f"m/{index_tuple_to_string(index=self._purpose)}/"
@@ -51,7 +52,6 @@ class CIP1852Derivation(IDerivation):  # https://github.com/cardano-foundation/C
             f"{index_tuple_to_string(index=self._role)}/"
             f"{index_tuple_to_string(index=self._address)}"
         ))
-        super(CIP1852Derivation, self).__init__(path=self._path)
         
     @classmethod
     def name(cls) -> str:

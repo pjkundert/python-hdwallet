@@ -33,16 +33,16 @@ class BIP44Derivation(IDerivation):  # https://github.com/bitcoin/bips/blob/mast
 
     def __init__(
         self,
-        coin_type: int = 0,
+        coin_type: Union[int, Tuple[int, bool]] = 0,
         account: Union[int, Tuple[int, int]] = 0,
-        change: str = "external-chain",
+        change: Union[str, Tuple[int, bool]] = "external-chain",
         address: Union[int, Tuple[int, int]] = 0
     ) -> None:
-        super(BIP44Derivation, self).__init__(indexes=[])
+        super(BIP44Derivation, self).__init__()
 
-        self._coin_type = (coin_type, True)
+        self._coin_type = (coin_type, True) if isinstance(coin_type, int) else coin_type
         self._account = (*account, True) if isinstance(account, tuple) else (account, True)
-        self._change = (self.changes[change], False)
+        self._change = (self.changes[change], False) if isinstance(change, str) else change
         self._address = (*address, False) if isinstance(address, tuple) else (address, False)
         self._path, self._indexes, self._derivations = normalize_derivation(path=(
             f"m/{index_tuple_to_string(index=self._purpose)}/"
