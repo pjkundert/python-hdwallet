@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 
+from hdwallet import HDWallet
 from hdwallet.entropies import (
     ElectrumV2Entropy, ELECTRUM_V2_ENTROPY_STRENGTHS
 )
@@ -12,7 +13,6 @@ from hdwallet.const import (
     ELECTRUM_V2_MODES, PUBLIC_KEY_TYPES
 )
 from hdwallet.hds import ElectrumV2HD
-from hdwallet import HDWallet
 
 import json
 
@@ -21,7 +21,7 @@ hdwallet: HDWallet = HDWallet(
     cryptocurrency=Bitcoin,
     hd=ElectrumV2HD,
     network=Bitcoin.NETWORKS.MAINNET,
-    language=ELECTRUM_V2_MNEMONIC_LANGUAGES.ENGLISH,
+    language=ELECTRUM_V2_MNEMONIC_LANGUAGES.PORTUGUESE,
     mnemonic_type=ELECTRUM_V2_MNEMONIC_TYPES.SEGWIT,
     mode=ELECTRUM_V2_MODES.SEGWIT,
     public_key_type=PUBLIC_KEY_TYPES.UNCOMPRESSED
@@ -33,9 +33,9 @@ hdwallet: HDWallet = HDWallet(
     )
 ).from_derivation(
     derivation=ElectrumDerivation(
-        change=0, address=5
+        change=(1, 2), address=(1, 2)
     )
 )
 
-print(json.dumps(hdwallet.dump(), indent=4, ensure_ascii=False))
-
+# print(json.dumps(hdwallet.dump(), indent=4, ensure_ascii=False))
+print(json.dumps(hdwallet.dumps(), indent=4, ensure_ascii=False))

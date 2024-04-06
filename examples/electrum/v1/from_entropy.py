@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 
+from hdwallet import HDWallet
 from hdwallet.entropies import (
     ElectrumV1Entropy, ELECTRUM_V1_ENTROPY_STRENGTHS
 )
@@ -8,7 +9,6 @@ from hdwallet.derivations import ElectrumDerivation
 from hdwallet.cryptocurrencies import Bitcoin
 from hdwallet.const import PUBLIC_KEY_TYPES
 from hdwallet.hds import ElectrumV1HD
-from hdwallet import HDWallet
 
 import json
 
@@ -27,8 +27,9 @@ hdwallet: HDWallet = HDWallet(
     )
 ).from_derivation(
     derivation=ElectrumDerivation(
-        change=0, address=5
+        change=(0, 2), address=(1, 2)
     )
 )
 
-print(json.dumps(hdwallet.dump(), indent=4, ensure_ascii=False))
+# print(json.dumps(hdwallet.dump(), indent=4, ensure_ascii=False))
+print(json.dumps(hdwallet.dumps(), indent=4, ensure_ascii=False))
