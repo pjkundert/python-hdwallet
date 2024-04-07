@@ -1,14 +1,14 @@
 #!/usr/bin/env python3
 
+# Copyright © 2020-2024, Meheret Tesfaye Batu <meherett.batu@gmail.com>
+# Distributed under the MIT software license, see the accompanying
+# file COPYING or https://opensource.org/license/mit
+
 from setuptools import (
     setup, find_packages
 )
 
-# Project URLs
-project_urls = {
-    "Tracker": "https://github.com/meherett/python-hdwallet/issues",
-    "Documentation": "https://hdwallet.readthedocs.io"
-}
+import importlib.util
 
 # README.md
 with open("README.md", "r", encoding="utf-8") as readme:
@@ -18,23 +18,30 @@ with open("README.md", "r", encoding="utf-8") as readme:
 with open("requirements.txt", "r") as _requirements:
     requirements: list = list(map(str.strip, _requirements.read().split("\n")))
 
+# hdwallet/info.py
+spec = importlib.util.spec_from_file_location(
+    "info", "hdwallet/info.py"
+)
+info = importlib.util.module_from_spec(spec)
+spec.loader.exec_module(info)
+
 setup(
-    name="hdwallet",
-    version="v2.2.1",
-    description="Python-based library for the implementation of a hierarchical deterministic wallet "
-                "generator for more than 140+ multiple cryptocurrencies.",
+    name=info.__name__,
+    version=info.__version__,
+    description=info.__description__,
     long_description=long_description,
     long_description_content_type="text/markdown",
-    license="MIT",
-    author="Meheret Tesfaye Batu",
-    author_email="meherett.batu@gmail.com",
-    url="https://github.com/meherett/python-hdwallet",
-    project_urls=project_urls,
-    keywords=[
-        "cryptography", "cli", "wallet", "bip32", "bip44", "bip39", "hdwallet", "cryptocurrencies", "bitcoin", "ethereum"
-    ],
+    license=info.__license__,
+    author=info.__author__,
+    author_email=info.__email__,
+    url=info.__url__,
+    project_urls={
+        "Tracker": info.__tracker__,
+        "Documentation": info.__docs__
+    },
+    keywords=info.__keywords__,
     entry_points={
-        "console_scripts": ["hdwallet=hdwallet.cli.__main__:main"]
+        "console_scripts": ["hdwallet=hdwallet.cli.__main__:cli_main"]
     },
     python_requires=">=3.6,<4",
     packages=find_packages(),
