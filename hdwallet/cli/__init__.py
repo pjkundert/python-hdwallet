@@ -1,12 +1,5 @@
 #!/usr/bin/env python3
 
-import textwrap
-import click
-import sys
-
-
-__all__ = [
-    "textwrap",
-    "click",
-    "sys"
-]
+# Copyright © 2020-2024, Meheret Tesfaye Batu <meherett.batu@gmail.com>
+# Distributed under the MIT software license, see the accompanying
+# file COPYING or https://opensource.org/license/mit

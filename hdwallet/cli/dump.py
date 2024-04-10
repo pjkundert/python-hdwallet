@@ -34,7 +34,7 @@ from ..hdwallet import HDWallet
 
 
 def dump(**kwargs) -> None:
-    # try:
+    try:
         cryptocurrency: Type[ICryptocurrency] = get_cryptocurrency(
             symbol=kwargs.get("symbol")
         )
@@ -76,7 +76,6 @@ def dump(**kwargs) -> None:
                     f"Wrong entropy name, (expected={list(ENTROPIES.keys())}, got='{kwargs.get('entropy_name')}')"
                 ), err=True)
                 sys.exit()
-            print(kwargs.get("entropy_name"), kwargs.get("entropy"))
             hdwallet.from_entropy(
                 entropy=ENTROPIES[kwargs.get("entropy_name")].__call__(
                     entropy=kwargs.get("entropy")
@@ -143,106 +142,88 @@ def dump(**kwargs) -> None:
             kwargs.get("mnemonic") or
             kwargs.get("seed") or
             kwargs.get("xprivate_key") or
-            kwargs.get("xpublic_key")
+            kwargs.get("xpublic_key") or
+            (kwargs.get("private_key") and kwargs.get("hd") in ["Electrum-V1", "Monero"]) or
+            (kwargs.get("wif") and kwargs.get("hd") == "Electrum-V1") or
+            kwargs.get("spend_private_key") or
+            (kwargs.get("view_private_key") and kwargs.get("spend_public_key"))
         ):
 
             if kwargs.get("derivation") in [
                 BIP44Derivation.name(), BIP49Derivation.name(), BIP84Derivation.name(), BIP86Derivation.name()
             ]:
-                if kwargs.get("change") == 0:
+                if kwargs.get("change") in ["0", "external-chain"]:
                     change: str = CHANGES.EXTERNAL_CHAIN
-                elif kwargs.get("change") == 1:
+                elif kwargs.get("change") in ["1", "internal-chain"]:
                     change: str = CHANGES.INTERNAL_CHAIN
                 else:
                     click.echo(click.style(
-                        f"Wrong change index, "
-                        f"(expected= 0 for external-chain | 1 for internal-chain, "
-                        f"got='{kwargs.get('seed_name')}')"
+                        f"Wrong {kwargs.get('derivation')} change index, "
+                        f"(expected= 0 | external-chain | 1 | internal-chain, "
+                        f"got='{kwargs.get('change')}')"
                     ), err=True)
                     sys.exit()
+
                 hdwallet.from_derivation(
-                    derivation=DERIVATIONS[kwargs.get("derivation")].__call__(
+                    derivation=DERIVATIONS[kwargs.get("derivation")](
                         coin_type=cryptocurrency.COIN_TYPE,
-                        account=kwargs.get("account", 0),
+                        account=tuple([int(account) for account in kwargs.get("account").split("-")]),
                         change=change,
-                        address=kwargs.get("address", 0)
+                        address=tuple([int(address) for address in kwargs.get("address").split("-")])
                     )
                 )
             elif kwargs.get("derivation") == CIP1852Derivation.name():
-                if kwargs.get("role") == 0:
+
+                if kwargs.get("role") in ["0", "external-chain"]:
                     role: str = ROLES.EXTERNAL_CHAIN
-                elif kwargs.get("role") == 1:
+                elif kwargs.get("role") in ["1", "internal-chain"]:
                     role: str = ROLES.INTERNAL_CHAIN
-                elif kwargs.get("role") == 2:
+                elif kwargs.get("role") in ["2", "staking-chain"]:
                     role: str = ROLES.STAKING_KEY
                 else:
                     click.echo(click.style(
-                        f"Wrong role index, "
-                        f"(expected= 0 for external-chain | 1 for internal-chain | 2 for staking-key, "
-                        f"got='{kwargs.get('seed_name')}')"
+                        f"Wrong {kwargs.get('derivation')} role index, "
+                        f"(expected= 0 | external-chain | 1 | internal-chain | 2 | staking-chain, "
+                        f"got='{kwargs.get('role')}')"
                     ), err=True)
                     sys.exit()
+
                 hdwallet.from_derivation(
-                    derivation=DERIVATIONS[kwargs.get("derivation")].__call__(
+                    derivation=DERIVATIONS[kwargs.get("derivation")](
                         coin_type=cryptocurrency.COIN_TYPE,
-                        account=kwargs.get("account", 0),
+                        account=tuple([int(account) for account in kwargs.get("account").split("-")]),
                         role=role,
-                        address=kwargs.get("address", 0)
+                        address=tuple([int(address) for address in kwargs.get("address").split("-")])
                     )
                 )
             elif kwargs.get("derivation") == CustomDerivation.name():
                 hdwallet.from_derivation(
-                    derivation=DERIVATIONS[kwargs.get("derivation")].__call__(
+                    derivation=DERIVATIONS[kwargs.get("derivation")](
                         path=kwargs.get("path", "m/"),
                         indexes=kwargs.get("indexes", [])
                     )
                 )
             elif kwargs.get("derivation") == ElectrumDerivation.name():
                 hdwallet.from_derivation(
-                    derivation=DERIVATIONS[kwargs.get("derivation")].__call__(
-                        change=kwargs.get("change", 0),
-                        address=kwargs.get("address", 0)
+                    derivation=DERIVATIONS[kwargs.get("derivation")](
+                        change=tuple([int(change) for change in kwargs.get("change").split("-")]),
+                        address=tuple([int(address) for address in kwargs.get("address").split("-")])
                     )
                 )
             elif kwargs.get("derivation") == MoneroDerivation.name():
                 hdwallet.from_derivation(
-                    derivation=DERIVATIONS[kwargs.get("derivation")].__call__(
-                        minor=kwargs.get("minor", 1),
-                        major=kwargs.get("major", 0)
+                    derivation=DERIVATIONS[kwargs.get("derivation")](
+                        minor=tuple([int(minor) for minor in kwargs.get("minor").split("-")]),
+                        major=tuple([int(major) for major in kwargs.get("major").split("-")])
                     )
                 )
 
-        # entropy_and_mnemonic: str = "semantic,strict,"
-        # seed: str = entropy_and_mnemonic + "entropy,strength,mnemonic,language,"
-        # xprivate_key: str = seed.replace("strict,", "") + "passphrase,seed,"
-        # xpublic_key: str = xprivate_key + "root_xprivate_key,root_private_key,xprivate_key,private_key,wif,wif_type,"
-        # private_key_and_wif: str = xpublic_key.replace("private_key,wif,wif_type,", "") + (
-        #     "root_xpublic_key,root_chain_code,root_public_key,strict,xprivate_key,xpublic_key,chain_code,"
-        #     "depth,path,index,indexes,parent_fingerprint,"
-        # )
-        # public_key: str = private_key_and_wif + "private_key,wif,wif_type,"
-        #
-        # if kwargs.get("entropy") or kwargs.get("mnemonic"):
-        #     exclude: str = entropy_and_mnemonic + kwargs.get("exclude")
-        # elif kwargs.get("seed"):
-        #     exclude: str = seed + kwargs.get("exclude")
-        # elif kwargs.get("xprivate_key"):
-        #     exclude: str = xprivate_key + kwargs.get("exclude")
-        # elif kwargs.get("xpublic_key"):
-        #     exclude: str = xpublic_key + kwargs.get("exclude")
-        # elif kwargs.get("private_key") or kwargs.get("wif"):
-        #     exclude: str = private_key_and_wif + kwargs.get("exclude")
-        # elif kwargs.get("public_key"):
-        #     exclude: str = public_key + kwargs.get("exclude")
-        # else:
-        #     exclude: str = kwargs.get("exclude")
-
-        exclude: str = kwargs.get("exclude")
-
         click.echo(json.dumps(
-            hdwallet.dump(exclude=set(exclude.split(","))), indent=4, ensure_ascii=False
+            hdwallet.dump(exclude=set(kwargs.get("exclude").split(","))), indent=4, ensure_ascii=False
         ))
 
-    # except Exception as exception:
-    #     click.echo(click.style(f"Error: {str(exception)}"), err=True)
-    #     sys.exit()
+    except Exception as exception:
+        click.echo(click.style(
+            f"Error: {str(exception)}"
+        ), err=True)
+        sys.exit()
