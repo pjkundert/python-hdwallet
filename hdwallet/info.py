@@ -15,7 +15,7 @@ __docs__: str = "https://hdwallet.readthedocs.com"
 __description__: str = "Python-based library for the implementation of a hierarchical deterministic wallet " \
                        "generator for more than 205+ multiple cryptocurrencies."
 __url__: str = "https://github.com/meherett/python-hdwallet"
-__tracker__: str = "https://github.com/meherett/python-hdwallet"
+__tracker__: str = f"{__url__}/issues"
 __keywords__: List[str] = [
     "ecc", "kholaw", "slip10", "ed25519", "nist256p1", "secp256k1"  # ECC keywords
     "hd", "bip32", "bip44", "bip49", "bip84", "bip86", "bip141", "monero", "cardano",  # HD keywords
