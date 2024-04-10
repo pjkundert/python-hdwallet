@@ -1,53 +1,38 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
+
+# Copyright © 2020-2024, Meheret Tesfaye Batu <meherett.batu@gmail.com>
+# Distributed under the MIT software license, see the accompanying
+# file COPYING or https://opensource.org/license/mit
 
 from tabulate import tabulate
 
-import inspect
+import click
 
-from hdwallet import cryptocurrencies
-from hdwallet.cli import click
+from ...cryptocurrencies import CRYPTOCURRENCIES
 
 
 def list_cryptocurrencies():
 
     documents, table, headers = [], [], [
-        "Cryptocurrency", "Symbol", "Mainnet", "Testnet", "Segwit", "Coin Type", "Default Path"
+        "Cryptocurrency", "Symbol", "Networks", "Coin Type"
     ]
 
-    for name, cryptocurrency in inspect.getmembers(cryptocurrencies):
-        if inspect.isclass(cryptocurrency):
-            if issubclass(cryptocurrency, cryptocurrencies.Cryptocurrency) \
-                    and cryptocurrency != cryptocurrencies.Cryptocurrency:
+    for name, cryptocurrency in CRYPTOCURRENCIES.items():
 
-                if cryptocurrency.NETWORK == "mainnet":
-                    document: dict = {
-                        "name": cryptocurrency.NAME,
-                        "symbol": cryptocurrency.SYMBOL,
-                        "source_code": cryptocurrency.SOURCE_CODE,
-                        "mainnet": "Yes" if cryptocurrency.NETWORK == "mainnet" else "No",
-                        "testnet": "Yes" if cryptocurrency.NETWORK == "testnet" else "No",
-                        "segwit": "Yes" if cryptocurrency.SEGWIT_ADDRESS.HRP else "No",
-                        "coin_type": cryptocurrency.COIN_TYPE.INDEX,
-                        "default_path": cryptocurrency.DEFAULT_PATH
-                    }
-                    documents.append(document)
-                elif cryptocurrency.NETWORK == "testnet":
-                    for index, document in enumerate(documents):
-                        if document["name"] == cryptocurrency.NAME:
-                            documents[index]["symbol"] = f"{document['symbol']}, {cryptocurrency.SYMBOL}"
-                            documents[index]["testnet"] = "Yes"
-                else:
-                    raise Exception("Invalid cryptocurrency network type.")
+        document: dict = {
+            "name": cryptocurrency.NAME,
+            "symbol": cryptocurrency.SYMBOL,
+            "networks": ", ".join(cryptocurrency.NETWORKS.get_networks()),
+            "coin_type": cryptocurrency.COIN_TYPE
+        }
+        documents.append(document)
 
     for document in documents:
         table.append([
             document["name"],
             document["symbol"],
-            document["mainnet"],
-            document["testnet"],
-            document["segwit"],
-            document["coin_type"],
-            document["default_path"]
+            document["networks"],
+            document["coin_type"]
         ])
 
-    click.echo(tabulate(table, headers, tablefmt="github"))
+    click.echo(tabulate(table, headers, tablefmt="github", colalign=("left", "center", "center", "right")))
