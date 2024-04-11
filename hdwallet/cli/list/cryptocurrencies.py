@@ -35,4 +35,9 @@ def list_cryptocurrencies():
             document["coin_type"]
         ])
 
-    click.echo(tabulate(table, headers, tablefmt="github", colalign=("left", "center", "center", "right")))
+    click.echo(tabulate(
+        table,
+        headers,
+        tablefmt="github",
+        colalign=("left", "center", "center", "right")
+    ))
