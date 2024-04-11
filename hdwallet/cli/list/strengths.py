@@ -1,23 +1,32 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
+
+# Copyright © 2020-2024, Meheret Tesfaye Batu <meherett.batu@gmail.com>
+# Distributed under the MIT software license, see the accompanying
+# file COPYING or https://opensource.org/license/mit
 
 from tabulate import tabulate
 
-from hdwallet.cli import click
+import click
+
+from ...entropies import ENTROPIES
 
 
 def list_strengths():
 
-    click.echo(tabulate(
-        [
-            [128, 12],
-            [160, 15],
-            [192, 18],
-            [224, 21],
-            [256, 24],
-        ],
-        [
-            "Strength",
-            "Words"
-        ],
-        tablefmt="github"
-    ))
+    for index, entropy in enumerate(ENTROPIES.values()):
+
+        strengths: list = []
+        for strength in entropy.strengths:
+            strengths.append([strength])
+
+        click.echo(tabulate(
+            strengths,
+            [
+                f"{entropy.name()} Strengths"
+            ],
+            tablefmt="github",
+            stralign="left",
+            numalign="left"
+        ))
+        if index != len(ENTROPIES.keys()) - 1:
+            click.echo("\n")
