@@ -33,7 +33,7 @@ class ELECTRUM_V2_MNEMONIC_WORDS:
 
 class ELECTRUM_V2_MNEMONIC_LANGUAGES:
 
-    CHINESE_SIMPLIFIED: str = "chinese_simplified"
+    CHINESE_SIMPLIFIED: str = "chinese-simplified"
     ENGLISH: str = "english"
     PORTUGUESE: str = "portuguese"
     SPANISH: str = "spanish"
