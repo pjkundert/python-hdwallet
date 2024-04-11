@@ -170,7 +170,7 @@ class ElectrumV1HD(IHD):
 
         return private_key_to_wif(
             private_key=self.master_private_key(), wif_type=_wif_type
-        )
+        ) if self.master_private_key() else None
 
     def master_public_key(self, public_key_type: Optional[str] = None) -> str:
         _public_key_type: str = (
