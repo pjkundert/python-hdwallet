@@ -240,12 +240,7 @@ class BIP32HD(IHD):
         return self
 
     def from_public_key(self, public_key: str) -> "BIP32HD":
-        public_key: bytes = get_bytes(public_key)
-        self._public_key = self._ecc.PUBLIC_KEY.from_bytes(public_key)
-        if self._public_key.raw_uncompressed() == public_key:
-            self._public_key_type = PUBLIC_KEY_TYPES.UNCOMPRESSED
-        elif self._public_key.raw_compressed() == public_key:
-            self._public_key_type = PUBLIC_KEY_TYPES.COMPRESSED
+        self._public_key = self._ecc.PUBLIC_KEY.from_bytes(get_bytes(public_key))
         self._strict = None
         return self
 
