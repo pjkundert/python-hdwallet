@@ -37,15 +37,20 @@ setup(
     url=info.__url__,
     project_urls={
         "Tracker": info.__tracker__,
-        "Documentation": info.__docs__
+        "Documentation": info.__documentation__
     },
     keywords=info.__keywords__,
     entry_points={
-        "console_scripts": ["hdwallet=hdwallet.cli.__main__:cli_main"]
+        "console_scripts": [
+            "hdwallet=hdwallet.cli.__main__:cli_main"
+        ]
     },
     python_requires=">=3.6,<4",
-    packages=find_packages(),
+    packages=find_packages(
+        exclude=["tests*"]
+    ),
     install_requires=requirements,
+    include_package_data=True,
     extras_require={
         "cli": [
             "click>=8.1.3,<9",
@@ -65,12 +70,13 @@ setup(
     },
     classifiers=[
         "Development Status :: 5 - Production/Stable",
-        "License :: OSI Approved :: ISC License (ISCL)",
+        "License :: OSI Approved :: MIT License",
         "Programming Language :: Python :: 3.7",
         "Programming Language :: Python :: 3.8",
         "Programming Language :: Python :: 3.9",
         "Programming Language :: Python :: 3.10",
         "Programming Language :: Python :: 3.11",
+        "Programming Language :: Python :: 3.12",
         "Topic :: Software Development :: Libraries :: Python Modules"
     ]
 )

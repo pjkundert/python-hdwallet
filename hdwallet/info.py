@@ -7,11 +7,11 @@
 from typing import List
 
 __name__: str = "hdwallet"
-__version__: str = "v3.0.0"
+__version__: str = "v3.0.0a0"
 __license__: str = "MIT"
 __author__: str = "Meheret Tesfaye Batu"
 __email__: str = "meherett.batu@gmail.com"
-__docs__: str = "https://hdwallet.readthedocs.com"
+__documentation__: str = "https://hdwallet.readthedocs.com"
 __description__: str = "Python-based library for the implementation of a hierarchical deterministic wallet " \
                        "generator for more than 205+ multiple cryptocurrencies."
 __url__: str = "https://github.com/meherett/python-hdwallet"
