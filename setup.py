@@ -4,19 +4,23 @@
 # Distributed under the MIT software license, see the accompanying
 # file COPYING or https://opensource.org/license/mit
 
+from typing import List
 from setuptools import (
     setup, find_packages
 )
 
 import importlib.util
 
+
+# requirements/name.txt
+def get_requirements(name: str) -> List[str]:
+    with open(f"requirements/{name}.txt", "r") as requirements:
+        return list(map(str.strip, requirements.read().split("\n")))
+
+
 # README.md
 with open("README.md", "r", encoding="utf-8") as readme:
     long_description: str = readme.read()
-
-# requirements.txt
-with open("requirements.txt", "r") as _requirements:
-    requirements: list = list(map(str.strip, _requirements.read().split("\n")))
 
 # hdwallet/info.py
 spec = importlib.util.spec_from_file_location(
@@ -40,34 +44,20 @@ setup(
         "Documentation": info.__documentation__
     },
     keywords=info.__keywords__,
-    entry_points={
-        "console_scripts": [
+    entry_points=dict(
+        console_scripts=[
             "hdwallet=hdwallet.cli.__main__:cli_main"
         ]
-    },
-    python_requires=">=3.6,<4",
-    packages=find_packages(
-        exclude=["tests*"]
     ),
-    install_requires=requirements,
+    python_requires=">=3.6,<4",
+    packages=find_packages(exclude=["tests*"]),
+    install_requires=get_requirements(name="main"),
     include_package_data=True,
-    extras_require={
-        "cli": [
-            "click>=8.1.3,<9",
-            "click-aliases>=1.0.1,<2",
-            "tabulate>=0.9.0,<1"
-        ],
-        "tests": [
-            "pytest>=7.2.0,<8",
-            "pytest-cov>=4.0.0,<5",
-            "tox==3.28.0"
-        ],
-        "docs": [
-            "sphinx>=5.3.0,<6",
-            "furo==2022.12.7",
-            "sphinx-click>=4.4.0,<5"
-        ]
-    },
+    extras_require=dict(
+        cli=get_requirements(name="cli"),
+        docs=get_requirements(name="docs"),
+        tests=get_requirements(name="tests")
+    ),
     classifiers=[
         "Development Status :: 5 - Production/Stable",
         "License :: OSI Approved :: MIT License",
