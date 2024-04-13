@@ -12,7 +12,7 @@ from setuptools import (
 import importlib.util
 
 
-# requirements/name.txt
+# requirements/{name}.txt
 def get_requirements(name: str) -> List[str]:
     with open(f"requirements/{name}.txt", "r") as requirements:
         return list(map(str.strip, requirements.read().split("\n")))
@@ -51,7 +51,7 @@ setup(
     ),
     python_requires=">=3.6,<4",
     packages=find_packages(exclude=["tests*"]),
-    install_requires=get_requirements(name="main"),
+    install_requires=get_requirements(name="hdwallet"),
     include_package_data=True,
     extras_require=dict(
         cli=get_requirements(name="cli"),
