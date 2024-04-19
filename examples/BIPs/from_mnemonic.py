@@ -18,7 +18,6 @@ hdwallet: HDWallet = HDWallet(
     cryptocurrency=Cryptocurrency,
     hd=BIP32HD,
     network=Cryptocurrency.NETWORKS.MAINNET,
-    language=BIP39_MNEMONIC_LANGUAGES.KOREAN,
     public_key_type=PUBLIC_KEY_TYPES.COMPRESSED,
     passphrase="meherett"
 ).from_mnemonic(

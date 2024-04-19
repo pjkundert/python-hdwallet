@@ -20,7 +20,8 @@ hdwallet: HDWallet = HDWallet(
 ).from_mnemonic(
     mnemonic=ElectrumV1Mnemonic(
         mnemonic=ElectrumV1Mnemonic.from_words(
-            words=ELECTRUM_V1_MNEMONIC_WORDS.TWELVE, language=ELECTRUM_V1_MNEMONIC_LANGUAGES.ENGLISH
+            words=ELECTRUM_V1_MNEMONIC_WORDS.TWELVE,
+            language=ELECTRUM_V1_MNEMONIC_LANGUAGES.ENGLISH
         )
     )
 ).from_derivation(
