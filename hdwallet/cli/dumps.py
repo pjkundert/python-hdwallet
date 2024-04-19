@@ -227,32 +227,32 @@ def dumps(**kwargs) -> None:
         if kwargs.get("format") == "csv":
 
             hd_name: str = hdwallet._hd.name()
-            if kwargs.get("show"):
-                _show: str = kwargs.get("show")
+            if kwargs.get("include"):
+                _include: str = kwargs.get("include")
             elif hd_name == BIP32HD.name():
-                _show: str = "at:path,addresses:p2pkh,public_key,wif"
+                _include: str = "at:path,addresses:p2pkh,public_key,wif"
             elif hd_name in [
                 BIP44HD.name(), BIP49HD.name(), BIP84HD.name(), BIP86HD.name()
             ]:
-                _show: str = "at:path,address,public_key,wif"
+                _include: str = "at:path,address,public_key,wif"
             elif hd_name == BIP141HD.name():
-                _show: str = f"at:path,addresses:p2wpkh,public_key,wif"
+                _include: str = f"at:path,addresses:p2wpkh,public_key,wif"
             elif hd_name == CardanoHD.name():
-                _show: str = "at:path,address,public_key,private_key"
+                _include: str = "at:path,address,public_key,private_key"
             elif hd_name in [
                 ElectrumV1HD.name(), ElectrumV2HD.name()
             ]:
-                _show: str = "at:change,at:address,address,public_key,wif"
+                _include: str = "at:change,at:address,address,public_key,wif"
             elif hd_name == MoneroHD.name():
-                _show: str = "at:minor,at:major,sub_address"
+                _include: str = "at:minor,at:major,sub_address"
             else:
                 raise Exception("Unknown HD")
 
             hdwallet_csv = csv.DictWriter(
-                sys.stdout, fieldnames=_show.split(","), extrasaction="ignore", delimiter=kwargs.get("delimiter")
+                sys.stdout, fieldnames=_include.split(","), extrasaction="ignore", delimiter=kwargs.get("delimiter")
             )
 
-            if kwargs.get("show_header"):
+            if kwargs.get("include_header"):
                 hdwallet_csv.writeheader()
 
             def drive(*args) -> List[str]:
@@ -298,7 +298,7 @@ def dumps(**kwargs) -> None:
                             derivation=_derivation
                         )
                         dump: dict = hdwallet.dump(exclude={"root"})
-                        for key in [keys.split(":") for keys in _show.split(",")]:
+                        for key in [keys.split(":") for keys in _include.split(",")]:
                             if len(key) == 2:
                                 new_dump.setdefault(f"{key[0]}:{key[1]}", dump[key[0]][key[1]])
                             else:

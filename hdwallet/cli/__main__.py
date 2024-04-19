@@ -382,10 +382,10 @@ def cli_dump(**kwargs) -> None:  # cli_dumps(max_content_width=120)
     "-f", "--format", type=str, default="csv", help="Show dumps format type", show_default=True
 )
 @click.option(
-    "-sh", "--show", type=str, default=None, help="Set Value key of generated HDWallet data to show", show_default=True
+    "-in", "--include", type=str, default=None, help="Set Include keys from dumped", show_default=True
 )
 @click.option(
-    "-shh", "--show-header", type=bool, default=True, help="Set Show header of generated HDWallet", show_default=True
+    "-inh", "--include-header", is_flag=True, help="Set Include header from dumped", show_default=True
 )
 @click.option(
     "-de", "--delimiter", type=str, default=" ", help="Set Delimiter for CSV", show_default=True
