@@ -54,11 +54,23 @@ class SeedError(Error):
     pass
 
 
+class HDError(Error):
+    pass
+
+
 class DerivationError(Error):
     pass
 
 
 class SemanticError(Error):
+    pass
+
+
+class ECCError(Error):
+    pass
+
+
+class CryptocurrencyError(Error):
     pass
 
 
