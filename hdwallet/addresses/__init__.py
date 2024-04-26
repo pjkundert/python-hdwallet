@@ -8,7 +8,7 @@ from typing import (
     List, Dict, Type
 )
 
-from .iaddress import IAddress
+from ..exceptions import AddressError
 from .algorand import AlgorandAddress
 from .aptos import AptosAddress
 from .avalanche import AvalancheAddress
@@ -42,43 +42,64 @@ from .tezos import TezosAddress
 from .tron import TronAddress
 from .xinfin import XinFinAddress
 from .zilliqa import ZilliqaAddress
+from .iaddress import IAddress
 
-ADDRESSES: Dict[str, Type[IAddress]] = {
-    AlgorandAddress.name(): AlgorandAddress,
-    AptosAddress.name(): AptosAddress,
-    AvalancheAddress.name(): AvalancheAddress,
-    CardanoAddress.name(): CardanoAddress,
-    CosmosAddress.name(): CosmosAddress,
-    EOSAddress.name(): EOSAddress,
-    ErgoAddress.name(): ErgoAddress,
-    EthereumAddress.name(): EthereumAddress,
-    FilecoinAddress.name(): FilecoinAddress,
-    HarmonyAddress.name(): HarmonyAddress,
-    IconAddress.name(): IconAddress,
-    InjectiveAddress.name(): InjectiveAddress,
-    MoneroAddress.name(): MoneroAddress,
-    MultiversXAddress.name(): MultiversXAddress,
-    NanoAddress.name(): NanoAddress,
-    NearAddress.name(): NearAddress,
-    NeoAddress.name(): NeoAddress,
-    OKTChainAddress.name(): OKTChainAddress,
-    P2PKHAddress.name(): P2PKHAddress,
-    P2SHAddress.name(): P2SHAddress,
-    P2TRAddress.name(): P2TRAddress,
-    P2WPKHAddress.name(): P2WPKHAddress,
-    P2WPKHInP2SHAddress.name(): P2WPKHInP2SHAddress,
-    P2WSHAddress.name(): P2WSHAddress,
-    P2WSHInP2SHAddress.name(): P2WSHInP2SHAddress,
-    RippleAddress.name(): RippleAddress,
-    SolanaAddress.name(): SolanaAddress,
-    StellarAddress.name(): StellarAddress,
-    SuiAddress.name(): SuiAddress,
-    TezosAddress.name(): TezosAddress,
-    TronAddress.name(): TronAddress,
-    XinFinAddress.name(): XinFinAddress,
-    ZilliqaAddress.name(): ZilliqaAddress
-}
 
-__all__: List[str] = ["IAddress", "ADDRESSES"] + [
-    address.__name__ for address in ADDRESSES.values()
+class ADDRESSES:
+    
+    addresses: Dict[str, Type[IAddress]] = {
+        AlgorandAddress.name(): AlgorandAddress,
+        AptosAddress.name(): AptosAddress,
+        AvalancheAddress.name(): AvalancheAddress,
+        CardanoAddress.name(): CardanoAddress,
+        CosmosAddress.name(): CosmosAddress,
+        EOSAddress.name(): EOSAddress,
+        ErgoAddress.name(): ErgoAddress,
+        EthereumAddress.name(): EthereumAddress,
+        FilecoinAddress.name(): FilecoinAddress,
+        HarmonyAddress.name(): HarmonyAddress,
+        IconAddress.name(): IconAddress,
+        InjectiveAddress.name(): InjectiveAddress,
+        MoneroAddress.name(): MoneroAddress,
+        MultiversXAddress.name(): MultiversXAddress,
+        NanoAddress.name(): NanoAddress,
+        NearAddress.name(): NearAddress,
+        NeoAddress.name(): NeoAddress,
+        OKTChainAddress.name(): OKTChainAddress,
+        P2PKHAddress.name(): P2PKHAddress,
+        P2SHAddress.name(): P2SHAddress,
+        P2TRAddress.name(): P2TRAddress,
+        P2WPKHAddress.name(): P2WPKHAddress,
+        P2WPKHInP2SHAddress.name(): P2WPKHInP2SHAddress,
+        P2WSHAddress.name(): P2WSHAddress,
+        P2WSHInP2SHAddress.name(): P2WSHInP2SHAddress,
+        RippleAddress.name(): RippleAddress,
+        SolanaAddress.name(): SolanaAddress,
+        StellarAddress.name(): StellarAddress,
+        SuiAddress.name(): SuiAddress,
+        TezosAddress.name(): TezosAddress,
+        TronAddress.name(): TronAddress,
+        XinFinAddress.name(): XinFinAddress,
+        ZilliqaAddress.name(): ZilliqaAddress
+    }
+
+    @classmethod
+    def address(cls, name: str) -> Type[IAddress]:
+
+        if not cls.is_address(name=name):
+            raise AddressError(
+                "Invalid address name", expected=cls.addresses.keys(), got=name
+            )
+
+        return cls.addresses[name]
+
+    @classmethod
+    def is_address(cls, name) -> bool:
+        return name in cls.addresses.keys()
+
+
+__all__: List[str] = [
+    "IAddress", "ADDRESSES"
+] + [
+    address.__name__ for address in ADDRESSES.addresses.values()
 ]
