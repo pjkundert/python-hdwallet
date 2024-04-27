@@ -32,7 +32,7 @@ from .cryptocurrencies.icryptocurrency import (
 )
 from .keys import deserialize
 from .exceptions import (
-    Error, NetworkError, AddressError
+    Error, NetworkError, AddressError, CryptocurrencyError
 )
 from .utils import (
     get_bytes, exclude_keys
@@ -183,13 +183,10 @@ class HDWallet:
         )
 
         if hd.name() not in cryptocurrency.HDS.get_hds():
-            raise Error(
+            raise CryptocurrencyError(
                 f"{hd.name()} HD not implemented on {cryptocurrency.NAME} cryptocurrency"
             )
 
-        self._semantic = kwargs.get(
-            "semantic", "P2WPKH"
-        )
         self._language = kwargs.get("language", "english")
         self._passphrase = kwargs.get("passphrase", None)
         self._use_default_path = kwargs.get("use_default_path", False)
@@ -213,6 +210,17 @@ class HDWallet:
             self._hd = hd(mode=self._mode, public_key_type=self._public_key_type)
         elif hd.name() == "Monero":
             self._hd = hd(network=self._network.__name__.lower())
+
+        if self._hd.name() in [
+            "BIP32", "BIP44", "BIP86", "Cardano"
+        ]:
+            self._semantic = kwargs.get("semantic", "P2PKH")
+        elif self._hd.name() == "BIP49":
+            self._semantic = kwargs.get("semantic", "P2WPKH_IN_P2SH")
+        elif self._hd.name() in ["BIP84", "BIP141"]:
+            self._semantic = kwargs.get("semantic", "P2WPKH")
+        else:
+            self._semantic = None
 
     def from_entropy(self, entropy: IEntropy) -> "HDWallet":
 
@@ -473,7 +481,10 @@ class HDWallet:
     def path_key(self) -> Optional[str]:
         return self._hd.path_key()
 
-    def root_xprivate_key(self, semantic: str = "P2PKH", encoded: bool = True) -> Optional[str]:
+    def root_xprivate_key(self, semantic: Optional[str] = None, encoded: bool = True) -> Optional[str]:
+
+        if semantic is None:
+            semantic = self._semantic
 
         if self._hd.name() in ["Electrum-V1", "Monero"]:
             return None
@@ -482,7 +493,10 @@ class HDWallet:
             version=self._network.XPRIVATE_KEY_VERSIONS.get_version(semantic), encoded=encoded
         )
 
-    def root_xpublic_key(self, semantic: str = "P2PKH", encoded: bool = True) -> Optional[str]:
+    def root_xpublic_key(self, semantic: Optional[str] = None, encoded: bool = True) -> Optional[str]:
+
+        if semantic is None:
+            semantic = self._semantic
 
         if self._hd.name() in ["Electrum-V1", "Monero"]:
             return None
@@ -491,10 +505,10 @@ class HDWallet:
             version=self._network.XPUBLIC_KEY_VERSIONS.get_version(semantic), encoded=encoded
         )
 
-    def master_xprivate_key(self, semantic: str = "P2PKH", encoded: bool = True) -> Optional[str]:
+    def master_xprivate_key(self, semantic: Optional[str] = None, encoded: bool = True) -> Optional[str]:
         return self.root_xprivate_key(semantic=semantic, encoded=encoded)
 
-    def master_xpublic_key(self, semantic: str = "P2PKH", encoded: bool = True) -> Optional[str]:
+    def master_xpublic_key(self, semantic: Optional[str] = None, encoded: bool = True) -> Optional[str]:
         return self.root_xpublic_key(semantic=semantic, encoded=encoded)
 
     def root_private_key(self) -> Optional[str]:
@@ -537,7 +551,10 @@ class HDWallet:
             return self._hd.master_public_key(public_key_type=public_key_type)
         return self._hd.root_public_key(public_key_type=public_key_type)
 
-    def xprivate_key(self, semantic: str = "P2PKH", encoded: bool = True) -> Optional[str]:
+    def xprivate_key(self, semantic: Optional[str] = None, encoded: bool = True) -> Optional[str]:
+
+        if semantic is None:
+            semantic = self._semantic
 
         if self._hd.name() in ["Electrum-V1", "Monero"]:
             return None
@@ -546,7 +563,10 @@ class HDWallet:
             version=self._network.XPRIVATE_KEY_VERSIONS.get_version(semantic), encoded=encoded
         )
 
-    def xpublic_key(self, semantic: str = "P2PKH", encoded: bool = True) -> Optional[str]:
+    def xpublic_key(self, semantic: Optional[str] = None, encoded: bool = True) -> Optional[str]:
+
+        if semantic is None:
+            semantic = self._semantic
 
         if self._hd.name() in ["Electrum-V1", "Monero"]:
             return None
