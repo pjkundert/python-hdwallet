@@ -47,7 +47,7 @@ from .iaddress import IAddress
 
 class ADDRESSES:
     
-    addresses: Dict[str, Type[IAddress]] = {
+    dictionary: Dict[str, Type[IAddress]] = {
         AlgorandAddress.name(): AlgorandAddress,
         AptosAddress.name(): AptosAddress,
         AvalancheAddress.name(): AvalancheAddress,
@@ -84,22 +84,30 @@ class ADDRESSES:
     }
 
     @classmethod
+    def names(cls) -> List[str]:
+        return list(cls.dictionary.keys())
+
+    @classmethod
+    def classes(cls) -> List[Type[IAddress]]:
+        return list(cls.dictionary.values())
+
+    @classmethod
     def address(cls, name: str) -> Type[IAddress]:
 
         if not cls.is_address(name=name):
             raise AddressError(
-                "Invalid address name", expected=cls.addresses.keys(), got=name
+                "Invalid address name", expected=cls.names(), got=name
             )
 
-        return cls.addresses[name]
+        return cls.dictionary[name]
 
     @classmethod
-    def is_address(cls, name) -> bool:
-        return name in cls.addresses.keys()
+    def is_address(cls, name: str) -> bool:
+        return name in cls.names()
 
 
 __all__: List[str] = [
     "IAddress", "ADDRESSES"
 ] + [
-    address.__name__ for address in ADDRESSES.addresses.values()
+    cls.__name__ for cls in ADDRESSES.classes()
 ]

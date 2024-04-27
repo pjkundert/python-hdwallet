@@ -8,7 +8,7 @@ from typing import (
     List, Dict, Type
 )
 
-from .ientropy import IEntropy
+from ..exceptions import EntropyError
 from .algorand import (
     AlgorandEntropy, ALGORAND_ENTROPY_STRENGTHS
 )
@@ -22,14 +22,41 @@ from .electrum import (
 from .monero import (
     MoneroEntropy, MONERO_ENTROPY_STRENGTHS
 )
+from .ientropy import IEntropy
 
-ENTROPIES: Dict[str, Type[IEntropy]] = {
-    AlgorandEntropy.name(): AlgorandEntropy,
-    BIP39Entropy.name(): BIP39Entropy,
-    ElectrumV1Entropy.name(): ElectrumV1Entropy,
-    ElectrumV2Entropy.name(): ElectrumV2Entropy,
-    MoneroEntropy.name(): MoneroEntropy
-}
+
+class ENTROPIES:
+
+    dictionary: Dict[str, Type[IEntropy]] = {
+        AlgorandEntropy.name(): AlgorandEntropy,
+        BIP39Entropy.name(): BIP39Entropy,
+        ElectrumV1Entropy.name(): ElectrumV1Entropy,
+        ElectrumV2Entropy.name(): ElectrumV2Entropy,
+        MoneroEntropy.name(): MoneroEntropy
+    }
+
+    @classmethod
+    def names(cls) -> List[str]:
+        return list(cls.dictionary.keys())
+
+    @classmethod
+    def classes(cls) -> List[Type[IEntropy]]:
+        return list(cls.dictionary.values())
+
+    @classmethod
+    def entropy(cls, name: str) -> Type[IEntropy]:
+
+        if not cls.is_entropy(name=name):
+            raise EntropyError(
+                "Invalid entropy name", expected=cls.names(), got=name
+            )
+
+        return cls.dictionary[name]
+
+    @classmethod
+    def is_entropy(cls, name: str) -> bool:
+        return name in cls.names()
+
 
 __all__: List[str] = [
     "IEntropy",
@@ -40,5 +67,5 @@ __all__: List[str] = [
     "MONERO_ENTROPY_STRENGTHS",
     "ENTROPIES"
 ] + [
-    entropy.__name__ for entropy in ENTROPIES.values()
+    cls.__name__ for cls in ENTROPIES.classes()
 ]

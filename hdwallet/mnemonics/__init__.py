@@ -8,30 +8,55 @@ from typing import (
     List, Dict, Type
 )
 
-from .imnemonic import IMnemonic
+from ..exceptions import MnemonicError
 from .algorand import (
     AlgorandMnemonic, ALGORAND_MNEMONIC_WORDS, ALGORAND_MNEMONIC_LANGUAGES
 )
 from .bip39 import (
     BIP39Mnemonic, BIP39_MNEMONIC_WORDS, BIP39_MNEMONIC_LANGUAGES
 )
-from .electrum.v1 import (
-    ElectrumV1Mnemonic, ELECTRUM_V1_MNEMONIC_WORDS, ELECTRUM_V1_MNEMONIC_LANGUAGES
-)
-from .electrum.v2 import (
+from .electrum import (
+    ElectrumV1Mnemonic, ELECTRUM_V1_MNEMONIC_WORDS, ELECTRUM_V1_MNEMONIC_LANGUAGES,
     ElectrumV2Mnemonic, ELECTRUM_V2_MNEMONIC_WORDS, ELECTRUM_V2_MNEMONIC_LANGUAGES, ELECTRUM_V2_MNEMONIC_TYPES
 )
 from .monero import (
     MoneroMnemonic, MONERO_MNEMONIC_WORDS, MONERO_MNEMONIC_LANGUAGES
 )
+from .imnemonic import IMnemonic
 
-MNEMONICS: Dict[str, Type[IMnemonic]] = {
-    AlgorandMnemonic.name(): AlgorandMnemonic,
-    BIP39Mnemonic.name(): BIP39Mnemonic,
-    ElectrumV1Mnemonic.name(): ElectrumV1Mnemonic,
-    ElectrumV2Mnemonic.name(): ElectrumV2Mnemonic,
-    MoneroMnemonic.name(): MoneroMnemonic
-}
+
+class MNEMONICS:
+
+    dictionary: Dict[str, Type[IMnemonic]] = {
+        AlgorandMnemonic.name(): AlgorandMnemonic,
+        BIP39Mnemonic.name(): BIP39Mnemonic,
+        ElectrumV1Mnemonic.name(): ElectrumV1Mnemonic,
+        ElectrumV2Mnemonic.name(): ElectrumV2Mnemonic,
+        MoneroMnemonic.name(): MoneroMnemonic
+    }
+
+    @classmethod
+    def names(cls) -> List[str]:
+        return list(cls.dictionary.keys())
+
+    @classmethod
+    def classes(cls) -> List[Type[IMnemonic]]:
+        return list(cls.dictionary.values())
+
+    @classmethod
+    def mnemonic(cls, name: str) -> Type[IMnemonic]:
+
+        if not cls.is_mnemonic(name=name):
+            raise MnemonicError(
+                "Invalid mnemonic name", expected=cls.names(), got=name
+            )
+
+        return cls.dictionary[name]
+
+    @classmethod
+    def is_mnemonic(cls, name) -> bool:
+        return name in cls.names()
+
 
 __all__: List[str] = [
     "IMnemonic",
@@ -42,5 +67,5 @@ __all__: List[str] = [
     "MONERO_MNEMONIC_WORDS", "MONERO_MNEMONIC_LANGUAGES",
     "MNEMONICS"
 ] + [
-    mnemonic.__name__ for mnemonic in MNEMONICS.values()
+    cls.__name__ for cls in MNEMONICS.classes()
 ]

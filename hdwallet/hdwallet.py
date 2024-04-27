@@ -177,7 +177,7 @@ class HDWallet:
                 expected=self._cryptocurrency.ADDRESSES.get_addresses(),
                 got=address
             )
-        self._address = ADDRESSES[address]
+        self._address = ADDRESSES.address(name=address)
         self._address_type = kwargs.get(
             "address_type", self._cryptocurrency.DEFAULT_ADDRESS_TYPE
         )
@@ -229,18 +229,22 @@ class HDWallet:
                 entropy=self._entropy.entropy(), language=self._language, checksum=self._checksum
             )
         else:
-            mnemonic: str = MNEMONICS[self._entropy.name()].from_entropy(
+            mnemonic: str = MNEMONICS.mnemonic(
+                name=self._entropy.name()
+            ).from_entropy(
                 entropy=self._entropy.entropy(), language=self._language
             )
 
         if self._entropy.name() == "Electrum-V2":
             return self.from_mnemonic(
-                mnemonic=MNEMONICS[self._entropy.name()](
+                mnemonic=ElectrumV2Mnemonic(
                     mnemonic=mnemonic, mnemonic_type=self._mnemonic_type
                 )
             )
         return self.from_mnemonic(
-            mnemonic=MNEMONICS[self._entropy.name()](
+            mnemonic=MNEMONICS.mnemonic(
+                name=self._entropy.name()
+            ).__call__(
                 mnemonic=mnemonic
             )
         )
@@ -252,13 +256,18 @@ class HDWallet:
         self._mnemonic = mnemonic
 
         if self._mnemonic.name() == "Electrum-V2":
-            self._entropy = ENTROPIES[self._mnemonic.name()](
+            self._entropy = ENTROPIES.entropy(
+                name=self._mnemonic.name()
+            ).__call__(
                 entropy=self._mnemonic.decode(
-                    mnemonic=self._mnemonic.mnemonic(), mnemonic_type=self._mnemonic_type
+                    mnemonic=self._mnemonic.mnemonic(),
+                    mnemonic_type=self._mnemonic_type
                 )
             )
         else:
-            self._entropy = ENTROPIES[self._mnemonic.name()](
+            self._entropy = ENTROPIES.entropy(
+                name=self._mnemonic.name()
+            ).__call__(
                 entropy=self._mnemonic.decode(
                     mnemonic=self._mnemonic.mnemonic()
                 )
@@ -282,13 +291,19 @@ class HDWallet:
                 mnemonic_type=self._mnemonic_type
             )
         else:
-            seed: str = SEEDS[self._mnemonic.name()].from_mnemonic(
+            seed: str = SEEDS.seed(
+                name=self._mnemonic.name()
+            ).from_mnemonic(
                 mnemonic=self._mnemonic.mnemonic()
             )
         return self.from_seed(
-            seed=SEEDS[
-                "Cardano" if self._hd.name() == "Cardano" else self._mnemonic.name()
-            ](seed=seed)
+            seed=SEEDS.seed(
+                name=(
+                    "Cardano" if self._hd.name() == "Cardano" else self._mnemonic.name()
+                )
+            ).__call__(
+                seed=seed
+            )
         )
 
     def from_seed(self, seed: ISeed) -> "HDWallet":
@@ -670,7 +685,7 @@ class HDWallet:
                     minor=kwargs.get("minor", None), major=kwargs.get("major", None)
                 )
         else:
-            return ADDRESSES[address].encode(
+            return ADDRESSES.address(name=address).encode(
                 public_key=self.public_key(),
                 public_key_address_prefix=self._network.PUBLIC_KEY_ADDRESS_PREFIX,
                 script_address_prefix=self._network.SCRIPT_ADDRESS_PREFIX,
@@ -776,7 +791,7 @@ class HDWallet:
                 elif self._cryptocurrency.NAME in ["Bitcoin-Cash", "Bitcoin-Cash-SLP", "eCash"]:
                     for address_type in self._cryptocurrency.ADDRESS_TYPES.get_address_types():
                         for address in self._cryptocurrency.ADDRESSES.get_addresses():
-                            addresses[f"{address_type}-{address.lower()}"] = ADDRESSES[address].encode(
+                            addresses[f"{address_type}-{address.lower()}"] = ADDRESSES.address(name=address).encode(
                                 public_key=self.public_key(),
                                 public_key_address_prefix=getattr(
                                     self._network, f"{address_type.upper()}_PUBLIC_KEY_ADDRESS_PREFIX"
@@ -938,31 +953,41 @@ class HDWallet:
                     if self._derivation.name() in [
                         "BIP44", "BIP49", "BIP84", "BIP86"
                     ]:
-                        _derivation: IDerivation = DERIVATIONS[self._derivation.name()](
+                        _derivation: IDerivation = DERIVATIONS.derivation(
+                            name=self._derivation.name()
+                        ).__call__(
                             coin_type=current_derivation[1][0],
                             account=current_derivation[2][0],
                             change=current_derivation[3],
                             address=current_derivation[4][0]
                         )
                     elif self._derivation.name() == "CIP1852":
-                        _derivation: IDerivation = DERIVATIONS[self._derivation.name()](
+                        _derivation: IDerivation = DERIVATIONS.derivation(
+                            name=self._derivation.name()
+                        ).__call__(
                             coin_type=current_derivation[1][0],
                             account=current_derivation[2][0],
                             role=current_derivation[3],
                             address=current_derivation[4][0]
                         )
                     elif self._derivation.name() == "Electrum":
-                        _derivation: IDerivation = DERIVATIONS[self._derivation.name()](
+                        _derivation: IDerivation = DERIVATIONS.derivation(
+                            name=self._derivation.name()
+                        ).__call__(
                             change=current_derivation[0][0],
                             address=current_derivation[1][0]
                         )
                     elif self._derivation.name() == "Monero":
-                        _derivation: IDerivation = DERIVATIONS[self._derivation.name()](
+                        _derivation: IDerivation = DERIVATIONS.derivation(
+                            name=self._derivation.name()
+                        ).__call__(
                             minor=current_derivation[0][0],
                             major=current_derivation[1][0]
                         )
                     else:
-                        _derivation: IDerivation = DERIVATIONS[self._derivation.name()](
+                        _derivation: IDerivation = DERIVATIONS.derivation(
+                            name=self._derivation.name()
+                        ).__call__(
                             path="m/" + "/".join(
                                 [str(item[0]) + "'" if item[1] else str(item[0]) for item in current_derivation]
                             )
