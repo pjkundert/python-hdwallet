@@ -16,14 +16,14 @@ from ...seeds import (
 
 def generate_seed(**kwargs) -> None:
     try:
-        if kwargs.get("name") not in SEEDS.keys():
+        if not SEEDS.is_seed(name=kwargs.get("name")):
             click.echo(click.style(
-                f"Wrong seed name, (expected={list(SEEDS.keys())}, got='{kwargs.get('name')}')"
+                f"Wrong seed name, (expected={SEEDS.names()}, got='{kwargs.get('name')}')"
             ), err=True)
             sys.exit()
 
         mnemonic_name: str = "BIP39" if kwargs.get("name") == CardanoSeed.name() else kwargs.get("name")
-        if not MNEMONICS[mnemonic_name].is_valid(mnemonic=kwargs.get("mnemonic")):
+        if not MNEMONICS.mnemonic(name=mnemonic_name).is_valid(mnemonic=kwargs.get("mnemonic")):
             click.echo(click.style(f"Invalid {mnemonic_name} mnemonic"), err=True)
             sys.exit()
 
@@ -52,8 +52,8 @@ def generate_seed(**kwargs) -> None:
                 )
             )
         else:
-            seed: ISeed = SEEDS[kwargs.get("name")].__call__(
-                seed=SEEDS[kwargs.get("name")].from_mnemonic(
+            seed: ISeed = SEEDS.seed(name=kwargs.get("name")).__call__(
+                seed=SEEDS.seed(name=kwargs.get("name")).from_mnemonic(
                     mnemonic=kwargs.get("mnemonic")
                 )
             )

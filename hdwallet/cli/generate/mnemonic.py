@@ -21,9 +21,9 @@ from ...mnemonics import (
 
 def generate_mnemonic(**kwargs) -> None:
     try:
-        if kwargs.get("name") not in MNEMONICS.keys():
+        if not MNEMONICS.is_mnemonic(name=kwargs.get("name")):
             click.echo(click.style(
-                f"Wrong mnemonic name, (expected={list(MNEMONICS.keys())}, got='{kwargs.get('name')}')"
+                f"Wrong mnemonic name, (expected={MNEMONICS.names()}, got='{kwargs.get('name')}')"
             ), err=True)
             sys.exit()
 
@@ -55,15 +55,17 @@ def generate_mnemonic(**kwargs) -> None:
         else:
             words: int = kwargs.get("words")
 
-        if not MNEMONICS[kwargs.get("name")].is_valid_language(language=language):
+        if not MNEMONICS.mnemonic(name=kwargs.get("name")).is_valid_language(language=language):
             click.echo(click.style(
-                f"Wrong {kwargs.get('name')} mnemonic language, (expected={MNEMONICS[kwargs.get('name')].languages}, got='{language}')"
+                f"Wrong {kwargs.get('name')} mnemonic language, "
+                f"(expected={MNEMONICS.mnemonic(name=kwargs.get('name')).languages}, got='{language}')"
             ), err=True)
             sys.exit()
 
-        if not MNEMONICS[kwargs.get("name")].is_valid_words(words=words):
+        if not MNEMONICS.mnemonic(name=kwargs.get("name")).is_valid_words(words=words):
             click.echo(click.style(
-                f"Wrong {kwargs.get('name')} mnemonic words, (expected={MNEMONICS[kwargs.get('name')].words}, got='{words}')"
+                f"Wrong {kwargs.get('name')} mnemonic words, "
+                f"(expected={MNEMONICS.mnemonic(name=kwargs.get('name')).words}, got='{words}')"
             ), err=True)
             sys.exit()
 
@@ -79,8 +81,8 @@ def generate_mnemonic(**kwargs) -> None:
                     mnemonic_type=kwargs.get("mnemonic_type")
                 )
             else:
-                mnemonic: IMnemonic = MNEMONICS[kwargs.get("name")].__call__(
-                    mnemonic=MNEMONICS[kwargs.get("name")].from_entropy(
+                mnemonic: IMnemonic = MNEMONICS.mnemonic(name=kwargs.get("name")).__call__(
+                    mnemonic=MNEMONICS.mnemonic(name=kwargs.get("name")).from_entropy(
                         entropy=kwargs.get("entropy"), language=language
                     )
                 )
@@ -96,8 +98,8 @@ def generate_mnemonic(**kwargs) -> None:
                     mnemonic_type=kwargs.get("mnemonic_type")
                 )
             else:
-                mnemonic: IMnemonic = MNEMONICS[kwargs.get("name")].__call__(
-                    mnemonic=MNEMONICS[kwargs.get("name")].from_words(
+                mnemonic: IMnemonic = MNEMONICS.mnemonic(name=kwargs.get("name")).__call__(
+                    mnemonic=MNEMONICS.mnemonic(name=kwargs.get("name")).from_words(
                         words=words, language=language
                     )
                 )

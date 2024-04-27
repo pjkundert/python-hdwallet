@@ -15,17 +15,7 @@ from ..mnemonics import MNEMONICS
 from ..seeds import SEEDS
 from ..hds import HDS
 from ..derivations import (
-    BIP44Derivation,
-    BIP49Derivation,
-    BIP84Derivation,
-    BIP86Derivation,
-    CIP1852Derivation,
-    CustomDerivation,
-    ElectrumDerivation,
-    MoneroDerivation,
-    DERIVATIONS,
-    CHANGES,
-    ROLES
+    DERIVATIONS, CHANGES, ROLES
 )
 from ..cryptocurrencies import (
     ICryptocurrency, get_cryptocurrency
@@ -38,14 +28,14 @@ def dump(**kwargs) -> None:
         cryptocurrency: Type[ICryptocurrency] = get_cryptocurrency(
             symbol=kwargs.get("symbol")
         )
-        if kwargs.get("hd") not in HDS.keys():
+        if not HDS.is_hd(name=kwargs.get("hd")):
             click.echo(click.style(
-                f"Wrong HD name, (expected={list(HDS.keys())}, got='{kwargs.get('hd')}')"
+                f"Wrong HD name, (expected={HDS.names()}, got='{kwargs.get('hd')}')"
             ), err=True)
             sys.exit()
-        if kwargs.get("derivation") not in DERIVATIONS.keys():
+        if not DERIVATIONS.is_derivation(name=kwargs.get("derivation")):
             click.echo(click.style(
-                f"Wrong from derivation name, (expected={list(DERIVATIONS.keys())}, got='{kwargs.get('derivation')}')"
+                f"Wrong from derivation name, (expected={DERIVATIONS.names()}, got='{kwargs.get('derivation')}')"
             ), err=True)
             sys.exit()
         if not cryptocurrency.NETWORKS.is_network(network=kwargs.get("network")):
@@ -57,7 +47,7 @@ def dump(**kwargs) -> None:
 
         hdwallet: HDWallet = HDWallet(
             cryptocurrency=cryptocurrency,
-            hd=HDS[kwargs.get("hd")],
+            hd=HDS.hd(name=kwargs.get("hd")),
             network=kwargs.get("network"),
             public_key_type=kwargs.get("public_key_type"),
             passphrase=kwargs.get("passphrase"),
@@ -71,35 +61,35 @@ def dump(**kwargs) -> None:
         )
 
         if kwargs.get("entropy"):
-            if kwargs.get("entropy_name") not in ENTROPIES.keys():
+            if not ENTROPIES.is_entropy(name=kwargs.get("entropy_name")):
                 click.echo(click.style(
-                    f"Wrong entropy name, (expected={list(ENTROPIES.keys())}, got='{kwargs.get('entropy_name')}')"
+                    f"Wrong entropy name, (expected={ENTROPIES.names()}, got='{kwargs.get('entropy_name')}')"
                 ), err=True)
                 sys.exit()
             hdwallet.from_entropy(
-                entropy=ENTROPIES[kwargs.get("entropy_name")].__call__(
+                entropy=ENTROPIES.entropy(name=kwargs.get("entropy_name")).__call__(
                     entropy=kwargs.get("entropy")
                 )
             )
         elif kwargs.get("mnemonic"):
-            if kwargs.get("mnemonic_name") not in MNEMONICS.keys():
+            if not MNEMONICS.is_mnemonic(name=kwargs.get("mnemonic_name")):
                 click.echo(click.style(
-                    f"Wrong mnemonic name, (expected={list(MNEMONICS.keys())}, got='{kwargs.get('mnemonic_name')}')"
+                    f"Wrong mnemonic name, (expected={MNEMONICS.names()}, got='{kwargs.get('mnemonic_name')}')"
                 ), err=True)
                 sys.exit()
             hdwallet.from_mnemonic(
-                mnemonic=MNEMONICS[kwargs.get("mnemonic_name")].__call__(
+                mnemonic=MNEMONICS.mnemonic(name=kwargs.get("mnemonic_name")).__call__(
                     mnemonic=kwargs.get("mnemonic")
                 )
             )
         elif kwargs.get("seed"):
-            if kwargs.get("seed_name") not in SEEDS.keys():
+            if not SEEDS.is_seed(name=kwargs.get("seed_name")):
                 click.echo(click.style(
-                    f"Wrong seed name, (expected={list(SEEDS.keys())}, got='{kwargs.get('seed_name')}')"
+                    f"Wrong seed name, (expected={SEEDS.names()}, got='{kwargs.get('seed_name')}')"
                 ), err=True)
                 sys.exit()
             hdwallet.from_seed(
-                seed=SEEDS[kwargs.get("seed_name")].__call__(
+                seed=SEEDS.seed(name=kwargs.get("seed_name")).__call__(
                     seed=kwargs.get("seed")
                 )
             )
@@ -150,7 +140,7 @@ def dump(**kwargs) -> None:
         ):
 
             if kwargs.get("derivation") in [
-                BIP44Derivation.name(), BIP49Derivation.name(), BIP84Derivation.name(), BIP86Derivation.name()
+                "BIP44", "BIP49", "BIP84", "BIP86"
             ]:
                 if kwargs.get("change") in ["0", "external-chain"]:
                     change: str = CHANGES.EXTERNAL_CHAIN
@@ -165,14 +155,14 @@ def dump(**kwargs) -> None:
                     sys.exit()
 
                 hdwallet.from_derivation(
-                    derivation=DERIVATIONS[kwargs.get("derivation")](
+                    derivation=DERIVATIONS.derivation(name=kwargs.get("derivation")).__call__(
                         coin_type=cryptocurrency.COIN_TYPE,
                         account=tuple([int(account) for account in kwargs.get("account").split("-")]),
                         change=change,
                         address=tuple([int(address) for address in kwargs.get("address").split("-")])
                     )
                 )
-            elif kwargs.get("derivation") == CIP1852Derivation.name():
+            elif kwargs.get("derivation") == "CIP1852":
 
                 if kwargs.get("role") in ["0", "external-chain"]:
                     role: str = ROLES.EXTERNAL_CHAIN
@@ -189,30 +179,30 @@ def dump(**kwargs) -> None:
                     sys.exit()
 
                 hdwallet.from_derivation(
-                    derivation=DERIVATIONS[kwargs.get("derivation")](
+                    derivation=DERIVATIONS.derivation(name=kwargs.get("derivation")).__call__(
                         coin_type=cryptocurrency.COIN_TYPE,
                         account=tuple([int(account) for account in kwargs.get("account").split("-")]),
                         role=role,
                         address=tuple([int(address) for address in kwargs.get("address").split("-")])
                     )
                 )
-            elif kwargs.get("derivation") == CustomDerivation.name():
+            elif kwargs.get("derivation") == "Custom":
                 hdwallet.from_derivation(
-                    derivation=DERIVATIONS[kwargs.get("derivation")](
+                    derivation=DERIVATIONS.derivation(name=kwargs.get("derivation")).__call__(
                         path=kwargs.get("path", "m/"),
                         indexes=kwargs.get("indexes", [])
                     )
                 )
-            elif kwargs.get("derivation") == ElectrumDerivation.name():
+            elif kwargs.get("derivation") == "Electrum":
                 hdwallet.from_derivation(
-                    derivation=DERIVATIONS[kwargs.get("derivation")](
+                    derivation=DERIVATIONS.derivation(name=kwargs.get("derivation")).__call__(
                         change=tuple([int(change) for change in kwargs.get("change").split("-")]),
                         address=tuple([int(address) for address in kwargs.get("address").split("-")])
                     )
                 )
-            elif kwargs.get("derivation") == MoneroDerivation.name():
+            elif kwargs.get("derivation") == "Monero":
                 hdwallet.from_derivation(
-                    derivation=DERIVATIONS[kwargs.get("derivation")](
+                    derivation=DERIVATIONS.derivation(name=kwargs.get("derivation")).__call__(
                         minor=tuple([int(minor) for minor in kwargs.get("minor").split("-")]),
                         major=tuple([int(major) for major in kwargs.get("major").split("-")])
                     )

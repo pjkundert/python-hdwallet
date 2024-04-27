@@ -21,9 +21,9 @@ from ...entropies import (
 
 def generate_entropy(**kwargs) -> None:
     try:
-        if kwargs.get("name") not in ENTROPIES.keys():
+        if not ENTROPIES.is_entropy(name=kwargs.get("name")):
             click.echo(click.style(
-                f"Wrong entropy name, (expected={list(ENTROPIES.keys())}, got='{kwargs.get('name')}')"
+                f"Wrong entropy name, (expected={ENTROPIES.names()}, got='{kwargs.get('name')}')"
             ), err=True)
             sys.exit()
 
@@ -41,14 +41,15 @@ def generate_entropy(**kwargs) -> None:
         else:
             strength: int = kwargs.get("strength")
 
-        if not ENTROPIES[kwargs.get("name")].is_valid_strength(strength=strength):
+        if not ENTROPIES.entropy(name=kwargs.get("name")).is_valid_strength(strength=strength):
             click.echo(click.style(
-                f"Wrong {kwargs.get('name')} entropy strength, (expected={ENTROPIES[kwargs.get('name')].strengths}, got='{strength}')"
+                f"Wrong {kwargs.get('name')} entropy strength, "
+                f"(expected={ENTROPIES.entropy(name=kwargs.get('name')).strengths}, got='{strength}')"
             ), err=True)
             sys.exit()
 
-        entropy: IEntropy = ENTROPIES[kwargs.get("name")].__call__(
-            entropy=ENTROPIES[kwargs.get("name")].generate(
+        entropy: IEntropy = ENTROPIES.entropy(name=kwargs.get("name")).__call__(
+            entropy=ENTROPIES.entropy(name=kwargs.get("name")).generate(
                 strength=strength
             )
         )

@@ -13,7 +13,7 @@ from ...mnemonics import MNEMONICS
 
 def list_languages():
 
-    for i, mnemonic in enumerate(MNEMONICS.values()):
+    for i, mnemonic in enumerate(MNEMONICS.mnemonics.values()):
 
         languages: list = []
         for _language in mnemonic.languages:
@@ -31,5 +31,5 @@ def list_languages():
             stralign="left",
             numalign="left"
         ))
-        if len(MNEMONICS.keys()) - 1 != i:
+        if len(MNEMONICS.mnemonics.keys()) - 1 != i:
             click.echo("\n")
