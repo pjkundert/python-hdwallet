@@ -14,9 +14,7 @@ from ..entropies import ENTROPIES
 from ..mnemonics import MNEMONICS
 from ..seeds import SEEDS
 from ..hds import HDS
-from ..derivations import (
-    DERIVATIONS, CHANGES, ROLES
-)
+from ..derivations import DERIVATIONS
 from ..cryptocurrencies import (
     ICryptocurrency, get_cryptocurrency
 )
@@ -45,6 +43,17 @@ def dump(**kwargs) -> None:
             ), err=True)
             sys.exit()
 
+        semantic = kwargs.get("semantic")
+        if semantic is None:
+            if kwargs.get("hd") in [
+                "BIP32", "BIP44", "BIP86", "Cardano"
+            ]:
+                semantic = "P2PKH"
+            elif kwargs.get("hd") == "BIP49":
+                semantic = "P2WPKH_IN_P2SH"
+            elif kwargs.get("hd") in ["BIP84", "BIP141"]:
+                semantic = "P2WPKH"
+
         hdwallet: HDWallet = HDWallet(
             cryptocurrency=cryptocurrency,
             hd=HDS.hd(name=kwargs.get("hd")),
@@ -57,7 +66,7 @@ def dump(**kwargs) -> None:
             mode=kwargs.get("mode"),
             mnemonic_type=kwargs.get("mnemonic_type"),
             checksum=kwargs.get("checksum"),
-            semantic=kwargs.get("semantic")
+            semantic=semantic
         )
 
         if kwargs.get("entropy"):

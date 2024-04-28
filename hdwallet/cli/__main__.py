@@ -249,7 +249,7 @@ def cli_seed(**kwargs) -> None:
     "-cs", "--checksum", type=bool, default=False, help="Set Checksum for Monero", show_default=True
 )
 @click.option(
-    "-se", "--semantic", type=str, default="P2WPKH", help="Set Semantic for BIP141", show_default=True
+    "-se", "--semantic", type=str, default=None, help="Set Semantic for BIP141", show_default=True
 )
 @click.option(
     "-ex", "--exclude", type=str, default="", help="Set Exclude keys from dumped", show_default=True
@@ -373,7 +373,7 @@ def cli_dump(**kwargs) -> None:  # cli_dumps(max_content_width=120)
     "-cs", "--checksum", type=bool, default=False, help="Set Checksum for Monero", show_default=True
 )
 @click.option(
-    "-se", "--semantic", type=str, default="P2WPKH", help="Set Semantic for BIP141", show_default=True
+    "-se", "--semantic", type=str, default=None, help="Set Semantic for BIP141", show_default=True
 )
 @click.option(
     "-ex", "--exclude", type=str, default="", help="Set Exclude keys from dumped", show_default=True
