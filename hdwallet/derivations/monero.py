@@ -9,7 +9,7 @@ from typing import (
 )
 
 from ..utils import (
-    normalize_derivation, index_tuple_to_string
+    normalize_index, normalize_derivation, index_tuple_to_string
 )
 from .iderivation import IDerivation
 
@@ -20,12 +20,12 @@ class MoneroDerivation(IDerivation):
     _major: Union[Tuple[int, bool], Tuple[int, int, bool]]
 
     def __init__(
-        self, minor: Union[int, Tuple[int, int]] = 1, major: Union[int, Tuple[int, int]] = 0
+        self, minor: Union[str, int, Tuple[int, int]] = 1, major: Union[str, int, Tuple[int, int]] = 0
     ) -> None:
         super(MoneroDerivation, self).__init__()
 
-        self._minor = (*minor, False) if isinstance(minor, tuple) else (minor, False)
-        self._major = (*major, False) if isinstance(major, tuple) else (major, False)
+        self._minor = normalize_index(index=minor, hardened=False)
+        self._major = normalize_index(index=major, hardened=False)
         self._path, self._indexes, self._derivations = normalize_derivation(path=(
             f"m/{index_tuple_to_string(index=self._minor)}/"
             f"{index_tuple_to_string(index=self._major)}"
@@ -35,16 +35,16 @@ class MoneroDerivation(IDerivation):
     def name(cls) -> str:
         return "Monero"
 
-    def from_minor(self, minor: Union[int, Tuple[int, int]]) -> "MoneroDerivation":
-        self._minor = (*minor, False) if isinstance(minor, tuple) else (minor, False)
+    def from_minor(self, minor: Union[str, int, Tuple[int, int]]) -> "MoneroDerivation":
+        self._minor = normalize_index(index=minor, hardened=False)
         self._path, self._indexes, self._derivations = normalize_derivation(path=(
             f"m/{index_tuple_to_string(index=self._minor)}/"
             f"{index_tuple_to_string(index=self._major)}"
         ))
         return self
 
-    def from_major(self, major: Union[int, Tuple[int, int]]) -> "MoneroDerivation":
-        self._major = (*major, False) if isinstance(major, tuple) else (major, False)
+    def from_major(self, major: Union[str, int, Tuple[int, int]]) -> "MoneroDerivation":
+        self._major = normalize_index(index=major, hardened=False)
         self._path, self._indexes, self._derivations = normalize_derivation(path=(
             f"m/{index_tuple_to_string(index=self._minor)}/"
             f"{index_tuple_to_string(index=self._major)}"
@@ -52,8 +52,8 @@ class MoneroDerivation(IDerivation):
         return self
 
     def clean(self) -> "MoneroDerivation":
-        self._minor = (1, False)
-        self._major = (0, False)
+        self._minor = normalize_index(index=1, hardened=False)
+        self._major = normalize_index(index=0, hardened=False)
         self._path, self._indexes, self._derivations = normalize_derivation(path=(
             f"m/{index_tuple_to_string(index=self._minor)}/"
             f"{index_tuple_to_string(index=self._major)}"

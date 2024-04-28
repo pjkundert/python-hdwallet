@@ -978,7 +978,7 @@ class HDWallet:
                         ).__call__(
                             coin_type=current_derivation[1][0],
                             account=current_derivation[2][0],
-                            change=current_derivation[3],
+                            change=current_derivation[3][0],
                             address=current_derivation[4][0]
                         )
                     elif self._derivation.name() == "CIP1852":
@@ -987,7 +987,7 @@ class HDWallet:
                         ).__call__(
                             coin_type=current_derivation[1][0],
                             account=current_derivation[2][0],
-                            role=current_derivation[3],
+                            role=current_derivation[3][0],
                             address=current_derivation[4][0]
                         )
                     elif self._derivation.name() == "Electrum":

@@ -5,12 +5,13 @@
 # file COPYING or https://opensource.org/license/mit
 
 from typing import (
-    Tuple, Union, Optional
+    Tuple, Union, Optional, Dict
 )
 
 from ..utils import (
-    normalize_derivation, index_tuple_to_string
+    normalize_index, normalize_derivation, index_tuple_to_string
 )
+from ..exceptions import DerivationError
 from .iderivation import IDerivation
 
 
@@ -27,23 +28,30 @@ class BIP44Derivation(IDerivation):  # https://github.com/bitcoin/bips/blob/mast
     _account: Union[Tuple[int, bool], Tuple[int, int, bool]]
     _change: Tuple[int, bool]
     _address: Union[Tuple[int, bool], Tuple[int, int, bool]]
-    changes: dict = {
+    changes: Dict[str, int] = {
         "external-chain": 0, "internal-chain": 1
     }
 
     def __init__(
         self,
-        coin_type: Union[int, Tuple[int, bool]] = 0,
-        account: Union[int, Tuple[int, int]] = 0,
-        change: Union[str, Tuple[int, bool]] = "external-chain",
-        address: Union[int, Tuple[int, int]] = 0
+        coin_type: Union[str, int] = 0,
+        account: Union[str, int, Tuple[int, int]] = 0,
+        change: Union[str, int] = "external-chain",
+        address: Union[str, int, Tuple[int, int]] = 0
     ) -> None:
         super(BIP44Derivation, self).__init__()
 
-        self._coin_type = (coin_type, True) if isinstance(coin_type, int) else coin_type
-        self._account = (*account, True) if isinstance(account, tuple) else (account, True)
-        self._change = (self.changes[change], False) if isinstance(change, str) else change
-        self._address = (*address, False) if isinstance(address, tuple) else (address, False)
+        if change not in [*self.changes.keys(), 0, "0", 1, "1"]:
+            raise DerivationError(
+                f"Bad {self.name()} change index", expected=[*self.changes.keys(), 0, "0", 1, "1"], got=change
+            )
+
+        self._coin_type = normalize_index(index=coin_type, hardened=True)
+        self._account = normalize_index(index=account, hardened=True)
+        self._change = normalize_index(
+            index=(self.changes[change] if change in self.changes.keys() else change), hardened=False
+        )
+        self._address = normalize_index(index=address, hardened=False)
         self._path, self._indexes, self._derivations = normalize_derivation(path=(
             f"m/{index_tuple_to_string(index=self._purpose)}/"
             f"{index_tuple_to_string(index=self._coin_type)}/"
@@ -56,8 +64,8 @@ class BIP44Derivation(IDerivation):  # https://github.com/bitcoin/bips/blob/mast
     def name(cls) -> str:
         return "BIP44"
 
-    def from_coin_type(self, coin_type: int) -> "BIP44Derivation":
-        self._coin_type = (coin_type, True)
+    def from_coin_type(self, coin_type: Union[str, int]) -> "BIP44Derivation":
+        self._coin_type = normalize_index(index=coin_type, hardened=True)
         self._path, self._indexes, self._derivations = normalize_derivation(path=(
             f"m/{index_tuple_to_string(index=self._purpose)}/"
             f"{index_tuple_to_string(index=self._coin_type)}/"
@@ -67,8 +75,8 @@ class BIP44Derivation(IDerivation):  # https://github.com/bitcoin/bips/blob/mast
         ))
         return self
 
-    def from_account(self, account: Union[int, Tuple[int, int]]) -> "BIP44Derivation":
-        self._account = (*account, True) if isinstance(account, tuple) else (account, True)
+    def from_account(self, account: Union[str, int, Tuple[int, int]]) -> "BIP44Derivation":
+        self._account = normalize_index(index=account, hardened=True)
         self._path, self._indexes, self._derivations = normalize_derivation(path=(
             f"m/{index_tuple_to_string(index=self._purpose)}/"
             f"{index_tuple_to_string(index=self._coin_type)}/"
@@ -78,8 +86,14 @@ class BIP44Derivation(IDerivation):  # https://github.com/bitcoin/bips/blob/mast
         ))
         return self
 
-    def from_change(self, change: str) -> "BIP44Derivation":
-        self._change = (self.changes[change], False)
+    def from_change(self, change: Union[str, int]) -> "BIP44Derivation":
+        if change not in [*self.changes.keys(), 0, "0", 1, "1"]:
+            raise DerivationError(
+                f"Bad {self.name()} change index", expected=[*self.changes.keys(), 0, "0", 1, "1"], got=change
+            )
+        self._change = normalize_index(
+            index=(self.changes[change] if change in self.changes.keys() else change), hardened=False
+        )
         self._path, self._indexes, self._derivations = normalize_derivation(path=(
             f"m/{index_tuple_to_string(index=self._purpose)}/"
             f"{index_tuple_to_string(index=self._coin_type)}/"
@@ -89,8 +103,8 @@ class BIP44Derivation(IDerivation):  # https://github.com/bitcoin/bips/blob/mast
         ))
         return self
 
-    def from_address(self, address: Union[int, Tuple[int, int]]) -> "BIP44Derivation":
-        self._address = (*address, False) if isinstance(address, tuple) else (address, False)
+    def from_address(self, address: Union[str, int, Tuple[int, int]]) -> "BIP44Derivation":
+        self._address = normalize_index(index=address, hardened=False)
         self._path, self._indexes, self._derivations = normalize_derivation(path=(
             f"m/{index_tuple_to_string(index=self._purpose)}/"
             f"{index_tuple_to_string(index=self._coin_type)}/"
@@ -101,9 +115,9 @@ class BIP44Derivation(IDerivation):  # https://github.com/bitcoin/bips/blob/mast
         return self
 
     def clean(self) -> "BIP44Derivation":
-        self._account = (0, True)
-        self._change = (self.changes["external-chain"], False)
-        self._address = (0, False)
+        self._account = normalize_index(index=0, hardened=True)
+        self._change = normalize_index(index=self.changes["external-chain"], hardened=False)
+        self._address = normalize_index(index=0, hardened=False)
         self._path, self._indexes, self._derivations = normalize_derivation(path=(
             f"m/{index_tuple_to_string(index=self._purpose)}/"
             f"{index_tuple_to_string(index=self._coin_type)}/"
@@ -124,7 +138,7 @@ class BIP44Derivation(IDerivation):  # https://github.com/bitcoin/bips/blob/mast
             self._account[1] if len(self._account) == 3 else self._account[0]
         )
 
-    def change(self) -> Optional[None]:
+    def change(self) -> str:
         _change: Optional[str] = None
         for key, value in self.changes.items():
             if value == self._change[0]:

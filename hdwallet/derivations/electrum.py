@@ -9,7 +9,7 @@ from typing import (
 )
 
 from ..utils import (
-    normalize_derivation, index_tuple_to_string
+    normalize_index, normalize_derivation, index_tuple_to_string
 )
 from .iderivation import IDerivation
 
@@ -20,12 +20,12 @@ class ElectrumDerivation(IDerivation):
     _address: Union[Tuple[int, bool], Tuple[int, int, bool]]
 
     def __init__(
-        self, change: Union[int, Tuple[int, int]] = 0, address: Union[int, Tuple[int, int]] = 0
+        self, change: Union[str, int, Tuple[int, int]] = 0, address: Union[str, int, Tuple[int, int]] = 0
     ) -> None:
         super(ElectrumDerivation, self).__init__()
 
-        self._change = (*change, False) if isinstance(change, tuple) else (change, False)
-        self._address = (*address, False) if isinstance(address, tuple) else (address, False)
+        self._change = normalize_index(index=change, hardened=False)
+        self._address = normalize_index(index=address, hardened=False)
         self._path, self._indexes, self._derivations = normalize_derivation(path=(
             f"m/{index_tuple_to_string(index=self._change)}/"
             f"{index_tuple_to_string(index=self._address)}"
@@ -35,16 +35,16 @@ class ElectrumDerivation(IDerivation):
     def name(cls) -> str:
         return "Electrum"
 
-    def from_change(self, change: Union[int, Tuple[int, int]]) -> "ElectrumDerivation":
-        self._change = (*change, False) if isinstance(change, tuple) else (change, False)
+    def from_change(self, change: Union[str, int, Tuple[int, int]]) -> "ElectrumDerivation":
+        self._change = normalize_index(index=change, hardened=False)
         self._path, self._indexes, self._derivations = normalize_derivation(path=(
             f"m/{index_tuple_to_string(index=self._change)}/"
             f"{index_tuple_to_string(index=self._address)}"
         ))
         return self
 
-    def from_address(self, address: Union[int, Tuple[int, int]]) -> "ElectrumDerivation":
-        self._address = (*address, False) if isinstance(address, tuple) else (address, False)
+    def from_address(self, address: Union[str, int, Tuple[int, int]]) -> "ElectrumDerivation":
+        self._address = normalize_index(index=address, hardened=False)
         self._path, self._indexes, self._derivations = normalize_derivation(path=(
             f"m/{index_tuple_to_string(index=self._change)}/"
             f"{index_tuple_to_string(index=self._address)}"
@@ -52,8 +52,8 @@ class ElectrumDerivation(IDerivation):
         return self
 
     def clean(self) -> "ElectrumDerivation":
-        self._change = (0, False)
-        self._address = (0, False)
+        self._change = normalize_index(index=0, hardened=False)
+        self._address = normalize_index(index=0, hardened=False)
         self._path, self._indexes, self._derivations = normalize_derivation(path=(
             f"m/{index_tuple_to_string(index=self._change)}/"
             f"{index_tuple_to_string(index=self._address)}"
