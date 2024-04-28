@@ -142,48 +142,21 @@ def dump(**kwargs) -> None:
             if kwargs.get("derivation") in [
                 "BIP44", "BIP49", "BIP84", "BIP86"
             ]:
-                if kwargs.get("change") in ["0", "external-chain"]:
-                    change: str = CHANGES.EXTERNAL_CHAIN
-                elif kwargs.get("change") in ["1", "internal-chain"]:
-                    change: str = CHANGES.INTERNAL_CHAIN
-                else:
-                    click.echo(click.style(
-                        f"Wrong {kwargs.get('derivation')} change index, "
-                        f"(expected= 0 | external-chain | 1 | internal-chain, "
-                        f"got='{kwargs.get('change')}')"
-                    ), err=True)
-                    sys.exit()
-
                 hdwallet.from_derivation(
                     derivation=DERIVATIONS.derivation(name=kwargs.get("derivation")).__call__(
                         coin_type=cryptocurrency.COIN_TYPE,
-                        account=tuple([int(account) for account in kwargs.get("account").split("-")]),
-                        change=change,
-                        address=tuple([int(address) for address in kwargs.get("address").split("-")])
+                        account=kwargs.get("account"),
+                        change=kwargs.get("change"),
+                        address=kwargs.get("address")
                     )
                 )
             elif kwargs.get("derivation") == "CIP1852":
-
-                if kwargs.get("role") in ["0", "external-chain"]:
-                    role: str = ROLES.EXTERNAL_CHAIN
-                elif kwargs.get("role") in ["1", "internal-chain"]:
-                    role: str = ROLES.INTERNAL_CHAIN
-                elif kwargs.get("role") in ["2", "staking-chain"]:
-                    role: str = ROLES.STAKING_KEY
-                else:
-                    click.echo(click.style(
-                        f"Wrong {kwargs.get('derivation')} role index, "
-                        f"(expected= 0 | external-chain | 1 | internal-chain | 2 | staking-chain, "
-                        f"got='{kwargs.get('role')}')"
-                    ), err=True)
-                    sys.exit()
-
                 hdwallet.from_derivation(
                     derivation=DERIVATIONS.derivation(name=kwargs.get("derivation")).__call__(
                         coin_type=cryptocurrency.COIN_TYPE,
-                        account=tuple([int(account) for account in kwargs.get("account").split("-")]),
-                        role=role,
-                        address=tuple([int(address) for address in kwargs.get("address").split("-")])
+                        account=kwargs.get("account"),
+                        role=kwargs.get("role"),
+                        address=kwargs.get("address")
                     )
                 )
             elif kwargs.get("derivation") == "Custom":
@@ -196,15 +169,15 @@ def dump(**kwargs) -> None:
             elif kwargs.get("derivation") == "Electrum":
                 hdwallet.from_derivation(
                     derivation=DERIVATIONS.derivation(name=kwargs.get("derivation")).__call__(
-                        change=tuple([int(change) for change in kwargs.get("change").split("-")]),
-                        address=tuple([int(address) for address in kwargs.get("address").split("-")])
+                        change=kwargs.get("change"),
+                        address=kwargs.get("address")
                     )
                 )
             elif kwargs.get("derivation") == "Monero":
                 hdwallet.from_derivation(
                     derivation=DERIVATIONS.derivation(name=kwargs.get("derivation")).__call__(
-                        minor=tuple([int(minor) for minor in kwargs.get("minor").split("-")]),
-                        major=tuple([int(major) for major in kwargs.get("major").split("-")])
+                        minor=kwargs.get("minor"),
+                        major=kwargs.get("major")
                     )
                 )
 
