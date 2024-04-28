@@ -11,6 +11,7 @@ from typing import (
 
 import binascii
 import string
+import re
 
 from .exceptions import DerivationError
 
@@ -61,6 +62,64 @@ def indexes_to_path(indexes: List[int]) -> str:
     for index in indexes:
         path += f"/{index - 0x80000000}'" if index & 0x80000000 else f"/{index}"
     return path
+
+
+def normalize_index(
+    index: Union[str, int, Tuple[int, int]], hardened: bool = False
+) -> Union[Tuple[int, bool], Tuple[int, int, bool]]:
+
+    if isinstance(index, tuple):
+        if len(index) != 2:
+            raise DerivationError(
+                f"Bad index length", expected=2, got=len(index)
+            )
+        elif not isinstance(index[0], int) or not isinstance(index[1], int):
+            raise DerivationError(
+                f"Invalid index types",
+                expected="both indexes must be integer instance",
+                got=f"{type(index[0])}-{type(index[0])}"
+            )
+        elif index[0] < 0 or index[1] < 0:
+            raise DerivationError(
+                f"Bad index format", expected="both must be non-negative-numbers", got=index
+            )
+        elif index[0] > index[1]:
+            raise DerivationError(
+                f"Bad index, from {index[0]} index should be less than to {index[1]} index"
+            )
+        return *index, hardened
+
+    elif isinstance(index, str):
+
+        match: re.Match = re.match(
+            r"^(\d+)(-(\d+))?$", index
+        )
+        if match:
+            from_index: int = int(match.group(1))
+            to_index: Optional[int] = (
+                int(match.group(3)) if match.group(3) else None
+            )
+            if to_index is None:
+                return from_index, hardened
+            if from_index > to_index:
+                raise DerivationError(
+                    f"Bad index, from {from_index} index should be less than to {to_index} index"
+                )
+            return from_index, to_index, hardened
+        raise DerivationError(
+            f"Bad index format", expected="{non-negative-number} | {number}-{number}", got=index
+        )
+
+    elif isinstance(index, int):
+        if index < 0:
+            raise DerivationError(
+                f"Bad index format", expected="non-negative-number", got=index
+            )
+        return index, hardened
+
+    raise DerivationError(
+        f"Invalid index instance", expected=(str, int, tuple), got=type(index)
+    )
 
 
 def normalize_derivation(
