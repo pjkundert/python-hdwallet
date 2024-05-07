@@ -197,6 +197,19 @@ class HDWallet:
         }
 
         if hd.name() in [
+            "BIP32", "BIP44", "BIP86", "Cardano"
+        ]:
+            self._semantic = kwargs.get("semantic", "P2PKH")
+        elif hd.name() == "BIP49":
+            self._semantic = kwargs.get("semantic", "P2WPKH_IN_P2SH")
+        elif hd.name() in [
+            "BIP84", "BIP141"
+        ]:
+            self._semantic = kwargs.get("semantic", "P2WPKH")
+        else:
+            self._semantic = None
+
+        if hd.name() in [
             "BIP32", "BIP44", "BIP49", "BIP84", "BIP86", "BIP141"
         ]:
             self._hd = hd(
@@ -210,17 +223,6 @@ class HDWallet:
             self._hd = hd(mode=self._mode, public_key_type=self._public_key_type)
         elif hd.name() == "Monero":
             self._hd = hd(network=self._network.__name__.lower())
-
-        if self._hd.name() in [
-            "BIP32", "BIP44", "BIP86", "Cardano"
-        ]:
-            self._semantic = kwargs.get("semantic", "P2PKH")
-        elif self._hd.name() == "BIP49":
-            self._semantic = kwargs.get("semantic", "P2WPKH_IN_P2SH")
-        elif self._hd.name() in ["BIP84", "BIP141"]:
-            self._semantic = kwargs.get("semantic", "P2WPKH")
-        else:
-            self._semantic = None
 
     def from_entropy(self, entropy: IEntropy) -> "HDWallet":
 
