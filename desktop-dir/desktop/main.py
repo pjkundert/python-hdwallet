@@ -114,7 +114,7 @@ class MainApplication:
         :param line_edits: A list of QLineEdit widgets to validate.
         """
         def validate_and_filter(input_string: str) -> Optional[str]:
-            pattern = r'^\d-\d$'
+            pattern = r'^\d-\d(?!-)$'
             return input_string if re.match(pattern, input_string) else None
 
         @Slot()
@@ -123,7 +123,7 @@ class MainApplication:
                 input_text = line_edit.text()
                 filtered_text = validate_and_filter(input_text)
                 if filtered_text is None:
-                    line_edit.setValidator(QRegularExpressionValidator(QRegularExpression("[0-9-]*")))
+                    line_edit.setValidator(QRegularExpressionValidator(QRegularExpression("[0-9]+-[0-9]+(?!-)")))
                 else:
                     line_edit.setValidator(None)
 
