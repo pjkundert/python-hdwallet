@@ -711,11 +711,11 @@
                </widget>
               </item>
               <item>
-               <widget class="QGroupBox" name="groupBox">
+               <widget class="QGroupBox" name="seedGroupBoxContainerQGroupBox">
                 <property name="title">
                  <string>Seed</string>
                 </property>
-                <layout class="QVBoxLayout" name="verticalLayout">
+                <layout class="QVBoxLayout" name="seedGroupBoxContainerQGroupBoxVLayout">
                  <property name="spacing">
                   <number>15</number>
                  </property>
@@ -736,7 +736,7 @@
                    <property name="enabled">
                     <bool>true</bool>
                    </property>
-                   <layout class="QHBoxLayout" name="generateLengthAndPassphraseQFrameHLayout_2">
+                   <layout class="QHBoxLayout" name="generateSeedGenerateContainerQFrameHLayout">
                     <property name="spacing">
                      <number>15</number>
                     </property>
@@ -754,7 +754,7 @@
                     </property>
                     <item>
                      <widget class="QFrame" name="generateSeedClientContainerQFrame">
-                      <layout class="QVBoxLayout" name="generateMnemonicClientContainerQFrameVLayout_2">
+                      <layout class="QVBoxLayout" name="generateSeedClientContainerQFrameVLayout">
                        <property name="spacing">
                         <number>5</number>
                        </property>
@@ -789,7 +789,7 @@
                     </item>
                     <item>
                      <widget class="QFrame" name="generateSeedMnemonicTypeContainerQFrame">
-                      <layout class="QVBoxLayout" name="generateMnemonicWordsContainerQFrameVLayout_2">
+                      <layout class="QVBoxLayout" name="generateSeedMnemonicTypeContainerQFrameVLayout">
                        <property name="spacing">
                         <number>5</number>
                        </property>
@@ -824,7 +824,7 @@
                     </item>
                     <item>
                      <widget class="QFrame" name="generateSeedCardanoTypeContainerQFrame">
-                      <layout class="QVBoxLayout" name="generateMnemonicLanguageContainerQFrameVLayout_2">
+                      <layout class="QVBoxLayout" name="generateSeedCardanoTypeContainerQFrameVLayout">
                        <property name="spacing">
                         <number>5</number>
                        </property>
@@ -883,7 +883,7 @@
                       <property name="lineWidth">
                        <number>0</number>
                       </property>
-                      <layout class="QVBoxLayout" name="generateLengthContainerQFrameVLayout_3">
+                      <layout class="QVBoxLayout" name="generateSeedMnemonicContainerQFrameVLayout">
                        <property name="spacing">
                         <number>5</number>
                        </property>
@@ -904,7 +904,7 @@
                          <property name="enabled">
                           <bool>true</bool>
                          </property>
-                         <layout class="QHBoxLayout" name="generateLengthLabelContainerQFrameHLayout_3">
+                         <layout class="QHBoxLayout" name="generateSeedMnemonicLabelContainerQFrameHLayout">
                           <property name="spacing">
                            <number>15</number>
                           </property>
@@ -961,7 +961,7 @@
                       <property name="lineWidth">
                        <number>0</number>
                       </property>
-                      <layout class="QVBoxLayout" name="generateLengthContainerQFrameVLayout_2">
+                      <layout class="QVBoxLayout" name="generateSeedPassphraseGenerateContainerQFrameVLayout">
                        <property name="spacing">
                         <number>5</number>
                        </property>
@@ -982,7 +982,7 @@
                          <property name="enabled">
                           <bool>true</bool>
                          </property>
-                         <layout class="QHBoxLayout" name="generateLengthLabelContainerQFrameHLayout_2">
+                         <layout class="QHBoxLayout" name="generateSeedPassphraseGenerateLabelContainerQFrameHLayout">
                           <property name="spacing">
                            <number>15</number>
                           </property>
@@ -1762,7 +1762,7 @@
                      <item>
                       <widget class="QStackedWidget" name="bipQStackedWidget">
                        <property name="currentIndex">
-                        <number>0</number>
+                        <number>4</number>
                        </property>
                        <widget class="QWidget" name="bipFromEntropyQStackedWidget">
                         <layout class="QVBoxLayout" name="bipFromEntropyQStackedWidgetVLayout">
@@ -1801,7 +1801,7 @@
                             </property>
                             <item>
                              <widget class="QFrame" name="bipFromEntropyLabelContainerQFrame">
-                              <layout class="QHBoxLayout" name="BIPFromEntropyLabelContainerQFrameHLayout">
+                              <layout class="QHBoxLayout" name="bipFromEntropyLabelContainerQFrameHLayout">
                                <property name="spacing">
                                 <number>15</number>
                                </property>
@@ -1842,7 +1842,7 @@
                             </item>
                             <item>
                              <widget class="QFrame" name="bipFromEntropyEntAndGenerateContainerQFrame">
-                              <layout class="QHBoxLayout" name="BIPFromEntropyEntAndGenerateContainerQFrameHLayout">
+                              <layout class="QHBoxLayout" name="bipFromEntropyEntAndGenerateContainerQFrameHLayout">
                                <property name="spacing">
                                 <number>15</number>
                                </property>
@@ -1869,7 +1869,7 @@
                          </item>
                          <item>
                           <widget class="QFrame" name="bipFromEntropyPublicKeyAndPassphraseContainerQFrame">
-                           <layout class="QHBoxLayout" name="BIPFromEntropyPublicKeyAndPassphraseContainerQFrameHLayout">
+                           <layout class="QHBoxLayout" name="bipFromEntropyPublicKeyAndPassphraseContainerQFrameHLayout">
                             <property name="spacing">
                              <number>15</number>
                             </property>
@@ -1893,7 +1893,7 @@
                                 <height>0</height>
                                </size>
                               </property>
-                              <layout class="QVBoxLayout" name="BIPFromEntropyPublicKeyTypeContainerQFrameVLayout">
+                              <layout class="QVBoxLayout" name="bipFromEntropyPublicKeyTypeContainerQFrameVLayout">
                                <property name="spacing">
                                 <number>5</number>
                                </property>
@@ -1911,7 +1911,7 @@
                                </property>
                                <item>
                                 <widget class="QFrame" name="bipFromEntropyPublicKeyTypeLabelContainerQFrame">
-                                 <layout class="QHBoxLayout" name="BIPFromEntropyPublicKeyTypeLabelContainerQFrameHLayout">
+                                 <layout class="QHBoxLayout" name="bipFromEntropyPublicKeyTypeLabelContainerQFrameHLayout">
                                   <property name="spacing">
                                    <number>15</number>
                                   </property>
@@ -1972,7 +1972,7 @@
                             </item>
                             <item>
                              <widget class="QFrame" name="bipFromEntropyLanguageContainerQFrame">
-                              <layout class="QVBoxLayout" name="BIPFromEntropyLanguageContainerQFrameVLayout">
+                              <layout class="QVBoxLayout" name="bipFromEntropyLanguageContainerQFrameVLayout">
                                <property name="spacing">
                                 <number>5</number>
                                </property>
@@ -1990,7 +1990,7 @@
                                </property>
                                <item>
                                 <widget class="QFrame" name="bipFromEntropyLanguageLabelContainerQFrame">
-                                 <layout class="QHBoxLayout" name="BIPFromEntropyLanguageLabelContainerQFrameHLayout">
+                                 <layout class="QHBoxLayout" name="bipFromEntropyLanguageLabelContainerQFrameHLayout">
                                   <property name="spacing">
                                    <number>15</number>
                                   </property>
@@ -2078,7 +2078,7 @@
                             </item>
                             <item>
                              <widget class="QFrame" name="bipFromEntropyPassphraseContainerQFrame">
-                              <layout class="QVBoxLayout" name="BIPFromEntropyPassphraseContainerQFrameVLayout">
+                              <layout class="QVBoxLayout" name="bipFromEntropyPassphraseContainerQFrameVLayout">
                                <property name="spacing">
                                 <number>5</number>
                                </property>
@@ -2096,7 +2096,7 @@
                                </property>
                                <item>
                                 <widget class="QFrame" name="bipFromEntropyPassphraseLabelContainerQFrame">
-                                 <layout class="QHBoxLayout" name="BIPFromEntropyPassphraseLabelContainerQFrameHLayout">
+                                 <layout class="QHBoxLayout" name="bipFromEntropyPassphraseLabelContainerQFrameHLayout">
                                   <property name="spacing">
                                    <number>15</number>
                                   </property>
@@ -2137,7 +2137,7 @@
                                </item>
                                <item>
                                 <widget class="QFrame" name="bipFromEntropyPassphraseGenerateContainerQFrame">
-                                 <layout class="QHBoxLayout" name="BIPFromEntropyPassphraseGenerateContainerQFrameHLayout">
+                                 <layout class="QHBoxLayout" name="bipFromEntropyPassphraseGenerateContainerQFrameHLayout">
                                   <property name="spacing">
                                    <number>15</number>
                                   </property>
@@ -2170,7 +2170,7 @@
                           </widget>
                          </item>
                          <item>
-                          <spacer name="verticalSpacer_3">
+                          <spacer name="bipFromEntropyPassphraseContainerQFrameVSpacer">
                            <property name="orientation">
                             <enum>Qt::Vertical</enum>
                            </property>
@@ -2185,7 +2185,7 @@
                         </layout>
                        </widget>
                        <widget class="QWidget" name="bipFromMnemonicQStackedWidget">
-                        <layout class="QVBoxLayout" name="BIPFromMnemonicQStackedWidgetVLayout">
+                        <layout class="QVBoxLayout" name="bipFromMnemonicQStackedWidgetVLayout">
                          <property name="spacing">
                           <number>15</number>
                          </property>
@@ -2203,7 +2203,7 @@
                          </property>
                          <item>
                           <widget class="QFrame" name="bipFromMnemonicContainerQFrame">
-                           <layout class="QVBoxLayout" name="BIPFromMnemonicContainerQFrameVLayout">
+                           <layout class="QVBoxLayout" name="bipFromMnemonicContainerQFrameVLayout">
                             <property name="spacing">
                              <number>5</number>
                             </property>
@@ -2221,7 +2221,7 @@
                             </property>
                             <item>
                              <widget class="QFrame" name="bipFromMnemonicLabelContainerQFrame">
-                              <layout class="QHBoxLayout" name="BIPFromMnemonicLabelContainerQFrameHLayout">
+                              <layout class="QHBoxLayout" name="bipFromMnemonicLabelContainerQFrameHLayout">
                                <property name="spacing">
                                 <number>15</number>
                                </property>
@@ -2262,7 +2262,7 @@
                             </item>
                             <item>
                              <widget class="QFrame" name="bipFromMnemonicLabelGenerateContainerQFrame">
-                              <layout class="QHBoxLayout" name="BIPFromMnemonicLabelGenerateContainerQFrameHLayout">
+                              <layout class="QHBoxLayout" name="bipFromMnemonicLabelGenerateContainerQFrameHLayout">
                                <property name="spacing">
                                 <number>15</number>
                                </property>
@@ -2289,7 +2289,7 @@
                          </item>
                          <item>
                           <widget class="QFrame" name="bipFromMnemonicPublicKeyTypeAndPassphraseQFrame">
-                           <layout class="QHBoxLayout" name="BIPFromMnemonicPublicKeyTypeAndPassphraseQFrameHLayout">
+                           <layout class="QHBoxLayout" name="bipFromMnemonicPublicKeyTypeAndPassphraseQFrameHLayout">
                             <property name="spacing">
                              <number>15</number>
                             </property>
@@ -2313,7 +2313,7 @@
                                 <height>0</height>
                                </size>
                               </property>
-                              <layout class="QVBoxLayout" name="BIPFromMnemonicPublicKeyTypeContainerQFrameVLayout">
+                              <layout class="QVBoxLayout" name="bipFromMnemonicPublicKeyTypeContainerQFrameVLayout">
                                <property name="spacing">
                                 <number>5</number>
                                </property>
@@ -2331,7 +2331,7 @@
                                </property>
                                <item>
                                 <widget class="QFrame" name="bipFromMnemonicPublicKeyTypeLabelContainerQFrame">
-                                 <layout class="QHBoxLayout" name="BIPFromMnemonicPublicKeyTypeLabelContainerQFrameHLayout">
+                                 <layout class="QHBoxLayout" name="bipFromMnemonicPublicKeyTypeLabelContainerQFrameHLayout">
                                   <property name="spacing">
                                    <number>15</number>
                                   </property>
@@ -2392,7 +2392,7 @@
                             </item>
                             <item>
                              <widget class="QFrame" name="bipFromMnemonicPassphraseContainerQFrame">
-                              <layout class="QVBoxLayout" name="BIPFromMnemonicPassphraseContainerQFrameVLayout">
+                              <layout class="QVBoxLayout" name="bipFromMnemonicPassphraseContainerQFrameVLayout">
                                <property name="spacing">
                                 <number>5</number>
                                </property>
@@ -2410,7 +2410,7 @@
                                </property>
                                <item>
                                 <widget class="QFrame" name="bipFromMnemonicPassphraseLabelContainerQFrame">
-                                 <layout class="QHBoxLayout" name="BIPFromMnemonicPassphraseLabelContainerQFrameHLayout">
+                                 <layout class="QHBoxLayout" name="bipFromMnemonicPassphraseLabelContainerQFrameHLayout">
                                   <property name="spacing">
                                    <number>15</number>
                                   </property>
@@ -2451,7 +2451,7 @@
                                </item>
                                <item>
                                 <widget class="QFrame" name="bipFromMnemonicPassphraseGeneratelContainerQFrame">
-                                 <layout class="QHBoxLayout" name="BIPFromMnemonicPassphraseGeneratelContainerQFrameHLayout">
+                                 <layout class="QHBoxLayout" name="bipFromMnemonicPassphraseGeneratelContainerQFrameHLayout">
                                   <property name="spacing">
                                    <number>15</number>
                                   </property>
@@ -2499,7 +2499,7 @@
                         </layout>
                        </widget>
                        <widget class="QWidget" name="bipFromSeedQStackedWidget">
-                        <layout class="QVBoxLayout" name="BIPFromSeedQStackedWidgetVLayout">
+                        <layout class="QVBoxLayout" name="bipFromSeedQStackedWidgetVLayout">
                          <property name="spacing">
                           <number>15</number>
                          </property>
@@ -2523,7 +2523,7 @@
                              <height>0</height>
                             </size>
                            </property>
-                           <layout class="QVBoxLayout" name="BIPFromSeedContainerQFrameVLayout">
+                           <layout class="QVBoxLayout" name="bipFromSeedContainerQFrameVLayout">
                             <property name="spacing">
                              <number>5</number>
                             </property>
@@ -2541,7 +2541,7 @@
                             </property>
                             <item>
                              <widget class="QFrame" name="bipFromSeedAndPublicKeyTypeContainerQFrame">
-                              <layout class="QHBoxLayout" name="BIPFromSeedAndPublicKeyTypeContainerQFrameHLayout">
+                              <layout class="QHBoxLayout" name="bipFromSeedAndPublicKeyTypeContainerQFrameHLayout">
                                <property name="spacing">
                                 <number>15</number>
                                </property>
@@ -2559,7 +2559,7 @@
                                </property>
                                <item>
                                 <widget class="QFrame" name="bipFromSeedsContainerQFrame">
-                                 <layout class="QVBoxLayout" name="BIPFromSeedsContainerQFrameVLayout">
+                                 <layout class="QVBoxLayout" name="bipFromSeedsContainerQFrameVLayout">
                                   <property name="spacing">
                                    <number>5</number>
                                   </property>
@@ -2577,7 +2577,7 @@
                                   </property>
                                   <item>
                                    <widget class="QFrame" name="bipFromSeedsLabelContainerQFrame">
-                                    <layout class="QHBoxLayout" name="BIPFromSeedsLabelContainerQFrameHLayout">
+                                    <layout class="QHBoxLayout" name="bipFromSeedsLabelContainerQFrameHLayout">
                                      <property name="spacing">
                                       <number>15</number>
                                      </property>
@@ -2630,7 +2630,7 @@
                                    <height>0</height>
                                   </size>
                                  </property>
-                                 <layout class="QVBoxLayout" name="BIPFromSeedPublicKeyTypeContainerQFrameVLayout">
+                                 <layout class="QVBoxLayout" name="bipFromSeedPublicKeyTypeContainerQFrameVLayout">
                                   <property name="spacing">
                                    <number>5</number>
                                   </property>
@@ -2648,7 +2648,7 @@
                                   </property>
                                   <item>
                                    <widget class="QFrame" name="bipFromSeedPublicKeyTypeLabelContainerQFrame">
-                                    <layout class="QHBoxLayout" name="BIPFromSeedPublicKeyTypeLabelContainerQFrameHLayout">
+                                    <layout class="QHBoxLayout" name="bipFromSeedPublicKeyTypeLabelContainerQFrameHLayout">
                                      <property name="spacing">
                                       <number>15</number>
                                      </property>
@@ -2729,7 +2729,7 @@
                         </layout>
                        </widget>
                        <widget class="QWidget" name="bipFromXPrivateKeyQStackedWidget">
-                        <layout class="QVBoxLayout" name="BIPFromXPrivateKeyQStackedWidgetVLayout">
+                        <layout class="QVBoxLayout" name="bipFromXPrivateKeyQStackedWidgetVLayout">
                          <property name="spacing">
                           <number>15</number>
                          </property>
@@ -2747,7 +2747,7 @@
                          </property>
                          <item>
                           <widget class="QFrame" name="bipFromXPrivateKeyAndPublicKeyTypeQFrame">
-                           <layout class="QHBoxLayout" name="BIPFromXPrivateKeyAndPublicKeyTypeQFrameHLayout">
+                           <layout class="QHBoxLayout" name="bipFromXPrivateKeyAndPublicKeyTypeQFrameHLayout">
                             <property name="spacing">
                              <number>15</number>
                             </property>
@@ -2765,7 +2765,7 @@
                             </property>
                             <item>
                              <widget class="QFrame" name="bipFromXPrivateKeyContainerQFrame">
-                              <layout class="QVBoxLayout" name="BIPFromXPrivateKeyContainerQFrameVLayout">
+                              <layout class="QVBoxLayout" name="bipFromXPrivateKeyContainerQFrameVLayout">
                                <property name="spacing">
                                 <number>5</number>
                                </property>
@@ -2783,7 +2783,7 @@
                                </property>
                                <item>
                                 <widget class="QFrame" name="bipFromXPrivateKeyLabelContainerQFrame">
-                                 <layout class="QHBoxLayout" name="BIPFromXPrivateKeyLabelContainerQFrameHLayout">
+                                 <layout class="QHBoxLayout" name="bipFromXPrivateKeyLabelContainerQFrameHLayout">
                                   <property name="spacing">
                                    <number>15</number>
                                   </property>
@@ -2843,7 +2843,7 @@
                                 <height>0</height>
                                </size>
                               </property>
-                              <layout class="QVBoxLayout" name="BIPFromXPrivateKeyPublicKeyTypeContainerQFrameVLayout">
+                              <layout class="QVBoxLayout" name="bipFromXPrivateKeyPublicKeyTypeContainerQFrameVLayout">
                                <property name="spacing">
                                 <number>5</number>
                                </property>
@@ -2861,7 +2861,7 @@
                                </property>
                                <item>
                                 <widget class="QFrame" name="bipFromXPrivateKeyPublicKeyTypeLabelContainerQFrame">
-                                 <layout class="QHBoxLayout" name="BIPFromXPrivateKeyPublicKeyTypeLabelContainerQFrameHLayout">
+                                 <layout class="QHBoxLayout" name="bipFromXPrivateKeyPublicKeyTypeLabelContainerQFrameHLayout">
                                   <property name="spacing">
                                    <number>15</number>
                                   </property>
@@ -2939,7 +2939,7 @@
                         </layout>
                        </widget>
                        <widget class="QWidget" name="bipFromXPublicKeyQStackedWidget">
-                        <layout class="QVBoxLayout" name="BIPFromXPublicKeyQStackedWidgetVLayout">
+                        <layout class="QVBoxLayout" name="bipFromXPublicKeyQStackedWidgetVLayout">
                          <property name="spacing">
                           <number>15</number>
                          </property>
@@ -2957,7 +2957,7 @@
                          </property>
                          <item>
                           <widget class="QFrame" name="bipFromXPublicKeyAndPublicKeyTypeContainerQFrame">
-                           <layout class="QHBoxLayout" name="BIPFromXPublicKeyAndPublicKeyTypeContainerQFrameHLayout">
+                           <layout class="QHBoxLayout" name="bipFromXPublicKeyAndPublicKeyTypeContainerQFrameHLayout">
                             <property name="spacing">
                              <number>15</number>
                             </property>
@@ -2975,7 +2975,7 @@
                             </property>
                             <item>
                              <widget class="QFrame" name="bipFromXPublicKeyContainerQFrame">
-                              <layout class="QVBoxLayout" name="BIPFromXPublicKeyContainerQFrameVLayout">
+                              <layout class="QVBoxLayout" name="bipFromXPublicKeyContainerQFrameVLayout">
                                <property name="spacing">
                                 <number>5</number>
                                </property>
@@ -2993,7 +2993,7 @@
                                </property>
                                <item>
                                 <widget class="QFrame" name="bipFromXPublicKeyLabelContainerQFrame">
-                                 <layout class="QHBoxLayout" name="BIPFromXPublicKeyLabelContainerQFrameHLayout">
+                                 <layout class="QHBoxLayout" name="bipFromXPublicKeyLabelContainerQFrameHLayout">
                                   <property name="spacing">
                                    <number>15</number>
                                   </property>
@@ -3047,7 +3047,7 @@
                             </item>
                             <item>
                              <widget class="QFrame" name="bipFromXPublicKeyStrictContainerQFrame">
-                              <layout class="QVBoxLayout" name="BIPFromXPrivateKeyPublicKeyTypeContainerQFrameVLayout_5">
+                              <layout class="QVBoxLayout" name="bipFromXPublicKeyStrictContainerQFrameVLayout">
                                <property name="spacing">
                                 <number>5</number>
                                </property>
@@ -3065,7 +3065,7 @@
                                </property>
                                <item>
                                 <widget class="QFrame" name="bipFromXPublicKeyStrictLabelContainerQFrame">
-                                 <layout class="QHBoxLayout" name="BIPFromXPrivateKeyPublicKeyTypeLabelContainerQFrameHLayout_5">
+                                 <layout class="QHBoxLayout" name="bipFromXPublicKeyStrictLabelContainerQFrameHLayout">
                                   <property name="spacing">
                                    <number>15</number>
                                   </property>
@@ -3108,7 +3108,7 @@
                                 <height>0</height>
                                </size>
                               </property>
-                              <layout class="QVBoxLayout" name="BIPFromXPublicKeyPublicKeyTypeContainerQFrameVLayout">
+                              <layout class="QVBoxLayout" name="bipFromXPublicKeyPublicKeyTypeContainerQFrameVLayout">
                                <property name="spacing">
                                 <number>5</number>
                                </property>
@@ -3126,7 +3126,7 @@
                                </property>
                                <item>
                                 <widget class="QFrame" name="bipFromXPublicKeyPublicKeyTypeLabelContainerQFrame">
-                                 <layout class="QHBoxLayout" name="BIPFromXPublicKeyPublicKeyTypeLabelContainerQFrameHLayout">
+                                 <layout class="QHBoxLayout" name="bipFromXPublicKeyPublicKeyTypeLabelContainerQFrameHLayout">
                                   <property name="spacing">
                                    <number>15</number>
                                   </property>
@@ -3204,7 +3204,7 @@
                         </layout>
                        </widget>
                        <widget class="QWidget" name="bipFromWIFQStackedWidget">
-                        <layout class="QVBoxLayout" name="BIPFromWIFQStackedWidgetVLayout">
+                        <layout class="QVBoxLayout" name="bipFromWIFQStackedWidgetVLayout">
                          <property name="spacing">
                           <number>15</number>
                          </property>
@@ -3228,7 +3228,7 @@
                              <height>0</height>
                             </size>
                            </property>
-                           <layout class="QVBoxLayout" name="BIPFromWIFContainerQFrameVLayout">
+                           <layout class="QVBoxLayout" name="bipFromWIFContainerQFrameVLayout">
                             <property name="spacing">
                              <number>5</number>
                             </property>
@@ -3246,7 +3246,7 @@
                             </property>
                             <item>
                              <widget class="QFrame" name="bipFromWIFLabelContainerQFrame">
-                              <layout class="QHBoxLayout" name="BIPFromWIFLabelContainerQFrameHLayout">
+                              <layout class="QHBoxLayout" name="bipFromWIFLabelContainerQFrameHLayout">
                                <property name="spacing">
                                 <number>15</number>
                                </property>
@@ -3293,7 +3293,7 @@
                          </item>
                          <item>
                           <widget class="QFrame" name="bipFromWIFPublicKeyAndBIP38PassphraseContainerQFrame">
-                           <layout class="QHBoxLayout" name="BIPFromWIFPublicKeyAndBIP38PassphraseContainerQFrameHLayout">
+                           <layout class="QHBoxLayout" name="bipFromWIFPublicKeyAndBIP38PassphraseContainerQFrameHLayout">
                             <property name="spacing">
                              <number>15</number>
                             </property>
@@ -3317,7 +3317,7 @@
                                 <height>0</height>
                                </size>
                               </property>
-                              <layout class="QVBoxLayout" name="BIPFromWIFPublicKeyTypeContainerQFrameVLayout">
+                              <layout class="QVBoxLayout" name="bipFromWIFPublicKeyTypeContainerQFrameVLayout">
                                <property name="spacing">
                                 <number>5</number>
                                </property>
@@ -3335,7 +3335,7 @@
                                </property>
                                <item>
                                 <widget class="QFrame" name="bipFromWIFPublicKeyTypeLabelContainerQFrame">
-                                 <layout class="QHBoxLayout" name="BIPFromWIFPublicKeyTypeLabelContainerQFrameHLayout">
+                                 <layout class="QHBoxLayout" name="bipFromWIFPublicKeyTypeLabelContainerQFrameHLayout">
                                   <property name="spacing">
                                    <number>15</number>
                                   </property>
@@ -3396,7 +3396,7 @@
                             </item>
                             <item>
                              <widget class="QFrame" name="bipFromWIFBIP38PassphraseContainerQFrame">
-                              <layout class="QVBoxLayout" name="BIPFromWIFBIP38PassphraseContainerQFrameVLayout">
+                              <layout class="QVBoxLayout" name="bipFromWIFBIP38PassphraseContainerQFrameVLayout">
                                <property name="spacing">
                                 <number>5</number>
                                </property>
@@ -3414,7 +3414,7 @@
                                </property>
                                <item>
                                 <widget class="QFrame" name="bipFromWIFBIP38PassphraseCheckBoxContainerQFrame">
-                                 <layout class="QHBoxLayout" name="BIPFromWIFBIP38PassphraseCheckBoxContainerQFrameHLayout">
+                                 <layout class="QHBoxLayout" name="bipFromWIFBIP38PassphraseCheckBoxContainerQFrameHLayout">
                                   <property name="spacing">
                                    <number>15</number>
                                   </property>
@@ -3478,7 +3478,7 @@
                         </layout>
                        </widget>
                        <widget class="QWidget" name="bipFromPrivateKeyQStackedWidget">
-                        <layout class="QVBoxLayout" name="BIPFromPrivateKeyQStackedWidgetVLayout">
+                        <layout class="QVBoxLayout" name="bipFromPrivateKeyQStackedWidgetVLayout">
                          <property name="spacing">
                           <number>15</number>
                          </property>
@@ -3496,7 +3496,7 @@
                          </property>
                          <item>
                           <widget class="QFrame" name="bipFromPrivateKeyAndPublicKeyTypeContainerQFrame">
-                           <layout class="QHBoxLayout" name="BIPFromPrivateKeyAndPublicKeyTypeContainerQFrameHLayout">
+                           <layout class="QHBoxLayout" name="bipFromPrivateKeyAndPublicKeyTypeContainerQFrameHLayout">
                             <property name="spacing">
                              <number>15</number>
                             </property>
@@ -3520,7 +3520,7 @@
                                 <height>0</height>
                                </size>
                               </property>
-                              <layout class="QVBoxLayout" name="BIPFromPrivateKeyContainerQFrameVLayout">
+                              <layout class="QVBoxLayout" name="bipFromPrivateKeyContainerQFrameVLayout">
                                <property name="spacing">
                                 <number>5</number>
                                </property>
@@ -3538,7 +3538,7 @@
                                </property>
                                <item>
                                 <widget class="QFrame" name="bipFromPrivateKeyLabelContainerQFrame">
-                                 <layout class="QHBoxLayout" name="BIPFromPrivateKeyLabelContainerQFrameHLayout">
+                                 <layout class="QHBoxLayout" name="bipFromPrivateKeyLabelContainerQFrameHLayout">
                                   <property name="spacing">
                                    <number>15</number>
                                   </property>
@@ -3591,7 +3591,7 @@
                                 <height>0</height>
                                </size>
                               </property>
-                              <layout class="QVBoxLayout" name="BIPFromPrivateKeyAndPublicKeyTypeLineContainerQFrameVLayout">
+                              <layout class="QVBoxLayout" name="bipFromPrivateKeyAndPublicKeyTypeLineContainerQFrameVLayout">
                                <property name="spacing">
                                 <number>5</number>
                                </property>
@@ -3609,7 +3609,7 @@
                                </property>
                                <item>
                                 <widget class="QFrame" name="bipFromPrivateKeyAndPublicKeyTypeLabelQFrame">
-                                 <layout class="QHBoxLayout" name="BIPFromPrivateKeyAndPublicKeyTypeLabelQFrameHLayout">
+                                 <layout class="QHBoxLayout" name="bipFromPrivateKeyAndPublicKeyTypeLabelQFrameHLayout">
                                   <property name="spacing">
                                    <number>15</number>
                                   </property>
@@ -3687,7 +3687,7 @@
                         </layout>
                        </widget>
                        <widget class="QWidget" name="bipFromPublicKeyQStackedWidget">
-                        <layout class="QVBoxLayout" name="BIPFromPublicKeyQStackedWidgetVLayout">
+                        <layout class="QVBoxLayout" name="bipFromPublicKeyQStackedWidgetVLayout">
                          <property name="spacing">
                           <number>15</number>
                          </property>
@@ -3705,7 +3705,7 @@
                          </property>
                          <item>
                           <widget class="QFrame" name="bipFromPublicKeyAndPublicKeyTypeContainerQFrame">
-                           <layout class="QHBoxLayout" name="BIPFromPublicKeyAndPublicKeyTypeContainerQFrameHLayout">
+                           <layout class="QHBoxLayout" name="bipFromPublicKeyAndPublicKeyTypeContainerQFrameHLayout">
                             <property name="spacing">
                              <number>15</number>
                             </property>
@@ -3729,7 +3729,7 @@
                                 <height>0</height>
                                </size>
                               </property>
-                              <layout class="QVBoxLayout" name="BIPFromPublicKeyContainerQFrameVLayout">
+                              <layout class="QVBoxLayout" name="bipFromPublicKeyContainerQFrameVLayout">
                                <property name="spacing">
                                 <number>5</number>
                                </property>
@@ -3747,7 +3747,7 @@
                                </property>
                                <item>
                                 <widget class="QFrame" name="bipFromPublicKeyLabelContainerQFrame">
-                                 <layout class="QHBoxLayout" name="BIPFromPublicKeyLabelContainerQFrameHLayout">
+                                 <layout class="QHBoxLayout" name="bipFromPublicKeyLabelContainerQFrameHLayout">
                                   <property name="spacing">
                                    <number>15</number>
                                   </property>
@@ -3800,7 +3800,7 @@
                                 <height>0</height>
                                </size>
                               </property>
-                              <layout class="QVBoxLayout" name="BIPFromPublicKeyPublicKeyTypeContainerQFrameVLayout">
+                              <layout class="QVBoxLayout" name="bipFromPublicKeyPublicKeyTypeContainerQFrameVLayout">
                                <property name="spacing">
                                 <number>5</number>
                                </property>
@@ -3818,7 +3818,7 @@
                                </property>
                                <item>
                                 <widget class="QFrame" name="bipFromPublicKeyPublicKeyTypeLabelContainerQFrame">
-                                 <layout class="QHBoxLayout" name="BIPFromPublicKeyPublicKeyTypeLabelContainerQFrameHLayout">
+                                 <layout class="QHBoxLayout" name="bipFromPublicKeyPublicKeyTypeLabelContainerQFrameHLayout">
                                   <property name="spacing">
                                    <number>15</number>
                                   </property>
@@ -3919,7 +3919,7 @@
                      <item>
                       <widget class="QStackedWidget" name="cardanoQStackedWidget">
                        <property name="currentIndex">
-                        <number>0</number>
+                        <number>1</number>
                        </property>
                        <widget class="QWidget" name="cardanoFromEntropyQStackedWidget">
                         <layout class="QVBoxLayout" name="cardanoFromEntropyQStackedWidgetVLayout">
@@ -3939,8 +3939,8 @@
                           <number>0</number>
                          </property>
                          <item>
-                          <widget class="QFrame" name="frame">
-                           <layout class="QHBoxLayout" name="horizontalLayout_2">
+                          <widget class="QFrame" name="cardanoFromEntropyAndCardanoTypeQFrame">
+                           <layout class="QHBoxLayout" name="cardanoFromEntropyAndCardanoTypeQFrameHLayout">
                             <property name="spacing">
                              <number>15</number>
                             </property>
@@ -4507,7 +4507,7 @@
                         </layout>
                        </widget>
                        <widget class="QWidget" name="cardanoFromMnemonicQStackedWidget">
-                        <layout class="QVBoxLayout" name="verticalLayout_36">
+                        <layout class="QVBoxLayout" name="cardanoFromMnemonicQStackedWidgetVLayout">
                          <property name="spacing">
                           <number>15</number>
                          </property>
@@ -4524,8 +4524,8 @@
                           <number>0</number>
                          </property>
                          <item>
-                          <widget class="QFrame" name="frame_2">
-                           <layout class="QHBoxLayout" name="horizontalLayout_3">
+                          <widget class="QFrame" name="cardanoFromMnemonicAndCardanoTypeQFrame">
+                           <layout class="QHBoxLayout" name="cardanoFromMnemonicAndCardanoTypeQFrameHLayout">
                             <property name="spacing">
                              <number>15</number>
                             </property>
@@ -4543,7 +4543,7 @@
                             </property>
                             <item>
                              <widget class="QFrame" name="cardanoFromMnemonicContainerQFrame">
-                              <layout class="QVBoxLayout" name="MnemonicVLayout_3">
+                              <layout class="QVBoxLayout" name="cardanoFromMnemonicContainerQFrameVLayout">
                                <property name="spacing">
                                 <number>5</number>
                                </property>
@@ -4561,7 +4561,7 @@
                                </property>
                                <item>
                                 <widget class="QFrame" name="cardanoFromMnemonicLabelContainerQFrame">
-                                 <layout class="QHBoxLayout" name="MnemonicLabelHLayout_3">
+                                 <layout class="QHBoxLayout" name="cardanoFromMnemonicLabelContainerQFrameHLayout">
                                   <property name="spacing">
                                    <number>15</number>
                                   </property>
@@ -4602,7 +4602,7 @@
                                </item>
                                <item>
                                 <widget class="QFrame" name="cardanoFromMnemonicGenerateContainerQFrame">
-                                 <layout class="QHBoxLayout" name="horizontalLayout_37">
+                                 <layout class="QHBoxLayout" name="cardanoFromMnemonicGenerateContainerQFrameHLayout">
                                   <property name="spacing">
                                    <number>15</number>
                                   </property>
@@ -4635,7 +4635,7 @@
                                 <height>0</height>
                                </size>
                               </property>
-                              <layout class="QVBoxLayout" name="ClientVLayout_8">
+                              <layout class="QVBoxLayout" name="cardanoFromMnemonicCardanoTypeContainerQFrameVLayout">
                                <property name="spacing">
                                 <number>5</number>
                                </property>
@@ -4653,7 +4653,7 @@
                                </property>
                                <item>
                                 <widget class="QFrame" name="cardanoFromMnemonicCardanoTypeLabelContainerQFrame">
-                                 <layout class="QHBoxLayout" name="MStrengthLabelHLayout_10">
+                                 <layout class="QHBoxLayout" name="cardanoFromMnemonicCardanoTypeLabelContainerQFrameHLayout">
                                   <property name="spacing">
                                    <number>15</number>
                                   </property>
@@ -4737,7 +4737,7 @@
                          </item>
                          <item>
                           <widget class="QFrame" name="cardanoFromMnemonicClientAndPassphraseContainerQFrame">
-                           <layout class="QHBoxLayout" name="horizontalLayout_38">
+                           <layout class="QHBoxLayout" name="cardanoFromMnemonicClientAndPassphraseContainerQFrameHLayout">
                             <property name="spacing">
                              <number>15</number>
                             </property>
@@ -4755,7 +4755,7 @@
                             </property>
                             <item>
                              <widget class="QFrame" name="cardanoFromMnemonicStakingContainerQFrame">
-                              <layout class="QVBoxLayout" name="XPublicKeyVLayout_10">
+                              <layout class="QVBoxLayout" name="cardanoFromMnemonicStakingContainerQFrameVLayout">
                                <property name="spacing">
                                 <number>5</number>
                                </property>
@@ -4773,7 +4773,7 @@
                                </property>
                                <item>
                                 <widget class="QFrame" name="cardanoFromMnemonicStakingLabelContainerQFrame">
-                                 <layout class="QHBoxLayout" name="XPublicKeyLabelHLayout_10">
+                                 <layout class="QHBoxLayout" name="cardanoFromMnemonicStakingLabelContainerQFrameHLayout">
                                   <property name="spacing">
                                    <number>15</number>
                                   </property>
@@ -4826,7 +4826,7 @@
                                 <height>0</height>
                                </size>
                               </property>
-                              <layout class="QVBoxLayout" name="verticalLayout_93">
+                              <layout class="QVBoxLayout" name="cardanoFromMnemonicAddressTypeContainerQFrameVLayout">
                                <property name="spacing">
                                 <number>5</number>
                                </property>
@@ -4844,7 +4844,7 @@
                                </property>
                                <item>
                                 <widget class="QFrame" name="cardanoFromMnemonicAddressTypeLabelContainerQFrame">
-                                 <layout class="QHBoxLayout" name="horizontalLayout_97">
+                                 <layout class="QHBoxLayout" name="cardanoFromMnemonicAddressTypeLabelContainerQFrameHLayout">
                                   <property name="spacing">
                                    <number>15</number>
                                   </property>
@@ -4895,7 +4895,7 @@
                             </item>
                             <item>
                              <widget class="QFrame" name="cardanoFromMnemonicPassphraseContainerQFrame">
-                              <layout class="QVBoxLayout" name="EPassphraseVLayout_6">
+                              <layout class="QVBoxLayout" name="cardanoFromMnemonicPassphraseContainerQFrameVLayout">
                                <property name="spacing">
                                 <number>5</number>
                                </property>
@@ -4913,7 +4913,7 @@
                                </property>
                                <item>
                                 <widget class="QFrame" name="cardanoFromMnemonicPassphraseLabelContainerQFrame">
-                                 <layout class="QHBoxLayout" name="MPassphraseLabelHLayout_3">
+                                 <layout class="QHBoxLayout" name="cardanoFromMnemonicPassphraseLabelContainerQFrameHLayout">
                                   <property name="spacing">
                                    <number>15</number>
                                   </property>
@@ -4954,7 +4954,7 @@
                                </item>
                                <item>
                                 <widget class="QFrame" name="cardanoFromMnemonicPassphraseGenerateContainerQFrame">
-                                 <layout class="QHBoxLayout" name="horizontalLayout_39">
+                                 <layout class="QHBoxLayout" name="cardanoFromMnemonicPassphraseGenerateContainerQFrameHLayout">
                                   <property name="spacing">
                                    <number>15</number>
                                   </property>
@@ -4987,7 +4987,7 @@
                           </widget>
                          </item>
                          <item>
-                          <spacer name="verticalSpacer">
+                          <spacer name="cardanoFromMnemonicClientAndPassphraseContainerQFrameVSpacer">
                            <property name="orientation">
                             <enum>Qt::Vertical</enum>
                            </property>
@@ -5002,7 +5002,7 @@
                         </layout>
                        </widget>
                        <widget class="QWidget" name="cardanoFromSeedQStackedWidget">
-                        <layout class="QVBoxLayout" name="verticalLayout_37">
+                        <layout class="QVBoxLayout" name="cardanoFromSeedQStackedWidgetVLayout">
                          <property name="spacing">
                           <number>15</number>
                          </property>
@@ -5019,8 +5019,8 @@
                           <number>0</number>
                          </property>
                          <item>
-                          <widget class="QFrame" name="frame_5">
-                           <layout class="QHBoxLayout" name="horizontalLayout_8">
+                          <widget class="QFrame" name="cardanoFromSeedAndCardanoContainerQFrame">
+                           <layout class="QHBoxLayout" name="cardanoFromSeedAndCardanoContainerQFrameHLayout">
                             <property name="spacing">
                              <number>15</number>
                             </property>
@@ -5038,7 +5038,7 @@
                             </property>
                             <item>
                              <widget class="QFrame" name="cardanoFromSeedContainerQFrame">
-                              <layout class="QVBoxLayout" name="verticalLayout_38">
+                              <layout class="QVBoxLayout" name="cardanoFromSeedContainerQFrameVLayout">
                                <property name="spacing">
                                 <number>5</number>
                                </property>
@@ -5056,7 +5056,7 @@
                                </property>
                                <item>
                                 <widget class="QFrame" name="cardanoFromSeedLabelContainerQFrame">
-                                 <layout class="QHBoxLayout" name="SeedLabelHLayout_3">
+                                 <layout class="QHBoxLayout" name="cardanoFromSeedLabelContainerQFrameHLayout">
                                   <property name="spacing">
                                    <number>15</number>
                                   </property>
@@ -5109,7 +5109,7 @@
                                 <height>0</height>
                                </size>
                               </property>
-                              <layout class="QVBoxLayout" name="ClientVLayout_16">
+                              <layout class="QVBoxLayout" name="cardanoFromSeedCardanoTypeContainerQFrameVLayout">
                                <property name="spacing">
                                 <number>5</number>
                                </property>
@@ -5127,7 +5127,7 @@
                                </property>
                                <item>
                                 <widget class="QFrame" name="cardanoFromSeedCardanoTypeLabelContainerQFrame">
-                                 <layout class="QHBoxLayout" name="MStrengthLabelHLayout_21">
+                                 <layout class="QHBoxLayout" name="cardanoFromSeedCardanoTypeLabelContainerQFrameHLayout">
                                   <property name="spacing">
                                    <number>15</number>
                                   </property>
@@ -5211,7 +5211,7 @@
                          </item>
                          <item>
                           <widget class="QFrame" name="cardanoFromSeedCardanoTypeAddressTypeAndPassphraseContainerQFrame">
-                           <layout class="QHBoxLayout" name="horizontalLayout_42">
+                           <layout class="QHBoxLayout" name="cardanoFromSeedCardanoTypeAddressTypeAndPassphraseContainerQFrameHLayout">
                             <property name="spacing">
                              <number>15</number>
                             </property>
@@ -5229,7 +5229,7 @@
                             </property>
                             <item>
                              <widget class="QFrame" name="cardanoFromSeedStakingContainerQFrame">
-                              <layout class="QVBoxLayout" name="XPublicKeyVLayout_7">
+                              <layout class="QVBoxLayout" name="cardanoFromSeedStakingContainerQFrameVLayout">
                                <property name="spacing">
                                 <number>5</number>
                                </property>
@@ -5247,7 +5247,7 @@
                                </property>
                                <item>
                                 <widget class="QFrame" name="cardanoFromSeedStakingLabelContainerQFrame">
-                                 <layout class="QHBoxLayout" name="XPublicKeyLabelHLayout_7">
+                                 <layout class="QHBoxLayout" name="cardanoFromSeedStakingLabelContainerQFrameHLayout">
                                   <property name="spacing">
                                    <number>15</number>
                                   </property>
@@ -5300,7 +5300,7 @@
                                 <height>0</height>
                                </size>
                               </property>
-                              <layout class="QVBoxLayout" name="ClientVLayout_9">
+                              <layout class="QVBoxLayout" name="cardanoFromSeedAddressTypeContainerQFrameVLayout">
                                <property name="spacing">
                                 <number>5</number>
                                </property>
@@ -5318,7 +5318,7 @@
                                </property>
                                <item>
                                 <widget class="QFrame" name="cardanoFromSeedAddressTypeLabelContainerQFrame">
-                                 <layout class="QHBoxLayout" name="MStrengthLabelHLayout_12">
+                                 <layout class="QHBoxLayout" name="cardanoFromSeedAddressTypeLabelContainerQFrameHLayout">
                                   <property name="spacing">
                                    <number>15</number>
                                   </property>
@@ -5399,7 +5399,7 @@
                             </item>
                             <item>
                              <widget class="QFrame" name="cardanoFromSeedPassphraseContainerQFrame">
-                              <layout class="QVBoxLayout" name="EPassphraseVLayout_11">
+                              <layout class="QVBoxLayout" name="cardanoFromSeedPassphraseContainerQFrameVLayout">
                                <property name="spacing">
                                 <number>5</number>
                                </property>
@@ -5417,7 +5417,7 @@
                                </property>
                                <item>
                                 <widget class="QFrame" name="cardanoFromSeedPassphraseLabelContainerQFrame">
-                                 <layout class="QHBoxLayout" name="MPassphraseLabelHLayout_6">
+                                 <layout class="QHBoxLayout" name="cardanoFromSeedPassphraseLabelContainerQFrameHLayout">
                                   <property name="spacing">
                                    <number>15</number>
                                   </property>
@@ -5485,7 +5485,7 @@
                         </layout>
                        </widget>
                        <widget class="QWidget" name="cardanoFromXPrivateKeyQStackedWidget">
-                        <layout class="QVBoxLayout" name="verticalLayout_39">
+                        <layout class="QVBoxLayout" name="cardanoFromXPrivateKeyQStackedWidgetVLayout">
                          <property name="spacing">
                           <number>15</number>
                          </property>
@@ -5521,7 +5521,7 @@
                             </property>
                             <item>
                              <widget class="QFrame" name="cardanoFromXPrivateKeyContainerQFrame">
-                              <layout class="QVBoxLayout" name="XPublicKeyVLayout_4">
+                              <layout class="QVBoxLayout" name="cardanoFromXPrivateKeyContainerQFrameVLayout">
                                <property name="spacing">
                                 <number>5</number>
                                </property>
@@ -5539,7 +5539,7 @@
                                </property>
                                <item>
                                 <widget class="QFrame" name="cardanoFromXPrivateKeyLabelContainerQFrame">
-                                 <layout class="QHBoxLayout" name="XPublicKeyLabelHLayout_4">
+                                 <layout class="QHBoxLayout" name="cardanoFromXPrivateKeyLabelContainerQFrameHLayout">
                                   <property name="spacing">
                                    <number>15</number>
                                   </property>
@@ -5599,7 +5599,7 @@
                                 <height>0</height>
                                </size>
                               </property>
-                              <layout class="QVBoxLayout" name="ClientVLayout_19">
+                              <layout class="QVBoxLayout" name="cardanoFromXPrivateKeyCardanoTypeContainerQFrameVLayout">
                                <property name="spacing">
                                 <number>5</number>
                                </property>
@@ -5617,7 +5617,7 @@
                                </property>
                                <item>
                                 <widget class="QFrame" name="cardanoFromXPrivateKeyCardanoTypeLabelContainerQFrame">
-                                 <layout class="QHBoxLayout" name="MStrengthLabelHLayout_24">
+                                 <layout class="QHBoxLayout" name="cardanoFromXPrivateKeyCardanoTypeLabelContainerQFrameHLayout">
                                   <property name="spacing">
                                    <number>15</number>
                                   </property>
@@ -5701,7 +5701,7 @@
                          </item>
                          <item>
                           <widget class="QFrame" name="cardanoFromXPrivateKeyCardanoTypeAndAddressTypeContainerQFrame">
-                           <layout class="QHBoxLayout" name="horizontalLayout_63">
+                           <layout class="QHBoxLayout" name="cardanoFromXPrivateKeyCardanoTypeAndAddressTypeContainerQFrameHLayout">
                             <property name="spacing">
                              <number>15</number>
                             </property>
@@ -5719,7 +5719,7 @@
                             </property>
                             <item>
                              <widget class="QFrame" name="cardanoFromXPrivateKeyStakingContainerQFrame">
-                              <layout class="QVBoxLayout" name="XPublicKeyVLayout_5">
+                              <layout class="QVBoxLayout" name="cardanoFromXPrivateKeyStakingContainerQFrameVLayout">
                                <property name="spacing">
                                 <number>5</number>
                                </property>
@@ -5737,7 +5737,7 @@
                                </property>
                                <item>
                                 <widget class="QFrame" name="cardanoFromXPrivateKeyStakingLabelContainerQFrame">
-                                 <layout class="QHBoxLayout" name="XPublicKeyLabelHLayout_5">
+                                 <layout class="QHBoxLayout" name="cardanoFromXPrivateKeyStakingLabelContainerQFrameHLayout">
                                   <property name="spacing">
                                    <number>15</number>
                                   </property>
@@ -5790,7 +5790,7 @@
                                 <height>0</height>
                                </size>
                               </property>
-                              <layout class="QVBoxLayout" name="ClientVLayout_17">
+                              <layout class="QVBoxLayout" name="cardanoFromXPrivateKeyAddressTypeContainerQFrameVLayout">
                                <property name="spacing">
                                 <number>5</number>
                                </property>
@@ -5808,7 +5808,7 @@
                                </property>
                                <item>
                                 <widget class="QFrame" name="cardanoFromXPrivateKeyAddressTypeLabelContainerQFrame">
-                                 <layout class="QHBoxLayout" name="MStrengthLabelHLayout_22">
+                                 <layout class="QHBoxLayout" name="cardanoFromXPrivateKeyAddressTypeLabelContainerQFrameHLayout">
                                   <property name="spacing">
                                    <number>15</number>
                                   </property>
@@ -5906,7 +5906,7 @@
                         </layout>
                        </widget>
                        <widget class="QWidget" name="cardanoFromXPublicKeyQStackedWidget">
-                        <layout class="QVBoxLayout" name="verticalLayout_40">
+                        <layout class="QVBoxLayout" name="cardanoFromXPublicKeyQStackedWidgetVLayout">
                          <property name="spacing">
                           <number>15</number>
                          </property>
@@ -5942,7 +5942,7 @@
                             </property>
                             <item>
                              <widget class="QFrame" name="cardanoFromXPublicKeyContainerQFrame">
-                              <layout class="QVBoxLayout" name="XPublicKeyVLayout_3">
+                              <layout class="QVBoxLayout" name="cardanoFromXPublicKeyContainerQFrameVLayout">
                                <property name="spacing">
                                 <number>5</number>
                                </property>
@@ -5960,7 +5960,7 @@
                                </property>
                                <item>
                                 <widget class="QFrame" name="cardanoFromXPublicKeyLabelContainerQFrame">
-                                 <layout class="QHBoxLayout" name="XPublicKeyLabelHLayout_3">
+                                 <layout class="QHBoxLayout" name="cardanoFromXPublicKeyLabelContainerQFrameHLayout">
                                   <property name="spacing">
                                    <number>15</number>
                                   </property>
@@ -6020,7 +6020,7 @@
                                 <height>0</height>
                                </size>
                               </property>
-                              <layout class="QVBoxLayout" name="ClientVLayout_18">
+                              <layout class="QVBoxLayout" name="cardanoFromXPublicKeyCardanoTypeContainerQFrameVLayout">
                                <property name="spacing">
                                 <number>5</number>
                                </property>
@@ -6038,7 +6038,7 @@
                                </property>
                                <item>
                                 <widget class="QFrame" name="cardanoFromXPublicKeyCardanoTypeLabelContainerQFrame">
-                                 <layout class="QHBoxLayout" name="MStrengthLabelHLayout_23">
+                                 <layout class="QHBoxLayout" name="cardanoFromXPublicKeyCardanoTypeLabelContainerQFrameHLayout">
                                   <property name="spacing">
                                    <number>15</number>
                                   </property>
@@ -6122,7 +6122,7 @@
                          </item>
                          <item>
                           <widget class="QFrame" name="cardanoFromXPublicKeyCardanoTypeAndAddressTypeContainerQFrame">
-                           <layout class="QHBoxLayout" name="horizontalLayout_64">
+                           <layout class="QHBoxLayout" name="cardanoFromXPublicKeyCardanoTypeAndAddressTypeContainerQFrameHLayout">
                             <property name="spacing">
                              <number>15</number>
                             </property>
@@ -6140,7 +6140,7 @@
                             </property>
                             <item>
                              <widget class="QFrame" name="cardanoFromXPublicKeyStakingContainerQFrame">
-                              <layout class="QVBoxLayout" name="XPublicKeyVLayout_6">
+                              <layout class="QVBoxLayout" name="cardanoFromXPublicKeyStakingContainerQFrameVLayout">
                                <property name="spacing">
                                 <number>5</number>
                                </property>
@@ -6158,7 +6158,7 @@
                                </property>
                                <item>
                                 <widget class="QFrame" name="cardanoFromXPublicKeyStakingLabelContainerQFrame">
-                                 <layout class="QHBoxLayout" name="XPublicKeyLabelHLayout_6">
+                                 <layout class="QHBoxLayout" name="cardanoFromXPublicKeyStakingLabelContainerQFrameHLayout">
                                   <property name="spacing">
                                    <number>15</number>
                                   </property>
@@ -6211,7 +6211,7 @@
                                 <height>0</height>
                                </size>
                               </property>
-                              <layout class="QVBoxLayout" name="ClientVLayout_20">
+                              <layout class="QVBoxLayout" name="cardanoFromXPublicKeyAddressTypeContainerQFrameVLayout">
                                <property name="spacing">
                                 <number>5</number>
                                </property>
@@ -6229,7 +6229,7 @@
                                </property>
                                <item>
                                 <widget class="QFrame" name="cardanoFromXPublicKeyAddressTypeLabelContainerQFrame">
-                                 <layout class="QHBoxLayout" name="MStrengthLabelHLayout_25">
+                                 <layout class="QHBoxLayout" name="cardanoFromXPublicKeyAddressTypeLabelContainerQFrameHLayout">
                                   <property name="spacing">
                                    <number>15</number>
                                   </property>
@@ -6327,7 +6327,7 @@
                         </layout>
                        </widget>
                        <widget class="QWidget" name="cardanoFromPrivateKeyQStackedWidget">
-                        <layout class="QVBoxLayout" name="verticalLayout_43">
+                        <layout class="QVBoxLayout" name="cardanoFromPrivateKeyQStackedWidgetVLayout">
                          <property name="spacing">
                           <number>15</number>
                          </property>
@@ -6344,8 +6344,8 @@
                           <number>0</number>
                          </property>
                          <item>
-                          <widget class="QFrame" name="frame_3">
-                           <layout class="QHBoxLayout" name="horizontalLayout_4">
+                          <widget class="QFrame" name="cardanoFromPrivateKeyAndCardanoTypeQFrame">
+                           <layout class="QHBoxLayout" name="cardanoFromPrivateKeyAndCardanoTypeQFrameHLayout">
                             <property name="spacing">
                              <number>15</number>
                             </property>
@@ -6369,7 +6369,7 @@
                                 <height>0</height>
                                </size>
                               </property>
-                              <layout class="QVBoxLayout" name="PrivateKeyVLayout_3">
+                              <layout class="QVBoxLayout" name="cardanoFromPrivateKeyContainerQFrameVLayout">
                                <property name="spacing">
                                 <number>5</number>
                                </property>
@@ -6387,7 +6387,7 @@
                                </property>
                                <item>
                                 <widget class="QFrame" name="cardanoFromPrivateKeyContainerLabelQFrame">
-                                 <layout class="QHBoxLayout" name="PrivateKeyLabelHLayout_3">
+                                 <layout class="QHBoxLayout" name="cardanoFromPrivateKeyContainerLabelQFrameHLayout">
                                   <property name="spacing">
                                    <number>15</number>
                                   </property>
@@ -6440,7 +6440,7 @@
                                 <height>0</height>
                                </size>
                               </property>
-                              <layout class="QVBoxLayout" name="ClientVLayout_21">
+                              <layout class="QVBoxLayout" name="cardanoFromPrivateKeyCardanoTypeContainerQFrameVLayout">
                                <property name="spacing">
                                 <number>5</number>
                                </property>
@@ -6458,7 +6458,7 @@
                                </property>
                                <item>
                                 <widget class="QFrame" name="cardanoFromPrivateKeyCardanoTypeLabelContainerQFrame">
-                                 <layout class="QHBoxLayout" name="MStrengthLabelHLayout_26">
+                                 <layout class="QHBoxLayout" name="cardanoFromPrivateKeyCardanoTypeLabelContainerQFrameHLayout">
                                   <property name="spacing">
                                    <number>15</number>
                                   </property>
@@ -6542,7 +6542,7 @@
                          </item>
                          <item>
                           <widget class="QFrame" name="cardanoFromPrivateKeyCardanoTypeAndAddressTypeContainerQFrame">
-                           <layout class="QHBoxLayout" name="horizontalLayout_65">
+                           <layout class="QHBoxLayout" name="cardanoFromPrivateKeyCardanoTypeAndAddressTypeContainerQFrameHLayout">
                             <property name="spacing">
                              <number>15</number>
                             </property>
@@ -6560,7 +6560,7 @@
                             </property>
                             <item>
                              <widget class="QFrame" name="cardanoFromPrivateKeyStakingContainerQFrame">
-                              <layout class="QVBoxLayout" name="XPublicKeyVLayout_9">
+                              <layout class="QVBoxLayout" name="cardanoFromPrivateKeyStakingContainerQFrameVLayout">
                                <property name="spacing">
                                 <number>5</number>
                                </property>
@@ -6578,7 +6578,7 @@
                                </property>
                                <item>
                                 <widget class="QFrame" name="cardanoFromPrivateKeyStakingLabelContainerQFrame">
-                                 <layout class="QHBoxLayout" name="XPublicKeyLabelHLayout_9">
+                                 <layout class="QHBoxLayout" name="cardanoFromPrivateKeyStakingLabelContainerQFrameHLayout">
                                   <property name="spacing">
                                    <number>15</number>
                                   </property>
@@ -6631,7 +6631,7 @@
                                 <height>0</height>
                                </size>
                               </property>
-                              <layout class="QVBoxLayout" name="ClientVLayout_22">
+                              <layout class="QVBoxLayout" name="cardanoFromPrivateKeyAddressTypeContainerQFrameVLayout">
                                <property name="spacing">
                                 <number>5</number>
                                </property>
@@ -6649,7 +6649,7 @@
                                </property>
                                <item>
                                 <widget class="QFrame" name="cardanoFromPrivateKeyAddressTypeLabelContainerQFrame">
-                                 <layout class="QHBoxLayout" name="MStrengthLabelHLayout_27">
+                                 <layout class="QHBoxLayout" name="cardanoFromPrivateKeyAddressTypeLabelContainerQFrameHLayout">
                                   <property name="spacing">
                                    <number>15</number>
                                   </property>
@@ -6747,7 +6747,7 @@
                         </layout>
                        </widget>
                        <widget class="QWidget" name="cardanoFromPublicKeyQStackedWidget">
-                        <layout class="QVBoxLayout" name="verticalLayout_44">
+                        <layout class="QVBoxLayout" name="cardanoFromPublicKeyQStackedWidgetVLayout">
                          <property name="spacing">
                           <number>15</number>
                          </property>
@@ -6764,8 +6764,8 @@
                           <number>0</number>
                          </property>
                          <item>
-                          <widget class="QFrame" name="frame_4">
-                           <layout class="QHBoxLayout" name="horizontalLayout_6">
+                          <widget class="QFrame" name="cardanoFromPublicKeyAndCardanoTypeQFrame">
+                           <layout class="QHBoxLayout" name="cardanoFromPublicKeyAndCardanoTypeQFrameHLayout">
                             <property name="spacing">
                              <number>15</number>
                             </property>
@@ -6783,7 +6783,7 @@
                             </property>
                             <item>
                              <widget class="QFrame" name="cardanoFromPublicKeyContainerQFrame">
-                              <layout class="QVBoxLayout" name="PublicKeyVLayout_3">
+                              <layout class="QVBoxLayout" name="cardanoFromPublicKeyContainerQFrameVLayout">
                                <property name="spacing">
                                 <number>5</number>
                                </property>
@@ -6801,7 +6801,7 @@
                                </property>
                                <item>
                                 <widget class="QFrame" name="cardanoFromPublicKeyLabelContainerQFrame">
-                                 <layout class="QHBoxLayout" name="PublicKeyLabelHLayout_3">
+                                 <layout class="QHBoxLayout" name="cardanoFromPublicKeyLabelContainerQFrameHLayout">
                                   <property name="spacing">
                                    <number>15</number>
                                   </property>
@@ -6854,7 +6854,7 @@
                                 <height>0</height>
                                </size>
                               </property>
-                              <layout class="QVBoxLayout" name="ClientVLayout_23">
+                              <layout class="QVBoxLayout" name="cardanoFromPublicKeyCardanoTypeContainerQFrameVLayout">
                                <property name="spacing">
                                 <number>5</number>
                                </property>
@@ -6872,7 +6872,7 @@
                                </property>
                                <item>
                                 <widget class="QFrame" name="cardanoFromPublicKeyCardanoTypeLabelContainerQFrame">
-                                 <layout class="QHBoxLayout" name="MStrengthLabelHLayout_28">
+                                 <layout class="QHBoxLayout" name="cardanoFromPublicKeyCardanoTypeLabelContainerQFrameHLayout">
                                   <property name="spacing">
                                    <number>15</number>
                                   </property>
@@ -6956,7 +6956,7 @@
                          </item>
                          <item>
                           <widget class="QFrame" name="cardanoFromPublicKeyCardanoTypeAndAddressTypeContainerQFrame">
-                           <layout class="QHBoxLayout" name="horizontalLayout_66">
+                           <layout class="QHBoxLayout" name="cardanoFromPublicKeyCardanoTypeAndAddressTypeContainerQFrameHLayout">
                             <property name="spacing">
                              <number>15</number>
                             </property>
@@ -6974,7 +6974,7 @@
                             </property>
                             <item>
                              <widget class="QFrame" name="cardanoFromPublicKeyStakingContainerQFrame">
-                              <layout class="QVBoxLayout" name="XPublicKeyVLayout_8">
+                              <layout class="QVBoxLayout" name="cardanoFromPublicKeyStakingContainerQFrameVLayout">
                                <property name="spacing">
                                 <number>5</number>
                                </property>
@@ -6992,7 +6992,7 @@
                                </property>
                                <item>
                                 <widget class="QFrame" name="cardanoFromPublicKeyStakingLabelContainerQFrame">
-                                 <layout class="QHBoxLayout" name="XPublicKeyLabelHLayout_8">
+                                 <layout class="QHBoxLayout" name="cardanoFromPublicKeyStakingLabelContainerQFrameHLayout">
                                   <property name="spacing">
                                    <number>15</number>
                                   </property>
@@ -7045,7 +7045,7 @@
                                 <height>0</height>
                                </size>
                               </property>
-                              <layout class="QVBoxLayout" name="ClientVLayout_24">
+                              <layout class="QVBoxLayout" name="cardanoFromPublicKeyAddressTypeContainerQFrameVLayout">
                                <property name="spacing">
                                 <number>5</number>
                                </property>
@@ -7063,7 +7063,7 @@
                                </property>
                                <item>
                                 <widget class="QFrame" name="cardanoFromPublicKeyAddressTypeLabelContainerQFrame">
-                                 <layout class="QHBoxLayout" name="MStrengthLabelHLayout_29">
+                                 <layout class="QHBoxLayout" name="cardanoFromPublicKeyAddressTypeLabelContainerQFrameHLayout">
                                   <property name="spacing">
                                    <number>15</number>
                                   </property>
@@ -7187,7 +7187,7 @@
                         <number>0</number>
                        </property>
                        <widget class="QWidget" name="electrumV1FromEntropyQStackedWidget">
-                        <layout class="QVBoxLayout" name="verticalLayout_46">
+                        <layout class="QVBoxLayout" name="electrumV1FromEntropyQStackedWidgetVLayout">
                          <property name="spacing">
                           <number>15</number>
                          </property>
@@ -7205,7 +7205,7 @@
                          </property>
                          <item>
                           <widget class="QFrame" name="electrumV1FromEntropyContainerQFrame">
-                           <layout class="QVBoxLayout" name="verticalLayout_47">
+                           <layout class="QVBoxLayout" name="electrumV1FromEntropyContainerQFrameVLayout">
                             <property name="spacing">
                              <number>5</number>
                             </property>
@@ -7223,7 +7223,7 @@
                             </property>
                             <item>
                              <widget class="QFrame" name="electrumV1FromEntropyLabelContainerQFrame">
-                              <layout class="QHBoxLayout" name="EntropyLabelHLayout_5">
+                              <layout class="QHBoxLayout" name="electrumV1FromEntropyLabelContainerQFrameHLayout">
                                <property name="spacing">
                                 <number>15</number>
                                </property>
@@ -7264,7 +7264,7 @@
                             </item>
                             <item>
                              <widget class="QFrame" name="electrumV1FromEntropyGenerateContainerQFrame">
-                              <layout class="QHBoxLayout" name="horizontalLayout_43">
+                              <layout class="QHBoxLayout" name="electrumV1FromEntropyGenerateContainerQFrameHLayout">
                                <property name="spacing">
                                 <number>15</number>
                                </property>
@@ -7291,7 +7291,7 @@
                          </item>
                          <item>
                           <widget class="QFrame" name="electrumV1FromEntropyPublicKeyTypeAndPassphraseContainerQFrame">
-                           <layout class="QHBoxLayout" name="horizontalLayout_44">
+                           <layout class="QHBoxLayout" name="electrumV1FromEntropyPublicKeyTypeAndPassphraseContainerQFrameHLayout">
                             <property name="spacing">
                              <number>15</number>
                             </property>
@@ -7315,7 +7315,7 @@
                                 <height>0</height>
                                </size>
                               </property>
-                              <layout class="QVBoxLayout" name="ClientVLayout_10">
+                              <layout class="QVBoxLayout" name="electrumV1FromEntropyPublicKeyTypeContainerQFrameVLayout">
                                <property name="spacing">
                                 <number>5</number>
                                </property>
@@ -7333,7 +7333,7 @@
                                </property>
                                <item>
                                 <widget class="QFrame" name="electrumV1FromEntropyPublicKeyTypeLabelContainerQFrame">
-                                 <layout class="QHBoxLayout" name="MStrengthLabelHLayout_13">
+                                 <layout class="QHBoxLayout" name="electrumV1FromEntropyPublicKeyTypeLabelContainerQFrameHLayout">
                                   <property name="spacing">
                                    <number>15</number>
                                   </property>
@@ -7394,7 +7394,7 @@
                             </item>
                             <item>
                              <widget class="QFrame" name="electrumV1FromEntropyLanguageContainerQFrame">
-                              <layout class="QVBoxLayout" name="ELanguageVLayout_4">
+                              <layout class="QVBoxLayout" name="electrumV1FromEntropyLanguageContainerQFrameVLayout">
                                <property name="spacing">
                                 <number>5</number>
                                </property>
@@ -7412,7 +7412,7 @@
                                </property>
                                <item>
                                 <widget class="QFrame" name="electrumV1FromEntropyLanguageLabelContainerQFrame">
-                                 <layout class="QHBoxLayout" name="ELanguageLabelHLayout_4">
+                                 <layout class="QHBoxLayout" name="electrumV1FromEntropyLanguageLabelContainerQFrameHLayout">
                                   <property name="spacing">
                                    <number>15</number>
                                   </property>
@@ -7503,7 +7503,7 @@
                             </item>
                             <item>
                              <widget class="QFrame" name="electrumV1FromEntropyPassphraseContainerQFrame">
-                              <layout class="QVBoxLayout" name="EPassphraseVLayout_7">
+                              <layout class="QVBoxLayout" name="electrumV1FromEntropyPassphraseContainerQFrameVLayout">
                                <property name="spacing">
                                 <number>5</number>
                                </property>
@@ -7521,7 +7521,7 @@
                                </property>
                                <item>
                                 <widget class="QFrame" name="electrumV1FromEntropyPassphraseLabelContainerQFrame">
-                                 <layout class="QHBoxLayout" name="EPassphraseLabelHLayout_7">
+                                 <layout class="QHBoxLayout" name="electrumV1FromEntropyPassphraseLabelContainerQFrameHLayout">
                                   <property name="spacing">
                                    <number>15</number>
                                   </property>
@@ -7562,7 +7562,7 @@
                                </item>
                                <item>
                                 <widget class="QFrame" name="electrumV1FromEntropyPassphraseGenerateContainerQFrame">
-                                 <layout class="QHBoxLayout" name="horizontalLayout_45">
+                                 <layout class="QHBoxLayout" name="electrumV1FromEntropyPassphraseGenerateContainerQFrameHLayout">
                                   <property name="spacing">
                                    <number>15</number>
                                   </property>
@@ -7595,7 +7595,7 @@
                           </widget>
                          </item>
                          <item>
-                          <spacer name="verticalSpacer_2">
+                          <spacer name="electrumV1FromEntropyPublicKeyTypeAndPassphraseContainerQFrameVSpacer">
                            <property name="orientation">
                             <enum>Qt::Vertical</enum>
                            </property>
@@ -7610,7 +7610,7 @@
                         </layout>
                        </widget>
                        <widget class="QWidget" name="electrumV1FromMnemonicQStackedWidget">
-                        <layout class="QVBoxLayout" name="verticalLayout_48">
+                        <layout class="QVBoxLayout" name="electrumV1FromMnemonicQStackedWidgetVLayout">
                          <property name="spacing">
                           <number>15</number>
                          </property>
@@ -7628,7 +7628,7 @@
                          </property>
                          <item>
                           <widget class="QFrame" name="electrumV1FromMnemonicContainerQFrame">
-                           <layout class="QVBoxLayout" name="MnemonicVLayout_4">
+                           <layout class="QVBoxLayout" name="electrumV1FromMnemonicContainerQFrameVLayout">
                             <property name="spacing">
                              <number>5</number>
                             </property>
@@ -7646,7 +7646,7 @@
                             </property>
                             <item>
                              <widget class="QFrame" name="electrumV1FromMnemonicLabelContainerQFrame">
-                              <layout class="QHBoxLayout" name="MnemonicLabelHLayout_4">
+                              <layout class="QHBoxLayout" name="electrumV1FromMnemonicLabelContainerQFrameHLayout">
                                <property name="spacing">
                                 <number>15</number>
                                </property>
@@ -7687,7 +7687,7 @@
                             </item>
                             <item>
                              <widget class="QFrame" name="electrumV1FromMnemonicGenerateContainerQFrame">
-                              <layout class="QHBoxLayout" name="horizontalLayout_47">
+                              <layout class="QHBoxLayout" name="electrumV1FromMnemonicGenerateContainerQFrameHLayout">
                                <property name="spacing">
                                 <number>15</number>
                                </property>
@@ -7714,7 +7714,7 @@
                          </item>
                          <item>
                           <widget class="QFrame" name="electrumV1FromMnemonicPublicKeyTypeAndPassphraseContainerQFrame">
-                           <layout class="QHBoxLayout" name="horizontalLayout_48">
+                           <layout class="QHBoxLayout" name="electrumV1FromMnemonicPublicKeyTypeAndPassphraseContainerQFrameHLayout">
                             <property name="spacing">
                              <number>15</number>
                             </property>
@@ -7738,7 +7738,7 @@
                                 <height>0</height>
                                </size>
                               </property>
-                              <layout class="QVBoxLayout" name="ClientVLayout_11">
+                              <layout class="QVBoxLayout" name="electrumV1FromMnemonicPublicKeyTypeContainerQFrameVLayout">
                                <property name="spacing">
                                 <number>5</number>
                                </property>
@@ -7756,7 +7756,7 @@
                                </property>
                                <item>
                                 <widget class="QFrame" name="electrumV1FromMnemonicPublicKeyTypeLabelContainerQFrame">
-                                 <layout class="QHBoxLayout" name="MStrengthLabelHLayout_14">
+                                 <layout class="QHBoxLayout" name="electrumV1FromMnemonicPublicKeyTypeLabelContainerQFrameHLayout">
                                   <property name="spacing">
                                    <number>15</number>
                                   </property>
@@ -7817,7 +7817,7 @@
                             </item>
                             <item>
                              <widget class="QFrame" name="electrumV1FromMnemonicPassphraseContainerQFrame">
-                              <layout class="QVBoxLayout" name="EPassphraseVLayout_8">
+                              <layout class="QVBoxLayout" name="electrumV1FromMnemonicPassphraseContainerQFrameVLayout">
                                <property name="spacing">
                                 <number>5</number>
                                </property>
@@ -7835,7 +7835,7 @@
                                </property>
                                <item>
                                 <widget class="QFrame" name="electrumV1FromMnemonicPassphraseLabelContainerQFrame">
-                                 <layout class="QHBoxLayout" name="MPassphraseLabelHLayout_4">
+                                 <layout class="QHBoxLayout" name="electrumV1FromMnemonicPassphraseLabelContainerQFrameHLayout">
                                   <property name="spacing">
                                    <number>15</number>
                                   </property>
@@ -7876,7 +7876,7 @@
                                </item>
                                <item>
                                 <widget class="QFrame" name="electrumV1FromMnemonicPassphraseGenerateContainerQFrame">
-                                 <layout class="QHBoxLayout" name="horizontalLayout_49">
+                                 <layout class="QHBoxLayout" name="electrumV1FromMnemonicPassphraseGenerateContainerQFrameHLayout">
                                   <property name="spacing">
                                    <number>15</number>
                                   </property>
@@ -7913,7 +7913,7 @@
                            <property name="frameShadow">
                             <enum>QFrame::Raised</enum>
                            </property>
-                           <layout class="QHBoxLayout" name="horizontalLayout_50">
+                           <layout class="QHBoxLayout" name="electrumV1FromMnemonicLanguageAndWordsContainerQFrameHLayout">
                             <property name="spacing">
                              <number>15</number>
                             </property>
@@ -7931,7 +7931,7 @@
                             </property>
                             <item>
                              <widget class="QFrame" name="electrumV1FromMnemonicLanguageContainerQFrame">
-                              <layout class="QVBoxLayout" name="MLanguageVLayout_4">
+                              <layout class="QVBoxLayout" name="electrumV1FromMnemonicLanguageContainerQFrameVLayout">
                                <property name="spacing">
                                 <number>5</number>
                                </property>
@@ -7949,7 +7949,7 @@
                                </property>
                                <item>
                                 <widget class="QWidget" name="electrumV1FromMnemonicLanguageLabelContainerQFrame" native="true">
-                                 <layout class="QHBoxLayout" name="MLanguageLabelHLayout_4">
+                                 <layout class="QHBoxLayout" name="electrumV1FromMnemonicLanguageLabelContainerQFrameHLayout">
                                   <property name="spacing">
                                    <number>15</number>
                                   </property>
@@ -8040,7 +8040,7 @@
                             </item>
                             <item>
                              <widget class="QFrame" name="electrumV1FromMnemonicWordsContainerQFrame">
-                              <layout class="QVBoxLayout" name="MStrengthVLayout_4">
+                              <layout class="QVBoxLayout" name="electrumV1FromMnemonicWordsContainerQFrameVLayout">
                                <property name="spacing">
                                 <number>5</number>
                                </property>
@@ -8058,7 +8058,7 @@
                                </property>
                                <item>
                                 <widget class="QFrame" name="electrumV1FromMnemonicWordsLabelContainerQFrame">
-                                 <layout class="QHBoxLayout" name="MStrengthLabelHLayout_15">
+                                 <layout class="QHBoxLayout" name="electrumV1FromMnemonicWordsLabelContainerQFrameHLayout">
                                   <property name="spacing">
                                    <number>15</number>
                                   </property>
@@ -8118,7 +8118,7 @@
                         </layout>
                        </widget>
                        <widget class="QWidget" name="electrumV1FromSeedQStackedWidget">
-                        <layout class="QVBoxLayout" name="verticalLayout_5">
+                        <layout class="QVBoxLayout" name="electrumV1FromSeedQStackedWidgetVLayout">
                          <property name="spacing">
                           <number>15</number>
                          </property>
@@ -8136,7 +8136,7 @@
                          </property>
                          <item>
                           <widget class="QFrame" name="electrumV1FromSeedAndPublicKeyTypeContainerQFrame">
-                           <layout class="QHBoxLayout" name="horizontalLayout_51">
+                           <layout class="QHBoxLayout" name="electrumV1FromSeedAndPublicKeyTypeContainerQFrameHLayout">
                             <property name="spacing">
                              <number>15</number>
                             </property>
@@ -8154,7 +8154,7 @@
                             </property>
                             <item>
                              <widget class="QFrame" name="electrumV1FromSeedContainerQFrame">
-                              <layout class="QVBoxLayout" name="verticalLayout_50">
+                              <layout class="QVBoxLayout" name="electrumV1FromSeedContainerQFrameVLayout">
                                <property name="spacing">
                                 <number>5</number>
                                </property>
@@ -8172,7 +8172,7 @@
                                </property>
                                <item>
                                 <widget class="QFrame" name="electrumV1FromSeedLabelContainerQFrame">
-                                 <layout class="QHBoxLayout" name="SeedLabelHLayout_4">
+                                 <layout class="QHBoxLayout" name="electrumV1FromSeedLabelContainerQFrameHLayout">
                                   <property name="spacing">
                                    <number>15</number>
                                   </property>
@@ -8225,7 +8225,7 @@
                                 <height>0</height>
                                </size>
                               </property>
-                              <layout class="QVBoxLayout" name="ClientVLayout_12">
+                              <layout class="QVBoxLayout" name="electrumV1FromSeedsPublicKeyTypeContainerQFrameVLayout">
                                <property name="spacing">
                                 <number>5</number>
                                </property>
@@ -8243,7 +8243,7 @@
                                </property>
                                <item>
                                 <widget class="QFrame" name="electrumV1FromSeedPublicKeyTypeLabelContainerQFrame">
-                                 <layout class="QHBoxLayout" name="MStrengthLabelHLayout_16">
+                                 <layout class="QHBoxLayout" name="electrumV1FromSeedPublicKeyTypeLabelContainerQFrameHLayout">
                                   <property name="spacing">
                                    <number>15</number>
                                   </property>
@@ -8321,7 +8321,7 @@
                         </layout>
                        </widget>
                        <widget class="QWidget" name="electrumV1FromWIFQStackedWidget">
-                        <layout class="QVBoxLayout" name="verticalLayout_53">
+                        <layout class="QVBoxLayout" name="electrumV1FromWIFQStackedWidgetVLayout">
                          <property name="spacing">
                           <number>15</number>
                          </property>
@@ -8345,7 +8345,7 @@
                              <height>0</height>
                             </size>
                            </property>
-                           <layout class="QVBoxLayout" name="WIFVLayout_4">
+                           <layout class="QVBoxLayout" name="electrumV1FromWIFContainerQFrameVLayout">
                             <property name="spacing">
                              <number>5</number>
                             </property>
@@ -8363,7 +8363,7 @@
                             </property>
                             <item>
                              <widget class="QFrame" name="electrumV1FromWIFLabelContainerQFrame">
-                              <layout class="QHBoxLayout" name="WIFLabelHLayout_4">
+                              <layout class="QHBoxLayout" name="electrumV1FromWIFLabelContainerQFrameHLayout">
                                <property name="spacing">
                                 <number>15</number>
                                </property>
@@ -8410,7 +8410,7 @@
                          </item>
                          <item>
                           <widget class="QFrame" name="electrumV1FromWIFBIP38AndPublicKeyTypeContainerQFrame">
-                           <layout class="QHBoxLayout" name="horizontalLayout_52">
+                           <layout class="QHBoxLayout" name="electrumV1FromWIFBIP38AndPublicKeyTypeContainerQFrameHLayout">
                             <property name="spacing">
                              <number>15</number>
                             </property>
@@ -8434,7 +8434,7 @@
                                 <height>0</height>
                                </size>
                               </property>
-                              <layout class="QVBoxLayout" name="verticalLayout_81">
+                              <layout class="QVBoxLayout" name="electrumV1FromWIFPublicKeyTypeContainerQFrameVLayout">
                                <property name="spacing">
                                 <number>5</number>
                                </property>
@@ -8452,7 +8452,7 @@
                                </property>
                                <item>
                                 <widget class="QFrame" name="electrumV1FromWIFPublicKeyTypeLabelContainerQFrame">
-                                 <layout class="QHBoxLayout" name="horizontalLayout_77">
+                                 <layout class="QHBoxLayout" name="electrumV1FromWIFPublicKeyTypeLabelContainerQFrameHLayout">
                                   <property name="spacing">
                                    <number>15</number>
                                   </property>
@@ -8513,7 +8513,7 @@
                             </item>
                             <item>
                              <widget class="QFrame" name="electrumV1FromWIFBIP38PassphraseContainerQFrame">
-                              <layout class="QVBoxLayout" name="verticalLayout_54">
+                              <layout class="QVBoxLayout" name="electrumV1FromWIFBIP38PassphraseContainerQFrameVLayout">
                                <property name="spacing">
                                 <number>5</number>
                                </property>
@@ -8531,7 +8531,7 @@
                                </property>
                                <item>
                                 <widget class="QFrame" name="electrumV1FromWIFBIP38PassphraseCheckBoxContainerQFrame">
-                                 <layout class="QHBoxLayout" name="EPassphraseLabelHLayout_8">
+                                 <layout class="QHBoxLayout" name="electrumV1FromWIFBIP38PassphraseCheckBoxContainerQFrameHLayout">
                                   <property name="spacing">
                                    <number>15</number>
                                   </property>
@@ -8595,7 +8595,7 @@
                         </layout>
                        </widget>
                        <widget class="QWidget" name="electrumV1FromPrivateKeyQStackedWidget">
-                        <layout class="QVBoxLayout" name="verticalLayout_55">
+                        <layout class="QVBoxLayout" name="electrumV1FromPrivateKeyQStackedWidgetVLayout">
                          <property name="spacing">
                           <number>15</number>
                          </property>
@@ -8616,7 +8616,7 @@
                            <property name="frameShadow">
                             <enum>QFrame::Raised</enum>
                            </property>
-                           <layout class="QHBoxLayout" name="horizontalLayout_72">
+                           <layout class="QHBoxLayout" name="electrumV1FromPrivateKeyAndPublicKeyTypeContainerQFrameHLayout">
                             <property name="spacing">
                              <number>15</number>
                             </property>
@@ -8634,7 +8634,7 @@
                             </property>
                             <item>
                              <widget class="QFrame" name="electrumV1FromPrivateKeyContainerQFrame">
-                              <layout class="QVBoxLayout" name="PrivateKeyVLayout_4">
+                              <layout class="QVBoxLayout" name="electrumV1FromPrivateKeyContainerQFrameVLayout">
                                <property name="spacing">
                                 <number>5</number>
                                </property>
@@ -8652,7 +8652,7 @@
                                </property>
                                <item>
                                 <widget class="QFrame" name="electrumV1FromPrivateKeyLabelContainerQFrame">
-                                 <layout class="QHBoxLayout" name="PrivateKeyLabelHLayout_4">
+                                 <layout class="QHBoxLayout" name="electrumV1FromPrivateKeyLabelContainerQFrameHLayout">
                                   <property name="spacing">
                                    <number>15</number>
                                   </property>
@@ -8705,7 +8705,7 @@
                                 <height>0</height>
                                </size>
                               </property>
-                              <layout class="QVBoxLayout" name="verticalLayout_91">
+                              <layout class="QVBoxLayout" name="electrumV1FromPrivateKeyPublicKeyTypeContainerQFrameVLayout">
                                <property name="spacing">
                                 <number>5</number>
                                </property>
@@ -8723,7 +8723,7 @@
                                </property>
                                <item>
                                 <widget class="QFrame" name="electrumV1FromPrivateKeyPublicKeyTypeLabelContainerQFrame">
-                                 <layout class="QHBoxLayout" name="horizontalLayout_80">
+                                 <layout class="QHBoxLayout" name="electrumV1FromPrivateKeyPublicKeyTypeLabelContainerQFrameHLayout">
                                   <property name="spacing">
                                    <number>15</number>
                                   </property>
@@ -8801,7 +8801,7 @@
                         </layout>
                        </widget>
                        <widget class="QWidget" name="electrumV1FromPublicKeyQStackedWidget">
-                        <layout class="QVBoxLayout" name="verticalLayout_56">
+                        <layout class="QVBoxLayout" name="electrumV1FromPublicKeyQStackedWidgetVLayout">
                          <property name="spacing">
                           <number>15</number>
                          </property>
@@ -8819,7 +8819,7 @@
                          </property>
                          <item>
                           <widget class="QFrame" name="electrumV1FromPublicKeyAndPublicKeyTypeContainerQFrame">
-                           <layout class="QHBoxLayout" name="horizontalLayout_78">
+                           <layout class="QHBoxLayout" name="electrumV1FromPublicKeyAndPublicKeyTypeContainerQFrameHLayout">
                             <property name="spacing">
                              <number>15</number>
                             </property>
@@ -8837,7 +8837,7 @@
                             </property>
                             <item>
                              <widget class="QFrame" name="electrumV1FromPublicKeyContainerQFrame">
-                              <layout class="QVBoxLayout" name="PublicKeyVLayout_4">
+                              <layout class="QVBoxLayout" name="electrumV1FromPublicKeyContainerQFrameVLayout">
                                <property name="spacing">
                                 <number>5</number>
                                </property>
@@ -8855,7 +8855,7 @@
                                </property>
                                <item>
                                 <widget class="QFrame" name="electrumV1FromPublicKeyLabelContainerQFrame">
-                                 <layout class="QHBoxLayout" name="PublicKeyLabelHLayout_4">
+                                 <layout class="QHBoxLayout" name="electrumV1FromPublicKeyLabelContainerQFrameHLayout">
                                   <property name="spacing">
                                    <number>15</number>
                                   </property>
@@ -8908,7 +8908,7 @@
                                 <height>0</height>
                                </size>
                               </property>
-                              <layout class="QVBoxLayout" name="verticalLayout_83">
+                              <layout class="QVBoxLayout" name="electrumV1FromPublicKeyPublicKeyTypeContainerQFrameVLayout">
                                <property name="spacing">
                                 <number>5</number>
                                </property>
@@ -8926,7 +8926,7 @@
                                </property>
                                <item>
                                 <widget class="QFrame" name="electrumV1FromPublicKeyPublicKeyTypeLabelContainerQFrame">
-                                 <layout class="QHBoxLayout" name="horizontalLayout_79">
+                                 <layout class="QHBoxLayout" name="electrumV1FromPublicKeyPublicKeyTypeLabelContainerQFrameHLayout">
                                   <property name="spacing">
                                    <number>15</number>
                                   </property>
@@ -9030,7 +9030,7 @@
                         <number>0</number>
                        </property>
                        <widget class="QWidget" name="electrumV2FromEntropyQStackedWidget">
-                        <layout class="QVBoxLayout" name="verticalLayout_58" stretch="0,0,0">
+                        <layout class="QVBoxLayout" name="electrumV2FromEntropyQStackedWidgetVLayout" stretch="0,0,0">
                          <property name="spacing">
                           <number>15</number>
                          </property>
@@ -9048,7 +9048,7 @@
                          </property>
                          <item>
                           <widget class="QFrame" name="electrumV2FromEntropyContainerQFrame">
-                           <layout class="QVBoxLayout" name="verticalLayout_59">
+                           <layout class="QVBoxLayout" name="electrumV2FromEntropyContainerQFrameVLayout">
                             <property name="spacing">
                              <number>5</number>
                             </property>
@@ -9066,7 +9066,7 @@
                             </property>
                             <item>
                              <widget class="QFrame" name="electrumV2FromEntropyLabelContainerQFrame">
-                              <layout class="QHBoxLayout" name="EntropyLabelHLayout_7">
+                              <layout class="QHBoxLayout" name="electrumV2FromEntropyLabelContainerQFrameHLayout">
                                <property name="spacing">
                                 <number>15</number>
                                </property>
@@ -9107,7 +9107,7 @@
                             </item>
                             <item>
                              <widget class="QFrame" name="electrumV2FromEntropyGenerateContainerQFrame">
-                              <layout class="QHBoxLayout" name="horizontalLayout_53">
+                              <layout class="QHBoxLayout" name="electrumV2FromEntropyGenerateContainerQFrameHLayout">
                                <property name="spacing">
                                 <number>15</number>
                                </property>
@@ -9134,7 +9134,7 @@
                          </item>
                          <item>
                           <widget class="QFrame" name="electrumV2FromEntropyModePublicKeyTypeAndPassphraseContainerQFrame">
-                           <layout class="QHBoxLayout" name="horizontalLayout_54">
+                           <layout class="QHBoxLayout" name="electrumV2FromEntropyModePublicKeyTypeAndPassphraseContainerQFrameHLayout">
                             <property name="spacing">
                              <number>15</number>
                             </property>
@@ -9152,7 +9152,7 @@
                             </property>
                             <item>
                              <widget class="QFrame" name="electrumV2FromEntropyModeContainerQFrame">
-                              <layout class="QVBoxLayout" name="verticalLayout_74">
+                              <layout class="QVBoxLayout" name="electrumV2FromEntropyModeContainerQFrameVLayout">
                                <property name="spacing">
                                 <number>5</number>
                                </property>
@@ -9170,7 +9170,7 @@
                                </property>
                                <item>
                                 <widget class="QFrame" name="electrumV2FromEntropyModeLabelContainerQFrame">
-                                 <layout class="QHBoxLayout" name="horizontalLayout_92">
+                                 <layout class="QHBoxLayout" name="electrumV2FromEntropyModeLabelContainerQFrameHLayout">
                                   <property name="spacing">
                                    <number>15</number>
                                   </property>
@@ -9227,7 +9227,7 @@
                                 <height>0</height>
                                </size>
                               </property>
-                              <layout class="QVBoxLayout" name="ClientVLayout_13">
+                              <layout class="QVBoxLayout" name="electrumV2FromEntropyPublicKeyTypeContainerQFrameVLayout">
                                <property name="spacing">
                                 <number>5</number>
                                </property>
@@ -9245,7 +9245,7 @@
                                </property>
                                <item>
                                 <widget class="QFrame" name="electrumV2FromEntropyPublicKeyTypeLabelContainerQFrame">
-                                 <layout class="QHBoxLayout" name="MStrengthLabelHLayout_17">
+                                 <layout class="QHBoxLayout" name="electrumV2FromEntropyPublicKeyTypeLabelContainerQFrameHLayout">
                                   <property name="spacing">
                                    <number>15</number>
                                   </property>
@@ -9306,7 +9306,7 @@
                             </item>
                             <item>
                              <widget class="QFrame" name="electrumV2FromEntropyPassphraseContainerQFrame">
-                              <layout class="QVBoxLayout" name="EPassphraseVLayout_9">
+                              <layout class="QVBoxLayout" name="electrumV2FromEntropyPassphraseContainerQFrameVLayout">
                                <property name="spacing">
                                 <number>5</number>
                                </property>
@@ -9324,7 +9324,7 @@
                                </property>
                                <item>
                                 <widget class="QFrame" name="electrumV2FromEntropyPassphraseLabelContainerQFrame">
-                                 <layout class="QHBoxLayout" name="EPassphraseLabelHLayout_9">
+                                 <layout class="QHBoxLayout" name="electrumV2FromEntropyPassphraseLabelContainerQFrameHLayout">
                                   <property name="spacing">
                                    <number>15</number>
                                   </property>
@@ -9365,7 +9365,7 @@
                                </item>
                                <item>
                                 <widget class="QFrame" name="electrumV2FromEntropyPassphraseGenerateContainerQFrame">
-                                 <layout class="QHBoxLayout" name="horizontalLayout_55">
+                                 <layout class="QHBoxLayout" name="electrumV2FromEntropyPassphraseGenerateContainerQFrameHLayout">
                                   <property name="spacing">
                                    <number>15</number>
                                   </property>
@@ -9399,7 +9399,7 @@
                          </item>
                          <item>
                           <widget class="QFrame" name="electrumV2FromEntropyLanguageMnemonicTypeAndWordsContainerQFrame">
-                           <layout class="QHBoxLayout" name="horizontalLayout_56">
+                           <layout class="QHBoxLayout" name="electrumV2FromEntropyLanguageMnemonicTypeAndWordsContainerQFrameHLayout">
                             <property name="spacing">
                              <number>15</number>
                             </property>
@@ -9417,7 +9417,7 @@
                             </property>
                             <item>
                              <widget class="QFrame" name="electrumV2FromEntropyLanguageContainerQFrame">
-                              <layout class="QVBoxLayout" name="ELanguageVLayout_5">
+                              <layout class="QVBoxLayout" name="electrumV2FromEntropyLanguageContainerQFrameVLayout">
                                <property name="spacing">
                                 <number>5</number>
                                </property>
@@ -9435,7 +9435,7 @@
                                </property>
                                <item>
                                 <widget class="QFrame" name="electrumV2FromEntropyLanguageLabelContainerQFrame">
-                                 <layout class="QHBoxLayout" name="ELanguageLabelHLayout_5">
+                                 <layout class="QHBoxLayout" name="electrumV2FromEntropyLanguageLabelContainerQFrameHLayout">
                                   <property name="spacing">
                                    <number>15</number>
                                   </property>
@@ -9513,7 +9513,7 @@
                             </item>
                             <item>
                              <widget class="QFrame" name="electrumV2FromEntropyMnemonicTypeContainerQFrame">
-                              <layout class="QVBoxLayout" name="verticalLayout_75">
+                              <layout class="QVBoxLayout" name="electrumV2FromEntropyMnemonicTypeContainerQFrameVLayout">
                                <property name="spacing">
                                 <number>5</number>
                                </property>
@@ -9552,7 +9552,7 @@
                         </layout>
                        </widget>
                        <widget class="QWidget" name="electrumV2FromMnemonicQStackedWidget">
-                        <layout class="QVBoxLayout" name="verticalLayout_60">
+                        <layout class="QVBoxLayout" name="electrumV2FromMnemonicQStackedWidgetVLayout">
                          <property name="spacing">
                           <number>15</number>
                          </property>
@@ -9570,7 +9570,7 @@
                          </property>
                          <item>
                           <widget class="QFrame" name="electrumV2FromMnemonicAndMnemonicTypeContainerQFrame">
-                           <layout class="QHBoxLayout" name="horizontalLayout_57">
+                           <layout class="QHBoxLayout" name="electrumV2FromMnemonicAndMnemonicTypeContainerQFrameHLayout">
                             <property name="spacing">
                              <number>15</number>
                             </property>
@@ -9588,7 +9588,7 @@
                             </property>
                             <item>
                              <widget class="QFrame" name="electrumV2FromMnemonicContainerQFrame">
-                              <layout class="QVBoxLayout" name="MnemonicVLayout_5">
+                              <layout class="QVBoxLayout" name="electrumV2FromMnemonicContainerQFrameVLayout">
                                <property name="spacing">
                                 <number>5</number>
                                </property>
@@ -9606,7 +9606,7 @@
                                </property>
                                <item>
                                 <widget class="QFrame" name="electrumV2FromMnemonicLabelContainerQFrame">
-                                 <layout class="QHBoxLayout" name="MnemonicLabelHLayout_5">
+                                 <layout class="QHBoxLayout" name="electrumV2FromMnemonicLabelContainerQFrameHLayout">
                                   <property name="spacing">
                                    <number>15</number>
                                   </property>
@@ -9647,7 +9647,7 @@
                                </item>
                                <item>
                                 <widget class="QFrame" name="electrumV2FromMnemonicGenerateContainerQFrame">
-                                 <layout class="QHBoxLayout" name="horizontalLayout_93">
+                                 <layout class="QHBoxLayout" name="electrumV2FromMnemonicGenerateContainerQFrameHLayout">
                                   <property name="spacing">
                                    <number>15</number>
                                   </property>
@@ -9674,7 +9674,7 @@
                             </item>
                             <item>
                              <widget class="QFrame" name="electrumV2FromMnemonicMnemonicTypeContainerQFrame">
-                              <layout class="QVBoxLayout" name="verticalLayout_71">
+                              <layout class="QVBoxLayout" name="electrumV2FromMnemonicMnemonicTypeContainerQFrameVLayout">
                                <property name="spacing">
                                 <number>5</number>
                                </property>
@@ -9692,7 +9692,7 @@
                                </property>
                                <item>
                                 <widget class="QFrame" name="electrumV2FromMnemonicMnemonicTypeLabelContainerQFrame">
-                                 <layout class="QHBoxLayout" name="horizontalLayout_95">
+                                 <layout class="QHBoxLayout" name="electrumV2FromMnemonicMnemonicTypeLabelContainerQFrameHLayout">
                                   <property name="spacing">
                                    <number>15</number>
                                   </property>
@@ -9742,7 +9742,7 @@
                          </item>
                          <item>
                           <widget class="QFrame" name="electrumV2FromMnemonicModePublicKeyTypeAndPassphraseContainerQFrame">
-                           <layout class="QHBoxLayout" name="horizontalLayout_58">
+                           <layout class="QHBoxLayout" name="electrumV2FromMnemonicModePublicKeyTypeAndPassphraseContainerQFrameHLayout">
                             <property name="spacing">
                              <number>15</number>
                             </property>
@@ -9760,7 +9760,7 @@
                             </property>
                             <item>
                              <widget class="QFrame" name="electrumV2FromMnemonicModeContainerQFrame">
-                              <layout class="QVBoxLayout" name="verticalLayout_72">
+                              <layout class="QVBoxLayout" name="electrumV2FromMnemonicModeContainerQFrameVLayout">
                                <property name="spacing">
                                 <number>5</number>
                                </property>
@@ -9778,7 +9778,7 @@
                                </property>
                                <item>
                                 <widget class="QFrame" name="electrumV2FromMnemonicModeLabelContainerQFrame">
-                                 <layout class="QHBoxLayout" name="horizontalLayout_94">
+                                 <layout class="QHBoxLayout" name="electrumV2FromMnemonicModeLabelContainerQFrameHLayout">
                                   <property name="spacing">
                                    <number>15</number>
                                   </property>
@@ -9835,7 +9835,7 @@
                                 <height>0</height>
                                </size>
                               </property>
-                              <layout class="QVBoxLayout" name="ClientVLayout_14">
+                              <layout class="QVBoxLayout" name="electrumV2FromMnemonicPublicKeyTypeContainerQFrameVLayout">
                                <property name="spacing">
                                 <number>5</number>
                                </property>
@@ -9853,7 +9853,7 @@
                                </property>
                                <item>
                                 <widget class="QFrame" name="electrumV2FromMnemonicPublicKeyTypeLabelContainerQFrame">
-                                 <layout class="QHBoxLayout" name="MStrengthLabelHLayout_18">
+                                 <layout class="QHBoxLayout" name="electrumV2FromMnemonicPublicKeyTypeLabelContainerQFrameHLayout">
                                   <property name="spacing">
                                    <number>15</number>
                                   </property>
@@ -9914,7 +9914,7 @@
                             </item>
                             <item>
                              <widget class="QFrame" name="electrumV2FromMnemonicPassphraseContainerQFrame">
-                              <layout class="QVBoxLayout" name="EPassphraseVLayout_10">
+                              <layout class="QVBoxLayout" name="electrumV2FromMnemonicPassphraseContainerQFrameVLayout">
                                <property name="spacing">
                                 <number>5</number>
                                </property>
@@ -9932,7 +9932,7 @@
                                </property>
                                <item>
                                 <widget class="QFrame" name="electrumV2FromMnemonicPassphraseLabelContainerQFrame">
-                                 <layout class="QHBoxLayout" name="MPassphraseLabelHLayout_5">
+                                 <layout class="QHBoxLayout" name="electrumV2FromMnemonicPassphraseLabelContainerQFrameHLayout">
                                   <property name="spacing">
                                    <number>15</number>
                                   </property>
@@ -9973,7 +9973,7 @@
                                </item>
                                <item>
                                 <widget class="QFrame" name="electrumV2FromMnemonicPassphraseGenerateContainerQFrame">
-                                 <layout class="QHBoxLayout" name="horizontalLayout_59">
+                                 <layout class="QHBoxLayout" name="electrumV2FromMnemonicPassphraseGenerateContainerQFrameHLayout">
                                   <property name="spacing">
                                    <number>15</number>
                                   </property>
@@ -10021,7 +10021,7 @@
                         </layout>
                        </widget>
                        <widget class="QWidget" name="electrumV2FromSeedQStackedWidget">
-                        <layout class="QVBoxLayout" name="verticalLayout_61">
+                        <layout class="QVBoxLayout" name="electrumV2FromSeedQStackedWidgetVLayout">
                          <property name="spacing">
                           <number>15</number>
                          </property>
@@ -10045,7 +10045,7 @@
                              <height>0</height>
                             </size>
                            </property>
-                           <layout class="QVBoxLayout" name="SeedVLayout_5">
+                           <layout class="QVBoxLayout" name="electrumV2FromSeedContainerQFrameVLayout">
                             <property name="spacing">
                              <number>5</number>
                             </property>
@@ -10063,7 +10063,7 @@
                             </property>
                             <item>
                              <widget class="QFrame" name="electrumV2FromSeedModeAndPublicKeyTypeContainerQFrame">
-                              <layout class="QHBoxLayout" name="horizontalLayout_61">
+                              <layout class="QHBoxLayout" name="electrumV2FromSeedModeAndPublicKeyTypeContainerQFrameHLayout">
                                <property name="spacing">
                                 <number>15</number>
                                </property>
@@ -10081,7 +10081,7 @@
                                </property>
                                <item>
                                 <widget class="QFrame" name="electrumV2FromSeedsContainerQFrame">
-                                 <layout class="QVBoxLayout" name="verticalLayout_62">
+                                 <layout class="QVBoxLayout" name="electrumV2FromSeedsContainerQFrameVLayout">
                                   <property name="spacing">
                                    <number>5</number>
                                   </property>
@@ -10099,7 +10099,7 @@
                                   </property>
                                   <item>
                                    <widget class="QFrame" name="electrumV2FromSeedsLabelContainerQFrame">
-                                    <layout class="QHBoxLayout" name="SeedLabelHLayout_5">
+                                    <layout class="QHBoxLayout" name="electrumV2FromSeedsLabelContainerQFrameHLayout">
                                      <property name="spacing">
                                       <number>15</number>
                                      </property>
@@ -10146,7 +10146,7 @@
                                </item>
                                <item>
                                 <widget class="QFrame" name="electrumV2FromSeedModeContainerQFrame">
-                                 <layout class="QVBoxLayout" name="verticalLayout_73">
+                                 <layout class="QVBoxLayout" name="electrumV2FromSeedModeContainerQFrameVLayout">
                                   <property name="spacing">
                                    <number>5</number>
                                   </property>
@@ -10187,7 +10187,7 @@
                                    <height>0</height>
                                   </size>
                                  </property>
-                                 <layout class="QVBoxLayout" name="ClientVLayout_15">
+                                 <layout class="QVBoxLayout" name="electrumV2FromSeedPublicKeyTypeContainerQFrameVLayout">
                                   <property name="spacing">
                                    <number>5</number>
                                   </property>
@@ -10205,7 +10205,7 @@
                                   </property>
                                   <item>
                                    <widget class="QFrame" name="electrumV2FromSeedPublicKeyTypeLabelContainerQFrame">
-                                    <layout class="QHBoxLayout" name="MStrengthLabelHLayout_20">
+                                    <layout class="QHBoxLayout" name="electrumV2FromSeedPublicKeyTypeLabelContainerQFrameHLayout">
                                      <property name="spacing">
                                       <number>15</number>
                                      </property>
@@ -10312,7 +10312,7 @@
                         <number>0</number>
                        </property>
                        <widget class="QWidget" name="moneroFromEntropyQStackedWidget">
-                        <layout class="QVBoxLayout" name="verticalLayout_4">
+                        <layout class="QVBoxLayout" name="moneroFromEntropyQStackedWidgetVLayout">
                          <property name="spacing">
                           <number>15</number>
                          </property>
@@ -10330,7 +10330,7 @@
                          </property>
                          <item>
                           <widget class="QFrame" name="moneroFromEntropyContainerQFrame">
-                           <layout class="QVBoxLayout" name="verticalLayout_8">
+                           <layout class="QVBoxLayout" name="moneroFromEntropyContainerQFrameVLayout">
                             <property name="spacing">
                              <number>5</number>
                             </property>
@@ -10348,7 +10348,7 @@
                             </property>
                             <item>
                              <widget class="QFrame" name="moneroFromEntropyLabelContainerQFrame">
-                              <layout class="QHBoxLayout" name="EntropyLabelHLayout_2">
+                              <layout class="QHBoxLayout" name="moneroFromEntropyLabelContainerQFrameHLayout">
                                <property name="spacing">
                                 <number>15</number>
                                </property>
@@ -10389,7 +10389,7 @@
                             </item>
                             <item>
                              <widget class="QFrame" name="moneroFromEntropyLineEditContainerQFrame">
-                              <layout class="QHBoxLayout" name="horizontalLayout_13">
+                              <layout class="QHBoxLayout" name="moneroFromEntropyLineEditContainerQFrameHLayout">
                                <property name="spacing">
                                 <number>15</number>
                                </property>
@@ -10416,7 +10416,7 @@
                          </item>
                          <item>
                           <widget class="QFrame" name="moneroFromEntropyPassphrasePaymentIDContainerQFrame">
-                           <layout class="QHBoxLayout" name="horizontalLayout_9">
+                           <layout class="QHBoxLayout" name="moneroFromEntropyPassphrasePaymentIDContainerQFrameHLayout">
                             <property name="spacing">
                              <number>15</number>
                             </property>
@@ -10434,7 +10434,7 @@
                             </property>
                             <item>
                              <widget class="QFrame" name="moneroFromEntropyLanguageContainerQFrame">
-                              <layout class="QVBoxLayout" name="ELanguageVLayout">
+                              <layout class="QVBoxLayout" name="moneroFromEntropyLanguageContainerQFrameVLayout">
                                <property name="spacing">
                                 <number>5</number>
                                </property>
@@ -10452,7 +10452,7 @@
                                </property>
                                <item>
                                 <widget class="QFrame" name="moneroFromEntropyLanguageLabelContainerQFrame">
-                                 <layout class="QHBoxLayout" name="ELanguageLabelHLayout">
+                                 <layout class="QHBoxLayout" name="moneroFromEntropyLanguageLabelContainerQFrameHLayout">
                                   <property name="spacing">
                                    <number>15</number>
                                   </property>
@@ -10543,7 +10543,7 @@
                             </item>
                             <item>
                              <widget class="QFrame" name="moneroFromEntropyPaymentIDContainerQFrame">
-                              <layout class="QVBoxLayout" name="verticalLayout_84">
+                              <layout class="QVBoxLayout" name="moneroFromEntropyPaymentIDContainerQFrameVLayout">
                                <property name="spacing">
                                 <number>5</number>
                                </property>
@@ -10561,7 +10561,7 @@
                                </property>
                                <item>
                                 <widget class="QFrame" name="moneroFromEntropyPaymentIDLabelContainerQFrame">
-                                 <layout class="QHBoxLayout" name="horizontalLayout_81">
+                                 <layout class="QHBoxLayout" name="moneroFromEntropyPaymentIDLabelContainerQFrameHLayout">
                                   <property name="spacing">
                                    <number>15</number>
                                   </property>
@@ -10625,7 +10625,7 @@
                         </layout>
                        </widget>
                        <widget class="QWidget" name="moneroFromMnemonicQStackedWidget">
-                        <layout class="QVBoxLayout" name="verticalLayout_7">
+                        <layout class="QVBoxLayout" name="moneroFromMnemonicQStackedWidgetVLayout">
                          <property name="spacing">
                           <number>15</number>
                          </property>
@@ -10643,7 +10643,7 @@
                          </property>
                          <item>
                           <widget class="QFrame" name="moneroFromMnemonicContainerQFrame">
-                           <layout class="QVBoxLayout" name="MnemonicVLayout">
+                           <layout class="QVBoxLayout" name="moneroFromMnemonicContainerQFrameVLayout">
                             <property name="spacing">
                              <number>5</number>
                             </property>
@@ -10661,7 +10661,7 @@
                             </property>
                             <item>
                              <widget class="QFrame" name="moneroFromMnemonicLabelContainerQFrame">
-                              <layout class="QHBoxLayout" name="MnemonicLabelHLayout">
+                              <layout class="QHBoxLayout" name="moneroFromMnemonicLabelContainerQFrameHLayout">
                                <property name="spacing">
                                 <number>15</number>
                                </property>
@@ -10702,7 +10702,7 @@
                             </item>
                             <item>
                              <widget class="QFrame" name="moneroFromMnemonicLineEditContainerQFrame">
-                              <layout class="QHBoxLayout" name="horizontalLayout_10">
+                              <layout class="QHBoxLayout" name="moneroFromMnemonicLineEditContainerQFrameHLayout">
                                <property name="spacing">
                                 <number>15</number>
                                </property>
@@ -10729,7 +10729,7 @@
                          </item>
                          <item>
                           <widget class="QFrame" name="moneroFromMnemonicPaymentIDPassphraseContainerQFrame">
-                           <layout class="QHBoxLayout" name="horizontalLayout_12">
+                           <layout class="QHBoxLayout" name="moneroFromMnemonicPaymentIDPassphraseContainerQFrameHLayout">
                             <property name="spacing">
                              <number>15</number>
                             </property>
@@ -10753,7 +10753,7 @@
                                 <height>0</height>
                                </size>
                               </property>
-                              <layout class="QVBoxLayout" name="ClientVLayout_2">
+                              <layout class="QVBoxLayout" name="moneroFromMnemonicPaymentIDContainerQFrameVLayout">
                                <property name="spacing">
                                 <number>5</number>
                                </property>
@@ -10771,7 +10771,7 @@
                                </property>
                                <item>
                                 <widget class="QFrame" name="moneroFromMnemonicPaymentIDLabelContainerQFrame">
-                                 <layout class="QHBoxLayout" name="MStrengthLabelHLayout_4">
+                                 <layout class="QHBoxLayout" name="moneroFromMnemonicPaymentIDLabelContainerQFrameHLayout">
                                   <property name="spacing">
                                    <number>15</number>
                                   </property>
@@ -10835,7 +10835,7 @@
                         </layout>
                        </widget>
                        <widget class="QWidget" name="moneroFromSeedQStackedWidget">
-                        <layout class="QVBoxLayout" name="verticalLayout_9">
+                        <layout class="QVBoxLayout" name="moneroFromSeedQStackedWidgetVLayout">
                          <property name="spacing">
                           <number>15</number>
                          </property>
@@ -10859,7 +10859,7 @@
                              <height>0</height>
                             </size>
                            </property>
-                           <layout class="QVBoxLayout" name="SeedVLayout">
+                           <layout class="QVBoxLayout" name="moneroFromSeedSpacerContainerQFrameVLayout">
                             <property name="spacing">
                              <number>5</number>
                             </property>
@@ -10877,7 +10877,7 @@
                             </property>
                             <item>
                              <widget class="QFrame" name="moneroFromSeedAndPaymentIDContainerQFrame">
-                              <layout class="QHBoxLayout" name="horizontalLayout_17">
+                              <layout class="QHBoxLayout" name="moneroFromSeedAndPaymentIDContainerQFrameHLayout">
                                <property name="spacing">
                                 <number>15</number>
                                </property>
@@ -10895,7 +10895,7 @@
                                </property>
                                <item>
                                 <widget class="QFrame" name="moneroFromSeedContainerQFrame">
-                                 <layout class="QVBoxLayout" name="verticalLayout_16">
+                                 <layout class="QVBoxLayout" name="moneroFromSeedContainerQFrameVLayout">
                                   <property name="spacing">
                                    <number>5</number>
                                   </property>
@@ -10913,7 +10913,7 @@
                                   </property>
                                   <item>
                                    <widget class="QFrame" name="moneroFromSeedLabelContainerQFrame">
-                                    <layout class="QHBoxLayout" name="SeedLabelHLayout">
+                                    <layout class="QHBoxLayout" name="moneroFromSeedLabelContainerQFrameHLayout">
                                      <property name="spacing">
                                       <number>15</number>
                                      </property>
@@ -10966,7 +10966,7 @@
                                    <height>0</height>
                                   </size>
                                  </property>
-                                 <layout class="QVBoxLayout" name="ClientVLayout_3">
+                                 <layout class="QVBoxLayout" name="moneroFromSeedPaymentIDContainerQFrameVLayout">
                                   <property name="spacing">
                                    <number>5</number>
                                   </property>
@@ -10984,7 +10984,7 @@
                                   </property>
                                   <item>
                                    <widget class="QFrame" name="moneroFromSeedPaymentIDLabelContainerQFrame">
-                                    <layout class="QHBoxLayout" name="MStrengthLabelHLayout_5">
+                                    <layout class="QHBoxLayout" name="moneroFromSeedPaymentIDLabelContainerQFrameHLayout">
                                      <property name="spacing">
                                       <number>15</number>
                                      </property>
@@ -11051,7 +11051,7 @@
                         </layout>
                        </widget>
                        <widget class="QWidget" name="moneroFromSpendPrivateKeyQStackedWidget">
-                        <layout class="QVBoxLayout" name="verticalLayout_10">
+                        <layout class="QVBoxLayout" name="moneroFromSpendPrivateKeyQStackedWidgetVLayout">
                          <property name="spacing">
                           <number>15</number>
                          </property>
@@ -11069,7 +11069,7 @@
                          </property>
                          <item>
                           <widget class="QFrame" name="moneroFromSpendPrivateKeyContainerQFrame">
-                           <layout class="QVBoxLayout" name="XPrivateKeyVLayout">
+                           <layout class="QVBoxLayout" name="moneroFromSpendPrivateKeyContainerQFrameVLayout">
                             <property name="spacing">
                              <number>5</number>
                             </property>
@@ -11087,7 +11087,7 @@
                             </property>
                             <item>
                              <widget class="QFrame" name="moneroFromSpendPrivateKeyLabelContainerQFrame">
-                              <layout class="QHBoxLayout" name="XPrivateKeyLabelHLayout">
+                              <layout class="QHBoxLayout" name="moneroFromSpendPrivateKeyLabelContainerQFrameHLayout">
                                <property name="spacing">
                                 <number>15</number>
                                </property>
@@ -11134,7 +11134,7 @@
                          </item>
                          <item>
                           <widget class="QFrame" name="moneroFromSpendPrivateKeyPaymentIDContainerQFrame">
-                           <layout class="QVBoxLayout" name="verticalLayout_85">
+                           <layout class="QVBoxLayout" name="moneroFromSpendPrivateKeyPaymentIDContainerQFrameVLayout">
                             <property name="spacing">
                              <number>5</number>
                             </property>
@@ -11179,7 +11179,7 @@
                         </layout>
                        </widget>
                        <widget class="QWidget" name="moneroFromPrivateKeyQStackedWidget">
-                        <layout class="QVBoxLayout" name="verticalLayout_11">
+                        <layout class="QVBoxLayout" name="moneroFromPrivateKeyQStackedWidgetVLayout">
                          <property name="spacing">
                           <number>15</number>
                          </property>
@@ -11197,7 +11197,7 @@
                          </property>
                          <item>
                           <widget class="QFrame" name="moneroFromPrivateKeyContainerQFrame">
-                           <layout class="QVBoxLayout" name="XPublicKeyVLayout">
+                           <layout class="QVBoxLayout" name="moneroFromPrivateKeyContainerQFrameVLayout">
                             <property name="spacing">
                              <number>5</number>
                             </property>
@@ -11215,7 +11215,7 @@
                             </property>
                             <item>
                              <widget class="QFrame" name="moneroFromPrivateKeyLabelContainerQFrame">
-                              <layout class="QHBoxLayout" name="XPublicKeyLabelHLayout">
+                              <layout class="QHBoxLayout" name="moneroFromPrivateKeyLabelContainerQFrameHLayout">
                                <property name="spacing">
                                 <number>15</number>
                                </property>
@@ -11262,7 +11262,7 @@
                          </item>
                          <item>
                           <widget class="QFrame" name="moneroFromPrivateKeyPaymentIDContainerQFrame">
-                           <layout class="QVBoxLayout" name="verticalLayout_86">
+                           <layout class="QVBoxLayout" name="moneroFromPrivateKeyPaymentIDContainerQFrameVLayout">
                             <property name="spacing">
                              <number>5</number>
                             </property>
@@ -11307,7 +11307,7 @@
                         </layout>
                        </widget>
                        <widget class="QWidget" name="moneroFromWatchOnlyQStackedWidget">
-                        <layout class="QVBoxLayout" name="verticalLayout_13">
+                        <layout class="QVBoxLayout" name="moneroFromWatchOnlyQStackedWidgetVLayout">
                          <property name="spacing">
                           <number>15</number>
                          </property>
@@ -11331,7 +11331,7 @@
                              <height>0</height>
                             </size>
                            </property>
-                           <layout class="QVBoxLayout" name="PrivateKeyVLayout">
+                           <layout class="QVBoxLayout" name="moneroFromWatchOnlyViewPrivateKeyContainerQFrameVLayout">
                             <property name="spacing">
                              <number>5</number>
                             </property>
@@ -11349,7 +11349,7 @@
                             </property>
                             <item>
                              <widget class="QFrame" name="moneroFromWatchOnlyViewPrivateKeyLabelContainerQFrame">
-                              <layout class="QHBoxLayout" name="PrivateKeyLabelHLayout">
+                              <layout class="QHBoxLayout" name="moneroFromWatchOnlyViewPrivateKeyLabelContainerQFrameHLayout">
                                <property name="spacing">
                                 <number>15</number>
                                </property>
@@ -11402,7 +11402,7 @@
                              <height>0</height>
                             </size>
                            </property>
-                           <layout class="QVBoxLayout" name="PrivateKeyVLayout_5">
+                           <layout class="QVBoxLayout" name="moneroFromWatchOnlySpendPublicKeyContainerQFrameVLayout">
                             <property name="spacing">
                              <number>5</number>
                             </property>
@@ -11420,7 +11420,7 @@
                             </property>
                             <item>
                              <widget class="QFrame" name="moneroFromWatchOnlySpendPublicKeyLabelContainerQFrame">
-                              <layout class="QHBoxLayout" name="PrivateKeyLabelHLayout_5">
+                              <layout class="QHBoxLayout" name="moneroFromWatchOnlySpendPublicKeyLabelContainerQFrameHLayout">
                                <property name="spacing">
                                 <number>15</number>
                                </property>
@@ -11467,7 +11467,7 @@
                          </item>
                          <item>
                           <widget class="QFrame" name="moneroFromWatchOnlyPaymentIDContainerQFrame">
-                           <layout class="QVBoxLayout" name="verticalLayout_87">
+                           <layout class="QVBoxLayout" name="moneroFromWatchOnlyPaymentIDContainerQFrameVLayout">
                             <property name="spacing">
                              <number>5</number>
                             </property>
