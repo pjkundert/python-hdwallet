@@ -1,30 +1,55 @@
+#!/usr/bin/env python3
+
+# Copyright © 2020-2024, Meheret Tesfaye Batu <meherett.batu@gmail.com>
+#             2024, Abenezer Lulseged Wube <itsm3abena@gmail.com>
+#             2024, Eyoel Tadesse <eyoel_tadesse@proton.me>
+# Distributed under the MIT software license, see the accompanying
+# file COPYING or https://opensource.org/license/mit
 import os
 
 import qrcode
 from PIL.ImageQt import ImageQt, Image
 
-from PySide6.QtWidgets import QWidget, QFrame, QVBoxLayout
+from PySide6.QtWidgets import (
+    QWidget, QFrame, QVBoxLayout, QLabel
+)
 from PySide6.QtCore import QEvent, Qt, Signal
 from PySide6.QtGui import QPixmap
 
 from desktop.widgets.svg_button import SvgButton
 from desktop.ui.ui_donations import Ui_Form
-from desktop.clipboard import *
+from desktop.utils.clipboard import copy_to_clipboard
 from desktop.addresses import crypto_addresses
 
+
 class ClickableFrame(QFrame):
+    """
+    A custom QFrame that emits a clicked signal when pressed.
+    """
     clicked = Signal()
 
-    def mousePressEvent(self, event):
+    def mousePressEvent(self, event: QEvent) -> None:
+        """
+        Override the mousePressEvent to emit a clicked signal.
+
+        :param event: The mouse press event.
+        """
         if event.button() == Qt.LeftButton:
             self.clicked.emit()
 
+
 class Donation(QFrame):
-    def __init__(self, *args, **kwargs):
+    """
+    A custom QFrame to handle donations, including UI setup and QR code generation.
+    """
+    def __init__(self, *args, **kwargs) -> None:
+        """
+        Initialize the Donation frame.
+        """
         super(Donation, self).__init__(*args, **kwargs)
         QVBoxLayout(self)
 
-        self.ui = None
+        self.ui: Optional[Ui_Form] = None
         self.margin = 15
         self.width = 465
         self.height = 565
@@ -38,7 +63,10 @@ class Donation(QFrame):
 
         self.setObjectName("modalQFrame")
 
-    def re_adjust(self):
+    def re_adjust(self) -> None:
+        """
+        Re-adjust the frame and overlay positions.
+        """
         parent_rect = self.parent().rect()
         geo = self.modal_parent_frame.geometry()
         geo.setHeight(geo.height())
@@ -49,21 +77,42 @@ class Donation(QFrame):
 
         self.overlay_frame.setGeometry(0, 0, geo.width(), geo.height())
 
-    def eventFilter(self, obj, event):
-        if (event.type() == QEvent.Resize):
+    def eventFilter(self, obj: QFrame, event: QEvent) -> bool:
+        """
+        Override the event filter to handle resize events.
+
+        :param obj: The object being filtered.
+        :param event: The event being filtered.
+        :return: True if the event should be filtered out, False otherwise.
+        """
+        if event.type() == QEvent.Resize:
             self.re_adjust()
         return super().eventFilter(obj, event)
 
-    def show(self):
+    def show(self) -> None:
+        """
+        Override the show method to display the overlay frame and re-adjust the layout.
+        """
         self.overlay_frame.show()
         self.raise_()
         super().show()
 
-    def closeEvent(self, event):
+    def closeEvent(self, event: QEvent) -> None:
+        """
+        Handle the close event, deleting the overlay frame.
+
+        :param event: The close event.
+        """
         self.overlay_frame.deleteLater()
         self.deleteLater()
 
-    def update_receive_qr(self, qr_label, text):
+    def update_receive_qr(self, qr_label: QLabel, text: str) -> None:
+        """
+        Generate and update a QR code for receiving cryptocurrency.
+
+        :param qr_label: The QLabel to display the QR code.
+        :param text: The text data to encode in the QR code.
+        """
         qr_label.setText(None)
 
         qr = qrcode.QRCode(
@@ -88,8 +137,10 @@ class Donation(QFrame):
         qr_label.setAlignment(Qt.AlignCenter)
         qr_label.setScaledContents(True)
 
-
-    def __update_btns(self):
+    def __update_btns(self) -> None:
+        """
+        Update the stylesheets of the donation buttons.
+        """
         self.ui.donationsCharityQPushButton.setStyleSheet(
             self.ui.donationsCharityQPushButton.styleSheet()
         )
@@ -97,27 +148,38 @@ class Donation(QFrame):
             self.ui.donationsCoreTeamQPushButton.styleSheet()
         )
 
-
-    def show_charity(self): 
+    def show_charity(self) -> None:
+        """
+        Show the charity donation page.
+        """
         self.ui.stackedWidget.setCurrentIndex(1)
         self.ui.donationsCharityQPushButton.setProperty("Active", "true")
         self.ui.donationsCoreTeamQPushButton.setProperty("Active", "")
         self.__update_btns()
 
-    def show_core(self):
+    def show_core(self) -> None:
+        """
+        Show the core team donation page.
+        """
         self.ui.stackedWidget.setCurrentIndex(0)
         self.ui.donationsCharityQPushButton.setProperty("Active", "")
         self.ui.donationsCoreTeamQPushButton.setProperty("Active", "true")
         self.__update_btns()
-        
-    def core_crypto_changed(self):
+
+    def core_crypto_changed(self) -> None:
+        """
+        Update the core team donation address and QR code when the selected cryptocurrency changes.
+        """
         crypto = self.ui.donationsCryptocurrencyQComboBox.currentText()
         addr = crypto_addresses[crypto]
         self.core_addr = addr
         self.ui.donationsAddressQLabel.setText(f"{addr[:15]}...{addr[-10:]}")
         self.update_receive_qr(self.ui.donationsQRCodeQLabel, addr)
 
-    def charity_crypto_changed(self):
+    def charity_crypto_changed(self) -> None:
+        """
+        Update the charity donation address and QR code when the selected cryptocurrency changes.
+        """
         crypto = self.ui.donationsCharityCryptocurrencyQComboBox.currentText()
         addr = crypto_addresses[crypto]
         self.charity_addr = addr
@@ -125,9 +187,14 @@ class Donation(QFrame):
         self.update_receive_qr(self.ui.donationsCharityQRCodeQLabel, addr)
 
     @staticmethod
-    def show_donation(main_window):
+    def show_donation(main_window: QWidget) -> None:
+        """
+        Display the donation frame within the given main window.
+
+        :param main_window: The main application window.
+        """
         frame = Donation(main_window)
-    
+
         main_widget = QWidget()
         main_widget.setContentsMargins(0, 0, 0, 0)
         donation_ui = Ui_Form()
@@ -148,11 +215,15 @@ class Donation(QFrame):
         donation_ui.donationsCharityCryptocurrencyQComboBox.setCurrentText("Ethereum")
 
         donation_ui.donationsCoreTeamQPushButton.click()
-        donation_ui.donationsCharityCaptionQLabel.setText("This donation is for the charity team, because without "
-                                                          "them, we'd have no idea where our good intentions should "
-                                                          "go. Cheers to our chaos coordinators! ")
-        donation_ui.donationsCaptionQLabel.setText("This donation is for the core team, because without them, we'd be "
-                                                   "googling 'how to turn on a computer.' Cheers to our tech wizards!")
+        donation_ui.donationsCharityCaptionQLabel.setText(
+            "This donation is for the charity team, because without them,\
+             we'd have no idea where our good intentions should go. \
+            Cheers to our chaos coordinators!"
+        )
+        donation_ui.donationsCaptionQLabel.setText(
+            "This donation is for the core team, because without them,\
+            we'd be googling 'how to turn on a computer.' Cheers to our tech wizards!"
+        )
         donation_ui.donationsCaptionQLabel.setWordWrap(True)
         donation_ui.donationsCharityCaptionQLabel.setWordWrap(True)
 

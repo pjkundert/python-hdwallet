@@ -1,21 +1,39 @@
+#!/usr/bin/env python3
+
+# Copyright © 2020-2024, Meheret Tesfaye Batu <meherett.batu@gmail.com>
+#             2024, Abenezer Lulseged Wube <itsm3abena@gmail.com>
+#             2024, Eyoel Tadesse <eyoel_tadesse@proton.me>
+# Distributed under the MIT software license, see the accompanying
+# file COPYING or https://opensource.org/license/mit
 import os
+import re
 import functools
 import subprocess
 
-from PySide6.QtCore import QThreadPool
-from PySide6.QtWidgets import QSizePolicy, QWidget, QPushButton
+from PySide6.QtCore import (
+    QThreadPool, QRegularExpression, Slot
+)
+from PySide6.QtWidgets import (
+    QSizePolicy, QWidget, QPushButton, QLineEdit
+)
+from PySide6.QtGui import QRegularExpressionValidator
 
-from desktop.core import *
+from desktop.widgets.core import *
 from desktop.widgets.svg_button import SvgButton
-from desktop.worker import Worker
-from desktop.highlighter import LogHighlighter
-from desktop.donation import Donation
-from desktop.validator import Validator
+from desktop.widgets.donation import Donation
+from desktop.utils.worker import Worker
+from desktop.utils.highlighter import Highlighter
 from desktop.generate import Generate
 from desktop.dumps import Dumps
 
-class MainApplication():
-    def __init__(self):
+class MainApplication:
+    """
+    Main application class for managing the UI and core functionalities.
+    """
+    def __init__(self) -> None:
+        """
+        Initialize the MainApplication class.
+        """
         super().__init__()
 
         self.app = Application.instance()
@@ -23,7 +41,10 @@ class MainApplication():
 
         self.__init_ui()
 
-    def __init_ui(self):
+    def __init_ui(self) -> None:
+        """
+        Initialize the UI components and their connections.
+        """
         self.ui.toggle_expand_terminal = SvgButton(
             parent_widget=self.ui.expandAndCollapseTerminalQFrame,
             icon_path=os.path.join(os.path.dirname(__file__), "ui/images/all_Icons/expand-white-thin.svg"),
@@ -42,7 +63,6 @@ class MainApplication():
         self.ui.outputTerminalQPlainTextEdit.textChanged.connect(self.app.update_terminal_ui)
         self.ui.clearTerminalQPushButton.clicked.connect(self.ui.outputTerminalQPlainTextEdit.clear)
 
-
         self.ui.generateQPushButton.clicked.connect(
             functools.partial(self.generate_dump_tab_changed, "generatePageQStackedWidget", self.ui.generateQPushButton)
         )
@@ -54,7 +74,7 @@ class MainApplication():
 
         self.ui.donationHDWalletQPushButton.clicked.connect(lambda: Donation.show_donation(self.app.window()))
 
-        LogHighlighter(self.ui.outputTerminalQPlainTextEdit.document())
+        Highlighter(self.ui.outputTerminalQPlainTextEdit.document())
 
         self.ui.generateEntropyClientContainerQFrame.setSizePolicy(
             QSizePolicy.Expanding, QSizePolicy.Expanding
@@ -66,7 +86,7 @@ class MainApplication():
             QSizePolicy.Expanding, QSizePolicy.Expanding
         )
 
-        vali= [
+        inputs = [
             self.ui.bip44AccountQLineEdit,
             self.ui.bip44AddressQLineEdit,
             self.ui.bip49AccountQLineEdit,
@@ -82,14 +102,43 @@ class MainApplication():
             self.ui.moneroMinorQLineEdit,
             self.ui.moneroMajorQLineEdit
         ]
-        Validator.validate_input(vali)
+        self.__validate_inputs(inputs)
 
         self.generate = Generate(self.app)
         self.dumps = Dumps(self.app)
 
-    def process_command(self):
+    def __validate_inputs(self, line_edits: list) -> None:
+        """
+        Validate and filter input fields for line edits.
+
+        :param line_edits: A list of QLineEdit widgets to validate.
+        """
+        def validate_and_filter(input_string: str) -> Optional[str]:
+            pattern = r'^\d-\d$'
+            return input_string if re.match(pattern, input_string) else None
+
+        @Slot()
+        def text_changed_callback(line_edit: QLineEdit) -> None:
+            def callback() -> None:
+                input_text = line_edit.text()
+                filtered_text = validate_and_filter(input_text)
+                if filtered_text is None:
+                    line_edit.setValidator(QRegularExpressionValidator(QRegularExpression("[0-9-]*")))
+                else:
+                    line_edit.setValidator(None)
+
+            callback()
+
+        for line_edit in line_edits:
+            line_edit.textChanged.connect(text_changed_callback(line_edit))
+
+    def process_command(self) -> None:
+        """
+        Process the command entered in the terminal input.
+        """
         cmd = self.ui.outputTerminalQLineEdit.text()
-        def process():
+
+        def process() -> str:
             f_cmd = cmd if cmd.startswith('hdwallet ') else f"hdwallet {cmd}"
 
             self.ui.outputTerminalQLineEdit.setText(None)
@@ -112,5 +161,11 @@ class MainApplication():
             QThreadPool.globalInstance().start(job)
 
     def generate_dump_tab_changed(self, page_name: str, qPushButton: QPushButton) -> None:
+        """
+        Handle the tab change between generate and dump pages.
+
+        :param page_name: The name of the page to switch to.
+        :param qPushButton: The QPushButton that was clicked.
+        """
         widget = self.ui.generateAndDumpTabContainerQFrame
-        self.app.widget_changed("hdwalletQStackedWidget", page_name, qPushButton, widget)
+        self.app.tab_changed("hdwalletQStackedWidget", page_name, qPushButton, widget)

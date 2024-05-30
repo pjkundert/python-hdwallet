@@ -1,15 +1,28 @@
+#!/usr/bin/env python3
+
+# Copyright © 2020-2024, Meheret Tesfaye Batu <meherett.batu@gmail.com>
+#             2024, Abenezer Lulseged Wube <itsm3abena@gmail.com>
+#             2024, Eyoel Tadesse <eyoel_tadesse@proton.me>
+# Distributed under the MIT software license, see the accompanying
+# file COPYING or https://opensource.org/license/mit
+
 import functools
 import json
+import os
 from typing import *
 from collections import OrderedDict
 
-from PySide6.QtWidgets import QPushButton
+from PySide6.QtWidgets import (
+    QPushButton, QFileDialog
+)
 from PySide6.QtCore import QThreadPool
 
 from hdwallet import HDWallet
 from hdwallet.hds import HDS
-from hdwallet.cryptocurrencies import Cardano, CRYPTOCURRENCIES
-
+from hdwallet.const import ELECTRUM_V2_MODES
+from hdwallet.cryptocurrencies import (
+    Cardano, CRYPTOCURRENCIES
+)
 from hdwallet.entropies import (
     AlgorandEntropy, ALGORAND_ENTROPY_STRENGTHS,
     BIP39Entropy, BIP39_ENTROPY_STRENGTHS,
@@ -44,12 +57,10 @@ from hdwallet.derivations import (
     BIP86Derivation, ElectrumDerivation, CIP1852Derivation, MoneroDerivation,
     CHANGES
 )
-7
-from hdwallet.const import (
-    ELECTRUM_V2_MODES
-)
 
-from desktop.worker import Worker, WorkerSignals
+from desktop.utils.worker import (
+    Worker, WorkerSignals
+)
 
 class Dumps:
 
@@ -320,10 +331,26 @@ class Dumps:
             staking.setText(None)
             staking.setEnabled(False)
 
+    def _file_locator(self, format):
+        options = QFileDialog.Options()
+        options |= QFileDialog.DontConfirmOverwrite
+        if format == 'JSON':  save_as = 'JSON Files (*.json)'
+        elif format == 'CSV': save_as = 'CSV Files (*.csv)'
+        home_dir = os.path.expanduser("~")
+        filename, _ = QFileDialog.getSaveFileName(
+            None,
+            'Save File',
+            os.path.join(home_dir, 'hdwallet'),
+            save_as,
+            options=options
+        )
+
+        return filename
+
     def _dumps(self, save=False):
         save_filepath = None
         if save:
-            save_filepath = FileSaver.save_file(self.ui.dumpsFormatQComboBox.currentText())
+            save_filepath = self._file_locator(self.ui.dumpsFormatQComboBox.currentText())
             if save_filepath == '': return None
 
         def _error(e): 
@@ -912,4 +939,4 @@ class Dumps:
 
     def derivation_tab_changed(self, page_name: str, qPushButton: QPushButton) -> None:
         widget = self.ui.derivationTabButtonsContainerQFrame
-        self.app.widget_changed("derivationsQStackedWidget", page_name, qPushButton, widget)
+        self.app.tab_changed("derivationsQStackedWidget", page_name, qPushButton, widget)
