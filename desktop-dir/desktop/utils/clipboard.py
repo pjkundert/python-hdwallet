@@ -10,6 +10,7 @@ from PySide6.QtGui import (
     QGuiApplication, QClipboard
 )
 
+
 def copy_to_clipboard(text: str) -> None:
     """
     Copy text to the system clipboard.

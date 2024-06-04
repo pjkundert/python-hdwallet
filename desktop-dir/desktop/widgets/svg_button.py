@@ -40,7 +40,7 @@ class SvgButton(QWidget):
         :type icon_width: int
         :param icon_height: The height of the icon.
         :type icon_height: int
-        :param alt_icon_path: The path to the alternate icon, if any.
+        :param alt_icon_path: The path to the alternate icon, default to ``None``.
         :type alt_icon_path: str, optional
         """
         super().__init__(parent_widget)

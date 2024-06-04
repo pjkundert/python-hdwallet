@@ -50,11 +50,11 @@ class Donation(QFrame):
         QVBoxLayout(self)
 
         self.ui: Optional[Ui_Form] = None
-        self.margin = 15
-        self.width = 465
-        self.height = 565
+        self.margin: int = 15
+        self.width: int = 465
+        self.height: int = 565
 
-        self.overlay_frame = ClickableFrame(self.parent())
+        self.overlay_frame: ClickableFrame = ClickableFrame(self.parent())
         self.overlay_frame.setStyleSheet("background-color: rgba(0, 0, 0, 128);")
         self.overlay_frame.clicked.connect(self.close)
 
@@ -193,7 +193,7 @@ class Donation(QFrame):
 
         :param main_window: The main application window.
         """
-        frame = Donation(main_window)
+        frame: Donation = Donation(main_window)
 
         main_widget = QWidget()
         main_widget.setContentsMargins(0, 0, 0, 0)

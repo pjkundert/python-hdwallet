@@ -8,16 +8,18 @@
 
 import time
 from typing import (
-    Optional
+    Optional, Tuple, Dict, Any
 )
 from PySide6.QtWidgets import QApplication
 from PySide6.QtCore import (
     QTimer, QRunnable, Slot, Signal, QObject, QThreadPool
 )
 
+
 class WorkerSignals(QObject):
     """
     Defines the signals available from a running worker thread.
+    
     Supported signals are:
     - interval_finished: Signal emitted when the interval function completes.
     - interval_output: Signal emitted for interval output.
@@ -26,6 +28,7 @@ class WorkerSignals(QObject):
     interval_finished = Signal(object)
     interval_output = Signal(object)
     interval_error = Signal(object)
+
 
 class Worker(QRunnable):
     """
@@ -52,15 +55,15 @@ class Worker(QRunnable):
         """
         super(Worker, self).__init__()
 
-        self.function = function
-        self.interval = interval
-        self.args = args
-        self.kwargs = kwargs
-        self.signals = WorkerSignals()
-        self.alive = True 
-        self.suspended = False
-        self.remaining = 0
-        self.checkpoint_interval = 0.1
+        self.function: callable = function
+        self.interval: Optional[int] = interval
+        self.args: Tuple = args
+        self.kwargs: Dict = kwargs
+        self.signals: WorkerSignals = WorkerSignals()
+        self.alive: bool = True 
+        self.suspended: bool = False
+        self.remaining: float = 0
+        self.checkpoint_interval: float = 0.1
 
         QApplication.instance().aboutToQuit.connect(self.abort)
 
@@ -72,7 +75,7 @@ class Worker(QRunnable):
         while self.alive:
             if self.remaining <= 0:
                 try: 
-                    result = self.function(*self.args, **self.kwargs)
+                    result: Any = self.function(*self.args, **self.kwargs)
                     if self.alive:
                         self.signals.interval_finished.emit(result)
                 except Exception as e:

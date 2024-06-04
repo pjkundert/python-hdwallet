@@ -13,6 +13,7 @@ from PySide6.QtGui import (
     QSyntaxHighlighter, QTextCharFormat, QColor
 )
 
+
 class Highlighter(QSyntaxHighlighter):
     """
     A custom syntax highlighter for text documents.
