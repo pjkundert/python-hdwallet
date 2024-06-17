@@ -817,7 +817,11 @@ class Dumps:
             )
 
     def _dumps_crypto_change(self):
+
         crypto = self.ui.dumpsCryptocurrencyQComboBox.currentText()
+        if crypto == '':
+            return None
+
         crypto_obj = CRYPTOCURRENCIES.cryptocurrency(crypto)
 
         self.ui.dumpsHdQComboBox.clear()
