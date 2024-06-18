@@ -1,0 +1,16 @@
+{
+    "Algorand": {
+        "25": {
+            "name": "Algorand",
+            "mnemonic": "coin jeans ridge shine bubble buzz rule dizzy fork language bind stock live circle bag gun supply figure flame remember essence awkward toilet above cry",
+            "language": "english",
+            "words": 25
+        },
+        "entropy": {
+            "name": "Algorand",
+            "mnemonic": "flower letter world foil coin poverty romance tongue taste hip cradle follow proud pluck ten improve novel dirt laptop company squeeze garage lucky abandon digital",
+            "language": "english",
+            "entropy": "cc2260fba7b516a47277e4f1feda63aa65d69ade1b72b8ac0ffae8c2e97d9510"
+        }
+    }
+}
