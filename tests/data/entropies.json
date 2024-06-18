@@ -1,0 +1,67 @@
+{
+    "Algorand": {
+        "256": {
+            "name": "Algorand",
+            "entropy": "b53b76abbd95684e798fd5594974ab6319fcd8d23049e32a59836623a8e60f36",
+            "strength": 256
+        }
+    },
+    "BIP39": {
+        "128": {
+            "name": "BIP39",
+            "entropy": "2c0b611c5830e54c917655bbca097771",
+            "strength": 128
+        },
+        "160": {
+            "name": "BIP39",
+            "entropy": "7ae16d5c57a3e150efb2c941fed7294fa231e797",
+            "strength": 160
+        },
+        "192": {
+            "name": "BIP39",
+            "entropy": "7c2abbf52d1861b978792df3dc88e7e27dbe36c7a0287893",
+            "strength": 192
+        },
+        "224": {
+            "name": "BIP39",
+            "entropy": "0ee101ea2dd389906b62822c3a4efceaa537fd268fc62431766f797c",
+            "strength": 224
+        },
+        "256": {
+            "name": "BIP39",
+            "entropy": "ec002a6d05f2e50a9f2d35cf55e75f52be67f5e154c11c3fb2a6f67572c0ecec",
+            "strength": 256
+        }
+    },
+    "Electrum-V1": {
+        "128": {
+            "name": "Electrum-V1",
+            "entropy": "2c0b611c5830e54c917655bbca097771",
+            "strength": 128
+        }
+    },
+    "Electrum-V2": {
+        "132": {
+            "name": "Electrum-V2",
+            "entropy": "0d293c3d17a066a64707fff00a2a10e0f5",
+            "strength": 132
+        },
+        "264": {
+            "name": "Electrum-V2",
+            "entropy": "cdf694ac868efd01673fc51e897c57a0bd428503080ad4c94c7d6f6d13f095fbc8",
+            "strength": 264
+        }
+    },
+    "Monero": {
+        "128": {
+            "name": "Monero",
+            "entropy": "2c0b611c5830e54c917655bbca097771",
+            "strength": 128
+        },
+        "256": {
+            "name": "Monero",
+            "entropy": "ec002a6d05f2e50a9f2d35cf55e75f52be67f5e154c11c3fb2a6f67572c0ecec",
+            "strength": 256
+        }
+    }
+}
