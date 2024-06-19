@@ -51,11 +51,11 @@ def test_electrum_v2_entropy():
     assert ev2_128.strength() == _["Electrum-V2"]["132"]["strength"]
     assert ev2_160.strength() == _["Electrum-V2"]["264"]["strength"]
 
-    assert ev2_128.entropy() == _["Electrum-V2"]["132"]["entropy"]
-    assert ev2_160.entropy() == _["Electrum-V2"]["264"]["entropy"]
+    assert ev2_128.entropy() == _["Electrum-V2"]["132"]["entropy-suitable"]
+    assert ev2_160.entropy() == _["Electrum-V2"]["264"]["entropy-suitable"]
 
     with pytest.raises(EntropyError, match="Invalid entropy data"):
         ElectrumV2Entropy(entropy="INVALID_ENTROPY")
 
-    with pytest.raises(EntropyError, match="Unsupported entropy strength"):
-        ElectrumV2Entropy(entropy="2c0b611c5830e54c917655bbca097771")
+    with pytest.raises(EntropyError, match="Entropy bits are not enough"):
+        ElectrumV2Entropy(entropy="7c2abbf52d1861b978792df3dc88e7e27dbe36c7a0287893")

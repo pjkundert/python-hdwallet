@@ -43,14 +43,14 @@
     "Electrum-V2": {
         "132": {
             "name": "Electrum-V2",
-            "entropy-not-suitable": "0fc5cc72bbdd348a24d56ccaa2e4d8df3f",
-            "entropy-suitable": "0fc5cc72bbdd348a24d56ccaa2e4d8dfb6",
+            "entropy-not-suitable": "0c3a7d6111221a9a9f3f309ee2680aa54a",
+            "entropy-suitable": "0c3a7d6111221a9a9f3f309ee2680aaa97",
             "strength": 132
         },
         "264": {
             "name": "Electrum-V2",
-            "entropy-not-suitable": "11dcf0ad00c8106c61428149a590cd8c3c76d06ab02425dbb94bc725275bab5ad8",
-            "entropy-suitable": "11dcf0ad00c8106c61428149a590cd8c3c76d06ab02425dbb94bc725275bab5c8a",
+            "entropy-not-suitable": "d0390f742597401abdfcc898a228bd895d11071492455386cc57b87f3e99e2b946",
+            "entropy-suitable": "d0390f742597401abdfcc898a228bd895d11071492455386cc57b87f3e99e2d155",
             "strength": 264
         }
     },
