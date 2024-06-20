@@ -6,20 +6,21 @@
 
 from typing import Union
 
+import secrets
 import math
 
-from ...utils import bytes_to_integer
+from ...utils import (
+    bytes_to_integer, bytes_to_string, integer_to_bytes
+)
 from ..ientropy import IEntropy
 
 
 class ELECTRUM_V2_ENTROPY_STRENGTHS:
-
     ONE_HUNDRED_THIRTY_TWO: int = 132
     TWO_HUNDRED_SIXTY_FOUR: int = 264
 
 
 class ElectrumV2Entropy(IEntropy):
-
     strengths = [
         ELECTRUM_V2_ENTROPY_STRENGTHS.ONE_HUNDRED_THIRTY_TWO,
         ELECTRUM_V2_ENTROPY_STRENGTHS.TWO_HUNDRED_SIXTY_FOUR
@@ -28,6 +29,14 @@ class ElectrumV2Entropy(IEntropy):
     @classmethod
     def name(cls) -> str:
         return "Electrum-V2"
+
+    @classmethod
+    def generate(cls, strength: int) -> str:
+        return bytes_to_string(
+            integer_to_bytes(
+                1 << (strength - 1) | secrets.randbits(strength)  # Ensure bit length equals with given strength
+            )
+        )
 
     @classmethod
     def is_valid_strength(cls, strength: int) -> bool:
