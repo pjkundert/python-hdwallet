@@ -707,6 +707,19 @@ class HDWallet:
                     minor=kwargs.get("minor", None), major=kwargs.get("major", None)
                 )
         else:
+            if self._cryptocurrency.NAME in ["Bitcoin-Cash", "Bitcoin-Cash-SLP", "eCash"]:
+                return ADDRESSES.address(name=address).encode(
+                    public_key=self.public_key(),
+                    public_key_address_prefix=getattr(
+                        self._network, f"{kwargs.get('address_type', self._address_type).upper()}_PUBLIC_KEY_ADDRESS_PREFIX"
+                    ),
+                    script_address_prefix=getattr(
+                        self._network, f"{kwargs.get('address_type', self._address_type).upper()}_SCRIPT_ADDRESS_PREFIX"
+                    ),
+                    network_type=self._network.__name__.lower(),
+                    public_key_type=self.public_key_type(),
+                    hrp=self._network.HRP
+                )
             return ADDRESSES.address(name=address).encode(
                 public_key=self.public_key(),
                 public_key_address_prefix=self._network.PUBLIC_KEY_ADDRESS_PREFIX,
@@ -716,8 +729,7 @@ class HDWallet:
                 hrp=self._network.HRP,
                 address_type=kwargs.get(
                     "address_type", self._address_type
-                ),
-                **kwargs
+                )
             )
 
     def dump(self, exclude: Optional[set] = None) -> dict:
