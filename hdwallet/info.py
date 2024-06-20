@@ -7,7 +7,7 @@
 from typing import List
 
 __name__: str = "hdwallet"
-__version__: str = "v3.0.0a3"
+__version__: str = "v3.0.0a4"
 __license__: str = "MIT"
 __author__: str = "Meheret Tesfaye Batu"
 __email__: str = "meherett.batu@gmail.com"
@@ -23,6 +23,7 @@ __keywords__: List[str] = [
     "cryptocurrencies", "bitcoin", "ethereum", "cryptography", "cli", "cip1852"  # Other keywords
 ]
 __websites__: List[str] = [
+    "https://hdwallet.io",
     "https://hdwallet.online",
     "https://hd.wallet"  # On Web3 browsers like Brave
 ]
