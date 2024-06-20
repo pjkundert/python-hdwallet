@@ -35,21 +35,29 @@ def test_electrum_v2_mnemonics():
     for __ in _["Electrum-V2"]:
         assert ElectrumV2Mnemonic.is_valid_words(words=__["words"])
 
-        for mnemonic_type in __["languages"].keys():
-            for language in __["languages"][mnemonic_type].keys():
+        for mnemonic_type in __["mnemonic-types"].keys():
+            for language in __["mnemonic-types"][mnemonic_type].keys():
 
                 assert ElectrumV2Mnemonic.is_valid_language(language=language)
-                assert ElectrumV2Mnemonic.is_valid(mnemonic=__["languages"][mnemonic_type][language], mnemonic_type=mnemonic_type)
+                assert ElectrumV2Mnemonic.is_valid(
+                    mnemonic=__["mnemonic-types"][mnemonic_type][language]["mnemonic"], mnemonic_type=mnemonic_type
+                )
 
                 mnemonic = ElectrumV2Mnemonic.from_words(words=__["words"], language=language, mnemonic_type=mnemonic_type)
                 assert len(mnemonic.split()) == __["words"]
                 assert ElectrumV2Mnemonic(mnemonic=mnemonic, mnemonic_type=mnemonic_type).language().lower() == language
 
-                assert ElectrumV2Mnemonic.from_entropy(entropy=__["entropy-not-suitable"], mnemonic_type=mnemonic_type, language=language) == __["languages"][mnemonic_type][language]
-                assert ElectrumV2Mnemonic.decode(mnemonic=__["languages"][mnemonic_type][language], mnemonic_type=mnemonic_type) == __["entropy-suitable"]
+                assert ElectrumV2Mnemonic.from_entropy(
+                    entropy=__["entropy-not-suitable"], mnemonic_type=mnemonic_type, language=language
+                ) == __["mnemonic-types"][mnemonic_type][language]["mnemonic"]
 
-                mnemonic = ElectrumV2Mnemonic(mnemonic=__["languages"][mnemonic_type][language], mnemonic_type=mnemonic_type)
+                assert ElectrumV2Mnemonic.decode(
+                    mnemonic=__["mnemonic-types"][mnemonic_type][language]["mnemonic"], mnemonic_type=mnemonic_type
+                ) == __["mnemonic-types"][mnemonic_type][language]["entropy-suitable"]
 
+                mnemonic = ElectrumV2Mnemonic(
+                    mnemonic=__["mnemonic-types"][mnemonic_type][language]["mnemonic"], mnemonic_type=mnemonic_type
+                )
                 assert mnemonic.name() == __["name"]
                 assert mnemonic.language().lower() == language
                 assert mnemonic.mnemonic_type() == mnemonic_type
