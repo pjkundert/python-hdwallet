@@ -25,7 +25,7 @@ def test_bip39_seeds():
         for lang in _["BIP39"][words].keys():
             assert BIP39Seed.from_mnemonic(
                 mnemonic= _["BIP39"][words][lang]["mnemonic"]
-            ) ==  _["BIP39"][words][lang]["non-passphrase-seed"]
+            ) == _["BIP39"][words][lang]["non-passphrase-seed"]
 
             for passphrase in _["BIP39"][words][lang]["passphrases"].keys():
                 assert BIP39Seed.from_mnemonic(

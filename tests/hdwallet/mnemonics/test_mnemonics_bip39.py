@@ -65,13 +65,23 @@ def test_bip39_mnemonics():
             assert mnemonic.language().lower() == language
 
     with pytest.raises(Exception, match="Invalid mnemonic words"): 
-        BIP39Mnemonic(mnemonic="judge pigeon dove nerve blood fossil wet suggest this level bottom journey tornado hurt ritual hobby label alpha fruit ensure unit animal mouse absorb ramp")
+        BIP39Mnemonic(
+            mnemonic="judge pigeon dove nerve blood fossil wet suggest this level bottom journey tornado "
+                     "hurt ritual hobby label alpha fruit ensure unit animal mouse absorb ramp"
+        )
 
     with pytest.raises(MnemonicError, match="Invalid mnemonic words number"):
-        BIP39Mnemonic.from_words(words=100, language=BIP39_MNEMONIC_LANGUAGES.ENGLISH)
+        BIP39Mnemonic.from_words(
+            words=100, language=BIP39_MNEMONIC_LANGUAGES.ENGLISH
+        )
 
     with pytest.raises(EntropyError, match="Invalid entropy instance"):
-        BIP39Mnemonic.from_entropy(entropy={"FAKE_ENTROPY_DICT"}, language=BIP39_MNEMONIC_LANGUAGES.ENGLISH)
+        BIP39Mnemonic.from_entropy(
+            entropy={"FAKE_ENTROPY_DICT"}, language=BIP39_MNEMONIC_LANGUAGES.ENGLISH
+        )
 
     with pytest.raises(EntropyError, match="Wrong entropy strength"):
-        BIP39Mnemonic.from_entropy(entropy="cdf694ac868efd01673fc51e897c57a0bd428503080ad4c94c7d6f6d13f095fbc8", language=BIP39_MNEMONIC_LANGUAGES.ENGLISH)
+        BIP39Mnemonic.from_entropy(
+            entropy="cdf694ac868efd01673fc51e897c57a0bd428503080ad4c94c7d6f6d13f095fbc8",
+            language=BIP39_MNEMONIC_LANGUAGES.ENGLISH
+        )

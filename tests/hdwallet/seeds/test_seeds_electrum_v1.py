@@ -20,5 +20,7 @@ values.close()
 
 
 def test_electrum_v1_seeds():
-    assert ElectrumV1Seed.from_mnemonic(mnemonic=_["Electrum-V1"]["12"]["english"]["mnemonic"]) == _["Electrum-V1"]["12"]["english"]["non-passphrase-seed"]
+    assert ElectrumV1Seed.from_mnemonic(
+        mnemonic=_["Electrum-V1"]["12"]["english"]["mnemonic"]
+    ) == _["Electrum-V1"]["12"]["english"]["non-passphrase-seed"]
 

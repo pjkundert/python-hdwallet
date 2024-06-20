@@ -27,17 +27,17 @@ def test_electrum_v2_seeds():
             for lang in _["Electrum-V2"][words][mnemonic_type].keys():
                 assert ElectrumV2Seed.from_mnemonic(
                     mnemonic= _["Electrum-V2"][words][mnemonic_type][lang]["mnemonic"], mnemonic_type=mnemonic_type
-                ) ==  _["Electrum-V2"][words][mnemonic_type][lang]["non-passphrase-seed"]
+                ) == _["Electrum-V2"][words][mnemonic_type][lang]["non-passphrase-seed"]
 
                 for passphrase in _["Electrum-V2"][words][mnemonic_type][lang]["passphrases"].keys():
                     assert ElectrumV2Seed.from_mnemonic(
-                        mnemonic= _["Electrum-V2"][words][mnemonic_type][lang]["mnemonic"], 
+                        mnemonic=_["Electrum-V2"][words][mnemonic_type][lang]["mnemonic"],
                         passphrase=passphrase,
                         mnemonic_type=mnemonic_type
                     ) == _["Electrum-V2"][words][mnemonic_type][lang]["passphrases"][passphrase]
 
                     assert ElectrumV2Seed.from_mnemonic(
-                        mnemonic= _["Electrum-V2"][words][mnemonic_type][lang]["mnemonic"], 
+                        mnemonic=_["Electrum-V2"][words][mnemonic_type][lang]["mnemonic"],
                         passphrase=passphrase,
                         mnemonic_type=mnemonic_type
                     ) == _["Electrum-V2"][words][mnemonic_type][lang]["passphrases"][passphrase]

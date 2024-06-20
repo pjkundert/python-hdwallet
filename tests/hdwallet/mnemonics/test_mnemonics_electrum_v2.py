@@ -63,13 +63,22 @@ def test_electrum_v2_mnemonics():
                 assert mnemonic.mnemonic_type() == mnemonic_type
 
     with pytest.raises(Exception, match="Invalid mnemonic words"): 
-        ElectrumV2Mnemonic(mnemonic="flower letter world foil coin poverty romance tongue taste hip cradle follow proud pluck ten improve")
+        ElectrumV2Mnemonic(
+            mnemonic="flower letter world foil coin poverty romance tongue taste hip cradle follow proud pluck ten improve"
+        )
 
     with pytest.raises(MnemonicError, match="Invalid mnemonic words number"):
-        ElectrumV2Mnemonic.from_words(words=100, language=ELECTRUM_V2_MNEMONIC_LANGUAGES.ENGLISH)
+        ElectrumV2Mnemonic.from_words(
+            words=100, language=ELECTRUM_V2_MNEMONIC_LANGUAGES.ENGLISH
+        )
 
     with pytest.raises(EntropyError, match="Invalid entropy instance"):
-        ElectrumV2Mnemonic.from_entropy(entropy={"FAKE_ENTROPY_DICT"}, language=ELECTRUM_V2_MNEMONIC_LANGUAGES.ENGLISH)
+        ElectrumV2Mnemonic.from_entropy(
+            entropy={"FAKE_ENTROPY_DICT"}, language=ELECTRUM_V2_MNEMONIC_LANGUAGES.ENGLISH
+        )
 
     with pytest.raises(Error, match="Unable to generate a valid mnemonic"):
-        ElectrumV2Mnemonic.from_entropy(entropy="7c2abbf52d1861b978792df3dc88e7e27dbe36c7a0287893", language=ELECTRUM_V2_MNEMONIC_LANGUAGES.ENGLISH)
+        ElectrumV2Mnemonic.from_entropy(
+            entropy="7c2abbf52d1861b978792df3dc88e7e27dbe36c7a0287893",
+            language=ELECTRUM_V2_MNEMONIC_LANGUAGES.ENGLISH
+        )

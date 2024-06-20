@@ -20,5 +20,7 @@ values.close()
 
 
 def test_algorand_seeds():
-    assert AlgorandSeed.from_mnemonic(mnemonic=_["Algorand"]["25"]["english"]["mnemonic"]) == _["Algorand"]["25"]["english"]["non-passphrase-seed"]
+    assert AlgorandSeed.from_mnemonic(
+        mnemonic=_["Algorand"]["25"]["english"]["mnemonic"]
+    ) == _["Algorand"]["25"]["english"]["non-passphrase-seed"]
 

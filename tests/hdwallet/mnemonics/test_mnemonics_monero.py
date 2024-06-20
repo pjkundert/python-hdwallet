@@ -61,13 +61,22 @@ def test_monero_mnemonics():
             assert mnemonic.language().lower() == language
 
     with pytest.raises(MnemonicError, match="Invalid mnemonic words count"): 
-        MoneroMnemonic(mnemonic="flower letter world foil coin poverty romance tongue taste hip cradle follow proud pluck ten improve")
+        MoneroMnemonic(
+            mnemonic="flower letter world foil coin poverty romance tongue taste hip cradle follow proud pluck ten improve"
+        )
 
     with pytest.raises(MnemonicError, match="Invalid mnemonic words number"):
-        MoneroMnemonic.from_words(words=100, language=MONERO_MNEMONIC_LANGUAGES.ENGLISH)
+        MoneroMnemonic.from_words(
+            words=100, language=MONERO_MNEMONIC_LANGUAGES.ENGLISH
+        )
 
     with pytest.raises(EntropyError, match="Invalid entropy instance"):
-        MoneroMnemonic.from_entropy(entropy={"FAKE_ENTROPY_DICT"}, language=MONERO_MNEMONIC_LANGUAGES.ENGLISH)
+        MoneroMnemonic.from_entropy(
+            entropy={"FAKE_ENTROPY_DICT"}, language=MONERO_MNEMONIC_LANGUAGES.ENGLISH
+        )
 
     with pytest.raises(EntropyError, match="Wrong entropy strength"):
-        MoneroMnemonic.from_entropy(entropy="cdf694ac868efd01673fc51e897c57a0bd428503080ad4c94c7d6f6d13f095fbc8", language=MONERO_MNEMONIC_LANGUAGES.ENGLISH)
+        MoneroMnemonic.from_entropy(
+            entropy="cdf694ac868efd01673fc51e897c57a0bd428503080ad4c94c7d6f6d13f095fbc8",
+            language=MONERO_MNEMONIC_LANGUAGES.ENGLISH
+        )

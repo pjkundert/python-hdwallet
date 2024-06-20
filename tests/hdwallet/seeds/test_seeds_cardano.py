@@ -26,8 +26,8 @@ def test_cardano_seeds():
 
             for lang in _["Cardano"][words][cardano_type].keys():
                 assert CardanoSeed.from_mnemonic(
-                    mnemonic= _["Cardano"][words][cardano_type][lang]["mnemonic"], cardano_type=cardano_type
-                ) ==  _["Cardano"][words][cardano_type][lang]["non-passphrase-seed"]
+                    mnemonic=_["Cardano"][words][cardano_type][lang]["mnemonic"], cardano_type=cardano_type
+                ) == _["Cardano"][words][cardano_type][lang]["non-passphrase-seed"]
 
                 if _["Cardano"][words][cardano_type][lang]["passphrases"] == None:
                     continue

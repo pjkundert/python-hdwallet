@@ -24,6 +24,6 @@ def test_monero_seeds():
     for words in _["Monero"].keys():
         for lang in _["Monero"][words].keys():
             assert MoneroSeed.from_mnemonic(
-                mnemonic= _["Monero"][words][lang]["mnemonic"]
-            ) ==  _["Monero"][words][lang]["non-passphrase-seed"]
+                mnemonic=_["Monero"][words][lang]["mnemonic"]
+            ) == _["Monero"][words][lang]["non-passphrase-seed"]
 

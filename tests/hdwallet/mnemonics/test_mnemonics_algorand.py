@@ -49,13 +49,22 @@ def test_algorand_mnemonics():
             assert mnemonic.language().lower() == language
 
     with pytest.raises(MnemonicError, match="Invalid mnemonic words count"): 
-        AlgorandMnemonic(mnemonic="flower letter world foil coin poverty romance tongue taste hip cradle follow proud pluck ten improve")
+        AlgorandMnemonic(
+            mnemonic="flower letter world foil coin poverty romance tongue taste hip cradle follow proud pluck ten improve"
+        )
 
     with pytest.raises(MnemonicError, match="Invalid mnemonic words number"):
-        AlgorandMnemonic.from_words(words=100, language=ALGORAND_MNEMONIC_LANGUAGES.ENGLISH)
+        AlgorandMnemonic.from_words(
+            words=100, language=ALGORAND_MNEMONIC_LANGUAGES.ENGLISH
+        )
 
     with pytest.raises(EntropyError, match="Invalid entropy instance"):
-        AlgorandMnemonic.from_entropy(entropy={"FAKE_ENTROPY_DICT"}, language=ALGORAND_MNEMONIC_LANGUAGES.ENGLISH)
+        AlgorandMnemonic.from_entropy(
+            entropy={"FAKE_ENTROPY_DICT"}, language=ALGORAND_MNEMONIC_LANGUAGES.ENGLISH
+        )
 
     with pytest.raises(EntropyError, match="Wrong entropy strength"):
-        AlgorandMnemonic.from_entropy(entropy="cdf694ac868efd01673fc51e897c57a0bd428503080ad4c94c7d6f6d13f095fbc8", language=ALGORAND_MNEMONIC_LANGUAGES.ENGLISH)
+        AlgorandMnemonic.from_entropy(
+            entropy="cdf694ac868efd01673fc51e897c57a0bd428503080ad4c94c7d6f6d13f095fbc8",
+            language=ALGORAND_MNEMONIC_LANGUAGES.ENGLISH
+        )
