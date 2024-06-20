@@ -1,16 +1,213 @@
 {
-    "Algorand": {
-        "25": {
+    "Algorand": [
+        {
             "name": "Algorand",
-            "mnemonic": "coin jeans ridge shine bubble buzz rule dizzy fork language bind stock live circle bag gun supply figure flame remember essence awkward toilet above cry",
-            "language": "english",
-            "words": 25
-        },
-        "entropy": {
-            "name": "Algorand",
-            "mnemonic": "flower letter world foil coin poverty romance tongue taste hip cradle follow proud pluck ten improve novel dirt laptop company squeeze garage lucky abandon digital",
-            "language": "english",
-            "entropy": "cc2260fba7b516a47277e4f1feda63aa65d69ade1b72b8ac0ffae8c2e97d9510"
+            "entropy": "c52ba98346f98b6f31ffd8062fa03486b772bf51576ce1c381bbb4d4762414d2",
+            "words": 25,
+            "languages": {
+                "english": "judge pigeon dove nerve blood fossil wet suggest this level bottom journey tornado hurt ritual hobby label alpha fruit ensure unit animal mouse absorb ramp"
+            }
         }
-    }
+    ],
+    "BIP39": [
+        {
+            "name": "BIP39",
+            "entropy": "ba7d8b88a4e1cfd06c68d2c1f35d8df2",
+            "words": 12,
+            "languages": {
+                "chinese-simplified": "牵 烷 昨 足 她 旬 喝 求 蜡 亿 刘 棚",
+                "chinese-traditional": "牽 烷 昨 足 她 旬 喝 求 蠟 億 劉 棚",
+                "czech": "sekunda vymazat velmoc klaun diplom vozidlo robotika cyklista sluch pobyt lyra vklad",
+                "english": "risk unable timber endorse brother trial random bottom sea online gloom topple",
+                "french": "pixel tolérant stable doseur bidule tartine pantalon bassin procéder méthode fatal surprise",
+                "italian": "rivincita trillo tampone esigente bimbo tombola remoto battuto sbalzo pattume ibernato terme",
+                "japanese": "ねんいり めした まよう けんにん えらい むげん にっけい えいが はこぶ つまらない したて みてい",
+                "korean": "전주 하늘 텔레비전 밤하늘 근래 평가 작은딸 권리 조상 외할머니 상추 특징",
+                "portuguese": "peruca titular sozinho deriva azeite taurino outubro atriz prefeito matagal faceta surreal",
+                "russian": "сервис хвалить указание имидж возглас фасад рубить власть слух покрыть лесной усвоить",
+                "spanish": "prensa toser tarro eficaz batería tío pesa baba rasgo niño germen terapia",
+                "turkish": "semavi vapur turuncu güfte börek uzlaşma ruble bisiklet soğuk palyaço kıdemli ukala"
+            }
+        },
+        {
+            "name": "BIP39",
+            "entropy": "0eb55ce15cb3dbe6a55cb2057c12fafe2511aef8",
+            "words": 15,
+            "languages": {
+                "chinese-simplified": "政 描 毛 兼 该 盈 救 炼 能 渗 猛 堵 径 骂 杰",
+                "chinese-traditional": "政 描 毛 兼 該 盈 救 煉 能 滲 猛 堵 徑 罵 傑",
+                "czech": "buditel puch houf secese inspekce zaklepat petarda pijavice bankomat vanilka sklenice znovu koroptev trvat videohra",
+                "english": "attitude priority debate ride diet viable nice north air they salt wisdom extra student token",
+                "french": "anormal ogive corpus pilote cycle unifier maniable mardi admettre soucieux posséder visqueux emballer scélérat sucre",
+                "italian": "appetito psiche decollo risvolto disgelo vaccinato otre oviparo aguzzo svenuto sabotato vivanda festivo spalla tecnico",
+                "japanese": "いひん とらえる きれい ねまき くどく ようす ちのう ちめいど あらゆる まこと のらねこ れんこん こちょう ぶんぐ みかん",
+                "korean": "고양이 인하 만점 전문 모퉁이 해답 예정 오로지 강사 탁구 정오 활짝 병원 최근 통화",
+                "portuguese": "amassar obedecer cidreira perfeito condor turquesa macaco magreza adentro sonata pneu virada doutor sagrada sulfato",
+                "russian": "брызги расти дружба сектор завод чернила плечо плыть аромат угроза сквер эстрада кашлять тигр упаковка",
+                "spanish": "añadir paquete copia poste cuneta urna mujer muro agitar tambor puño vivaz estufa sidra teléfono",
+                "turkish": "artist radikal empati seda fanus yarbay öksürük önder akide transfer sırdaş zahmet hoşbeş tekrar türev"
+            }
+        },
+        {
+            "name": "BIP39",
+            "entropy": "21a46666765f0ceaf4fa0855bdd74f6350654ca74d8c6821",
+            "words": 18,
+            "languages": {
+                "chinese-simplified": "造 志 惯 饰 徽 胶 穗 含 纪 醇 棒 糊 面 呈 柬 扫 矛 进",
+                "chinese-traditional": "造 志 慣 飾 徽 膠 穗 含 紀 醇 棒 糊 面 呈 柬 掃 矛 進",
+                "czech": "dorost dovozce plevel vymyslet vzlykat naslepo tmel jemnost kroupa vytasit tlupa spodek batoh pozvat poezie riziko metla bikiny",
+                "english": "canvas case office uncover valid install stadium donate fiber upgrade stable shop alien play outdoor ranch habit analyst",
+                "french": "boulon bricoler mener tonneau trombone gravir ruser dégager entasser tragique ruisseau raisin adulte normatif missile panorama fixer aider",
+                "italian": "bubbone caduco pargolo tristezza ungherese lumaca sodale dubitare formica tuta sociale scorta alce positivo perdonato remare indagine alpestre",
+                "japanese": "おくりがな おじさん つごう めまい やわらかい せっかく ふせい けいれき こりる やおや ふすま はんえい あんこ とおす ていこく にっき しゃいん いけん",
+                "korean": "기준 깨달음 완전 하반기 한마디 스님 첫날 무척 부산 학비 철학 중간 같이 이민 운동 작용 선택 건물",
+                "portuguese": "beisebol bexiga marinho tolerar tribo goela roedor couve empolgar toxina rodovia queijo aditivo navalha merecer outono ficar afluente",
+                "russian": "вход выпасть пожилой хвост цензура мясо таракан запястье коктейль храм танец солома атака путь попугай рубеж майор барабан",
+                "spanish": "bóveda brote neón tractor tumba jardín seco dental farmacia tribu sección remedio agudo orquesta nudo persona guardia aldea",
+                "turkish": "ceylan çağdaş özlü varsayım yağış mahir taşeron fidan ihsan vesait tastamam sungur aktris plaket parfüm rötar komiser altüst"
+            }
+        },
+        {
+            "name": "BIP39",
+            "entropy": "cbe0d367d4c97c2b87c7f99e680797dc69f2943723a28d2b27cfb1c1",
+            "words": 21,
+            "languages": {
+                "chinese-simplified": "凤 方 倡 隶 涉 情 干 妨 厘 显 穆 仓 荡 练 亏 绿 痛 仍 卢 啊 建",
+                "chinese-traditional": "鳳 方 倡 隸 涉 情 幹 妨 厘 顯 穆 倉 盪 練 虧 綠 痛 仍 盧 啊 建",
+                "czech": "sundat bazalka ucho prskavka pivovar chrlit dojem zvednout pokles jedinec vlhkost sazba polibek klenba uplynout naplnit osnova kynolog zamyslet lyrika chodba",
+                "english": "slogan alley supreme praise oak beyond business you oyster dizzy tourist rhythm palace energy symptom inmate minor float view glory belt",
+                "french": "remplir aérer sembler occuper mauve autruche blessant wagon montagne décupler symétrie piano moteur dotation siffler goupille levier ériger uranium fatigue aubaine",
+                "italian": "settimana alettone sposo progetto pagina autista bordo zitto pesatore dote tetro risibile petulante esito stiletto lombare obolo funzione valico icona attesa",
+                "japanese": "ひつぎ あんてい へこむ となえる ちんたい うちゅう おうさま わかやま てうち けいかく みのがす ねったいぎょ てさげ けんま ほきょう せきにん ためいき さいてき よくせい したみ うすぎ",
+                "korean": "직업 개나리 출입 인류 옥상 교실 긍정적 흥미 워낙 무릎 파출소 전공 원장 밥맛 칭찬 순간 여론 불만 해수욕장 상태 광장",
+                "portuguese": "recheio adjunto saturar noturno mandato aresta banal zangado mexer cortejo tabuada peneira milenar desafio sensual ginasta lastro ensopado unha facial aranha",
+                "russian": "стекло атрибут тотчас разный подвиг верхний восемь яркий постель занавес устав седьмой почва импульс трогать мусор ощущение корень четыре лестница веник",
+                "spanish": "rodeo aguja soldado palma narrar atajo boa zanja objeto definir tesoro porción oca ejemplo sudor ira merengue figura uva gesto asombro",
+                "turkish": "şeker alaca terfi protokol örümcek başkan bütçe ziyaret pastırma fıçı umut sebep patolog günaydın tıknaz madalya numune irmik yastık kılavuz balta"
+            }
+        },
+        {
+            "name": "BIP39",
+            "entropy": "4632912b3db2bf30df45973d04995836fd4c8b474acf636bb6e839edfd719531",
+            "words": 24,
+            "languages": {
+                "chinese-simplified": "言 荣 黑 航 话 朗 鼓 洁 参 联 优 井 挺 溶 角 苦 刘 刻 忠 呼 霉 仓 让 步",
+                "chinese-traditional": "言 榮 黑 航 話 朗 鼓 潔 參 聯 優 井 挺 溶 角 苦 劉 刻 忠 呼 黴 倉 讓 步",
+                "czech": "kapka peloton klobouk noviny fjord plastika obdiv rostlina imunita drsnost kruhadlo motyka tradice kantor displej kyvadlo lyra lepidlo sejmout naopak uznat sazba krkavec fukar",
+                "english": "economy nest enlist kiwi cloud observe laptop real dial cave figure hospital state east brush fly gloom frozen ring inherit thank rhythm feel coin",
+                "french": "digérer malaxer dragon honteux cédille médecin humour parole cumuler bruyant entourer frotter safari dialogue bilan espèce fatal euphorie piscine gorille sonnette piano enjeu cesser",
+                "italian": "energia ospedale essenza meandro ciclismo palude merenda retina dirotto canapa fortezza labirinto solo empirico biologo futile ibernato ghiaccio riunione livrea sussurro risibile fondente classico",
+                "japanese": "げねつ ちたん こいぬ せんもん かなざわし つうじょう そうご にもつ くちさき おどり こわもて ずいぶん ふつか けなげ えりあ さかみち したて さべつ ねもと せいじ ほんやく ねったいぎょ こもん かるい",
+                "korean": "바이러스 예선 방바닥 식기 단골 온종일 신념 잠자리 모습 날개 부인 소질 체력 바늘 근무 브랜드 상추 사람 전용 수화기 큰절 전공 봉투 달러",
+                "portuguese": "debulhar luar desigual hiato cacau mansa hormonal padaria comitiva biosfera emulador fronha rota datar babar entulho faceta esponja perplexo gerador sogro peneira embutido calafrio",
+                "russian": "игла плавание инженер нестись гримаса подруга нищий рыба журнал газовый колонна миллион тезис зрение возить костюм лесной крутой сено музей уважение седьмой кнут гудок",
+                "spanish": "donar mucho élite lástima carta náusea legumbre pie culpa burbuja fase hormiga selva doce batuta filtro germen frase precoz íntimo talar porción fallo ceder",
+                "turkish": "gitar ödül güvercin medeni depo öykü merinos rüya eyalet çelebi ikircik kurşun tavsiye gıda bugün işgal kıdemli kakül sekizgen nokta tosbağa sebep iftihar dijital"
+            }
+        }
+    ],
+    "Electrum-V1": [
+        {
+            "name": "Electrum-V1",
+            "entropy": "5b3862fc06153e7132da1a178eefaf6d",
+            "words": 12,
+            "languages": {
+                "english": "slight pile okay screw fresh unless sorry grandma keep wrist respect left"
+            }
+        }
+    ],
+    "Electrum-V2": [
+        {
+            "name": "Electrum-V2",
+            "entropy": "0b81f5f43ac0e53e8a314b0ce8b4c42989",
+            "words": 12,
+            "languages": {
+                "chinese-simplified": "防 各 频 迟 齿 愈 咨 棚 析 塘 晒 申",
+                "english": "couple awful foil soldier noodle middle violin topple fix special wife retreat",
+                "portuguese": "certeiro analisar enxame relativo madrinha lanche urologia surreal enjoar restante vidraria peitoral",
+                "spanish": "destino araña finito ruido muñeca melón vacuna terapia fiar salir vino polvo"
+            }
+        },
+        {
+            "name": "Electrum-V2",
+            "entropy": "b6aeeb07ce8ca143c35a3e559d20c4beebdc12053ae4f6e4c47e53ba1f9f80b6c9",
+            "words": 24,
+            "languages": {
+                "chinese-simplified": "导 们 牢 亩 洞 先 再 泼 烈 建 电 趣 唯 须 酯 否 左 合 亩 霸 闪 蜡 赵 哭",
+                "english": "summer actress sound peanut polar buzz change want frame belt animal saddle lava couple trouble few elephant aspect peanut skate other sea jar repeat",
+                "portuguese": "soletrar aceitar repudiar molusco neta banquete bloquear vasilha esfinge aranha agilizar pivete ignorado carbono tedioso empinado degustar alterar molusco rascunho mental prefeito granada patente",
+                "spanish": "año acoso saber oír oveja bocina cadáver velero forma asombro alga pulir leopardo ciclón título faraón dúo anillo oír rifa nudillo rasgo jugo plural"
+            }
+        }
+    ],
+    "Monero": [
+        {
+            "name": "Monero",
+            "entropy": "42292ba34bc1812ab91711335e4235ee",
+            "words": 12,
+            "languages": {
+                "chinese-simplified": "终 姓 渐 饭 施 沙 牛 盘 尖 斯 扫 售",
+                "dutch": "komrij unitair litanie onroerend godzalig lonen naseizoen oorworm taxameter folder valpartij suus",
+                "english": "jostle torch looking olympics glide love nearby optical suede farming trying soya",
+                "french": "joli souffrir madame onduler flux mairie nager orner salto enfermer stade rude",
+                "german": "gemüse sehnerv heiler koje examen helium kabine krähe reetdach einfall sirup rache",
+                "italian": "gonfiare stella lamento oceano eruzione lasagne mimetica opinione settore deposito studiare sdraiare",
+                "japanese": "さつえい にかい しはらい せんむ げどく しほう すやき そうだん とうむぎ きわめる にっき てんけん",
+                "portuguese": "igarape taco jiboia musselina finura joelho mafioso nectarina sapo enzimatico tascar rudimentos",
+                "russian": "менять файл неправда пиво канал неясный оркестр пляж тусклый замечать фильм толпа",
+                "spanish": "fluir peor grano largo diva gripe inerte lengua oriente cordón persona ombligo"
+            }
+        },
+        {
+            "name": "Monero",
+            "entropy": "f7714ca037632c6dd2c442affab2301c",
+            "words": 13,
+            "languages": {
+                "chinese-simplified": "遗 戴 香 乌 缓 海 二 具 抱 负 习 差",
+                "dutch": "raes veurink lurven zakelijk saus degelijk atomair duwwerk venw hitachi expletief helwegen",
+                "english": "pyramid ungainly mammal were safety cuffs annoyed diplomat tweezers hectare enough hashing",
+                "french": "poivre talon membre vent rang cheveu arbre connu sujet gant dormir futur",
+                "german": "meteor tabak hochform warnruf ofenholz blödelei ampel buslinie spiegel fellpony drang fehler",
+                "italian": "pompa tema lievito vernice ricambio campana ancorato cercare tabella fenomeno cratere fastidio",
+                "japanese": "たのしみ ぬぐいとる しゃたい はっけん ちらみ おさえる いせかい かいつう にんか ごうい ぎっちり けんみん",
+                "portuguese": "osmotico tiroteio laico vilipendiar prezar citrico anexo damista tequila gafieira egresso fustigar",
+                "russian": "рыть хлеб нужный шутка сонный вялый атака гулять фуражка козел единый кнут",
+                "spanish": "melena plata hacer recurso nación brillo altar camino piloto elogio cliente elefante"
+            }
+        },
+        {
+            "name": "Monero",
+            "entropy": "caf88ddc833fdb18272dda2375f3ee64063b8861dab6d1821bb7f6dc958497e6",
+            "words": 24,
+            "languages": {
+                "chinese-simplified": "议 墙 彻 掘 徐 尖 币 红 友 后 担 博 怀 贵 芽 修 乎 年 爹 业 碧 丽 级 定",
+                "dutch": "eede solvabel over zoekbots roof taxameter stoten gazelle kluif amok lynx waas ontvallen luilak vicariaat hugo lourdes aldaar vetten balvers walraven uzelf cirkel amuzikaal",
+                "english": "dogs simplest palace yesterday richly suede soccer foamy jerseys alchemy maze utensils omnibus madness unjustly hickory luxury agile unfit arena vain trash byline algebra",
+                "french": "coton retirer pardi voler pudeur salto rondeur exil jade alcool mesure toge opter masque tango genou mardi agonie taire assurer tonte soutenir buriner algue",
+                "german": "chalet physik laufen zellkern namen reetdach pulsader ente geflügel aktivist holzboot topmodel kolumne hinhören takeln fichte hexe adler surfen anflug trapez sichtung beil alchimie",
+                "italian": "chiedere salto palpebre vortice racconto settore sciopero divorare giorno alleanza litro trattore offerta levitare tendenza fibbia leone agire telefono appalto trilogia stoffa bivio alloggio",
+                "japanese": "かえる ていど そまる はんめい だんわ とうむぎ てほん くつした さかいし あんない しゅくはく ねんかん せんやく しゃけん ぬすむ ごうせい しゃうん あゆむ ぬかす いっせい ねんぴ にしき えがお いいだす",
+                "portuguese": "deduzir renunciar noruegues xifopago petunia sapo rogo euclidiano iaque ajuste laxativo ufologo naftalina jururu tive gaussiano juizo afortunar tiquete apuros umbilical tanzaniano britar albumina",
+                "russian": "дать сыпать пугать явление символ тусклый теплый зомби март аномалия оазис чепуха пилот норма ходить кофе нога алфавит хлам балкон читать фельдшер вино антенна",
+                "spanish": "cañón número litro reunir momia oriente oficio culto fila ahogo hebilla previo lata guitarra pleito encargo guerra afectar plan amparo proceso perfil balde aire"
+            }
+        },
+        {
+            "name": "Monero",
+            "entropy": "e88fabf313cd751f7ec75e4bc5741ef6dae9a1c45d685f344839be297a657b35",
+            "words": 25,
+            "languages": {
+                "chinese-simplified": "滴 打 手 刺 测 套 仓 收 妈 灌 谷 累 汗 星 严 角 拿 惊 宝 宗 扎 望 监 魏",
+                "dutch": "wekroep drenkbak comfort subhoofd klapbaar nahon vork dogma latuw warklomp rosbief puilen sneaker midvoor gefreesd commandant legboor raar rijtaak omgebouwd sjardijn gesierd rein vorselaar",
+                "english": "viewpoint desk cause soothe jargon nail upload dedicated lawsuit vats rigid psychic shrugged mobile foolish cavernous lemon puzzled rejoices observant sedan gambit ravine upon",
+                "french": "trois club calme rouge intention muguet terme civet lieutenant tour pulpe plonger repas mixte fable camarade lire poison prince obus rein festin poupe ternir",
+                "german": "unruhe buch bereich quark gebäck jolle terrasse brett grotte trödel nasenbär material pavian ibis erachten bergluft güterzug messe motorrad kleinod paddeln eröffnen monat testflug",
+                "italian": "unicorno cattivo bravo scrivere ghiaccio mese titano carrello indotto tulipano ragazza piumino ruffiano mandorla donatore bresaola iniziare poltrona proteina nocciola ritaglio egitto primario titolo",
+                "japanese": "のらいぬ おんだん えらぶ てわたし ざいげん すぶり ねったいぎょ おもう しあい のがす ちいき たたく てあみ ずあん くのう えりあ しかい たにん たんじょうび ぜんご つながる けおとす たれる ねぶそく",
+                "portuguese": "usei cultural busto rotundo huguenote luminoso tuaregue covil irrupcao unheiro pictorico oprobrio rebuscar liame evasivo butique iterbio orvalho paquistanes mostruario quotizavel fastio ozonizar tubular",
+                "russian": "шатер гонка внук тираж лютый оптимизм церковь глоток мушкетер чужой система руда существо овощи зубной внятный мякиш рынок северный пашня студент имбирь сбегать цикл",
+                "spanish": "puñal cajón batir olfato ficha imagen porción caballo gancho pronto monja masivo novio hongo cúpula batuta gemelo mejilla mirar lacra nicho derecho miembro portal"
+            }
+        }
+    ]
 }

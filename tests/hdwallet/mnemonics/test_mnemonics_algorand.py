@@ -27,19 +27,26 @@ def test_algorand_mnemonics():
     assert ALGORAND_MNEMONIC_WORDS.TWENTY_FIVE == 25
     assert ALGORAND_MNEMONIC_LANGUAGES.ENGLISH == "english"
 
-    assert AlgorandMnemonic.is_valid(mnemonic=_["Algorand"]["entropy"]["mnemonic"])
-    assert AlgorandMnemonic.is_valid_language(language=_["Algorand"]["entropy"]["language"])
-    assert AlgorandMnemonic.is_valid_words(words=int(_["Algorand"]["25"]["words"]))
 
-    from_word_25 = AlgorandMnemonic.from_words(words=ALGORAND_MNEMONIC_WORDS.TWENTY_FIVE, language=ALGORAND_MNEMONIC_LANGUAGES.ENGLISH)
-    assert len(from_word_25.split()) == ALGORAND_MNEMONIC_WORDS.TWENTY_FIVE
-    assert AlgorandMnemonic(mnemonic=from_word_25).language().lower() == ALGORAND_MNEMONIC_LANGUAGES.ENGLISH 
+    for __ in _["Algorand"]:
+        assert AlgorandMnemonic.is_valid_words(words=__["words"])
 
-    assert AlgorandMnemonic.from_entropy(entropy=_["Algorand"]["entropy"]["entropy"], language=ALGORAND_MNEMONIC_LANGUAGES.ENGLISH) == _["Algorand"]["entropy"]["mnemonic"]
+        for language in __["languages"].keys():
 
-    from_mnemonic = AlgorandMnemonic(mnemonic=_["Algorand"]["entropy"]["mnemonic"])
-    assert from_mnemonic.name() == _["Algorand"]["entropy"]["name"]
-    assert from_mnemonic.language().lower() == _["Algorand"]["entropy"]["language"]
+            assert AlgorandMnemonic.is_valid_language(language=language)
+            assert AlgorandMnemonic.is_valid(mnemonic=__["languages"][language])
+
+            from_word = AlgorandMnemonic.from_words(words=__["words"], language=language)
+            assert len(from_word.split()) == __["words"]
+            assert AlgorandMnemonic(mnemonic=from_word).language().lower() == language
+
+            assert AlgorandMnemonic.from_entropy(entropy=__["entropy"], language=language) == __["languages"][language]
+            assert AlgorandMnemonic.decode(mnemonic=__["languages"][language]) == __["entropy"]
+
+            from_mnemonic = AlgorandMnemonic(mnemonic=__["languages"][language])
+
+            assert from_mnemonic.name() == __["name"]
+            assert from_mnemonic.language().lower() == language
 
     with pytest.raises(MnemonicError, match="Invalid mnemonic words count"): 
         AlgorandMnemonic(mnemonic="flower letter world foil coin poverty romance tongue taste hip cradle follow proud pluck ten improve")
