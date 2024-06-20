@@ -48,17 +48,17 @@ def test_monero_mnemonics():
             assert MoneroMnemonic.is_valid_language(language=language)
             assert MoneroMnemonic.is_valid(mnemonic=__["languages"][language])
 
-            from_word = MoneroMnemonic.from_words(words=__["words"], language=language)
-            assert len(from_word.split()) == __["words"]
-            assert MoneroMnemonic(mnemonic=from_word).language().lower() == language
+            mnemonic = MoneroMnemonic.from_words(words=__["words"], language=language)
+            assert len(mnemonic.split()) == __["words"]
+            assert MoneroMnemonic(mnemonic=mnemonic).language().lower() == language
 
             assert MoneroMnemonic.from_entropy(entropy=__["entropy"], language=language) == __["languages"][language]
             assert MoneroMnemonic.decode(mnemonic=__["languages"][language]) == __["entropy"]
 
-            from_mnemonic = MoneroMnemonic(mnemonic=__["languages"][language])
+            mnemonic = MoneroMnemonic(mnemonic=__["languages"][language])
 
-            assert from_mnemonic.name() == __["name"]
-            assert from_mnemonic.language().lower() == language
+            assert mnemonic.name() == __["name"]
+            assert mnemonic.language().lower() == language
 
     with pytest.raises(MnemonicError, match="Invalid mnemonic words count"): 
         MoneroMnemonic(mnemonic="flower letter world foil coin poverty romance tongue taste hip cradle follow proud pluck ten improve")

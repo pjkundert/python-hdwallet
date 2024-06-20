@@ -52,17 +52,17 @@ def test_bip39_mnemonics():
             assert BIP39Mnemonic.is_valid_language(language=language)
             assert BIP39Mnemonic.is_valid(mnemonic=__["languages"][language])
 
-            from_word = BIP39Mnemonic.from_words(words=__["words"], language=language)
-            assert len(from_word.split()) == __["words"]
-            assert BIP39Mnemonic(mnemonic=from_word).language().lower() == language
+            mnemonic = BIP39Mnemonic.from_words(words=__["words"], language=language)
+            assert len(mnemonic.split()) == __["words"]
+            assert BIP39Mnemonic(mnemonic=mnemonic).language().lower() == language
 
             assert BIP39Mnemonic.from_entropy(entropy=__["entropy"], language=language) == __["languages"][language]
             assert BIP39Mnemonic.decode(mnemonic=__["languages"][language]) == __["entropy"]
 
-            from_mnemonic = BIP39Mnemonic(mnemonic=__["languages"][language])
+            mnemonic = BIP39Mnemonic(mnemonic=__["languages"][language])
 
-            assert from_mnemonic.name() == __["name"]
-            assert from_mnemonic.language().lower() == language
+            assert mnemonic.name() == __["name"]
+            assert mnemonic.language().lower() == language
 
     with pytest.raises(Exception, match="Invalid mnemonic words"): 
         BIP39Mnemonic(mnemonic="judge pigeon dove nerve blood fossil wet suggest this level bottom journey tornado hurt ritual hobby label alpha fruit ensure unit animal mouse absorb ramp")
