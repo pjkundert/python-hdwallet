@@ -143,7 +143,7 @@ class MoneroMnemonic(IMnemonic):
             )
 
         mnemonic: List[str] = []
-        words_list: List[str] = cls.get_words_list_by_language(language=language)
+        words_list: List[str] = cls.normalize(cls.get_words_list_by_language(language=language))
         if len(words_list) != cls.words_list_number:
             raise Error(
                 "Invalid number of loaded words list", expected=cls.words_list_number, got=len(words_list)

@@ -121,19 +121,19 @@ class ElectrumV2Mnemonic(IMnemonic):
 
         if ElectrumV2Entropy.are_entropy_bits_enough(entropy):
 
-            words_list: List[str] = cls.get_words_list_by_language(
+            words_list: List[str] = cls.normalize(cls.get_words_list_by_language(
                 language=language, wordlist_path=cls.wordlist_path
-            )
-            bip39_words_list: List[str] = cls.get_words_list_by_language(
+            ))
+            bip39_words_list: List[str] = cls.normalize(cls.get_words_list_by_language(
                 language=language, wordlist_path=BIP39Mnemonic.wordlist_path
-            )
+            ))
             bip39_words_list_with_index: dict = {
                 bip39_words_list[i]: i for i in range(len(bip39_words_list))
             }
             try:
-                electrum_v1_words_list: List[str] = cls.get_words_list_by_language(
+                electrum_v1_words_list: List[str] = cls.normalize(cls.get_words_list_by_language(
                     language=language, wordlist_path=ElectrumV1Mnemonic.wordlist_path
-                )
+                ))
                 electrum_v1_words_list_with_index: dict = {
                     electrum_v1_words_list[i]: i for i in range(len(electrum_v1_words_list))
                 }
@@ -179,7 +179,7 @@ class ElectrumV2Mnemonic(IMnemonic):
 
         mnemonic: List[str] = []
         if not words_list:
-            words_list = cls.get_words_list_by_language(language=language)
+            words_list = cls.normalize(cls.get_words_list_by_language(language=language))
         while entropy > 0:
             word_index: int = entropy % len(words_list)
             entropy //= len(words_list)

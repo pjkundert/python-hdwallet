@@ -81,7 +81,7 @@ class ElectrumV1Mnemonic(IMnemonic):
             )
 
         mnemonic: List[str] = []
-        words_list: List[str] = cls.get_words_list_by_language(language=language)
+        words_list: List[str] = cls.normalize(cls.get_words_list_by_language(language=language))
         for index in range(len(entropy) // 4):
 
             chunk: int = bytes_to_integer(

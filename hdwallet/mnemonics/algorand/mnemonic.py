@@ -86,7 +86,7 @@ class AlgorandMnemonic(IMnemonic):
         word_indexes: Optional[List[int]] = convert_bits(entropy, 8, 11)
         assert word_indexes is not None
 
-        words_list: list = cls.get_words_list_by_language(language=language)
+        words_list: list = cls.normalize(cls.get_words_list_by_language(language=language))
         indexes: list = word_indexes + [checksum_word_indexes[0]]
         return " ".join(cls.normalize([words_list[index] for index in indexes]))
 
