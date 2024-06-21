@@ -12,7 +12,9 @@ import pytest
 from hdwallet.mnemonics.bip39.mnemonic import (
     BIP39Mnemonic, BIP39_MNEMONIC_LANGUAGES, BIP39_MNEMONIC_WORDS
 )
-from hdwallet.exceptions import MnemonicError, EntropyError
+from hdwallet.exceptions import (
+    MnemonicError, EntropyError
+)
 
 # Test Values
 base_path: str = os.path.dirname(__file__)

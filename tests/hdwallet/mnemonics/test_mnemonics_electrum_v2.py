@@ -12,7 +12,9 @@ import pytest
 from hdwallet.mnemonics.electrum.v2.mnemonic import (
     ElectrumV2Mnemonic, ELECTRUM_V2_MNEMONIC_LANGUAGES, ELECTRUM_V2_MNEMONIC_WORDS
 )
-from hdwallet.exceptions import Error, MnemonicError, EntropyError
+from hdwallet.exceptions import (
+    Error, MnemonicError, EntropyError
+)
 
 # Test Values
 base_path: str = os.path.dirname(__file__)
