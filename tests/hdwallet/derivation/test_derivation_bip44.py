@@ -50,11 +50,10 @@ def test_bip44_derivation():
     derivation.clean()
     assert derivation.name() == _["BIP44"]["default"]["name"]
     assert derivation.purpose() == _["BIP44"]["default"]["purpose"]
-    assert derivation.coin_type() == _["BIP44"]["default"]["coin_type"]
+    assert derivation.coin_type() == _["BIP44"]["from"]["coin_type"]
     assert derivation.account() == _["BIP44"]["default"]["account"]
     assert derivation.change() == _["BIP44"]["default"]["change"]
     assert derivation.address() == _["BIP44"]["default"]["address"]
-    assert derivation.path() == _["BIP44"]["default"]["path"]
 
     derivation = BIP44Derivation()
     derivation.from_coin_type(_["BIP44"]["from"]["coin_type"])

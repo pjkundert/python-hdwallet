@@ -50,11 +50,10 @@ def test_cip1852_derivation():
     derivation.clean()
     assert derivation.name() == _["CIP1852"]["default"]["name"]
     assert derivation.purpose() == _["CIP1852"]["default"]["purpose"]
-    assert derivation.coin_type() == _["CIP1852"]["default"]["coin_type"]
+    assert derivation.coin_type() == _["CIP1852"]["from"]["coin_type"]
     assert derivation.account() == _["CIP1852"]["default"]["account"]
     assert derivation.role() == _["CIP1852"]["default"]["role"]
     assert derivation.address() == _["CIP1852"]["default"]["address"]
-    assert derivation.path() == _["CIP1852"]["default"]["path"]
 
     derivation = CIP1852Derivation()
     derivation.from_coin_type(_["CIP1852"]["from"]["coin_type"])

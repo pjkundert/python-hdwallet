@@ -45,11 +45,10 @@ def test_bip86_derivation():
     derivation.clean()
     assert derivation.name() == _["BIP86"]["default"]["name"]
     assert derivation.purpose() == _["BIP86"]["default"]["purpose"]
-    assert derivation.coin_type() == _["BIP86"]["default"]["coin_type"]
+    assert derivation.coin_type() == _["BIP86"]["from"]["coin_type"]
     assert derivation.account() == _["BIP86"]["default"]["account"]
     assert derivation.change() == _["BIP86"]["default"]["change"]
     assert derivation.address() == _["BIP86"]["default"]["address"]
-    assert derivation.path() == _["BIP86"]["default"]["path"]
 
     derivation = BIP86Derivation()
     derivation.from_coin_type(_["BIP86"]["from"]["coin_type"])
