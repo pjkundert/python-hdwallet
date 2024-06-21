@@ -88,5 +88,44 @@
             "address": 1,
             "path": "m/1852'/1'/1'/1/1"
         }
+    },
+    "Custom": {
+        "name": "Custom",
+        "default-path": "m/",
+        "from-path": {
+            "indexes": [1337, 3, 5, 0, 90],
+            "path": "m/1337/3/5/0/90"
+        },
+        "from-index": {
+            "index": 1337,
+            "hardened": true,
+            "path": "m/1337'"
+        }
+    },
+    "Electrum": {
+        "default": {
+            "name": "Electrum",
+            "change": 0,
+            "address": 0,
+            "path": "m/0/0"
+        },
+        "from": {
+            "change": 1,
+            "address": 1,
+            "path": "m/1/1"
+        }
+    },
+    "Monero": {
+        "default": {
+            "name": "Monero",
+            "minor": 1,
+            "major": 0,
+            "path": "m/1/0"
+        },
+        "from": {
+            "minor": 0,
+            "major": 1,
+            "path": "m/0/1"
+        }
     }
 }
