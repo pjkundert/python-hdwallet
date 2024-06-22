@@ -21,6 +21,7 @@ values = open(file_path, "r", encoding="utf-8")
 _: dict = json.loads(values.read())
 values.close()
 
+
 def test_cip1852_derivation():
 
     assert ROLES.EXTERNAL_CHAIN == "external-chain"
