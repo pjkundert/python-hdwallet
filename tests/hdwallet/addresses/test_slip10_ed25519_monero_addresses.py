@@ -19,7 +19,7 @@ _: dict = json.loads(values.read())
 values.close()
 
 
-def test_neo_address():
+def test_monero_address():
 
     assert MoneroAddress.name() == _["SLIP10-Ed25519-Monero"]["name"]
     assert MoneroAddress.encode(
