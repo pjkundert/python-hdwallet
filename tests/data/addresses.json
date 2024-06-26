@@ -395,13 +395,49 @@
 			}
 		}
 	},
-	"SLIP10-Ed25519-Monero":{
+	"SLIP10-Ed25519-Monero": {
 		"name": "Monero",
 		"spend-public-key": "628247d3de93857cdd360fee4aef9a67ecfebedfe8eaec9cf6be35eacc895ca7",
 		"view-public-key": "1bc7b28fdaec0ec300c8c2759b1bf01f5300bb8465f736c55d64c5d87ec5e311",
 		"encode": "45MdDdMknD2MtLcqtCBAfTJPDBhBiQ2QjTFkG6kbAYyhUxAPk2iygXPZcmtgou9dBV6EtHgRFYkMja1gncWwRdUv2vsuWU7",
 		"args": {
 			"payment_id": null
+		}
+	},
+	"Kholaw-Ed25519": {
+		"public-key": "00e55487c92c1913439f336b1b2dc316da6e88c02a157208f98781494b87f27eb8",
+		"addresses": {
+			"byron-icarus": {
+				"encode": "Ae2tdPwUPEZJy1etGnbAt9L92eC2goQEVzsQKpeg9vGYyy6wRSHRNLnTXhL",
+				"decode": "de155535f68a45e86483a4d1381c17717a9d09b644720b4beae8145d",
+				"args": {
+					"chain_code": "d537f39c41f0f781f543c4c512cac38927e5ebd3cd82b870dd7ce94de9e510b4"
+				}
+			},
+			"byron-legacy": {
+				"encode": "Un4ZpTvXtoKmqsCFyDCG86z27yfgkyQ3ZidQSPQqf9YNk4DSCFqVfutBFTQCgMM9K2txjuBMBFs8ThUaB2zarMiPVaEby7hSg97nYfJjAJXx4cmP",
+				"decode": "5c27044e9fe6cd3f89df7d725dccc5f015ad1a3e7e5bb39f32a595e7d9758587b1078dfb12d017b4860de1a05dcecc07eea0291e18937278d865edab3840",
+				"args": {
+					"path": "m/0'/0234'/123/243/5/7",
+					"path_key": "39ddaa1e5719d88d6b53eda320f3dbe8c012d24abe33f4ac358fe78df43d5814",
+					"chain_code": "d537f39c41f0f781f543c4c512cac38927e5ebd3cd82b870dd7ce94de9e510b4"
+				}
+			}, 
+			"shelley": {
+				"encode": "addr1qy56fgzsfwpftatef0sxma2sksyxm7wf9husxazh0ph7n30zmrqdt7aqd5mfa0fs69dzs30svnqrc6v3s62l2nmg0c7q0d0m7j",
+				"decode": "29a4a0504b8295f5794be06df550b4086df9c92df9037457786fe9c5e2d8c0d5fba06d369ebd30d15a2845f064c03c69918695f54f687e3c",
+				"args": {
+					"staking_public_key": "007505bd415a4d5b21cb5be55360adeff02192ad952b5a1728e65010aea306aa54",
+					"network": "mainnet"
+				}
+			},
+			"shelley-staking":{
+				"encode": "stake1uy56fgzsfwpftatef0sxma2sksyxm7wf9husxazh0ph7n3g5jc0qy",
+				"decode": "29a4a0504b8295f5794be06df550b4086df9c92df9037457786fe9c5",
+				"args": {
+					"network": "mainnet"
+				}
+			}
 		}
 	}
 }
