@@ -13,7 +13,7 @@ from ....iecc import (
 )
 from .....libs.ed25519 import point_is_on_curve
 from .....utils import bytes_to_integer
-from .. import SLIP10Ed25519Point
+from .point import SLIP10Ed25519Blake2bPoint
 
 
 class SLIP10Ed25519Blake2bPublicKey(IPublicKey):
@@ -50,7 +50,7 @@ class SLIP10Ed25519Blake2bPublicKey(IPublicKey):
 
     @staticmethod
     def uncompressed_length() -> int:
-        return SLIP10Ed25519Blake2bPublicKey.uncompressed_length()
+        return SLIP10Ed25519Blake2bPublicKey.compressed_length()
 
     def underlying_object(self) -> Any:
         return self.verify_key
@@ -62,4 +62,4 @@ class SLIP10Ed25519Blake2bPublicKey(IPublicKey):
         return self.raw_compressed()
 
     def point(self) -> IPoint:
-        return SLIP10Ed25519Point(self.verify_key.to_bytes())
+        return SLIP10Ed25519Blake2bPoint(self.verify_key.to_bytes())

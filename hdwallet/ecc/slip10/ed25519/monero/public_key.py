@@ -6,9 +6,8 @@
 
 from .....const import SLIP10_ED25519_CONST
 from ....iecc import IPoint
-from .. import (
-    SLIP10Ed25519Point, SLIP10Ed25519PublicKey
-)
+from .. import SLIP10Ed25519PublicKey
+from .point import SLIP10Ed25519MoneroPoint
 
 
 class SLIP10Ed25519MoneroPublicKey(SLIP10Ed25519PublicKey):
@@ -32,4 +31,4 @@ class SLIP10Ed25519MoneroPublicKey(SLIP10Ed25519PublicKey):
         return self.raw_compressed()
 
     def point(self) -> IPoint:
-        return SLIP10Ed25519Point(bytes(self.verify_key))
+        return SLIP10Ed25519MoneroPoint(bytes(self.verify_key))
