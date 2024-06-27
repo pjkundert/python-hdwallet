@@ -11,6 +11,8 @@ from ecdsa.ellipticcurve import (
 )
 from ecdsa import keys
 
+import coincurve
+
 from ....const import SLIP10_SECP256K1_CONST
 from ...iecc import IPoint
 from ....utils import (
@@ -18,145 +20,145 @@ from ....utils import (
 )
 
 
-if SLIP10_SECP256K1_CONST.USE == "coincurve":
+class SLIP10Secp256k1PointCoincurve(IPoint):
 
-    import coincurve
+    public_key: coincurve.PublicKey
 
-    class SLIP10Secp256k1Point(IPoint):
+    def __init__(self, public_key: coincurve.PublicKey) -> None:
+        self.public_key = public_key
 
-        public_key: coincurve.PublicKey
+    @staticmethod
+    def name() -> str:
+        return "SLIP10-Secp256k1"
 
-        def __init__(self, public_key: coincurve.PublicKey) -> None:
-            self.public_key = public_key
+    @classmethod
+    def from_bytes(cls, point_bytes: bytes) -> IPoint:
+        if len(point_bytes) == SLIP10_SECP256K1_CONST.PUBLIC_KEY_UNCOMPRESSED_BYTE_LENGTH - 1:
+            return cls(coincurve.PublicKey(SLIP10_SECP256K1_CONST.PUBLIC_KEY_UNCOMPRESSED_PREFIX + point_bytes))
+        if len(point_bytes) == SLIP10_SECP256K1_CONST.PUBLIC_KEY_COMPRESSED_BYTE_LENGTH:
+            return cls(coincurve.PublicKey(point_bytes))
+        raise ValueError("Invalid point bytes")
 
-        @staticmethod
-        def name() -> str:
-            return "SLIP10-Secp256k1"
+    @classmethod
+    def from_coordinates(cls, x: int, y: int) -> IPoint:
+        try:
+            return cls(coincurve.PublicKey.from_point(x, y))
+        except ValueError as ex:
+            raise ValueError("Invalid point coordinates") from ex
 
-        @classmethod
-        def from_bytes(cls, point_bytes: bytes) -> IPoint:
-            if len(point_bytes) == SLIP10_SECP256K1_CONST.PUBLIC_KEY_UNCOMPRESSED_BYTE_LENGTH - 1:
-                return cls(coincurve.PublicKey(SLIP10_SECP256K1_CONST.PUBLIC_KEY_UNCOMPRESSED_PREFIX + point_bytes))
-            if len(point_bytes) == SLIP10_SECP256K1_CONST.PUBLIC_KEY_COMPRESSED_BYTE_LENGTH:
-                return cls(coincurve.PublicKey(point_bytes))
-            raise ValueError("Invalid point bytes")
+    def underlying_object(self) -> Any:
+        return self.public_key
 
-        @classmethod
-        def from_coordinates(cls, x: int, y: int) -> IPoint:
-            try:
-                return cls(coincurve.PublicKey.from_point(x, y))
-            except ValueError as ex:
-                raise ValueError("Invalid point coordinates") from ex
+    def x(self) -> int:
+        return self.public_key.point()[0]
 
-        def underlying_object(self) -> Any:
-            return self.public_key
+    def y(self) -> int:
+        return self.public_key.point()[1]
 
-        def x(self) -> int:
-            return self.public_key.point()[0]
+    def raw(self) -> bytes:
+        return self.raw_decoded()
 
-        def y(self) -> int:
-            return self.public_key.point()[1]
+    def raw_encoded(self) -> bytes:
+        return self.public_key.format(True)
 
-        def raw(self) -> bytes:
-            return self.raw_decoded()
+    def raw_decoded(self) -> bytes:
+        return self.public_key.format(False)[1:]
 
-        def raw_encoded(self) -> bytes:
-            return self.public_key.format(True)
+    def __add__(self, point: IPoint) -> IPoint:
+        return self.__class__(self.public_key.combine([point.underlying_object()]))
 
-        def raw_decoded(self) -> bytes:
-            return self.public_key.format(False)[1:]
+    def __radd__(self, point: IPoint) -> IPoint:
+        return self + point
 
-        def __add__(self, point: IPoint) -> IPoint:
-            return self.__class__(self.public_key.combine([point.underlying_object()]))
+    def __mul__(self, scalar: int) -> IPoint:
+        bytes_num = None or ((scalar.bit_length() if scalar > 0 else 1) + 7) // 8
+        return self.__class__(self.public_key.multiply(scalar.to_bytes(bytes_num, byteorder="big", signed=False)))
 
-        def __radd__(self, point: IPoint) -> IPoint:
-            return self + point
+    def __rmul__(self, scalar: int) -> IPoint:
+        return self * scalar
 
-        def __mul__(self, scalar: int) -> IPoint:
-            bytes_num = None or ((scalar.bit_length() if scalar > 0 else 1) + 7) // 8
-            return self.__class__(self.public_key.multiply(scalar.to_bytes(bytes_num, byteorder="big", signed=False)))
 
-        def __rmul__(self, scalar: int) -> IPoint:
-            return self * scalar
+class SLIP10Secp256k1PointECDSA(IPoint):
 
-elif SLIP10_SECP256K1_CONST.USE == "ecdsa":
+    point: PointJacobi
 
-    class SLIP10Secp256k1Point(IPoint):
+    def __init__(self, point_obj: PointJacobi) -> None:
+        self.point = point_obj
 
-        point: PointJacobi
+    @staticmethod
+    def name() -> str:
+        return "SLIP10-Secp256k1"
 
-        def __init__(self, point_obj: PointJacobi) -> None:
-            self.point = point_obj
-
-        @staticmethod
-        def name() -> str:
-            return "SLIP10-Secp256k1"
-
-        @classmethod
-        def from_bytes(cls, point_bytes: bytes) -> IPoint:
-            try:
-                return cls(
-                    PointJacobi.from_bytes(
-                        curve_secp256k1, point_bytes
-                    )
-                )
-            except keys.MalformedPointError as ex:
-                raise ValueError("Invalid point key bytes") from ex
-            except AttributeError:
-                return cls.from_coordinates(
-                    bytes_to_integer(point_bytes[:SLIP10_SECP256K1_CONST.POINT_COORDINATE_BYTE_LENGTH]),
-                    bytes_to_integer(point_bytes[SLIP10_SECP256K1_CONST.POINT_COORDINATE_BYTE_LENGTH:])
-                )
-
-        @classmethod
-        def from_coordinates(cls, x: int, y: int) -> IPoint:
+    @classmethod
+    def from_bytes(cls, point_bytes: bytes) -> IPoint:
+        try:
             return cls(
-                PointJacobi.from_affine(
-                    Point(curve_secp256k1, x, y)
+                PointJacobi.from_bytes(
+                    curve_secp256k1, point_bytes
                 )
             )
+        except keys.MalformedPointError as ex:
+            raise ValueError("Invalid point key bytes") from ex
+        except AttributeError:
+            return cls.from_coordinates(
+                bytes_to_integer(point_bytes[:SLIP10_SECP256K1_CONST.POINT_COORDINATE_BYTE_LENGTH]),
+                bytes_to_integer(point_bytes[SLIP10_SECP256K1_CONST.POINT_COORDINATE_BYTE_LENGTH:])
+            )
 
-        def underlying_object(self) -> Any:
-            return self.point
+    @classmethod
+    def from_coordinates(cls, x: int, y: int) -> IPoint:
+        return cls(
+            PointJacobi.from_affine(
+                Point(curve_secp256k1, x, y)
+            )
+        )
 
-        def x(self) -> int:
-            return self.point.x()
+    def underlying_object(self) -> Any:
+        return self.point
 
-        def y(self) -> int:
-            return self.point.y()
+    def x(self) -> int:
+        return self.point.x()
 
-        def raw(self) -> bytes:
-            return self.raw_decoded()
+    def y(self) -> int:
+        return self.point.y()
 
-        def raw_encoded(self) -> bytes:
-            try:
-                return self.point.to_bytes("compressed")
-            except AttributeError:
-                x: bytes = integer_to_bytes(self.point.x(), SLIP10_SECP256K1_CONST.POINT_COORDINATE_BYTE_LENGTH)
-                return b"\x03" + x if self.point.y() & 1 else b"\x02" + x
+    def raw(self) -> bytes:
+        return self.raw_decoded()
 
-        def raw_decoded(self) -> bytes:
-            try:
-                return self.point.to_bytes()
-            except AttributeError:
-                x: bytes = integer_to_bytes(self.point.x(), SLIP10_SECP256K1_CONST.POINT_COORDINATE_BYTE_LENGTH)
-                y: bytes = integer_to_bytes(self.point.y(), SLIP10_SECP256K1_CONST.POINT_COORDINATE_BYTE_LENGTH)
+    def raw_encoded(self) -> bytes:
+        try:
+            return self.point.to_bytes("compressed")
+        except AttributeError:
+            x: bytes = integer_to_bytes(self.point.x(), SLIP10_SECP256K1_CONST.POINT_COORDINATE_BYTE_LENGTH)
+            return b"\x03" + x if self.point.y() & 1 else b"\x02" + x
 
-                return x + y
+    def raw_decoded(self) -> bytes:
+        try:
+            return self.point.to_bytes()
+        except AttributeError:
+            x: bytes = integer_to_bytes(self.point.x(), SLIP10_SECP256K1_CONST.POINT_COORDINATE_BYTE_LENGTH)
+            y: bytes = integer_to_bytes(self.point.y(), SLIP10_SECP256K1_CONST.POINT_COORDINATE_BYTE_LENGTH)
 
-        def __add__(self, point: IPoint) -> IPoint:
-            return self.__class__(self.point + point.underlying_object())
+            return x + y
 
-        def __radd__(self, point: IPoint) -> IPoint:
-            return self + point
+    def __add__(self, point: IPoint) -> IPoint:
+        return self.__class__(self.point + point.underlying_object())
 
-        def __mul__(self, scalar: int) -> IPoint:
-            return self.__class__(self.point * scalar)
+    def __radd__(self, point: IPoint) -> IPoint:
+        return self + point
 
-        def __rmul__(self, scalar: int) -> IPoint:
-            return self * scalar
+    def __mul__(self, scalar: int) -> IPoint:
+        return self.__class__(self.point * scalar)
 
+    def __rmul__(self, scalar: int) -> IPoint:
+        return self * scalar
+
+
+if SLIP10_SECP256K1_CONST.USE == "coincurve":
+    SLIP10Secp256k1Point = SLIP10Secp256k1PointCoincurve
+elif SLIP10_SECP256K1_CONST.USE == "ecdsa":
+    SLIP10Secp256k1Point = SLIP10Secp256k1PointECDSA
 else:
-    Exception(
+    raise Exception(
         f"Invalid SLIP10-Secp256k1 use, (expected: 'coincurve' or 'ecdsa', got: '{SLIP10_SECP256K1_CONST.USE}')"
     )
