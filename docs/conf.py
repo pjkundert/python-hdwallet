@@ -14,7 +14,7 @@ import os
 import sys
 import datetime
 
-from hdwallet import (
+from hdwallet.info import (
     __version__, __author__
 )
 
@@ -25,7 +25,7 @@ sys.path.insert(1, os.path.abspath("./extensions"))
 # -- Project information -----------------------------------------------------
 
 project = "HDWallet"
-copyright = f"2021-{datetime.datetime.now().year}, {__author__}"
+copyright = f"2020-{datetime.datetime.now().year}, {__author__}"
 author = __author__
 
 # The full version, including alpha/beta/rc tags
@@ -56,7 +56,7 @@ exclude_patterns = []
 
 # The theme to use for HTML and HTML Help pages.  See the documentation for
 # a list of builtin themes.
-html_theme = "furo"
+html_theme = "sphinx_rtd_theme"
 # Product logo name
 # html_logo = "static/png/hdwallet.png"
 # Theme options

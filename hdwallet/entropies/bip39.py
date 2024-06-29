@@ -8,7 +8,9 @@ from .ientropy import IEntropy
 
 
 class BIP39_ENTROPY_STRENGTHS:
-
+    """
+    Constants representing the entropy strengths for BIP39.
+    """
     ONE_HUNDRED_TWENTY_EIGHT: int = 128
     ONE_HUNDRED_SIXTY: int = 160
     ONE_HUNDRED_NINETY_TWO: int = 192
@@ -17,6 +19,26 @@ class BIP39_ENTROPY_STRENGTHS:
 
 
 class BIP39Entropy(IEntropy):
+    """
+    Converts entropy into a mnemonic phrase (12, 15, 18, 21, or 24 words). This phrase is used to
+    derive a seed, which creates deterministic keys for various cryptocurrencies.
+
+    Here are available BIP39 entropy strengths:
+
+    +--------------------------+-------+
+    | Name                     | Value |
+    +==========================+=======+
+    | ONE_HUNDRED_TWENTY_EIGHT |  128  |
+    +--------------------------+-------+
+    | ONE_HUNDRED_SIXTY        |  160  |
+    +--------------------------+-------+
+    | ONE_HUNDRED_NINETY_TWO   |  192  |
+    +--------------------------+-------+
+    | TWO_HUNDRED_TWENTY_FOUR  |  224  |
+    +--------------------------+-------+
+    | TWO_HUNDRED_FIFTY_SIX    |  256  |
+    +--------------------------+-------+
+    """
 
     strengths = [
         BIP39_ENTROPY_STRENGTHS.ONE_HUNDRED_TWENTY_EIGHT,
@@ -28,4 +50,16 @@ class BIP39Entropy(IEntropy):
 
     @classmethod
     def name(cls) -> str:
+        """
+        Get the name of the entropy class.
+
+        :return: The name of the entropy class.
+        :rtype: str
+
+        >>> from hdwallet.entropies.bip39 import BIP39Entropy
+        >>> bip39_entropy: BIP39Entropy = BIP39Entropy(entropy="9c2ffdbe46bbb43360acff4a7eac964a")
+        >>> bip39_entropy.name()
+        "BIP39"
+        """
+
         return "BIP39"

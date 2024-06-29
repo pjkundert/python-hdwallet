@@ -13,6 +13,18 @@ class ELECTRUM_V1_ENTROPY_STRENGTHS:
 
 
 class ElectrumV1Entropy(IEntropy):
+    """
+    Relied on user input and simple entropy to generate a seed. It did not use a
+    standardized mnemonic, leading to less secure key generation.
+
+    Here are available Electrum-V1 entropy strengths:
+
+    +--------------------------+-------+
+    | Name                     | Value |
+    +==========================+=======+
+    | ONE_HUNDRED_TWENTY_EIGHT |  128  |
+    +--------------------------+-------+
+    """
 
     strengths = [
         ELECTRUM_V1_ENTROPY_STRENGTHS.ONE_HUNDRED_TWENTY_EIGHT
@@ -20,4 +32,11 @@ class ElectrumV1Entropy(IEntropy):
 
     @classmethod
     def name(cls) -> str:
+        """
+        Get the name of the entropy class.
+
+        :return: The name of the entropy class.
+        :rtype: str
+        """
+
         return "Electrum-V1"

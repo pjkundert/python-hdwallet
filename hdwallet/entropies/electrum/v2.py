@@ -16,11 +16,29 @@ from ..ientropy import IEntropy
 
 
 class ELECTRUM_V2_ENTROPY_STRENGTHS:
+    """
+    Constants representing the entropy strengths for Electrum V2.
+    """
     ONE_HUNDRED_THIRTY_TWO: int = 132
     TWO_HUNDRED_SIXTY_FOUR: int = 264
 
 
 class ElectrumV2Entropy(IEntropy):
+    """
+    Improved security with a BIP32-compatible seed and unique wordlist for mnemonic
+    generation, providing better entropy and hierarchical deterministic key derivation.
+
+    Here are available Electrum-V2 entropy strengths:
+
+    +--------------------------+-------+
+    | Name                     | Value |
+    +==========================+=======+
+    | ONE_HUNDRED_THIRTY_TWO   |  132  |
+    +--------------------------+-------+
+    | TWO_HUNDRED_SIXTY_FOUR   |  264  |
+    +--------------------------+-------+
+    """
+
     strengths = [
         ELECTRUM_V2_ENTROPY_STRENGTHS.ONE_HUNDRED_THIRTY_TWO,
         ELECTRUM_V2_ENTROPY_STRENGTHS.TWO_HUNDRED_SIXTY_FOUR
@@ -28,10 +46,27 @@ class ElectrumV2Entropy(IEntropy):
 
     @classmethod
     def name(cls) -> str:
+        """
+        Get the name of the entropy class.
+
+        :return: The name of the entropy class.
+        :rtype: str
+        """
+
         return "Electrum-V2"
 
     @classmethod
     def generate(cls, strength: int) -> str:
+        """
+        Generates a new entropy value with the given strength.
+
+        :param strength: The entropy value.
+        :type strength: int
+
+        :return: The generated entropy value for Electrum-V2.
+        :rtype: str
+        """
+
         return bytes_to_string(
             integer_to_bytes(
                 1 << (strength - 1) | secrets.randbits(strength)  # Ensure bit length equals with given strength
@@ -40,6 +75,16 @@ class ElectrumV2Entropy(IEntropy):
 
     @classmethod
     def is_valid_strength(cls, strength: int) -> bool:
+        """
+        Check if the provided strength is valid.
+
+        :param strength: The entropy strength to validate.
+        :type strength: int
+
+        :return: True if the strength is valid, False otherwise.
+        :rtype: bool
+        """
+
         for _strength in cls.strengths:
             if _strength - 11 <= strength <= _strength:
                 return True
@@ -47,6 +92,15 @@ class ElectrumV2Entropy(IEntropy):
 
     @classmethod
     def are_entropy_bits_enough(cls, entropy: Union[bytes, int]) -> bool:
+        """
+        Check if the provided entropy has enough bits.
+
+        :param entropy: The entropy value to check.
+        :type entropy: Union[bytes, int]
+
+        :return: True if the strength is valid, False otherwise.
+        :rtype: bool
+        """
 
         if isinstance(entropy, bytes):
             entropy: int = bytes_to_integer(entropy)

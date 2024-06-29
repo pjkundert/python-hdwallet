@@ -8,12 +8,29 @@ from .ientropy import IEntropy
 
 
 class MONERO_ENTROPY_STRENGTHS:
+    """
+    Constants for Monero entropy strengths.
+    """
 
     ONE_HUNDRED_TWENTY_EIGHT: int = 128
     TWO_HUNDRED_FIFTY_SIX: int = 256
 
 
 class MoneroEntropy(IEntropy):
+    """
+    Uses high entropy to generate a 25-word mnemonic seed, with the last word acting
+    as a checksum. This ensures secure generation of private spend and view keys.
+
+    Here are available Monero entropy strengths:
+
+    +--------------------------+-------+
+    | Name                     | Value |
+    +==========================+=======+
+    | ONE_HUNDRED_TWENTY_EIGHT |  128  |
+    +--------------------------+-------+
+    | TWO_HUNDRED_FIFTY_SIX    |  256  |
+    +--------------------------+-------+
+    """
 
     strengths = [
         MONERO_ENTROPY_STRENGTHS.ONE_HUNDRED_TWENTY_EIGHT,
@@ -22,4 +39,11 @@ class MoneroEntropy(IEntropy):
 
     @classmethod
     def name(cls) -> str:
+        """
+        Get the name of the entropy class.
+
+        :return: The name of the entropy class.
+        :rtype: str
+        """
+
         return "Monero"
