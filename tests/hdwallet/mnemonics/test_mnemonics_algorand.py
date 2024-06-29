@@ -16,21 +16,14 @@ from hdwallet.exceptions import (
     MnemonicError, EntropyError
 )
 
-# Test Values
-base_path: str = os.path.dirname(__file__)
-file_path: str = os.path.abspath(os.path.join(base_path, "../../data/mnemonics.json"))
-values = open(file_path, "r", encoding="utf-8")
-_: dict = json.loads(values.read())
-values.close()
 
-
-def test_algorand_mnemonics():
+def test_algorand_mnemonics(data):
     
     assert ALGORAND_MNEMONIC_WORDS.TWENTY_FIVE == 25
     assert ALGORAND_MNEMONIC_LANGUAGES.ENGLISH == "english"
 
 
-    for __ in _["Algorand"]:
+    for __ in data["mnemonics"]["Algorand"]:
         assert AlgorandMnemonic.is_valid_words(words=__["words"])
 
         for language in __["languages"].keys():

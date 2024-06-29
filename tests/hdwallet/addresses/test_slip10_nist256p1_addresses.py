@@ -11,22 +11,15 @@ import pytest
 
 from hdwallet.addresses.neo import NeoAddress
 
-# Test Values
-base_path: str = os.path.dirname(__file__)
-file_path: str = os.path.abspath(os.path.join(base_path, "../../data/addresses.json"))
-values = open(file_path, "r", encoding="utf-8")
-_: dict = json.loads(values.read())
-values.close()
 
+def test_neo_address(data):
 
-def test_neo_address():
-
-    assert NeoAddress.name() == _["SLIP10-Nist256p1"]["addresses"]["Neo"]["name"]
+    assert NeoAddress.name() == data["addresses"]["SLIP10-Nist256p1"]["addresses"]["Neo"]["name"]
     assert NeoAddress.encode(
-        public_key=_["SLIP10-Nist256p1"]["public-key"]
-    ) == _["SLIP10-Nist256p1"]["addresses"]["Neo"]["encode"]
+        public_key=data["addresses"]["SLIP10-Nist256p1"]["public-key"]
+    ) == data["addresses"]["SLIP10-Nist256p1"]["addresses"]["Neo"]["encode"]
 
     assert NeoAddress.decode(
-        address=_["SLIP10-Nist256p1"]["addresses"]["Neo"]["encode"]
-    ) == _["SLIP10-Nist256p1"]["addresses"]["Neo"]["decode"]
+        address=data["addresses"]["SLIP10-Nist256p1"]["addresses"]["Neo"]["encode"]
+    ) == data["addresses"]["SLIP10-Nist256p1"]["addresses"]["Neo"]["decode"]
 

@@ -22,17 +22,10 @@ from hdwallet.ecc.slip10.nist256p1 import (
 )
 from hdwallet.utils import get_bytes
 
-# Test Values
-base_path: str = os.path.dirname(__file__)
-file_path: str = os.path.abspath(os.path.join(base_path, "../../data/eccs.json"))
-values = open(file_path, "r", encoding="utf-8")
-_: dict = json.loads(values.read())
-values.close()
 
+def test_slip10_nist256p1_ecc(data):
 
-def test_slip10_nist256p1_ecc():
-
-    assert SLIP10Nist256p1ECC.NAME == _["SLIP10-Nist256p1"]["name"]
+    assert SLIP10Nist256p1ECC.NAME == data["eccs"]["SLIP10-Nist256p1"]["name"]
     assert isinstance(SLIP10Nist256p1ECC.ORDER, int)
     assert isinstance(SLIP10Nist256p1ECC.GENERATOR, IPoint)
     assert isinstance(SLIP10Nist256p1ECC.POINT, type(SLIP10Nist256p1Point))
@@ -40,33 +33,33 @@ def test_slip10_nist256p1_ecc():
     assert isinstance(SLIP10Nist256p1ECC.PRIVATE_KEY, type(SLIP10Nist256p1PrivateKey))
 
 
-def test_slip10_nist256p1_ecc_point():
+def test_slip10_nist256p1_ecc_point(data):
 
-    assert SLIP10Nist256p1Point.name() == _["SLIP10-Nist256p1"]["name"]
+    assert SLIP10Nist256p1Point.name() == data["eccs"]["SLIP10-Nist256p1"]["name"]
     for public_key_type in ["uncompressed", "compressed"]:
         # Test from bytes
         point = SLIP10Nist256p1Point.from_bytes(
-            get_bytes(_["SLIP10-Nist256p1"][public_key_type]["point"]["encode"])
+            get_bytes(data["eccs"]["SLIP10-Nist256p1"][public_key_type]["point"]["encode"])
         )
         assert isinstance(point, IPoint)
         assert isinstance(point, SLIP10Nist256p1Point)
         assert isinstance(point.underlying_object(), PointJacobi)
-        assert point.x() == _["SLIP10-Nist256p1"][public_key_type]["point"]["x"]
-        assert point.y() == _["SLIP10-Nist256p1"][public_key_type]["point"]["y"]
-        assert point.raw_encoded() == get_bytes(_["SLIP10-Nist256p1"][public_key_type]["point"]["encode"])
-        assert point.raw() == point.raw_decoded() == get_bytes(_["SLIP10-Nist256p1"][public_key_type]["point"]["decode"])
+        assert point.x() == data["eccs"]["SLIP10-Nist256p1"][public_key_type]["point"]["x"]
+        assert point.y() == data["eccs"]["SLIP10-Nist256p1"][public_key_type]["point"]["y"]
+        assert point.raw_encoded() == get_bytes(data["eccs"]["SLIP10-Nist256p1"][public_key_type]["point"]["encode"])
+        assert point.raw() == point.raw_decoded() == get_bytes(data["eccs"]["SLIP10-Nist256p1"][public_key_type]["point"]["decode"])
         # Test from coordinate
         point = SLIP10Nist256p1Point.from_coordinates(
-            x=_["SLIP10-Nist256p1"][public_key_type]["point"]["x"],
-            y=_["SLIP10-Nist256p1"][public_key_type]["point"]["y"]
+            x=data["eccs"]["SLIP10-Nist256p1"][public_key_type]["point"]["x"],
+            y=data["eccs"]["SLIP10-Nist256p1"][public_key_type]["point"]["y"]
         )
         assert isinstance(point, IPoint)
         assert isinstance(point, SLIP10Nist256p1Point)
         assert isinstance(point.underlying_object(), PointJacobi)
-        assert point.x() == _["SLIP10-Nist256p1"][public_key_type]["point"]["x"]
-        assert point.y() == _["SLIP10-Nist256p1"][public_key_type]["point"]["y"]
-        assert point.raw_encoded() == get_bytes(_["SLIP10-Nist256p1"][public_key_type]["point"]["encode"])
-        assert point.raw() == point.raw_decoded() == get_bytes(_["SLIP10-Nist256p1"][public_key_type]["point"]["decode"])
+        assert point.x() == data["eccs"]["SLIP10-Nist256p1"][public_key_type]["point"]["x"]
+        assert point.y() == data["eccs"]["SLIP10-Nist256p1"][public_key_type]["point"]["y"]
+        assert point.raw_encoded() == get_bytes(data["eccs"]["SLIP10-Nist256p1"][public_key_type]["point"]["encode"])
+        assert point.raw() == point.raw_decoded() == get_bytes(data["eccs"]["SLIP10-Nist256p1"][public_key_type]["point"]["decode"])
 
         for number in range(2, 50):
             point_add, point_radd, point_mul, point_rmul = (
@@ -79,37 +72,37 @@ def test_slip10_nist256p1_ecc_point():
             assert point_add.y() == point_radd.y() == point_mul.y() == point_rmul.y()
 
 
-def test_slip10_nist256p1_ecc_public_key():
+def test_slip10_nist256p1_ecc_public_key(data):
 
-    assert SLIP10Nist256p1PublicKey.name() == _["SLIP10-Nist256p1"]["name"]
-    assert SLIP10Nist256p1PublicKey.uncompressed_length() == _["SLIP10-Nist256p1"]["uncompressed"]["length"]
-    assert SLIP10Nist256p1PublicKey.compressed_length() == _["SLIP10-Nist256p1"]["compressed"]["length"]
+    assert SLIP10Nist256p1PublicKey.name() == data["eccs"]["SLIP10-Nist256p1"]["name"]
+    assert SLIP10Nist256p1PublicKey.uncompressed_length() == data["eccs"]["SLIP10-Nist256p1"]["uncompressed"]["length"]
+    assert SLIP10Nist256p1PublicKey.compressed_length() == data["eccs"]["SLIP10-Nist256p1"]["compressed"]["length"]
     for public_key_type in ["uncompressed", "compressed"]:
         public_key = SLIP10Nist256p1PublicKey.from_bytes(
-            get_bytes(_["SLIP10-Nist256p1"][public_key_type]["public-key"])
+            get_bytes(data["eccs"]["SLIP10-Nist256p1"][public_key_type]["public-key"])
         )
         assert isinstance(public_key, IPublicKey)
         assert isinstance(public_key, SLIP10Nist256p1PublicKey)
         assert isinstance(public_key.underlying_object(), VerifyingKey)
-        assert public_key.raw_uncompressed() == get_bytes(_["SLIP10-Nist256p1"]["uncompressed"]["public-key"])
-        assert public_key.raw_compressed() == get_bytes(_["SLIP10-Nist256p1"]["compressed"]["public-key"])
+        assert public_key.raw_uncompressed() == get_bytes(data["eccs"]["SLIP10-Nist256p1"]["uncompressed"]["public-key"])
+        assert public_key.raw_compressed() == get_bytes(data["eccs"]["SLIP10-Nist256p1"]["compressed"]["public-key"])
         assert isinstance(public_key.point(), IPoint)
         assert isinstance(public_key.point(), SLIP10Nist256p1Point)
 
 
-def test_slip10_nist256p1_ecc_private_key():
+def test_slip10_nist256p1_ecc_private_key(data):
 
-    assert SLIP10Nist256p1PrivateKey.name() == _["SLIP10-Nist256p1"]["name"]
-    assert SLIP10Nist256p1PrivateKey.length() == _["SLIP10-Nist256p1"]["private-key-length"]
+    assert SLIP10Nist256p1PrivateKey.name() == data["eccs"]["SLIP10-Nist256p1"]["name"]
+    assert SLIP10Nist256p1PrivateKey.length() == data["eccs"]["SLIP10-Nist256p1"]["private-key-length"]
     private_key = SLIP10Nist256p1PrivateKey.from_bytes(
-        get_bytes(_["SLIP10-Nist256p1"]["private-key"])
+        get_bytes(data["eccs"]["SLIP10-Nist256p1"]["private-key"])
     )
     assert isinstance(private_key, IPrivateKey)
     assert isinstance(private_key, SLIP10Nist256p1PrivateKey)
     assert isinstance(private_key.underlying_object(), SigningKey)
     assert isinstance(private_key.raw(), bytes)
-    assert private_key.raw() == get_bytes(_["SLIP10-Nist256p1"]["private-key"])
+    assert private_key.raw() == get_bytes(data["eccs"]["SLIP10-Nist256p1"]["private-key"])
     assert isinstance(private_key.public_key(), IPublicKey)
     assert isinstance(private_key.public_key(), SLIP10Nist256p1PublicKey)
-    assert private_key.public_key().raw_uncompressed() == get_bytes(_["SLIP10-Nist256p1"]["uncompressed"]["public-key"])
-    assert private_key.public_key().raw_compressed() == get_bytes(_["SLIP10-Nist256p1"]["compressed"]["public-key"])
+    assert private_key.public_key().raw_uncompressed() == get_bytes(data["eccs"]["SLIP10-Nist256p1"]["uncompressed"]["public-key"])
+    assert private_key.public_key().raw_compressed() == get_bytes(data["eccs"]["SLIP10-Nist256p1"]["compressed"]["public-key"])

@@ -11,34 +11,27 @@ import pytest
 
 from hdwallet.seeds.electrum.v2 import ElectrumV2Seed
 
-# Test Values
-base_path: str = os.path.dirname(__file__)
-file_path: str = os.path.abspath(os.path.join(base_path, "../../data/seeds.json"))
-values = open(file_path, "r", encoding="utf-8")
-_: dict = json.loads(values.read())
-values.close()
 
-
-def test_electrum_v2_seeds():
+def test_electrum_v2_seeds(data):
     
-    for words in _["Electrum-V2"].keys():
-        for mnemonic_type in _["Electrum-V2"][words].keys():
+    for words in data["seeds"]["Electrum-V2"].keys():
+        for mnemonic_type in data["seeds"]["Electrum-V2"][words].keys():
 
-            for lang in _["Electrum-V2"][words][mnemonic_type].keys():
+            for lang in data["seeds"]["Electrum-V2"][words][mnemonic_type].keys():
                 assert ElectrumV2Seed.from_mnemonic(
-                    mnemonic= _["Electrum-V2"][words][mnemonic_type][lang]["mnemonic"], mnemonic_type=mnemonic_type
-                ) == _["Electrum-V2"][words][mnemonic_type][lang]["non-passphrase-seed"]
+                    mnemonic= data["seeds"]["Electrum-V2"][words][mnemonic_type][lang]["mnemonic"], mnemonic_type=mnemonic_type
+                ) == data["seeds"]["Electrum-V2"][words][mnemonic_type][lang]["non-passphrase-seed"]
 
-                for passphrase in _["Electrum-V2"][words][mnemonic_type][lang]["passphrases"].keys():
+                for passphrase in data["seeds"]["Electrum-V2"][words][mnemonic_type][lang]["passphrases"].keys():
                     assert ElectrumV2Seed.from_mnemonic(
-                        mnemonic=_["Electrum-V2"][words][mnemonic_type][lang]["mnemonic"],
+                        mnemonic=data["seeds"]["Electrum-V2"][words][mnemonic_type][lang]["mnemonic"],
                         passphrase=passphrase,
                         mnemonic_type=mnemonic_type
-                    ) == _["Electrum-V2"][words][mnemonic_type][lang]["passphrases"][passphrase]
+                    ) == data["seeds"]["Electrum-V2"][words][mnemonic_type][lang]["passphrases"][passphrase]
 
                     assert ElectrumV2Seed.from_mnemonic(
-                        mnemonic=_["Electrum-V2"][words][mnemonic_type][lang]["mnemonic"],
+                        mnemonic=data["seeds"]["Electrum-V2"][words][mnemonic_type][lang]["mnemonic"],
                         passphrase=passphrase,
                         mnemonic_type=mnemonic_type
-                    ) == _["Electrum-V2"][words][mnemonic_type][lang]["passphrases"][passphrase]
+                    ) == data["seeds"]["Electrum-V2"][words][mnemonic_type][lang]["passphrases"][passphrase]
 

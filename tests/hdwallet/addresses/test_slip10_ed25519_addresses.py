@@ -18,105 +18,98 @@ from hdwallet.addresses.stellar import StellarAddress
 from hdwallet.addresses.tezos import TezosAddress
 from hdwallet.addresses.sui import SuiAddress
 
-# Test Values
-base_path: str = os.path.dirname(__file__)
-file_path: str = os.path.abspath(os.path.join(base_path, "../../data/addresses.json"))
-values = open(file_path, "r", encoding="utf-8")
-_: dict = json.loads(values.read())
-values.close()
 
+def test_algorand_address(data):
 
-def test_algorand_address():
-
-    assert AlgorandAddress.name() == _["SLIP10-Ed25519"]["addresses"]["Algorand"]["name"]
+    assert AlgorandAddress.name() == data["addresses"]["SLIP10-Ed25519"]["addresses"]["Algorand"]["name"]
     assert AlgorandAddress.encode(
-        public_key=_["SLIP10-Ed25519"]["public-key"]
-    ) == _["SLIP10-Ed25519"]["addresses"]["Algorand"]["encode"]
+        public_key=data["addresses"]["SLIP10-Ed25519"]["public-key"]
+    ) == data["addresses"]["SLIP10-Ed25519"]["addresses"]["Algorand"]["encode"]
 
     assert AlgorandAddress.decode(
-        address=_["SLIP10-Ed25519"]["addresses"]["Algorand"]["encode"]
-    ) == _["SLIP10-Ed25519"]["addresses"]["Algorand"]["decode"]
+        address=data["addresses"]["SLIP10-Ed25519"]["addresses"]["Algorand"]["encode"]
+    ) == data["addresses"]["SLIP10-Ed25519"]["addresses"]["Algorand"]["decode"]
 
 
-def test_multiversx_address():
+def test_multiversx_address(data):
 
-    assert MultiversXAddress.name() == _["SLIP10-Ed25519"]["addresses"]["MultiversX"]["name"]
+    assert MultiversXAddress.name() == data["addresses"]["SLIP10-Ed25519"]["addresses"]["MultiversX"]["name"]
     assert MultiversXAddress.encode(
-        public_key=_["SLIP10-Ed25519"]["public-key"]
-    ) == _["SLIP10-Ed25519"]["addresses"]["MultiversX"]["encode"]
+        public_key=data["addresses"]["SLIP10-Ed25519"]["public-key"]
+    ) == data["addresses"]["SLIP10-Ed25519"]["addresses"]["MultiversX"]["encode"]
 
     assert MultiversXAddress.decode(
-        address=_["SLIP10-Ed25519"]["addresses"]["MultiversX"]["encode"]
-    ) == _["SLIP10-Ed25519"]["addresses"]["MultiversX"]["decode"]
+        address=data["addresses"]["SLIP10-Ed25519"]["addresses"]["MultiversX"]["encode"]
+    ) == data["addresses"]["SLIP10-Ed25519"]["addresses"]["MultiversX"]["decode"]
 
 
-def test_solana_address():
+def test_solana_address(data):
 
-    assert SolanaAddress.name() == _["SLIP10-Ed25519"]["addresses"]["Solana"]["name"]
+    assert SolanaAddress.name() == data["addresses"]["SLIP10-Ed25519"]["addresses"]["Solana"]["name"]
     assert SolanaAddress.encode(
-        public_key=_["SLIP10-Ed25519"]["public-key"]
-    ) == _["SLIP10-Ed25519"]["addresses"]["Solana"]["encode"]
+        public_key=data["addresses"]["SLIP10-Ed25519"]["public-key"]
+    ) == data["addresses"]["SLIP10-Ed25519"]["addresses"]["Solana"]["encode"]
 
     assert SolanaAddress.decode(
-        address=_["SLIP10-Ed25519"]["addresses"]["Solana"]["encode"]
-    ) == _["SLIP10-Ed25519"]["addresses"]["Solana"]["decode"]
+        address=data["addresses"]["SLIP10-Ed25519"]["addresses"]["Solana"]["encode"]
+    ) == data["addresses"]["SLIP10-Ed25519"]["addresses"]["Solana"]["decode"]
 
 
-def test_stellar_address():
+def test_stellar_address(data):
 
-    assert StellarAddress.name() == _["SLIP10-Ed25519"]["addresses"]["Stellar"]["name"]
+    assert StellarAddress.name() == data["addresses"]["SLIP10-Ed25519"]["addresses"]["Stellar"]["name"]
     assert StellarAddress.encode(
-        public_key=_["SLIP10-Ed25519"]["public-key"]
-    ) == _["SLIP10-Ed25519"]["addresses"]["Stellar"]["encode"]
+        public_key=data["addresses"]["SLIP10-Ed25519"]["public-key"]
+    ) == data["addresses"]["SLIP10-Ed25519"]["addresses"]["Stellar"]["encode"]
 
     assert StellarAddress.decode(
-        address=_["SLIP10-Ed25519"]["addresses"]["Stellar"]["encode"]
-    ) == _["SLIP10-Ed25519"]["addresses"]["Stellar"]["decode"]
+        address=data["addresses"]["SLIP10-Ed25519"]["addresses"]["Stellar"]["encode"]
+    ) == data["addresses"]["SLIP10-Ed25519"]["addresses"]["Stellar"]["decode"]
 
 
-def test_tezos_address():
+def test_tezos_address(data):
 
-    assert TezosAddress.name() == _["SLIP10-Ed25519"]["addresses"]["Tezos"]["name"]
+    assert TezosAddress.name() == data["addresses"]["SLIP10-Ed25519"]["addresses"]["Tezos"]["name"]
     assert TezosAddress.encode(
-        public_key=_["SLIP10-Ed25519"]["public-key"]
-    ) == _["SLIP10-Ed25519"]["addresses"]["Tezos"]["encode"]
+        public_key=data["addresses"]["SLIP10-Ed25519"]["public-key"]
+    ) == data["addresses"]["SLIP10-Ed25519"]["addresses"]["Tezos"]["encode"]
 
     assert TezosAddress.decode(
-        address=_["SLIP10-Ed25519"]["addresses"]["Tezos"]["encode"]
-    ) == _["SLIP10-Ed25519"]["addresses"]["Tezos"]["decode"]
+        address=data["addresses"]["SLIP10-Ed25519"]["addresses"]["Tezos"]["encode"]
+    ) == data["addresses"]["SLIP10-Ed25519"]["addresses"]["Tezos"]["decode"]
 
 
-def test_sui_address():
+def test_sui_address(data):
 
-    assert SuiAddress.name() == _["SLIP10-Ed25519"]["addresses"]["Sui"]["name"]
+    assert SuiAddress.name() == data["addresses"]["SLIP10-Ed25519"]["addresses"]["Sui"]["name"]
     assert SuiAddress.encode(
-        public_key=_["SLIP10-Ed25519"]["public-key"]
-    ) == _["SLIP10-Ed25519"]["addresses"]["Sui"]["encode"]
+        public_key=data["addresses"]["SLIP10-Ed25519"]["public-key"]
+    ) == data["addresses"]["SLIP10-Ed25519"]["addresses"]["Sui"]["encode"]
 
     assert SuiAddress.decode(
-        address=_["SLIP10-Ed25519"]["addresses"]["Sui"]["encode"]
-    ) == _["SLIP10-Ed25519"]["addresses"]["Sui"]["decode"]
+        address=data["addresses"]["SLIP10-Ed25519"]["addresses"]["Sui"]["encode"]
+    ) == data["addresses"]["SLIP10-Ed25519"]["addresses"]["Sui"]["decode"]
 
 
-def test_aptos_address():
+def test_aptos_address(data):
 
-    assert AptosAddress.name() == _["SLIP10-Ed25519"]["addresses"]["Aptos"]["name"]
+    assert AptosAddress.name() == data["addresses"]["SLIP10-Ed25519"]["addresses"]["Aptos"]["name"]
     assert AptosAddress.encode(
-        public_key=_["SLIP10-Ed25519"]["public-key"]
-    ) == _["SLIP10-Ed25519"]["addresses"]["Aptos"]["encode"]
+        public_key=data["addresses"]["SLIP10-Ed25519"]["public-key"]
+    ) == data["addresses"]["SLIP10-Ed25519"]["addresses"]["Aptos"]["encode"]
 
     assert AptosAddress.decode(
-        address=_["SLIP10-Ed25519"]["addresses"]["Aptos"]["encode"]
-    ) == _["SLIP10-Ed25519"]["addresses"]["Aptos"]["decode"]
+        address=data["addresses"]["SLIP10-Ed25519"]["addresses"]["Aptos"]["encode"]
+    ) == data["addresses"]["SLIP10-Ed25519"]["addresses"]["Aptos"]["decode"]
 
 
-def test_near_address():
+def test_near_address(data):
 
-    assert NearAddress.name() == _["SLIP10-Ed25519"]["addresses"]["Near"]["name"]
+    assert NearAddress.name() == data["addresses"]["SLIP10-Ed25519"]["addresses"]["Near"]["name"]
     assert NearAddress.encode(
-        public_key=_["SLIP10-Ed25519"]["public-key"]
-    ) == _["SLIP10-Ed25519"]["addresses"]["Near"]["encode"]
+        public_key=data["addresses"]["SLIP10-Ed25519"]["public-key"]
+    ) == data["addresses"]["SLIP10-Ed25519"]["addresses"]["Near"]["encode"]
 
     assert NearAddress.decode(
-        address=_["SLIP10-Ed25519"]["addresses"]["Near"]["encode"]
-    ) == _["SLIP10-Ed25519"]["addresses"]["Near"]["decode"]
+        address=data["addresses"]["SLIP10-Ed25519"]["addresses"]["Near"]["encode"]
+    ) == data["addresses"]["SLIP10-Ed25519"]["addresses"]["Near"]["decode"]

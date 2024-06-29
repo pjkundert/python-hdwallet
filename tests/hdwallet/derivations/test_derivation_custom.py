@@ -12,34 +12,27 @@ import pytest
 from hdwallet.derivations.custom import CustomDerivation
 from hdwallet.exceptions import DerivationError
 
-# Test Values
-base_path: str = os.path.dirname(__file__)
-file_path: str = os.path.abspath(os.path.join(base_path, "../../data/derivations.json"))
-values = open(file_path, "r", encoding="utf-8")
-_: dict = json.loads(values.read())
-values.close()
 
+def test_custom_derivation(data):
 
-def test_custom_derivation():
-
-    assert CustomDerivation().name() == _["Custom"]["name"]
-    assert CustomDerivation().path() == _["Custom"]["default-path"]
+    assert CustomDerivation().name() == data["derivations"]["Custom"]["name"]
+    assert CustomDerivation().path() == data["derivations"]["Custom"]["default-path"]
     
     derivation = CustomDerivation().from_path(
-        path=_["Custom"]["from-path"]["path"]
+        path=data["derivations"]["Custom"]["from-path"]["path"]
     )
-    assert derivation.path() == _["Custom"]["from-path"]["path"]
+    assert derivation.path() == data["derivations"]["Custom"]["from-path"]["path"]
     derivation.clean()
-    assert derivation.path() == _["Custom"]["default-path"]
+    assert derivation.path() == data["derivations"]["Custom"]["default-path"]
 
     assert CustomDerivation().from_indexes(
-        indexes=_["Custom"]["from-path"]["indexes"]
-    ).path() == _["Custom"]["from-path"]["path"]
+        indexes=data["derivations"]["Custom"]["from-path"]["indexes"]
+    ).path() == data["derivations"]["Custom"]["from-path"]["path"]
 
     assert CustomDerivation().from_index(
-        index=_["Custom"]["from-index"]["index"],
-        hardened=_["Custom"]["from-index"]["hardened"]
-    ).path() == _["Custom"]["from-index"]["path"]
+        index=data["derivations"]["Custom"]["from-index"]["index"],
+        hardened=data["derivations"]["Custom"]["from-index"]["hardened"]
+    ).path() == data["derivations"]["Custom"]["from-index"]["path"]
 
     with pytest.raises(DerivationError, match="Bad path instance"):
         CustomDerivation().from_path(path={'FAKE_DICT'})

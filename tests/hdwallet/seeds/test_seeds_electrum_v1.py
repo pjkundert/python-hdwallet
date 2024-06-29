@@ -11,16 +11,9 @@ import pytest
 
 from hdwallet.seeds.electrum.v1 import ElectrumV1Seed
 
-# Test Values
-base_path: str = os.path.dirname(__file__)
-file_path: str = os.path.abspath(os.path.join(base_path, "../../data/seeds.json"))
-values = open(file_path, "r", encoding="utf-8")
-_: dict = json.loads(values.read())
-values.close()
 
-
-def test_electrum_v1_seeds():
+def test_electrum_v1_seeds(data):
     assert ElectrumV1Seed.from_mnemonic(
-        mnemonic=_["Electrum-V1"]["12"]["english"]["mnemonic"]
-    ) == _["Electrum-V1"]["12"]["english"]["non-passphrase-seed"]
+        mnemonic=data["seeds"]["Electrum-V1"]["12"]["english"]["mnemonic"]
+    ) == data["seeds"]["Electrum-V1"]["12"]["english"]["non-passphrase-seed"]
 

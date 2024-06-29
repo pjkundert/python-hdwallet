@@ -12,35 +12,28 @@ import pytest
 from hdwallet.derivations.monero import MoneroDerivation
 from hdwallet.exceptions import DerivationError
 
-# Test Values
-base_path: str = os.path.dirname(__file__)
-file_path: str = os.path.abspath(os.path.join(base_path, "../../data/derivations.json"))
-values = open(file_path, "r", encoding="utf-8")
-_: dict = json.loads(values.read())
-values.close()
 
-
-def test_monero_derivation():
+def test_monero_derivation(data):
 
     derivation = MoneroDerivation()
-    assert derivation.name() == _["Monero"]["default"]["name"]
-    assert derivation.minor() == _["Monero"]["default"]["minor"]
-    assert derivation.major() == _["Monero"]["default"]["major"]
+    assert derivation.name() == data["derivations"]["Monero"]["default"]["name"]
+    assert derivation.minor() == data["derivations"]["Monero"]["default"]["minor"]
+    assert derivation.major() == data["derivations"]["Monero"]["default"]["major"]
 
     derivation = MoneroDerivation(
-        minor=_["Monero"]["from"]["minor"],
-        major=_["Monero"]["from"]["major"]
+        minor=data["derivations"]["Monero"]["from"]["minor"],
+        major=data["derivations"]["Monero"]["from"]["major"]
 
     )
-    assert derivation.minor() == _["Monero"]["from"]["minor"]
-    assert derivation.major() == _["Monero"]["from"]["major"]
+    assert derivation.minor() == data["derivations"]["Monero"]["from"]["minor"]
+    assert derivation.major() == data["derivations"]["Monero"]["from"]["major"]
 
     derivation.clean()
-    assert derivation.minor() == _["Monero"]["default"]["minor"]
-    assert derivation.major() == _["Monero"]["default"]["major"]
+    assert derivation.minor() == data["derivations"]["Monero"]["default"]["minor"]
+    assert derivation.major() == data["derivations"]["Monero"]["default"]["major"]
 
     derivation = MoneroDerivation()
-    derivation.from_minor(_["Monero"]["from"]["minor"])
-    derivation.from_major(_["Monero"]["from"]["major"])
-    assert derivation.minor() == _["Monero"]["from"]["minor"]
-    assert derivation.major() == _["Monero"]["from"]["major"]
+    derivation.from_minor(data["derivations"]["Monero"]["from"]["minor"])
+    derivation.from_major(data["derivations"]["Monero"]["from"]["major"])
+    assert derivation.minor() == data["derivations"]["Monero"]["from"]["minor"]
+    assert derivation.major() == data["derivations"]["Monero"]["from"]["major"]

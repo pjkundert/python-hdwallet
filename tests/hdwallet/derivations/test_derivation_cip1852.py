@@ -14,58 +14,51 @@ from hdwallet.derivations.cip1852 import (
 )
 from hdwallet.exceptions import DerivationError
 
-# Test Values
-base_path: str = os.path.dirname(__file__)
-file_path: str = os.path.abspath(os.path.join(base_path, "../../data/derivations.json"))
-values = open(file_path, "r", encoding="utf-8")
-_: dict = json.loads(values.read())
-values.close()
 
-
-def test_cip1852_derivation():
+def test_cip1852_derivation(data):
 
     assert ROLES.EXTERNAL_CHAIN == "external-chain"
     assert ROLES.INTERNAL_CHAIN == "internal-chain"
 
     derivation = CIP1852Derivation()
-    assert derivation.name() == _["CIP1852"]["default"]["name"]
-    assert derivation.purpose() == _["CIP1852"]["default"]["purpose"]
-    assert derivation.coin_type() == _["CIP1852"]["default"]["coin_type"]
-    assert derivation.account() == _["CIP1852"]["default"]["account"]
-    assert derivation.role() == _["CIP1852"]["default"]["role"]
-    assert derivation.address() == _["CIP1852"]["default"]["address"]
-    assert derivation.path() == _["CIP1852"]["default"]["path"]
+    assert derivation.name() == data["derivations"]["CIP1852"]["default"]["name"]
+    assert derivation.purpose() == data["derivations"]["CIP1852"]["default"]["purpose"]
+    assert derivation.coin_type() == data["derivations"]["CIP1852"]["default"]["coin_type"]
+    assert derivation.account() == data["derivations"]["CIP1852"]["default"]["account"]
+    assert derivation.role() == data["derivations"]["CIP1852"]["default"]["role"]
+    assert derivation.address() == data["derivations"]["CIP1852"]["default"]["address"]
+    assert derivation.path() == data["derivations"]["CIP1852"]["default"]["path"]
 
     derivation = CIP1852Derivation(
-        coin_type=_["CIP1852"]["from"]["coin_type"],
-        account=_["CIP1852"]["from"]["account"],
-        role=_["CIP1852"]["from"]["role"],
-        address=_["CIP1852"]["from"]["address"]
+        coin_type=data["derivations"]["CIP1852"]["from"]["coin_type"],
+        account=data["derivations"]["CIP1852"]["from"]["account"],
+        role=data["derivations"]["CIP1852"]["from"]["role"],
+        address=data["derivations"]["CIP1852"]["from"]["address"]
     )
-    assert derivation.coin_type() == _["CIP1852"]["from"]["coin_type"]
-    assert derivation.account() == _["CIP1852"]["from"]["account"]
-    assert derivation.role() == _["CIP1852"]["from"]["role"]
-    assert derivation.address() == _["CIP1852"]["from"]["address"]
-    assert derivation.path() == _["CIP1852"]["from"]["path"]
+    assert derivation.coin_type() == data["derivations"]["CIP1852"]["from"]["coin_type"]
+    assert derivation.account() == data["derivations"]["CIP1852"]["from"]["account"]
+    assert derivation.role() == data["derivations"]["CIP1852"]["from"]["role"]
+    assert derivation.address() == data["derivations"]["CIP1852"]["from"]["address"]
+    assert derivation.path() == data["derivations"]["CIP1852"]["from"]["path"]
 
     derivation.clean()
-    assert derivation.name() == _["CIP1852"]["default"]["name"]
-    assert derivation.purpose() == _["CIP1852"]["default"]["purpose"]
-    assert derivation.coin_type() == _["CIP1852"]["from"]["coin_type"]
-    assert derivation.account() == _["CIP1852"]["default"]["account"]
-    assert derivation.role() == _["CIP1852"]["default"]["role"]
-    assert derivation.address() == _["CIP1852"]["default"]["address"]
+    assert derivation.name() == data["derivations"]["CIP1852"]["default"]["name"]
+    assert derivation.purpose() == data["derivations"]["CIP1852"]["default"]["purpose"]
+    assert derivation.coin_type() == data["derivations"]["CIP1852"]["from"]["coin_type"]
+    assert derivation.account() == data["derivations"]["CIP1852"]["default"]["account"]
+    assert derivation.role() == data["derivations"]["CIP1852"]["default"]["role"]
+    assert derivation.address() == data["derivations"]["CIP1852"]["default"]["address"]
 
     derivation = CIP1852Derivation()
-    derivation.from_coin_type(_["CIP1852"]["from"]["coin_type"])
-    derivation.from_account(_["CIP1852"]["from"]["account"])
-    derivation.from_role(_["CIP1852"]["from"]["role"])
-    derivation.from_address(_["CIP1852"]["from"]["address"])
-    assert derivation.coin_type() == _["CIP1852"]["from"]["coin_type"]
-    assert derivation.account() == _["CIP1852"]["from"]["account"]
-    assert derivation.role() == _["CIP1852"]["from"]["role"]
-    assert derivation.address() == _["CIP1852"]["from"]["address"]
-    assert derivation.path() == _["CIP1852"]["from"]["path"]
+    derivation.from_coin_type(data["derivations"]["CIP1852"]["from"]["coin_type"])
+    derivation.from_account(data["derivations"]["CIP1852"]["from"]["account"])
+    derivation.from_role(data["derivations"]["CIP1852"]["from"]["role"])
+    derivation.from_address(data["derivations"]["CIP1852"]["from"]["address"])
+    assert derivation.coin_type() == data["derivations"]["CIP1852"]["from"]["coin_type"]
+    assert derivation.account() == data["derivations"]["CIP1852"]["from"]["account"]
+    assert derivation.role() == data["derivations"]["CIP1852"]["from"]["role"]
+    assert derivation.address() == data["derivations"]["CIP1852"]["from"]["address"]
+    assert derivation.path() == data["derivations"]["CIP1852"]["from"]["path"]
 
     with pytest.raises(DerivationError):
         CIP1852Derivation(role="invalid-role")

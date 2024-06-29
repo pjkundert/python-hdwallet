@@ -16,15 +16,8 @@ from hdwallet.exceptions import (
     MnemonicError, EntropyError
 )
 
-# Test Values
-base_path: str = os.path.dirname(__file__)
-file_path: str = os.path.abspath(os.path.join(base_path, "../../data/mnemonics.json"))
-values = open(file_path, "r", encoding="utf-8")
-_: dict = json.loads(values.read())
-values.close()
 
-
-def test_monero_mnemonics():
+def test_monero_mnemonics(data):
     
     assert MONERO_MNEMONIC_WORDS.TWELVE == 12
     assert MONERO_MNEMONIC_WORDS.THIRTEEN == 13
@@ -42,7 +35,7 @@ def test_monero_mnemonics():
     assert MONERO_MNEMONIC_LANGUAGES.RUSSIAN == "russian"
     assert MONERO_MNEMONIC_LANGUAGES.SPANISH == "spanish"
 
-    for __ in _["Monero"]:
+    for __ in data["mnemonics"]["Monero"]:
         assert MoneroMnemonic.is_valid_words(words=__["words"])
 
         for language in __["languages"].keys():

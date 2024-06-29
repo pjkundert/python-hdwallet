@@ -21,17 +21,10 @@ from hdwallet.ecc.slip10.ed25519.blake2b import (
 )
 from hdwallet.utils import get_bytes
 
-# Test Values
-base_path: str = os.path.dirname(__file__)
-file_path: str = os.path.abspath(os.path.join(base_path, "../../data/eccs.json"))
-values = open(file_path, "r", encoding="utf-8")
-_: dict = json.loads(values.read())
-values.close()
 
+def test_slip10_ed25519_blake2b_ecc(data):
 
-def test_slip10_ed25519_blake2b_ecc():
-
-    assert SLIP10Ed25519Blake2bECC.NAME == _["SLIP10-Ed25519-Blake2b"]["name"]
+    assert SLIP10Ed25519Blake2bECC.NAME == data["eccs"]["SLIP10-Ed25519-Blake2b"]["name"]
     assert isinstance(SLIP10Ed25519Blake2bECC.ORDER, int)
     assert isinstance(SLIP10Ed25519Blake2bECC.GENERATOR, IPoint)
     assert isinstance(SLIP10Ed25519Blake2bECC.POINT, type(SLIP10Ed25519Blake2bPoint))
@@ -39,33 +32,33 @@ def test_slip10_ed25519_blake2b_ecc():
     assert isinstance(SLIP10Ed25519Blake2bECC.PRIVATE_KEY, type(SLIP10Ed25519Blake2bPrivateKey))
 
 
-def test_slip10_ed25519_blake2b_ecc_point():
+def test_slip10_ed25519_blake2b_ecc_point(data):
 
-    assert SLIP10Ed25519Blake2bPoint.name() == _["SLIP10-Ed25519-Blake2b"]["name"]
+    assert SLIP10Ed25519Blake2bPoint.name() == data["eccs"]["SLIP10-Ed25519-Blake2b"]["name"]
     for public_key_type in ["uncompressed", "compressed"]:
         # Test from bytes
         point = SLIP10Ed25519Blake2bPoint.from_bytes(
-            get_bytes(_["SLIP10-Ed25519-Blake2b"][public_key_type]["point"]["encode"])
+            get_bytes(data["eccs"]["SLIP10-Ed25519-Blake2b"][public_key_type]["point"]["encode"])
         )
         assert isinstance(point, IPoint)
         assert isinstance(point, SLIP10Ed25519Blake2bPoint)
         assert isinstance(point.underlying_object(), bytes)
-        assert point.x() == _["SLIP10-Ed25519-Blake2b"][public_key_type]["point"]["x"]
-        assert point.y() == _["SLIP10-Ed25519-Blake2b"][public_key_type]["point"]["y"]
-        assert point.raw_encoded() == get_bytes(_["SLIP10-Ed25519-Blake2b"][public_key_type]["point"]["encode"])
-        assert point.raw() == point.raw_decoded() == get_bytes(_["SLIP10-Ed25519-Blake2b"][public_key_type]["point"]["decode"])
+        assert point.x() == data["eccs"]["SLIP10-Ed25519-Blake2b"][public_key_type]["point"]["x"]
+        assert point.y() == data["eccs"]["SLIP10-Ed25519-Blake2b"][public_key_type]["point"]["y"]
+        assert point.raw_encoded() == get_bytes(data["eccs"]["SLIP10-Ed25519-Blake2b"][public_key_type]["point"]["encode"])
+        assert point.raw() == point.raw_decoded() == get_bytes(data["eccs"]["SLIP10-Ed25519-Blake2b"][public_key_type]["point"]["decode"])
         # Test from coordinate
         point = SLIP10Ed25519Blake2bPoint.from_coordinates(
-            x=_["SLIP10-Ed25519-Blake2b"][public_key_type]["point"]["x"],
-            y=_["SLIP10-Ed25519-Blake2b"][public_key_type]["point"]["y"]
+            x=data["eccs"]["SLIP10-Ed25519-Blake2b"][public_key_type]["point"]["x"],
+            y=data["eccs"]["SLIP10-Ed25519-Blake2b"][public_key_type]["point"]["y"]
         )
         assert isinstance(point, IPoint)
         assert isinstance(point, SLIP10Ed25519Blake2bPoint)
         assert isinstance(point.underlying_object(), bytes)
-        assert point.x() == _["SLIP10-Ed25519-Blake2b"][public_key_type]["point"]["x"]
-        assert point.y() == _["SLIP10-Ed25519-Blake2b"][public_key_type]["point"]["y"]
-        assert point.raw_encoded() == get_bytes(_["SLIP10-Ed25519-Blake2b"][public_key_type]["point"]["encode"])
-        assert point.raw() == point.raw_decoded() == get_bytes(_["SLIP10-Ed25519-Blake2b"][public_key_type]["point"]["decode"])
+        assert point.x() == data["eccs"]["SLIP10-Ed25519-Blake2b"][public_key_type]["point"]["x"]
+        assert point.y() == data["eccs"]["SLIP10-Ed25519-Blake2b"][public_key_type]["point"]["y"]
+        assert point.raw_encoded() == get_bytes(data["eccs"]["SLIP10-Ed25519-Blake2b"][public_key_type]["point"]["encode"])
+        assert point.raw() == point.raw_decoded() == get_bytes(data["eccs"]["SLIP10-Ed25519-Blake2b"][public_key_type]["point"]["decode"])
 
         for number in range(2, 50):
             point_add, point_radd, point_mul, point_rmul = (
@@ -78,36 +71,36 @@ def test_slip10_ed25519_blake2b_ecc_point():
             assert point_add.y() == point_radd.y() == point_mul.y() == point_rmul.y()
 
 
-def test_slip10_ed25519_blake2b_ecc_public_key():
+def test_slip10_ed25519_blake2b_ecc_public_key(data):
 
-    assert SLIP10Ed25519Blake2bPublicKey.name() == _["SLIP10-Ed25519-Blake2b"]["name"]
-    assert SLIP10Ed25519Blake2bPublicKey.uncompressed_length() == _["SLIP10-Ed25519-Blake2b"]["uncompressed"]["length"]
-    assert SLIP10Ed25519Blake2bPublicKey.compressed_length() == _["SLIP10-Ed25519-Blake2b"]["compressed"]["length"]
+    assert SLIP10Ed25519Blake2bPublicKey.name() == data["eccs"]["SLIP10-Ed25519-Blake2b"]["name"]
+    assert SLIP10Ed25519Blake2bPublicKey.uncompressed_length() == data["eccs"]["SLIP10-Ed25519-Blake2b"]["uncompressed"]["length"]
+    assert SLIP10Ed25519Blake2bPublicKey.compressed_length() == data["eccs"]["SLIP10-Ed25519-Blake2b"]["compressed"]["length"]
     for public_key_type in ["uncompressed", "compressed"]:
         public_key = SLIP10Ed25519Blake2bPublicKey.from_bytes(
-            get_bytes(_["SLIP10-Ed25519-Blake2b"][public_key_type]["public-key"])
+            get_bytes(data["eccs"]["SLIP10-Ed25519-Blake2b"][public_key_type]["public-key"])
         )
         assert isinstance(public_key, IPublicKey)
         assert isinstance(public_key, SLIP10Ed25519Blake2bPublicKey)
         assert isinstance(public_key.underlying_object(), VerifyingKey)
-        assert public_key.raw_uncompressed() == get_bytes(_["SLIP10-Ed25519-Blake2b"]["uncompressed"]["public-key"])
-        assert public_key.raw_compressed() == get_bytes(_["SLIP10-Ed25519-Blake2b"]["compressed"]["public-key"])
+        assert public_key.raw_uncompressed() == get_bytes(data["eccs"]["SLIP10-Ed25519-Blake2b"]["uncompressed"]["public-key"])
+        assert public_key.raw_compressed() == get_bytes(data["eccs"]["SLIP10-Ed25519-Blake2b"]["compressed"]["public-key"])
         assert isinstance(public_key.point(), IPoint)
         assert isinstance(public_key.point(), SLIP10Ed25519Blake2bPoint)
 
-def test_slip10_ed25519_blake2b_ecc_private_key():
+def test_slip10_ed25519_blake2b_ecc_private_key(data):
 
-    assert SLIP10Ed25519Blake2bPrivateKey.name() == _["SLIP10-Ed25519-Blake2b"]["name"]
-    assert SLIP10Ed25519Blake2bPrivateKey.length() == _["SLIP10-Ed25519-Blake2b"]["private-key-length"]
+    assert SLIP10Ed25519Blake2bPrivateKey.name() == data["eccs"]["SLIP10-Ed25519-Blake2b"]["name"]
+    assert SLIP10Ed25519Blake2bPrivateKey.length() == data["eccs"]["SLIP10-Ed25519-Blake2b"]["private-key-length"]
     private_key = SLIP10Ed25519Blake2bPrivateKey.from_bytes(
-        get_bytes(_["SLIP10-Ed25519-Blake2b"]["private-key"])
+        get_bytes(data["eccs"]["SLIP10-Ed25519-Blake2b"]["private-key"])
     )
     assert isinstance(private_key, IPrivateKey)
     assert isinstance(private_key, SLIP10Ed25519Blake2bPrivateKey)
     assert isinstance(private_key.underlying_object(), SigningKey)
     assert isinstance(private_key.raw(), bytes)
-    assert private_key.raw() == get_bytes(_["SLIP10-Ed25519-Blake2b"]["private-key"])
+    assert private_key.raw() == get_bytes(data["eccs"]["SLIP10-Ed25519-Blake2b"]["private-key"])
     assert isinstance(private_key.public_key(), IPublicKey)
     assert isinstance(private_key.public_key(), SLIP10Ed25519Blake2bPublicKey)
-    assert private_key.public_key().raw_uncompressed() == get_bytes(_["SLIP10-Ed25519-Blake2b"]["uncompressed"]["public-key"])
-    assert private_key.public_key().raw_compressed() == get_bytes(_["SLIP10-Ed25519-Blake2b"]["compressed"]["public-key"])
+    assert private_key.public_key().raw_uncompressed() == get_bytes(data["eccs"]["SLIP10-Ed25519-Blake2b"]["uncompressed"]["public-key"])
+    assert private_key.public_key().raw_compressed() == get_bytes(data["eccs"]["SLIP10-Ed25519-Blake2b"]["compressed"]["public-key"])

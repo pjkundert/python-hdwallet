@@ -16,21 +16,14 @@ from hdwallet.exceptions import (
     MnemonicError, EntropyError
 )
 
-# Test Values
-base_path: str = os.path.dirname(__file__)
-file_path: str = os.path.abspath(os.path.join(base_path, "../../data/mnemonics.json"))
-values = open(file_path, "r", encoding="utf-8")
-_: dict = json.loads(values.read())
-values.close()
 
-
-def test_electrum_v1_mnemonics():
+def test_electrum_v1_mnemonics(data):
     
     assert ELECTRUM_V1_MNEMONIC_WORDS.TWELVE == 12
     assert ELECTRUM_V1_MNEMONIC_LANGUAGES.ENGLISH == "english"
 
 
-    for __ in _["Electrum-V1"]:
+    for __ in data["mnemonics"]["Electrum-V1"]:
         assert ElectrumV1Mnemonic.is_valid_words(words=__["words"])
 
         for language in __["languages"].keys():

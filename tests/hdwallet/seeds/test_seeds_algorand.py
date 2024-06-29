@@ -11,16 +11,9 @@ import pytest
 
 from hdwallet.seeds.algorand import AlgorandSeed
 
-# Test Values
-base_path: str = os.path.dirname(__file__)
-file_path: str = os.path.abspath(os.path.join(base_path, "../../data/seeds.json"))
-values = open(file_path, "r", encoding="utf-8")
-_: dict = json.loads(values.read())
-values.close()
 
-
-def test_algorand_seeds():
+def test_algorand_seeds(data):
     assert AlgorandSeed.from_mnemonic(
-        mnemonic=_["Algorand"]["25"]["english"]["mnemonic"]
-    ) == _["Algorand"]["25"]["english"]["non-passphrase-seed"]
+        mnemonic=data["seeds"]["Algorand"]["25"]["english"]["mnemonic"]
+    ) == data["seeds"]["Algorand"]["25"]["english"]["non-passphrase-seed"]
 

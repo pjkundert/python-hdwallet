@@ -14,58 +14,51 @@ from hdwallet.derivations.bip44 import (
 )
 from hdwallet.exceptions import DerivationError
 
-# Test Values
-base_path: str = os.path.dirname(__file__)
-file_path: str = os.path.abspath(os.path.join(base_path, "../../data/derivations.json"))
-values = open(file_path, "r", encoding="utf-8")
-_: dict = json.loads(values.read())
-values.close()
 
-
-def test_bip44_derivation():
+def test_bip44_derivation(data):
 
     assert CHANGES.EXTERNAL_CHAIN == "external-chain"
     assert CHANGES.INTERNAL_CHAIN == "internal-chain"
 
     derivation = BIP44Derivation()
-    assert derivation.name() == _["BIP44"]["default"]["name"]
-    assert derivation.purpose() == _["BIP44"]["default"]["purpose"]
-    assert derivation.coin_type() == _["BIP44"]["default"]["coin_type"]
-    assert derivation.account() == _["BIP44"]["default"]["account"]
-    assert derivation.change() == _["BIP44"]["default"]["change"]
-    assert derivation.address() == _["BIP44"]["default"]["address"]
-    assert derivation.path() == _["BIP44"]["default"]["path"]
+    assert derivation.name() == data["derivations"]["BIP44"]["default"]["name"]
+    assert derivation.purpose() == data["derivations"]["BIP44"]["default"]["purpose"]
+    assert derivation.coin_type() == data["derivations"]["BIP44"]["default"]["coin_type"]
+    assert derivation.account() == data["derivations"]["BIP44"]["default"]["account"]
+    assert derivation.change() == data["derivations"]["BIP44"]["default"]["change"]
+    assert derivation.address() == data["derivations"]["BIP44"]["default"]["address"]
+    assert derivation.path() == data["derivations"]["BIP44"]["default"]["path"]
 
     derivation = BIP44Derivation(
-        coin_type=_["BIP44"]["from"]["coin_type"],
-        account=_["BIP44"]["from"]["account"],
-        change=_["BIP44"]["from"]["change"],
-        address=_["BIP44"]["from"]["address"]
+        coin_type=data["derivations"]["BIP44"]["from"]["coin_type"],
+        account=data["derivations"]["BIP44"]["from"]["account"],
+        change=data["derivations"]["BIP44"]["from"]["change"],
+        address=data["derivations"]["BIP44"]["from"]["address"]
     )
-    assert derivation.coin_type() == _["BIP44"]["from"]["coin_type"]
-    assert derivation.account() == _["BIP44"]["from"]["account"]
-    assert derivation.change() == _["BIP44"]["from"]["change"]
-    assert derivation.address() == _["BIP44"]["from"]["address"]
-    assert derivation.path() == _["BIP44"]["from"]["path"]
+    assert derivation.coin_type() == data["derivations"]["BIP44"]["from"]["coin_type"]
+    assert derivation.account() == data["derivations"]["BIP44"]["from"]["account"]
+    assert derivation.change() == data["derivations"]["BIP44"]["from"]["change"]
+    assert derivation.address() == data["derivations"]["BIP44"]["from"]["address"]
+    assert derivation.path() == data["derivations"]["BIP44"]["from"]["path"]
 
     derivation.clean()
-    assert derivation.name() == _["BIP44"]["default"]["name"]
-    assert derivation.purpose() == _["BIP44"]["default"]["purpose"]
-    assert derivation.coin_type() == _["BIP44"]["from"]["coin_type"]
-    assert derivation.account() == _["BIP44"]["default"]["account"]
-    assert derivation.change() == _["BIP44"]["default"]["change"]
-    assert derivation.address() == _["BIP44"]["default"]["address"]
+    assert derivation.name() == data["derivations"]["BIP44"]["default"]["name"]
+    assert derivation.purpose() == data["derivations"]["BIP44"]["default"]["purpose"]
+    assert derivation.coin_type() == data["derivations"]["BIP44"]["from"]["coin_type"]
+    assert derivation.account() == data["derivations"]["BIP44"]["default"]["account"]
+    assert derivation.change() == data["derivations"]["BIP44"]["default"]["change"]
+    assert derivation.address() == data["derivations"]["BIP44"]["default"]["address"]
 
     derivation = BIP44Derivation()
-    derivation.from_coin_type(_["BIP44"]["from"]["coin_type"])
-    derivation.from_account(_["BIP44"]["from"]["account"])
-    derivation.from_change(_["BIP44"]["from"]["change"])
-    derivation.from_address(_["BIP44"]["from"]["address"])
-    assert derivation.coin_type() == _["BIP44"]["from"]["coin_type"]
-    assert derivation.account() == _["BIP44"]["from"]["account"]
-    assert derivation.change() == _["BIP44"]["from"]["change"]
-    assert derivation.address() == _["BIP44"]["from"]["address"]
-    assert derivation.path() == _["BIP44"]["from"]["path"]
+    derivation.from_coin_type(data["derivations"]["BIP44"]["from"]["coin_type"])
+    derivation.from_account(data["derivations"]["BIP44"]["from"]["account"])
+    derivation.from_change(data["derivations"]["BIP44"]["from"]["change"])
+    derivation.from_address(data["derivations"]["BIP44"]["from"]["address"])
+    assert derivation.coin_type() == data["derivations"]["BIP44"]["from"]["coin_type"]
+    assert derivation.account() == data["derivations"]["BIP44"]["from"]["account"]
+    assert derivation.change() == data["derivations"]["BIP44"]["from"]["change"]
+    assert derivation.address() == data["derivations"]["BIP44"]["from"]["address"]
+    assert derivation.path() == data["derivations"]["BIP44"]["from"]["path"]
 
     with pytest.raises(DerivationError):
         BIP44Derivation(change="invalid-change")

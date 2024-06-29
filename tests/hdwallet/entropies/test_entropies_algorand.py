@@ -15,26 +15,19 @@ from hdwallet.entropies.algorand import (
 from hdwallet.utils import get_bytes
 from hdwallet.exceptions import EntropyError
 
-# Test Values
-base_path: str = os.path.dirname(__file__)
-file_path: str = os.path.abspath(os.path.join(base_path, "../../data/entropies.json"))
-values = open(file_path, "r", encoding="utf-8")
-_: dict = json.loads(values.read())
-values.close()
 
-
-def test_algorand_entropy():
+def test_algorand_entropy(data):
 
     assert ALGORAND_ENTROPY_STRENGTHS.TWO_HUNDRED_FIFTY_SIX == 256
     assert AlgorandEntropy.is_valid_strength(strength=ALGORAND_ENTROPY_STRENGTHS.TWO_HUNDRED_FIFTY_SIX)
-    assert AlgorandEntropy.is_valid_bytes_strength(bytes_strength=len(get_bytes(_["Algorand"]["256"]["entropy"])))
+    assert AlgorandEntropy.is_valid_bytes_strength(bytes_strength=len(get_bytes(data["entropies"]["Algorand"]["256"]["entropy"])))
     assert AlgorandEntropy(entropy=AlgorandEntropy.generate(strength=ALGORAND_ENTROPY_STRENGTHS.TWO_HUNDRED_FIFTY_SIX)).strength() == 256
 
-    algorand_256 = AlgorandEntropy(entropy=_["Algorand"]["256"]["entropy"])
+    algorand_256 = AlgorandEntropy(entropy=data["entropies"]["Algorand"]["256"]["entropy"])
 
-    assert algorand_256.name() == _["Algorand"]["256"]["name"]
-    assert algorand_256.strength() == _["Algorand"]["256"]["strength"]
-    assert algorand_256.entropy() == _["Algorand"]["256"]["entropy"]
+    assert algorand_256.name() == data["entropies"]["Algorand"]["256"]["name"]
+    assert algorand_256.strength() == data["entropies"]["Algorand"]["256"]["strength"]
+    assert algorand_256.entropy() == data["entropies"]["Algorand"]["256"]["entropy"]
 
     with pytest.raises(EntropyError, match="Invalid entropy data"):
         AlgorandEntropy(entropy="INVALID_ENTROPY")

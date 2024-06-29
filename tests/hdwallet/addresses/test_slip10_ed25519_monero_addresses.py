@@ -11,26 +11,19 @@ import pytest
 
 from hdwallet.addresses.monero import MoneroAddress
 
-# Test Values
-base_path: str = os.path.dirname(__file__)
-file_path: str = os.path.abspath(os.path.join(base_path, "../../data/addresses.json"))
-values = open(file_path, "r", encoding="utf-8")
-_: dict = json.loads(values.read())
-values.close()
 
+def test_monero_address(data):
 
-def test_monero_address():
-
-    assert MoneroAddress.name() == _["SLIP10-Ed25519-Monero"]["name"]
+    assert MoneroAddress.name() == data["addresses"]["SLIP10-Ed25519-Monero"]["name"]
     assert MoneroAddress.encode(
-        spend_public_key=_["SLIP10-Ed25519-Monero"]["spend-public-key"],
-        view_public_key=_["SLIP10-Ed25519-Monero"]["view-public-key"],
-        payment_id=_["SLIP10-Ed25519-Monero"]["args"]["payment_id"]
-    ) == _["SLIP10-Ed25519-Monero"]["encode"]
+        spend_public_key=data["addresses"]["SLIP10-Ed25519-Monero"]["spend-public-key"],
+        view_public_key=data["addresses"]["SLIP10-Ed25519-Monero"]["view-public-key"],
+        payment_id=data["addresses"]["SLIP10-Ed25519-Monero"]["args"]["payment_id"]
+    ) == data["addresses"]["SLIP10-Ed25519-Monero"]["encode"]
 
     spend_public_key, view_public_key = MoneroAddress.decode(
-        address=_["SLIP10-Ed25519-Monero"]["encode"],
-        payment_id=_["SLIP10-Ed25519-Monero"]["args"]["payment_id"]
+        address=data["addresses"]["SLIP10-Ed25519-Monero"]["encode"],
+        payment_id=data["addresses"]["SLIP10-Ed25519-Monero"]["args"]["payment_id"]
     )
-    assert spend_public_key == _["SLIP10-Ed25519-Monero"]["spend-public-key"]
-    assert view_public_key == _["SLIP10-Ed25519-Monero"]["view-public-key"]
+    assert spend_public_key == data["addresses"]["SLIP10-Ed25519-Monero"]["spend-public-key"]
+    assert view_public_key == data["addresses"]["SLIP10-Ed25519-Monero"]["view-public-key"]

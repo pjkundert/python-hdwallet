@@ -16,15 +16,8 @@ from hdwallet.exceptions import (
     MnemonicError, EntropyError
 )
 
-# Test Values
-base_path: str = os.path.dirname(__file__)
-file_path: str = os.path.abspath(os.path.join(base_path, "../../data/mnemonics.json"))
-values = open(file_path, "r", encoding="utf-8")
-_: dict = json.loads(values.read())
-values.close()
 
-
-def test_bip39_mnemonics():
+def test_bip39_mnemonics(data):
     
     assert BIP39_MNEMONIC_WORDS.TWELVE == 12
     assert BIP39_MNEMONIC_WORDS.FIFTEEN == 15
@@ -46,7 +39,7 @@ def test_bip39_mnemonics():
     assert BIP39_MNEMONIC_LANGUAGES.SPANISH == "spanish"
     assert BIP39_MNEMONIC_LANGUAGES.TURKISH == "turkish"
 
-    for __ in _["BIP39"]:
+    for __ in data["mnemonics"]["BIP39"]:
         assert BIP39Mnemonic.is_valid_words(words=__["words"])
 
         for language in __["languages"].keys():

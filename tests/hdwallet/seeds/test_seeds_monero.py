@@ -11,19 +11,12 @@ import pytest
 
 from hdwallet.seeds.monero import MoneroSeed
 
-# Test Values
-base_path: str = os.path.dirname(__file__)
-file_path: str = os.path.abspath(os.path.join(base_path, "../../data/seeds.json"))
-values = open(file_path, "r", encoding="utf-8")
-_: dict = json.loads(values.read())
-values.close()
 
-
-def test_monero_seeds():
+def test_monero_seeds(data):
     
-    for words in _["Monero"].keys():
-        for lang in _["Monero"][words].keys():
+    for words in data["seeds"]["Monero"].keys():
+        for lang in data["seeds"]["Monero"][words].keys():
             assert MoneroSeed.from_mnemonic(
-                mnemonic=_["Monero"][words][lang]["mnemonic"]
-            ) == _["Monero"][words][lang]["non-passphrase-seed"]
+                mnemonic=data["seeds"]["Monero"][words][lang]["mnemonic"]
+            ) == data["seeds"]["Monero"][words][lang]["non-passphrase-seed"]
 

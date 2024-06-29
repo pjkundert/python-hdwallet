@@ -11,28 +11,21 @@ import pytest
 
 from hdwallet.seeds.bip39 import BIP39Seed
 
-# Test Values
-base_path: str = os.path.dirname(__file__)
-file_path: str = os.path.abspath(os.path.join(base_path, "../../data/seeds.json"))
-values = open(file_path, "r", encoding="utf-8")
-_: dict = json.loads(values.read())
-values.close()
 
-
-def test_bip39_seeds():
+def test_bip39_seeds(data):
     
-    for words in _["BIP39"].keys():
-        for lang in _["BIP39"][words].keys():
+    for words in data["seeds"]["BIP39"].keys():
+        for lang in data["seeds"]["BIP39"][words].keys():
             assert BIP39Seed.from_mnemonic(
-                mnemonic= _["BIP39"][words][lang]["mnemonic"]
-            ) == _["BIP39"][words][lang]["non-passphrase-seed"]
+                mnemonic= data["seeds"]["BIP39"][words][lang]["mnemonic"]
+            ) == data["seeds"]["BIP39"][words][lang]["non-passphrase-seed"]
 
-            for passphrase in _["BIP39"][words][lang]["passphrases"].keys():
+            for passphrase in data["seeds"]["BIP39"][words][lang]["passphrases"].keys():
                 assert BIP39Seed.from_mnemonic(
-                    mnemonic= _["BIP39"][words][lang]["mnemonic"], passphrase=passphrase
-                ) == _["BIP39"][words][lang]["passphrases"][passphrase]
+                    mnemonic= data["seeds"]["BIP39"][words][lang]["mnemonic"], passphrase=passphrase
+                ) == data["seeds"]["BIP39"][words][lang]["passphrases"][passphrase]
 
                 assert BIP39Seed.from_mnemonic(
-                    mnemonic= _["BIP39"][words][lang]["mnemonic"], passphrase=passphrase
-                ) == _["BIP39"][words][lang]["passphrases"][passphrase]
+                    mnemonic= data["seeds"]["BIP39"][words][lang]["mnemonic"], passphrase=passphrase
+                ) == data["seeds"]["BIP39"][words][lang]["passphrases"][passphrase]
 
