@@ -41,7 +41,8 @@ master_doc = "toctree"
 # ones.
 extensions = [
     "sphinx.ext.autodoc",
-    "sphinx_click.ext"
+    "sphinx_click.ext",
+    "docs.sphinx_ext"
 ]
 
 # Add any paths that contain templates here, relative to this directory.

@@ -44,6 +44,11 @@ class MoneroEntropy(IEntropy):
 
         :return: The name of the entropy class.
         :rtype: str
+
+        >>> from hdwallet.entropies.monero import MoneroEntropy
+        >>> entropy: MoneroEntropy = MoneroEntropy(entropy="...")
+        >>> entropy.name()
+        "Monero"
         """
 
         return "Monero"

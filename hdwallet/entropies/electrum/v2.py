@@ -51,6 +51,11 @@ class ElectrumV2Entropy(IEntropy):
 
         :return: The name of the entropy class.
         :rtype: str
+
+        >>> from hdwallet.entropies.electrum.v2 import ElectrumV2Entropy
+        >>> entropy: ElectrumV2Entropy = ElectrumV2Entropy(entropy="...")
+        >>> entropy.name()
+        "Electrum-V2"
         """
 
         return "Electrum-V2"
@@ -65,6 +70,10 @@ class ElectrumV2Entropy(IEntropy):
 
         :return: The generated entropy value for Electrum-V2.
         :rtype: str
+
+        >>> from hdwallet.entropies.electrum.v2 import ElectrumV2Entropy
+        >>> ElectrumV2Entropy.generate(strength=...)
+        "..."
         """
 
         return bytes_to_string(
@@ -83,6 +92,10 @@ class ElectrumV2Entropy(IEntropy):
 
         :return: True if the strength is valid, False otherwise.
         :rtype: bool
+
+        >>> from hdwallet.entropies.electrum.v2 import ElectrumV2Entropy
+        >>> ElectrumV2Entropy.is_valid_strength(strength=...)
+        ...
         """
 
         for _strength in cls.strengths:
@@ -100,6 +113,10 @@ class ElectrumV2Entropy(IEntropy):
 
         :return: True if the strength is valid, False otherwise.
         :rtype: bool
+
+        >>> from hdwallet.entropies.electrum.v2 import ElectrumV2Entropy
+        >>> ElectrumV2Entropy.are_entropy_bits_enough(entropy=...)
+        ...
         """
 
         if isinstance(entropy, bytes):

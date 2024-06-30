@@ -41,6 +41,11 @@ class AlgorandEntropy(IEntropy):
 
         :return: The name of the entropy class.
         :rtype: str
+
+        >>> from hdwallet.entropies.algorand import AlgorandEntropy
+        >>> entropy: AlgorandEntropy = AlgorandEntropy(entropy="...")
+        >>> entropy.name()
+        "Algorand"
         """
 
         return "Algorand"

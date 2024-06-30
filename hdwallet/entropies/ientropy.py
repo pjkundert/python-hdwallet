@@ -53,23 +53,7 @@ class IEntropy:
 
     @classmethod
     def name(cls) -> str:
-        """
-        Get the name of the entropy class.
-
-        :return: The name of the entropy class.
-        :rtype: str
-
-        >>> from hdwallet.entropies.bip39 import IEntropy, BIP39Entropy
-        >>> entropy: IEntropy = BIP39Entropy(entropy="9c2ffdbe46bbb43360acff4a7eac964a")
-        >>> entropy.name()
-        "BIP39"
-        """
         pass
-
-    def __init_subclass__(cls, **kwargs):
-        super().__init_subclass__(**kwargs)
-        print(cls.__name__)
-        cls.__doc__ = cls.__doc__.format(class_name=cls.__name__)
 
     def entropy(self) -> str:
         """
@@ -78,10 +62,10 @@ class IEntropy:
         :return: The entropy value.
         :rtype: str
 
-        >>> from hdwallet.entropies.bip39 import {self.__doc__.class_name}
-        >>> entropy: IEntropy = {class_name}(entropy="9c2ffdbe46bbb43360acff4a7eac964a")
+        >>> from {module_path} import {class_name}
+        >>> entropy: {class_name} = {class_name}(entropy="...")
         >>> entropy.entropy()
-        "9c2ffdbe46bbb43360acff4a7eac964a"
+        "..."
         """
 
         return self._entropy
@@ -90,6 +74,11 @@ class IEntropy:
         """
         :return: The strength of the entropy in bits.
         :rtype: int
+
+        >>> from {module_path} import {class_name}
+        >>> entropy: {class_name} = {class_name}(entropy="...")
+        >>> entropy.strength()
+        ...
         """
 
         return self._strength
@@ -104,6 +93,10 @@ class IEntropy:
 
         :return: The generated entropy value.
         :rtype: str
+
+        >>> from {module_path} import {class_name}
+        >>> {class_name}.generate(strength=...)
+        "..."
         """
 
         return bytes_to_string(
@@ -120,6 +113,10 @@ class IEntropy:
 
         :return: True if the strength is valid, False otherwise.
         :rtype: bool
+
+        >>> from {module_path} import {class_name}
+        >>> {class_name}.is_valid_strength(strength=...)
+        ...
         """
 
         return strength in cls.strengths
@@ -134,6 +131,10 @@ class IEntropy:
 
         :return: True if the strength is valid, False otherwise.
         :rtype: bool
+
+        >>> from {module_path} import {class_name}
+        >>>{class_name}.is_valid_bytes_strength(bytes_strength=...)
+        ...
         """
 
         return cls.is_valid_strength(bytes_strength * 8)
@@ -147,6 +148,9 @@ class IEntropy:
 
         :return: True if the strength is valid, False otherwise.
         :rtype: bool
-        """
 
+        >>> from {module_path} import {class_name}
+        >>>{class_name}.are_entropy_bits_enough(entropy=...)
+        ...
+        """
         pass

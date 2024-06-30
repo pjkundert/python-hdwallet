@@ -57,8 +57,8 @@ class BIP39Entropy(IEntropy):
         :rtype: str
 
         >>> from hdwallet.entropies.bip39 import BIP39Entropy
-        >>> bip39_entropy: BIP39Entropy = BIP39Entropy(entropy="9c2ffdbe46bbb43360acff4a7eac964a")
-        >>> bip39_entropy.name()
+        >>> entropy: BIP39Entropy = BIP39Entropy(entropy="...")
+        >>> entropy.name()
         "BIP39"
         """
 
