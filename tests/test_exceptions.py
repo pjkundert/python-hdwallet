@@ -6,7 +6,9 @@
 # file COPYING or https://opensource.org/license/mit
 
 import pytest
+
 from hdwallet.exceptions import Error
+
 
 def test_exception():
 	class TestError(Error):

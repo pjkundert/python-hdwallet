@@ -7,6 +7,7 @@
 
 from hdwallet.symbols import *
 
+
 def test_symbols():
 
 	assert ACC == "ACC"
