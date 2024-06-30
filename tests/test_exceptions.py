@@ -1,31 +1,27 @@
 #!/usr/bin/env python3
 
-from hdwallet.exceptions import (
-    NetworkError, DerivationError, SemanticError, AddressError, SymbolError
-)
+# Copyright © 2020-2024, Meheret Tesfaye Batu <meherett.batu@gmail.com>
+#             2024, Eyoel Tadesse <eyoel_tadesse@proton.me>
+# Distributed under the MIT software license, see the accompanying
+# file COPYING or https://opensource.org/license/mit
 
 import pytest
 
+from hdwallet.exceptions import Error
 
-def test_exceptions():
 
-    with pytest.raises(NetworkError, match="error"):
-        raise NetworkError("error")
-    with pytest.raises(NetworkError, match="error, error"):
-        raise NetworkError("error", "error")
-    with pytest.raises(DerivationError, match="error"):
-        raise DerivationError("error")
-    with pytest.raises(DerivationError, match="error, error"):
-        raise DerivationError("error", "error")
-    with pytest.raises(SemanticError, match="error"):
-        raise SemanticError("error")
-    with pytest.raises(SemanticError):
-        raise SemanticError("error", "error")
-    with pytest.raises(AddressError, match="error"):
-        raise AddressError("error")
-    with pytest.raises(AddressError, match="error, error"):
-        raise AddressError("error", "error")
-    with pytest.raises(SymbolError, match="error"):
-        raise SymbolError("error")
-    with pytest.raises(SymbolError, match="error, error"):
-        raise SymbolError("error", "error")
+def test_exception():
+	class TestError(Error):
+		pass
+
+	with pytest.raises(TestError, match="Error"):
+		raise TestError(message="Error")
+
+	with pytest.raises(TestError, match="more_detail"):
+		raise TestError(message = "Error", detail="more_detail")
+
+	with pytest.raises(TestError, match="value_expect"):
+		raise TestError(message = "Error", expected="value_expect")
+
+	with pytest.raises(TestError, match="value_got"):
+		raise TestError(message = "Error", expected="value_expect", got="value_got")
