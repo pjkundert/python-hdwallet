@@ -17,7 +17,7 @@ def list_cryptocurrencies():
         "Cryptocurrency", "Symbol", "Networks", "Coin Type"
     ]
 
-    for name, cryptocurrency in CRYPTOCURRENCIES.cryptocurrencies.items():
+    for cryptocurrency in CRYPTOCURRENCIES.classes():
 
         document: dict = {
             "name": cryptocurrency.NAME,

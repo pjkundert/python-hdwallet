@@ -13,7 +13,7 @@ from ...entropies import ENTROPIES
 
 def list_strengths():
 
-    for index, entropy in enumerate(ENTROPIES.entropies.values()):
+    for index, entropy in enumerate(ENTROPIES.classes()):
 
         strengths: list = []
         for strength in entropy.strengths:
@@ -28,5 +28,5 @@ def list_strengths():
             stralign="left",
             numalign="left"
         ))
-        if index != len(ENTROPIES.entropies.keys()) - 1:
+        if index != (len(ENTROPIES.classes()) - 1):
             click.echo("\n")
