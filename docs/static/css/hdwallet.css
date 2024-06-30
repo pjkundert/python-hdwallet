@@ -1,3 +1,7 @@
 .rst-content dl:not(.docutils) code.descname {
     color: #2980B9;
 }
+
+.py-class {
+    font-size: 20px;
+}

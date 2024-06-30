@@ -48,4 +48,4 @@ We welcome pull requests. To get started, just fork this `github repository <htt
 
 ::
 
-    $ pip install -e .[cli,tests,docs] -r requirements.txt
+    $ pip install -e .[cli,tests,docs,desktop]
