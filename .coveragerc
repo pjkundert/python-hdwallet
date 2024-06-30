@@ -1,2 +1,2 @@
 [run]
-omit = hdwallet/libs/*
+omit = */libs/*

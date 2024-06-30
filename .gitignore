@@ -4,14 +4,12 @@ make.bat
 Makefile
 
 # Folders stuff
-experiment/
 .idea/
 .tox/
 
 # Setuptools stuff
 build/
 dist/
-hdwallet.egg-info/
 
 # Python stuff
 __pycache__/
