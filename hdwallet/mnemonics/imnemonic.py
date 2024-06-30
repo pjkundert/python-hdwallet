@@ -28,6 +28,16 @@ class IMnemonic(ABC):
     wordlist_path: Dict[str, str]
 
     def __init__(self, mnemonic: Union[str, List[str]], **kwargs) -> None:
+        """
+        Initialize an instance of YourClassName with a mnemonic.
+
+        :param mnemonic: The mnemonic to initialize with, which can be a string or a list of strings.
+        :type mnemonic: Union[str, List[str]]
+        :param kwargs: Additional keyword arguments.
+
+        :return: No return
+        :rtype: NoneType
+        """
 
         self._mnemonic: List[str] = self.normalize(mnemonic)
         if not self.is_valid(self._mnemonic, **kwargs):
@@ -42,15 +52,33 @@ class IMnemonic(ABC):
         pass
 
     def mnemonic(self) -> str:
+        """
+        Get the mnemonic as a single string.
+
+        :return: The mnemonic as a single string joined by spaces.
+        :rtype: str
+        """
+
         return " ".join(self._mnemonic)
 
     def language(self) -> str:
+        """
+        Get the formatted language value.
+
+        :return: The formatted language string where each part is capitalized.
+        :rtype: str
+        """
         language: str = ""
         for index, _ in enumerate(self._language.split("-")):
             language += _.title() if index == 0 else f"-{_.title()}"
         return language
 
     def words(self) -> int:
+        """
+        :return: The words.
+        :rtype: int
+        """
+
         return self._words
 
     @classmethod
@@ -77,6 +105,18 @@ class IMnemonic(ABC):
     def get_words_list_by_language(
         cls, language: str, wordlist_path: Optional[Dict[str, str]] = None
     ) -> List[str]:
+        """
+        Retrieves the word list for the specified language.
+
+        :param language: The language for which to get the word list.
+        :type language: str
+        :param wordlist_path: Optional dictionary mapping language names to file paths of their word lists.
+        :type wordlist_path: Optional[Dict[str, str]]
+
+        :return: A list of words for the specified language.
+        :rtype: List[str]
+        """
+
         wordlist_path = cls.wordlist_path if wordlist_path is None else wordlist_path
         with open(os.path.join(os.path.dirname(__file__), wordlist_path[language]), "r", encoding="utf-8") as fin:
             words_list: List[str] = [
@@ -88,6 +128,18 @@ class IMnemonic(ABC):
     def find_language(
         cls, mnemonic: List[str], wordlist_path: Optional[Dict[str, str]] = None
     ) -> Union[str, Tuple[List[str], str]]:
+        """
+        Finds the language of the given mnemonic by checking against available word lists.
+
+        :param mnemonic: The mnemonic to check, represented as a list of words.
+        :type mnemonic: List[str]
+        :param wordlist_path: Optional dictionary mapping language names to file paths of their word lists.
+        :type wordlist_path: Optional[Dict[str, str]]
+
+        :return: A tuple containing the word list and the language name if found. Raises a ValueError if not found.
+        :rtype: Union[str, Tuple[List[str], str]]
+        """
+
         for language in cls.languages:
             try:
                 words_list: list = cls.normalize(
@@ -110,6 +162,17 @@ class IMnemonic(ABC):
 
     @classmethod
     def is_valid(cls, mnemonic: Union[str, List[str]], **kwargs) -> bool:
+        """
+        Checks if the given mnemonic is valid.
+
+        :param mnemonic: The mnemonic to check.
+        :type mnemonic: str
+        :param kwargs: Additional keyword arguments.
+
+        :return: True if the strength is valid, False otherwise.
+        :rtype: bool
+        """
+
         try:
             cls.decode(mnemonic=mnemonic, **kwargs)
             return True
@@ -118,12 +181,42 @@ class IMnemonic(ABC):
 
     @classmethod
     def is_valid_language(cls, language: str) -> bool:
+        """
+        Checks if the given language is valid.
+
+        :param language: The language to check.
+        :type language: str
+
+        :return: True if the strength is valid, False otherwise.
+        :rtype: bool
+        """
+
         return language in cls.languages
 
     @classmethod
     def is_valid_words(cls, words: int) -> bool:
+        """
+        Checks if the given words is valid.
+
+        :param words: The words to check.
+        :type words: int
+
+        :return: True if the strength is valid, False otherwise.
+        :rtype: bool
+        """
+
         return words in cls.words_list
 
     @classmethod
     def normalize(cls, mnemonic: Union[str, List[str]]) -> List[str]:
+        """
+        Normalizes the given mnemonic by splitting it into a list of words if it is a string.
+
+        :param mnemonic: The mnemonic value, which can be a single string of words or a list of words.
+        :type mnemonic: Union[str, List[str]]
+
+        :return: A list of words from the mnemonic.
+        :rtype: List[str]
+        """
+
         return mnemonic.split() if isinstance(mnemonic, str) else mnemonic

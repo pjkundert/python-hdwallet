@@ -32,6 +32,9 @@ class MONERO_MNEMONIC_WORDS:
 
 
 class MONERO_MNEMONIC_LANGUAGES:
+    """
+    Constants for Monero mnemonic languages.
+    """
 
     CHINESE_SIMPLIFIED: str = "chinese-simplified"
     DUTCH: str = "dutch"
@@ -46,6 +49,44 @@ class MONERO_MNEMONIC_LANGUAGES:
 
 
 class MoneroMnemonic(IMnemonic):
+    """
+    +-----------------------+----------------------+
+    | Name                  | Value                |
+    +=======================+======================+
+    | TWELVE                | 12                   |
+    +-----------------------+----------------------+
+    | THIRTEEN              | 13                   |
+    +-----------------------+----------------------+
+    | TWENTY_FOUR           | 24                   |
+    +-----------------------+----------------------+
+    | TWENTY_FIVE           | 25                   |
+    +-----------------------+----------------------+
+
+
+    +-----------------------+----------------------+
+    | Name                  | Value                |
+    +=======================+======================+
+    | CHINESE_SIMPLIFIED    | chinese-simplified   |
+    +-----------------------+----------------------+
+    | DUTCH                 | dutch                |
+    +-----------------------+----------------------+
+    | ENGLISH               | english              |
+    +-----------------------+----------------------+
+    | FRENCH                | french               |
+    +-----------------------+----------------------+
+    | GERMAN                | chinese-german       |
+    +-----------------------+----------------------+
+    | ITALIAN               | italian              |
+    +-----------------------+----------------------+
+    | JAPANESE              | japanese             |
+    +-----------------------+----------------------+
+    | PORTUGUESE            | portuguese           |
+    +-----------------------+----------------------+
+    | RUSSIAN               | russian              |
+    +-----------------------+----------------------+
+    | SPANISH               | spanish              |
+    +-----------------------+----------------------+
+    """
 
     word_bit_length: int = 11
     words_list_number: int = 1626
@@ -104,10 +145,28 @@ class MoneroMnemonic(IMnemonic):
 
     @classmethod
     def name(cls) -> str:
+        """
+        Get the name of the mnemonic class.
+
+        :return: The name of the entropy class.
+        :rtype: str
+        """
         return "Monero"
 
     @classmethod
     def from_words(cls, words: int, language: str) -> str:
+        """
+        Generates a mnemonic phrase from a specified number of words and language.
+
+        :param words: The number of words in the mnemonic phrase.
+        :type words: int
+        :param language: The language for which to generate the mnemonic phrase.
+        :type language: str
+
+        :return: The generated mnemonic phrase.
+        :rtype: str
+        """
+
         if words not in cls.words_list:
             raise MnemonicError("Invalid mnemonic words number", expected=cls.words_list, got=words)
 
@@ -121,6 +180,19 @@ class MoneroMnemonic(IMnemonic):
 
     @classmethod
     def from_entropy(cls, entropy: Union[str, bytes, IEntropy], language: str, checksum: bool = False) -> str:
+        """
+        Generates a mnemonic phrase from entropy data.
+
+        :param entropy: The entropy data used to generate the mnemonic phrase.
+        :type entropy: Union[str, bytes, IEntropy]
+        :param language: The language for which to generate the mnemonic phrase.
+        :type language: str
+        :param checksum: Whether to include a checksum in the mnemonic phrase.
+        :type checksum: bool
+
+        :return: The generated mnemonic phrase.
+        :rtype: str
+        """
         if isinstance(entropy, str) or isinstance(entropy, bytes):
             return cls.encode(
                 entropy=entropy, language=language, checksum=checksum
@@ -135,6 +207,19 @@ class MoneroMnemonic(IMnemonic):
 
     @classmethod
     def encode(cls, entropy: Union[str, bytes], language: str, checksum: bool = False) -> str:
+        """
+        Generates a mnemonic phrase from entropy data.
+
+        :param entropy: The entropy data used to generate the mnemonic phrase.
+        :type entropy: Union[str, bytes]
+        :param language: The language for which to generate the mnemonic phrase.
+        :type language: str
+        :param checksum: Whether to include a checksum in the mnemonic phrase.
+        :type checksum: bool
+
+        :return: The generated mnemonic phrase.
+        :rtype: str
+        """
 
         entropy: bytes = get_bytes(entropy)
         if not MoneroEntropy.is_valid_bytes_strength(len(entropy)):
@@ -166,6 +251,17 @@ class MoneroMnemonic(IMnemonic):
 
     @classmethod
     def decode(cls, mnemonic: str, **kwargs) -> str:
+        """
+        Decodes a mnemonic phrase into entropy data.
+
+        :param mnemonic: The mnemonic phrase to decode.
+        :type mnemonic: str
+        :param kwargs: Additional keyword arguments (language, checksum).
+
+        :return: The decoded entropy data.
+        :rtype: str
+        """
+
         words: list = cls.normalize(mnemonic)
         if len(words) not in cls.words_list:
             raise MnemonicError("Invalid mnemonic words count", expected=cls.words_list, got=len(words))
@@ -198,5 +294,14 @@ class MoneroMnemonic(IMnemonic):
 
     @classmethod
     def normalize(cls, mnemonic: Union[str, List[str]]) -> List[str]:
+        """
+        Normalizes the given mnemonic by splitting it into a list of words if it is a string.
+
+        :param mnemonic: The mnemonic value, which can be a single string of words or a list of words.
+        :type mnemonic: Union[str, List[str]]
+
+        :return: A list of words from the mnemonic.
+        :rtype: List[str]
+        """
         mnemonic: list = mnemonic.split() if isinstance(mnemonic, str) else mnemonic
         return list(map(lambda _: unicodedata.normalize("NFKD", _.lower()), mnemonic))
