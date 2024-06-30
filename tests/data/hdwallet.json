@@ -1,0 +1,106 @@
+{
+    "BIP32": {
+        "compressed": {
+            "cryptocurrency": "Bitcoin",
+            "symbol": "BTC",
+            "network": "mainnet",
+            "coin_type": 0,
+            "entropy": "e69842f0a574a6c5dee9cd2a0a53796bd41a2534",
+            "strength": 160,
+            "mnemonic": "track search rotate enough engine glass knife defy claw family tattoo stumble double barely spike",
+            "passphrase": null,
+            "language": "English",
+            "seed": "3412a2f89e1f6e9a3fba3b6c9c2dcac183c7ff40ebe4917957b2197d20f812ac36113a4359cf621b18d2b060c2fd9739e9819195dcf9b36b402ea6757cf36ea0",
+            "ecc": "SLIP10-Secp256k1",
+            "hd": "BIP32",
+            "root_xprivate_key": "xprv9s21ZrQH143K2vrrQFKzDyDJ6KR678AXpFLTLp34sTfFgDZcZ368TQJ6ZEem3EukEUteS8CXJ5Cds7Py5cXsPtppsPMGDLf4vfz1Af5GczB",
+            "root_xpublic_key": "xpub661MyMwAqRbcFQwKWGrzb7A2eMFaWatPBUG49CSgRoCEZ1tm6aQP1CcaQWBSLvpb4rgie2v2WH7ETBnenbNvt9yDLc6Yscy9NDY1R35o34y",
+            "root_private_key": "71d5fdac4b53dd572e2ee1ce68a44c188f23d52d9da2d1eb68be1aec64dbd895",
+            "root_wif": "L12zYhjufRFMT4xnF7uhMKexvB4V1E2wxp9cNdGh5zzQZkHuJfep",
+            "root_chain_code": "57757c7c8766fc0f7a4420ea6ee13a1a90afdd16df5bc80ad0afcb68bb330dbd",
+            "root_public_key": "02b37b9b64e46492ebadd9673ced57bca0ea2604d5f0b8f2e078d0c6953551b39b",
+            "strict": true,
+            "public_key_type": "compressed",
+            "wif_type": "wif-compressed",
+            "derivation": {
+                "at": {
+                    "path": "m/",
+                    "indexes": [],
+                    "depth": 0,
+                    "index": 0
+                },
+                "xprivate_key": "xprv9s21ZrQH143K2vrrQFKzDyDJ6KR678AXpFLTLp34sTfFgDZcZ368TQJ6ZEem3EukEUteS8CXJ5Cds7Py5cXsPtppsPMGDLf4vfz1Af5GczB",
+                "xpublic_key": "xpub661MyMwAqRbcFQwKWGrzb7A2eMFaWatPBUG49CSgRoCEZ1tm6aQP1CcaQWBSLvpb4rgie2v2WH7ETBnenbNvt9yDLc6Yscy9NDY1R35o34y",
+                "private_key": "71d5fdac4b53dd572e2ee1ce68a44c188f23d52d9da2d1eb68be1aec64dbd895",
+                "wif": "L12zYhjufRFMT4xnF7uhMKexvB4V1E2wxp9cNdGh5zzQZkHuJfep",
+                "chain_code": "57757c7c8766fc0f7a4420ea6ee13a1a90afdd16df5bc80ad0afcb68bb330dbd",
+                "public_key": "02b37b9b64e46492ebadd9673ced57bca0ea2604d5f0b8f2e078d0c6953551b39b",
+                "uncompressed": "04b37b9b64e46492ebadd9673ced57bca0ea2604d5f0b8f2e078d0c6953551b39bf18952c2a93d8d6f7319e70948697d55fb5e126aec2197163e18bd22bf09c9ea",
+                "compressed": "02b37b9b64e46492ebadd9673ced57bca0ea2604d5f0b8f2e078d0c6953551b39b",
+                "hash": "a627a6ab71e820bb44a915675766a04538fca86f",
+                "fingerprint": "a627a6ab",
+                "parent_fingerprint": "00000000",
+                "addresses": {
+                    "p2pkh": "1G9Yfr9UouTL2NRZKS2m3GKisV5kznJhPP",
+                    "p2sh": "31iuKoWg3yCA1fgX6tkRdv3KBEq6NHDXzv",
+                    "p2tr": "bc1p7dpa87yh9j82ldr95rgudnw0vg5zl06a52na8gphllutg2lz7qfs68gepw",
+                    "p2wpkh": "bc1q5cn6d2m3aqstk39fz4n4we4qg5u0e2r0qc046u",
+                    "p2wpkh_in_p2sh": "38gHMwPT6aZozU9Lj6eMAxQhdf2Bnpfiuu",
+                    "p2wsh": "bc1qjvy4rxf502qzdnndax0h8zuz9nuaeq2xn6ep3vsktu3gl5y23z7qz6pm80",
+                    "p2wsh_in_p2sh": "3DyQ9Hqjqrdzz78XajHuKdbGWCd35K6qyF"
+                }
+            }
+        },
+        "uncompressed": {
+            "cryptocurrency": "Bitcoin",
+            "symbol": "BTC",
+            "network": "mainnet",
+            "coin_type": 0,
+            "entropy": "e69842f0a574a6c5dee9cd2a0a53796bd41a2534",
+            "strength": 160,
+            "mnemonic": "track search rotate enough engine glass knife defy claw family tattoo stumble double barely spike",
+            "passphrase": null,
+            "language": "English",
+            "seed": "3412a2f89e1f6e9a3fba3b6c9c2dcac183c7ff40ebe4917957b2197d20f812ac36113a4359cf621b18d2b060c2fd9739e9819195dcf9b36b402ea6757cf36ea0",
+            "ecc": "SLIP10-Secp256k1",
+            "hd": "BIP32",
+            "root_xprivate_key": "xprv9s21ZrQH143K2vrrQFKzDyDJ6KR678AXpFLTLp34sTfFgDZcZ368TQJ6ZEem3EukEUteS8CXJ5Cds7Py5cXsPtppsPMGDLf4vfz1Af5GczB",
+            "root_xpublic_key": "xpub661MyMwAqRbcFQwKWGrzb7A2eMFaWatPBUG49CSgRoCEZ1tm6aQP1CcaQWBSLvpb4rgie2v2WH7ETBnenbNvt9yDLc6Yscy9NDY1R35o34y",
+            "root_private_key": "71d5fdac4b53dd572e2ee1ce68a44c188f23d52d9da2d1eb68be1aec64dbd895",
+            "root_wif": "5JgRNEJsuCqZjA485ZNueEHkwBtYGTWtsi3QRPGLWE92GBngBMd",
+            "root_chain_code": "57757c7c8766fc0f7a4420ea6ee13a1a90afdd16df5bc80ad0afcb68bb330dbd",
+            "root_public_key": "04b37b9b64e46492ebadd9673ced57bca0ea2604d5f0b8f2e078d0c6953551b39bf18952c2a93d8d6f7319e70948697d55fb5e126aec2197163e18bd22bf09c9ea",
+            "strict": true,
+            "public_key_type": "uncompressed",
+            "wif_type": "wif",
+            "derivation": {
+                "at": {
+                    "path": "m/",
+                    "indexes": [],
+                    "depth": 0,
+                    "index": 0
+                },
+                "xprivate_key": "xprv9s21ZrQH143K2vrrQFKzDyDJ6KR678AXpFLTLp34sTfFgDZcZ368TQJ6ZEem3EukEUteS8CXJ5Cds7Py5cXsPtppsPMGDLf4vfz1Af5GczB",
+                "xpublic_key": "xpub661MyMwAqRbcFQwKWGrzb7A2eMFaWatPBUG49CSgRoCEZ1tm6aQP1CcaQWBSLvpb4rgie2v2WH7ETBnenbNvt9yDLc6Yscy9NDY1R35o34y",
+                "private_key": "71d5fdac4b53dd572e2ee1ce68a44c188f23d52d9da2d1eb68be1aec64dbd895",
+                "wif": "5JgRNEJsuCqZjA485ZNueEHkwBtYGTWtsi3QRPGLWE92GBngBMd",
+                "chain_code": "57757c7c8766fc0f7a4420ea6ee13a1a90afdd16df5bc80ad0afcb68bb330dbd",
+                "public_key": "04b37b9b64e46492ebadd9673ced57bca0ea2604d5f0b8f2e078d0c6953551b39bf18952c2a93d8d6f7319e70948697d55fb5e126aec2197163e18bd22bf09c9ea",
+                "uncompressed": "04b37b9b64e46492ebadd9673ced57bca0ea2604d5f0b8f2e078d0c6953551b39bf18952c2a93d8d6f7319e70948697d55fb5e126aec2197163e18bd22bf09c9ea",
+                "compressed": "02b37b9b64e46492ebadd9673ced57bca0ea2604d5f0b8f2e078d0c6953551b39b",
+                "hash": "24772cf1b8a08a0c1b42d2a8969f8e75588bec33",
+                "fingerprint": "24772cf1",
+                "parent_fingerprint": "00000000",
+                "addresses": {
+                    "p2pkh": "14Kp6NR1EVom3eV1zkZztczmhJ5Vq5PJaM",
+                    "p2sh": "3EjUAP625bnpjLH6gCoaRTZAg4Q5udPU7b",
+                    "p2tr": "bc1p7dpa87yh9j82ldr95rgudnw0vg5zl06a52na8gphllutg2lz7qfs68gepw",
+                    "p2wpkh": "bc1qy3mjeudc5z9qcx6z625fd8uww4vghmpnhaz7y3",
+                    "p2wpkh_in_p2sh": "3LEYmXREqdjyCTVn4uxJCk1fDu3jk8BTjq",
+                    "p2wsh": "bc1qahwshfhswku0s8j5qtsw8erfj3rmvtns5s0e82s0t9aemnkny20s0q8a3z",
+                    "p2wsh_in_p2sh": "3PaZYS599WMdhQjt33M8KY1CW6FSzK1Aoc"
+                }
+            }
+        }
+    }
+}
