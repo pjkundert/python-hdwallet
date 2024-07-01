@@ -24,6 +24,9 @@ from ..imnemonic import IMnemonic
 
 
 class MONERO_MNEMONIC_WORDS:
+    """
+    Constants for Monero mnemonic words.
+    """
 
     TWELVE: int = 12
     THIRTEEN: int = 13
@@ -50,6 +53,11 @@ class MONERO_MNEMONIC_LANGUAGES:
 
 class MoneroMnemonic(IMnemonic):
     """
+    Designed for Monero's mnemonic system, focusing on privacy and security,
+    enabling users to recover their wallets through unique seed phrases.
+
+    Here are available Monero mnemonic words:
+
     +-----------------------+----------------------+
     | Name                  | Value                |
     +=======================+======================+
@@ -62,6 +70,7 @@ class MoneroMnemonic(IMnemonic):
     | TWENTY_FIVE           | 25                   |
     +-----------------------+----------------------+
 
+    Here are available Monero mnemonic languages:
 
     +-----------------------+----------------------+
     | Name                  | Value                |
@@ -150,6 +159,11 @@ class MoneroMnemonic(IMnemonic):
 
         :return: The name of the entropy class.
         :rtype: str
+
+        >>> from hdwallet.mnemonics.monero import MoneroMnemonic
+        >>> mnemonic: MoneroMnemonic = MoneroMnemonic(mnemonic="...")
+        >>> mnemonic.name()
+        "..."
         """
         return "Monero"
 
@@ -165,6 +179,10 @@ class MoneroMnemonic(IMnemonic):
 
         :return: The generated mnemonic phrase.
         :rtype: str
+
+        >>> from hdwallet.mnemonics.monero import MoneroMnemonic
+        >>> MoneroMnemonic.from_words(words=..., language="...")
+        "..."
         """
 
         if words not in cls.words_list:
@@ -192,6 +210,10 @@ class MoneroMnemonic(IMnemonic):
 
         :return: The generated mnemonic phrase.
         :rtype: str
+
+        >>> from hdwallet.mnemonics.monero import MoneroMnemonic
+        >>> MoneroMnemonic.from_entropy(entropy="...", language="...", checksum=...)
+        "..."
         """
         if isinstance(entropy, str) or isinstance(entropy, bytes):
             return cls.encode(
@@ -219,6 +241,10 @@ class MoneroMnemonic(IMnemonic):
 
         :return: The generated mnemonic phrase.
         :rtype: str
+
+        >>> from hdwallet.mnemonics.monero import MoneroMnemonic
+        >>> MoneroMnemonic.encode(entropy="...", language="...", checksum=...)
+        "..."
         """
 
         entropy: bytes = get_bytes(entropy)
@@ -260,6 +286,10 @@ class MoneroMnemonic(IMnemonic):
 
         :return: The decoded entropy data.
         :rtype: str
+
+        >>> from hdwallet.mnemonics.monero import MoneroMnemonic
+        >>> MoneroMnemonic.decode(mnemonic="...")
+        "..."
         """
 
         words: list = cls.normalize(mnemonic)
@@ -302,6 +332,11 @@ class MoneroMnemonic(IMnemonic):
 
         :return: A list of words from the mnemonic.
         :rtype: List[str]
+
+        >>> from hdwallet.mnemonics.monero import MoneroMnemonic
+        >>> MoneroMnemonic.normalize(mnemonic="...")
+        "..."
         """
+
         mnemonic: list = mnemonic.split() if isinstance(mnemonic, str) else mnemonic
         return list(map(lambda _: unicodedata.normalize("NFKD", _.lower()), mnemonic))
