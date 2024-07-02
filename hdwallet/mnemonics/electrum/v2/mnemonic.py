@@ -26,12 +26,18 @@ from ...imnemonic import IMnemonic
 
 
 class ELECTRUM_V2_MNEMONIC_WORDS:
+    """
+    Constants for electrum v2 mnemonic words.
+    """
 
     TWELVE: int = 12
     TWENTY_FOUR: int = 24
 
 
 class ELECTRUM_V2_MNEMONIC_LANGUAGES:
+    """
+    Constants for electrum v2 mnemonic languages.
+    """
 
     CHINESE_SIMPLIFIED: str = "chinese-simplified"
     ENGLISH: str = "english"
@@ -40,6 +46,9 @@ class ELECTRUM_V2_MNEMONIC_LANGUAGES:
 
 
 class ELECTRUM_V2_MNEMONIC_TYPES:
+    """
+    Constants for electrum v2 mnemonic types.
+    """
 
     STANDARD: str = "standard"
     SEGWIT: str = "segwit"
@@ -48,6 +57,49 @@ class ELECTRUM_V2_MNEMONIC_TYPES:
 
 
 class ElectrumV2Mnemonic(IMnemonic):
+    """
+    An update to the ElectrumV1Mnemonic, this class supports the second version
+    of Electrum's mnemonic system, offering enhanced features for secure seed
+    generation.
+
+    Here are available Electrum-V2 mnemonic words:
+
+    +-----------------------+----------------------+
+    | Name                  | Value                |
+    +=======================+======================+
+    | TWELVE                | 12                   |
+    +-----------------------+----------------------+
+    | TWENTY_FOUR           | 24                   |
+    +-----------------------+----------------------+
+
+    Here are available Electrum-V2 mnemonic languages:
+
+    +-----------------------+----------------------+
+    | Name                  | Value                |
+    +=======================+======================+
+    | CHINESE_SIMPLIFIED    | chinese-simplified   |
+    +-----------------------+----------------------+
+    | ENGLISH               | english              |
+    +-----------------------+----------------------+
+    | PORTUGUESE            | portuguese           |
+    +-----------------------+----------------------+
+    | SPANISH               | spanish              |
+    +-----------------------+----------------------+
+
+    Here are available Electrum-V2 mnemonic types:
+
+    +-----------------------+----------------------+
+    | Name                  | Value                |
+    +=======================+======================+
+    | STANDARD              | standard             |
+    +-----------------------+----------------------+
+    | SEGWIT                | segwit               |
+    +-----------------------+----------------------+
+    | STANDARD_2FA          | standard-2fa         |
+    +-----------------------+----------------------+
+    | SEGWIT_2FA            | segwit-2fa           |
+    +-----------------------+----------------------+
+    """
 
     word_bit_length: int = 11
     words_list: List[int] = [
@@ -79,6 +131,17 @@ class ElectrumV2Mnemonic(IMnemonic):
 
     @classmethod
     def name(cls) -> str:
+        """
+        Get the name of the mnemonic class.
+
+        :return: The name of the entropy class.
+        :rtype: str
+
+        >>> from hdwallet.mnemonics.electrum.v2 import ElectrumV2Mnemonic
+        >>> mnemonic: ElectrumV2Mnemonic = ElectrumV2Mnemonic(mnemonic="...")
+        >>> mnemonic.name()
+        "..."
+        """
         return "Electrum-V2"
 
     @classmethod
@@ -89,6 +152,30 @@ class ElectrumV2Mnemonic(IMnemonic):
         mnemonic_type: str = ELECTRUM_V2_MNEMONIC_TYPES.STANDARD,
         max_attempts: int = 10 ** 60
     ) -> str:
+        """
+        Generates a mnemonic phrase from a specified number of words and language.
+
+        This method generates a mnemonic phrase with a specific number of words in the specified language.
+        It ensures the generated mnemonic meets the strength requirements for the given mnemonic type.
+
+        :param words: The number of words in the mnemonic phrase.
+        :type words: int
+        :param language: The language for which to generate the mnemonic phrase.
+        :type language: str
+        :param mnemonic_type: The type of mnemonic phrase to generate. Defaults to `STANDARD`.
+        :type mnemonic_type: str, optional
+        :param max_attempts: The maximum number of attempts to adjust entropy to meet strength requirements.
+                             Defaults to 10^60.
+        :type max_attempts: int, optional
+
+        :return: The generated mnemonic phrase.
+        :rtype: str
+
+        >>> from hdwallet.mnemonics.electrum.v2 import ElectrumV2Mnemonic
+        >>> ElectrumV2Mnemonic.from_words(words=..., language="...", mnemonic_type="...", max_attempts=...)
+        "..."
+        """
+
         if words not in cls.words_list:
             raise MnemonicError("Invalid mnemonic words number", expected=cls.words_list, got=words)
 
@@ -109,6 +196,30 @@ class ElectrumV2Mnemonic(IMnemonic):
         mnemonic_type: str = ELECTRUM_V2_MNEMONIC_TYPES.STANDARD,
         max_attempts: int = 10 ** 60
     ) -> str:
+        """
+        Generates a mnemonic phrase from entropy data, ensuring it meets the required strength.
+
+        This method generates a mnemonic phrase from the provided entropy data, validating
+        its strength and ensuring it adheres to the specified mnemonic type and language.
+
+        :param entropy: The entropy data used to generate the mnemonic phrase.
+                        It can be a string, bytes, or an instance of IEntropy.
+        :type entropy: Union[str, bytes, IEntropy]
+        :param language: The language for which to generate the mnemonic phrase.
+        :type language: str
+        :param mnemonic_type: The type of mnemonic phrase to generate. Defaults to `STANDARD`.
+        :type mnemonic_type: str, optional
+        :param max_attempts: The maximum number of attempts to adjust entropy to meet strength requirements.
+                             Defaults to `10^60`.
+        :type max_attempts: int, optional
+
+        :return: The generated mnemonic phrase.
+        :rtype: str
+
+        >>> from hdwallet.mnemonics.electrum.v2 import ElectrumV2Mnemonic
+        >>> ElectrumV2Mnemonic.from_entropy(entropy="...", language="...", mnemonic_type="...", max_attempts=...)
+        "..."
+        """
 
         if isinstance(entropy, str) or isinstance(entropy, bytes):
             entropy: bytes = get_bytes(entropy)
@@ -172,6 +283,36 @@ class ElectrumV2Mnemonic(IMnemonic):
         electrum_v1_words_list: Optional[List[str]] = None,
         electrum_v1_words_list_with_index: Optional[dict] = None
     ) -> str:
+        """
+        Generates a mnemonic phrase from entropy data.
+
+        This method generates a mnemonic phrase from provided entropy data, ensuring
+        it meets the requirements of the specified mnemonic type and language.
+
+        :param entropy: The entropy data used to generate the mnemonic phrase.
+        :type entropy: Union[str, bytes]
+        :param language: The language for which to generate the mnemonic phrase.
+        :type language: str
+        :param mnemonic_type: The type of mnemonic phrase to generate. Defaults to `STANDARD`.
+        :type mnemonic_type: str, optional
+        :param words_list: Optional list of words to use for generating the mnemonic.
+        :type words_list: List[str], optional
+        :param bip39_words_list: Optional list of BIP39 words for validation.
+        :type bip39_words_list: List[str], optional
+        :param bip39_words_list_with_index: Optional dictionary mapping BIP39 words to indices.
+        :type bip39_words_list_with_index: dict, optional
+        :param electrum_v1_words_list: Optional list of Electrum V1 words for validation.
+        :type electrum_v1_words_list: List[str], optional
+        :param electrum_v1_words_list_with_index: Optional dictionary mapping Electrum V1 words to indices.
+        :type electrum_v1_words_list_with_index: dict, optional
+
+        :return: The generated mnemonic phrase.
+        :rtype: str
+
+        >>> from hdwallet.mnemonics.electrum.v2 import ElectrumV2Mnemonic
+        >>> ElectrumV2Mnemonic.encode(words=..., language="...", mnemonic_type="...")
+        "..."
+        """
 
         entropy: int = bytes_to_integer(get_bytes(entropy))
         if not ElectrumV2Entropy.are_entropy_bits_enough(entropy):
@@ -199,6 +340,24 @@ class ElectrumV2Mnemonic(IMnemonic):
 
     @classmethod
     def decode(cls, mnemonic: str, mnemonic_type: str = ELECTRUM_V2_MNEMONIC_TYPES.STANDARD) -> str:
+        """
+        Decodes a mnemonic phrase into its original entropy value.
+
+        This method decodes the mnemonic phrase by converting it back into its original
+        entropy value, validating its type, and ensuring its integrity.
+
+        :param mnemonic: The mnemonic phrase to decode.
+        :type mnemonic: str
+        :param mnemonic_type: The type of mnemonic to decode. Defaults to `STANDARD`.
+        :type mnemonic_type: str, optional
+
+        :return: The decoded entropy as a string.
+        :rtype: str
+
+        >>> from hdwallet.mnemonics.electrum.v2 import ElectrumV2Mnemonic
+        >>> ElectrumV2Mnemonic.decode(mnemonic="...", mnemonic_type="...")
+        "..."
+        """
 
         words: list = cls.normalize(mnemonic)
         if len(words) not in cls.words_list:
@@ -228,6 +387,32 @@ class ElectrumV2Mnemonic(IMnemonic):
         electrum_v1_words_list: Optional[List[str]] = None,
         electrum_v1_words_list_with_index: Optional[dict] = None
     ) -> bool:
+        """
+        Checks if the given mnemonic is valid according to the specified mnemonic type.
+
+        This method validates the mnemonic against BIP39 and Electrum V1 mnemonics,
+        and then checks if it matches the specified mnemonic type.
+
+        :param mnemonic: The mnemonic phrase to check.
+        :type mnemonic: str or List[str]
+        :param mnemonic_type: The type of mnemonic to check against. Defaults to `STANDARD`.
+        :type mnemonic_type: str, optional
+        :param bip39_words_list: Optional list of BIP39 words for validation.
+        :type bip39_words_list: List[str], optional
+        :param bip39_words_list_with_index: Optional dictionary mapping BIP39 words to indices.
+        :type bip39_words_list_with_index: dict, optional
+        :param electrum_v1_words_list: Optional list of Electrum V1 words for validation.
+        :type electrum_v1_words_list: List[str], optional
+        :param electrum_v1_words_list_with_index: Optional dictionary mapping Electrum V1 words to indices.
+        :type electrum_v1_words_list_with_index: dict, optional
+
+        :return: True if the mnemonic is valid according to the specified type, False otherwise.
+        :rtype: bool
+
+        >>> from hdwallet.mnemonics.electrum.v2 import ElectrumV2Mnemonic
+        >>> ElectrumV2Mnemonic.is_valid(mnemonic="...", mnemonic_type="...")
+        ...
+        """
 
         if BIP39Mnemonic.is_valid(
             mnemonic, words_list=bip39_words_list, words_list_with_index=bip39_words_list_with_index
@@ -243,6 +428,21 @@ class ElectrumV2Mnemonic(IMnemonic):
     def is_type(
         cls, mnemonic: Union[str, List[str]], mnemonic_type: str = ELECTRUM_V2_MNEMONIC_TYPES.STANDARD
     ) -> bool:
+        """
+        Checks if the given mnemonic matches the specified mnemonic type.
+
+        :param mnemonic: The mnemonic phrase to check.
+        :type mnemonic: str or List[str]
+        :param mnemonic_type: The type of mnemonic to check against. Defaults to `STANDARD`.
+        :type mnemonic_type: str, optional
+
+        :return: True if the mnemonic matches the specified type, False otherwise.
+        :rtype: bool
+
+        >>> from hdwallet.mnemonics.electrum.v2 import ElectrumV2Mnemonic
+        >>> ElectrumV2Mnemonic.from_words(mnemonic="...", mnemonic_type="...")
+        ...
+        """
         return bytes_to_string(hmac_sha512(
             b"Seed version", " ".join(cls.normalize(mnemonic))
         )).startswith(
@@ -250,9 +450,35 @@ class ElectrumV2Mnemonic(IMnemonic):
         )
 
     def mnemonic_type(self) -> str:
+        """
+        Retrieves the type of the mnemonic.
+
+        :return: The type of the mnemonic.
+        :rtype: str
+
+        >>> from hdwallet.mnemonics.electrum.v2 import ElectrumV2Mnemonic
+        >>> mnemonic: ElectrumV2Mnemonic = ElectrumV2Mnemonic(mnemonic="...", mnemonic_type="...")
+        >>> mnemonic.mnemonic_type()
+        "..."
+        """
+
         return self._mnemonic_type
 
     @classmethod
     def normalize(cls, mnemonic: Union[str, List[str]]) -> List[str]:
+        """
+        Normalizes the given mnemonic by splitting it into a list of words if it is a string.
+
+        :param mnemonic: The mnemonic value, which can be a single string of words or a list of words.
+        :type mnemonic: Union[str, List[str]]
+
+        :return: A list of words from the mnemonic.
+        :rtype: List[str]
+
+        >>> from hdwallet.mnemonics.electrum.v2 import ElectrumV2Mnemonic
+        >>> ElectrumV2Mnemonic.normalize(mnemonic="...")
+        "..."
+        """
+
         mnemonic: list = mnemonic.split() if isinstance(mnemonic, str) else mnemonic
         return list(map(lambda _: unicodedata.normalize("NFKD", _.lower()), mnemonic))

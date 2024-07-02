@@ -21,10 +21,36 @@ class ElectrumV1Seed(ISeed):
 
     @classmethod
     def name(cls) -> str:
+        """
+        Get the name of the seeds class.
+
+        :return: The name of the seeds class.
+        :rtype: str
+
+        >>> from hdwallet.seeds.electrum.v1 import ElectrumV1Seed
+        >>> seed: ElectrumV1Seed = ElectrumV1Seed(seed="...")
+        >>> seed.name()
+        "Electrum-V1"
+        """
+
         return "Electrum-V1"
 
     @classmethod
     def from_mnemonic(cls, mnemonic: Union[str, IMnemonic]) -> str:
+        """
+        Converts an Electrum V1 mnemonic phrase to its corresponding hashed entropy.
+
+        :param mnemonic: The mnemonic phrase to be decoded. Can be a string or an instance of `IMnemonic`.
+        :type mnemonic: Union[str, IMnemonic]
+
+        :return: The hashed entropy as a string.
+        :rtype: str
+
+        >>> from hdwallet.seeds.electrum.v1 import ElectrumV1Seed
+        >>> ElectrumV1Seed.from_mnemonic(mnemonic="...")
+        "..."
+        """
+
         mnemonic = (
             mnemonic.mnemonic() if isinstance(mnemonic, IMnemonic) else mnemonic
         )

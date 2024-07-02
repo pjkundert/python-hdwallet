@@ -13,3 +13,5 @@ HDWallet
     :caption: API's
 
     Entropies <entropies.rst>
+    Mnemonics <mnemonics.rst>
+    Seeds <seeds.rst>

@@ -26,6 +26,18 @@ class ElectrumV2Seed(ISeed):
 
     @classmethod
     def name(cls) -> str:
+        """
+        Get the name of the seeds class.
+
+        :return: The name of the seeds class.
+        :rtype: str
+
+        >>> from hdwallet.seeds.electrum.v2 import ElectrumV2Seed
+        >>> seed: ElectrumV2Seed = ElectrumV2Seed(seed="...")
+        >>> seed.name()
+        "Electrum-V2"
+        """
+
         return "Electrum-V2"
 
     @classmethod
@@ -35,6 +47,24 @@ class ElectrumV2Seed(ISeed):
         passphrase: Optional[str] = None,
         mnemonic_type=ELECTRUM_V2_MNEMONIC_TYPES.STANDARD
     ) -> str:
+        """
+        Converts an Electrum V2 mnemonic phrase to its corresponding seed.
+
+        :param mnemonic: The mnemonic phrase to be decoded. Can be a string or an instance of `IMnemonic`.
+        :type mnemonic: Union[str, IMnemonic]
+        :param passphrase: An optional passphrase to strengthen the security of the seed. Defaults to None.
+        :type passphrase: Optional[str]
+        :param mnemonic_type: The type of Electrum V2 mnemonic, defaults to STANDARD.
+        :type mnemonic_type: str
+
+        :return: The derived seed as a string.
+        :rtype: str
+
+        >>> from hdwallet.seeds.electrum.v2 import ElectrumV2Seed
+        >>> ElectrumV2Seed.from_mnemonic(mnemonic="...", passphrase="...", mnemonic_type="...")
+        "..."
+        """
+
         mnemonic = (
             mnemonic.mnemonic() if isinstance(mnemonic, IMnemonic) else mnemonic
         )
