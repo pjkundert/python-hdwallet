@@ -888,5 +888,173 @@
                 }
             ]
         }
+    },    
+    "BIP141": {
+        "derivation":{
+            "name": "Custom",
+            "args":{
+                "path": "m/0-1"
+            }
+        },
+        "compressed": {
+            "cryptocurrency": "Bitcoin",
+            "symbol": "BTC",
+            "network": "mainnet",
+            "coin_type": 0,
+            "entropy": "e69842f0a574a6c5dee9cd2a0a53796bd41a2534",
+            "strength": 160,
+            "mnemonic": "track search rotate enough engine glass knife defy claw family tattoo stumble double barely spike",
+            "passphrase": null,
+            "language": "English",
+            "seed": "3412a2f89e1f6e9a3fba3b6c9c2dcac183c7ff40ebe4917957b2197d20f812ac36113a4359cf621b18d2b060c2fd9739e9819195dcf9b36b402ea6757cf36ea0",
+            "ecc": "SLIP10-Secp256k1",
+            "hd": "BIP141",
+            "semantic": "P2WPKH",
+            "root_xprivate_key": "zprvAWgYBBk7JR8GjXF64xuEe9QJSFhyzN9XeUNtubpqdUR1nRC54MRFhXcNbeZw34Db3m8Fw5PeDPujdgd6X1MtzNC2c4k7PAJ3U87HwkVoEKc",
+            "root_xpublic_key": "zpub6jftahH18ngZx1KZAzSF1HM2zHYUPpsP1hJVhzETBowzfDXDbtjWFKvrSv6cLk8Rt8vL8z79RbpLDm1nDzCxUdLR5HVQ3Sc7uffJCBw5df2",
+            "root_private_key": "71d5fdac4b53dd572e2ee1ce68a44c188f23d52d9da2d1eb68be1aec64dbd895",
+            "root_wif": "L12zYhjufRFMT4xnF7uhMKexvB4V1E2wxp9cNdGh5zzQZkHuJfep",
+            "root_chain_code": "57757c7c8766fc0f7a4420ea6ee13a1a90afdd16df5bc80ad0afcb68bb330dbd",
+            "root_public_key": "02b37b9b64e46492ebadd9673ced57bca0ea2604d5f0b8f2e078d0c6953551b39b",
+            "strict": true,
+            "public_key_type": "compressed",
+            "wif_type": "wif-compressed",
+            "derivations": [
+                {
+                    "at": {
+                        "path": "m/0",
+                        "indexes": [
+                            0
+                        ],
+                        "depth": 1,
+                        "index": 0
+                    },
+                    "xprivate_key": "zprvAZnWP7TYcFwsQHWQUZiRDksnr8N71ThynU2mKmPCXjJfthkcAcExpJ9MsjErmRd6SnoPkaCmGAy7eQbUttTDUnuWdQyY42DTrJZ4rNDAKY5",
+                    "xpublic_key": "zpub6nmrnczSSdWAcmasabFRatpXQACbQvRq9gxN89np64qemW5ki9ZDN6Tqj27wTNLBBEVyLR3hJQyrDc2sNP3CNJKxrYbnyHZFhSL7wGGjJMx",
+                    "private_key": "d98aad6db70b3a4f7d03ded0660d342144a977f82a61144507f3a1446a74742d",
+                    "wif": "L4WaoGYtPR1SG9SrPhiyex1qpGstiJLuQMRL4FLbFPNFZEHtqBJZ",
+                    "chain_code": "e6277b4f206e5ec3f2b5865ac1272ee99df216c160830d615950077d2f42abfc",
+                    "public_key": "03cd366ee429549f7f5099eebf308411e0c3dd4f066ef8a07d9d4845a5e2a60476",
+                    "uncompressed": "04cd366ee429549f7f5099eebf308411e0c3dd4f066ef8a07d9d4845a5e2a60476a868feecae57a72ac27dbb6ccdd31dbc03ce48cbd09bd49e17ff74dffa80ff9f",
+                    "compressed": "03cd366ee429549f7f5099eebf308411e0c3dd4f066ef8a07d9d4845a5e2a60476",
+                    "hash": "9fb3eced4470a1cc80a5d540d93406960fbf6308",
+                    "fingerprint": "9fb3eced",
+                    "parent_fingerprint": "a627a6ab",
+                    "addresses": {
+                        "p2wpkh": "bc1qn7e7em2ywzsueq9964qdjdqxjc8m7ccg5rdetq",
+                        "p2wpkh_in_p2sh": "35Mx4HXDbwJrkvtZH82eoK7Ld7sWAcptm4",
+                        "p2wsh": "bc1qp9kq2d9yzetqz55dfeu3qnl4nyvp4yj70jdqpr6amhpymh4sdy4q2wkc38",
+                        "p2wsh_in_p2sh": "37B675qoGvZJ8eViNad9vba7sC3Vu9TWCp"
+                    }
+                },
+                {
+                    "at": {
+                        "path": "m/1",
+                        "indexes": [
+                            1
+                        ],
+                        "depth": 1,
+                        "index": 1
+                    },
+                    "xprivate_key": "zprvAZnWP7TYcFwsQzVLbiowFcUeVNBfTHUoFH6u3YDrxixw2vw8T8pDpAmn92STfZbDzdw8ZqDFEbvauA2Lyd24vTYfMPoH6AkBW1Fdovg8SLU",
+                    "xpublic_key": "zpub6nmrnczSSdWAdUZohkLwckRP3Q29rkCecW2VqvdUX4VuujGGzg8UMy6FzJ634isHv7YkYLoXzveQJx2nzQgzmA6LEHLRBByhrGoRqmqTZjo",
+                    "private_key": "1ccea826a81b6187600b23a893e327776a266aaa9c39ebe8280203c919f228e7",
+                    "wif": "KxBi3NNQvDWFhGXE3ednff5GQ6vmhMRdULAWmDRd94z93zEffkSb",
+                    "chain_code": "2d1fcc7dd7d0abb4803cac90de409d101388141e4e521b77c5fde69d3887fa66",
+                    "public_key": "026e1e0a939bdac86d42f8882a79ef8781c9be6b77778c0f213c5da290f8da3042",
+                    "uncompressed": "046e1e0a939bdac86d42f8882a79ef8781c9be6b77778c0f213c5da290f8da30420804d9d0d177f15c3a5bfec31f6e4e7cef762bc4437726dbc81646a236133b02",
+                    "compressed": "026e1e0a939bdac86d42f8882a79ef8781c9be6b77778c0f213c5da290f8da3042",
+                    "hash": "30d011e741cc1ca19a4404ff0e94b4418339406e",
+                    "fingerprint": "30d011e7",
+                    "parent_fingerprint": "a627a6ab",
+                    "addresses": {
+                        "p2wpkh": "bc1qxrgpre6pesw2rxjyqnlsa995gxpnjsrwtsfdaw",
+                        "p2wpkh_in_p2sh": "3HdYx4g3W52P9VrFyeGvCx4ih3h6PupCBG",
+                        "p2wsh": "bc1q970run9ed44jptxwa8vp7egz7c4a5zrmzynvhyhlxtqv56kz325qctr3lw",
+                        "p2wsh_in_p2sh": "33Rfq4krEbhwNReyiQdN6XDYFzte22tEHc"
+                    }
+                }
+            ]
+        },
+        "uncompressed": {
+            "cryptocurrency": "Bitcoin",
+            "symbol": "BTC",
+            "network": "mainnet",
+            "coin_type": 0,
+            "entropy": "e69842f0a574a6c5dee9cd2a0a53796bd41a2534",
+            "strength": 160,
+            "mnemonic": "track search rotate enough engine glass knife defy claw family tattoo stumble double barely spike",
+            "passphrase": null,
+            "language": "English",
+            "seed": "3412a2f89e1f6e9a3fba3b6c9c2dcac183c7ff40ebe4917957b2197d20f812ac36113a4359cf621b18d2b060c2fd9739e9819195dcf9b36b402ea6757cf36ea0",
+            "ecc": "SLIP10-Secp256k1",
+            "hd": "BIP141",
+            "semantic": "P2WPKH",
+            "root_xprivate_key": "zprvAWgYBBk7JR8GjXF64xuEe9QJSFhyzN9XeUNtubpqdUR1nRC54MRFhXcNbeZw34Db3m8Fw5PeDPujdgd6X1MtzNC2c4k7PAJ3U87HwkVoEKc",
+            "root_xpublic_key": "zpub6jftahH18ngZx1KZAzSF1HM2zHYUPpsP1hJVhzETBowzfDXDbtjWFKvrSv6cLk8Rt8vL8z79RbpLDm1nDzCxUdLR5HVQ3Sc7uffJCBw5df2",
+            "root_private_key": "71d5fdac4b53dd572e2ee1ce68a44c188f23d52d9da2d1eb68be1aec64dbd895",
+            "root_wif": "5JgRNEJsuCqZjA485ZNueEHkwBtYGTWtsi3QRPGLWE92GBngBMd",
+            "root_chain_code": "57757c7c8766fc0f7a4420ea6ee13a1a90afdd16df5bc80ad0afcb68bb330dbd",
+            "root_public_key": "04b37b9b64e46492ebadd9673ced57bca0ea2604d5f0b8f2e078d0c6953551b39bf18952c2a93d8d6f7319e70948697d55fb5e126aec2197163e18bd22bf09c9ea",
+            "strict": true,
+            "public_key_type": "uncompressed",
+            "wif_type": "wif",
+            "derivations": [
+                {
+                    "at": {
+                        "path": "m/0",
+                        "indexes": [
+                            0
+                        ],
+                        "depth": 1,
+                        "index": 0
+                    },
+                    "xprivate_key": "zprvAYqDgVqBXHWooMs6N1CPw7suGCGsDky83uhiuyNYKH4fDgvzBAwwBzmPFyaBWzfycLkvuWu6noWTQFSHTvcD1irBZ3MerscdYA81Yp6enmz",
+                    "xpublic_key": "zpub6mpa61N5Mf571qwZU2jQJFpdpE7MdDgyR8dKiMn9scbe6VG8iiGBjo5s7GTGCwP4LnTWVMk2q3XBySsfwRCBuEGdnAyun8xRPHu4dbQsAAp",
+                    "private_key": "d98aad6db70b3a4f7d03ded0660d342144a977f82a61144507f3a1446a74742d",
+                    "wif": "5KU6PiaxbXpDySvtX4nm6syqDXLEXeuze1Yo1HPZgWY6Zm237id",
+                    "chain_code": "e6277b4f206e5ec3f2b5865ac1272ee99df216c160830d615950077d2f42abfc",
+                    "public_key": "04cd366ee429549f7f5099eebf308411e0c3dd4f066ef8a07d9d4845a5e2a60476a868feecae57a72ac27dbb6ccdd31dbc03ce48cbd09bd49e17ff74dffa80ff9f",
+                    "uncompressed": "04cd366ee429549f7f5099eebf308411e0c3dd4f066ef8a07d9d4845a5e2a60476a868feecae57a72ac27dbb6ccdd31dbc03ce48cbd09bd49e17ff74dffa80ff9f",
+                    "compressed": "03cd366ee429549f7f5099eebf308411e0c3dd4f066ef8a07d9d4845a5e2a60476",
+                    "hash": "f892e38a4dc60b56b4d93823f550a9db3699b658",
+                    "fingerprint": "f892e38a",
+                    "parent_fingerprint": "24772cf1",
+                    "addresses": {
+                        "p2wpkh": "bc1qlzfw8zjdcc94ddxe8q3l259fmvmfndjc6lewgc",
+                        "p2wpkh_in_p2sh": "37U4UuoTw5JWbcNrUgPQmZkbTws2kadx3X",
+                        "p2wsh": "bc1qv2khaz20szd7wpua7pj7dz7pj6trv2966kwyzhk482vwjt90w58qhx8cfq",
+                        "p2wsh_in_p2sh": "3Ncmfi8aYDJdNErkqoVZkyy4cUz9ioDpko"
+                    }
+                },
+                {
+                    "at": {
+                        "path": "m/1",
+                        "indexes": [
+                            1
+                        ],
+                        "depth": 1,
+                        "index": 1
+                    },
+                    "xprivate_key": "zprvAYqDgVqBXHWop4r2VAHuxyUkuS6RfajwWimrdkDCkGivMv7WThXCBsPoXGmnR8e7ABtfimuamETvezs9YfB4TPVLH2BPu29MBrpaWPTyc8t",
+                    "xpublic_key": "zpub6mpa61N5Mf572YvVbBpvL7RVTTvv53TnswhTS8cpJcFuEiSf1EqSjfiHNYRMpHvB5fWHhHVsXZBk4nsbZSqzJ6319uiXz3NsY8NNYAocv9u",
+                    "private_key": "1ccea826a81b6187600b23a893e327776a266aaa9c39ebe8280203c919f228e7",
+                    "wif": "5J2yRZ2gQPKQikPi246ASXNozLvRB3pGWkmJAZiq4e9sJuGZzqS",
+                    "chain_code": "2d1fcc7dd7d0abb4803cac90de409d101388141e4e521b77c5fde69d3887fa66",
+                    "public_key": "046e1e0a939bdac86d42f8882a79ef8781c9be6b77778c0f213c5da290f8da30420804d9d0d177f15c3a5bfec31f6e4e7cef762bc4437726dbc81646a236133b02",
+                    "uncompressed": "046e1e0a939bdac86d42f8882a79ef8781c9be6b77778c0f213c5da290f8da30420804d9d0d177f15c3a5bfec31f6e4e7cef762bc4437726dbc81646a236133b02",
+                    "compressed": "026e1e0a939bdac86d42f8882a79ef8781c9be6b77778c0f213c5da290f8da3042",
+                    "hash": "af22b4a5030461505ada965d864ce472dfe03c32",
+                    "fingerprint": "af22b4a5",
+                    "parent_fingerprint": "24772cf1",
+                    "addresses": {
+                        "p2wpkh": "bc1q4u3tffgrq3s4qkk6jewcvn8ywt07q0pj76fmvn",
+                        "p2wpkh_in_p2sh": "3H11pHvnyYhknXCuHHJz2aUZAWhKVnFTyY",
+                        "p2wsh": "bc1qq502jq55atp720w490fmp5fhcq4dnzsefglufe7spw3elvd0fu0qtvjrx5",
+                        "p2wsh_in_p2sh": "3Ew1QYzeN9bG6Z9wYH4wBJ1zX2PhM6suxM"
+                    }
+                }
+            ]
+        }
     }
 }
