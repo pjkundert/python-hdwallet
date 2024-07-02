@@ -84,7 +84,7 @@ def test_bip49_from_xprivate_key_compressed(data):
 
     assert hdwallet.address(
         address="P2WPKH-In-P2SH",
-        script_address_prefix=cryptocurrency.NETWORKS.MAINNET.SCRIPT_ADDRESS_PREFIX,
+        script_address_prefix=cryptocurrency.NETWORKS.MAINNET.SCRIPT_ADDRESS_PREFIX
     ) == dump["derivation"]["address"]
 
 
@@ -160,5 +160,5 @@ def test_bip49_from_xprivate_key_uncompressed(data):
 
     assert hdwallet.address(
         address="P2WPKH-In-P2SH",
-        script_address_prefix=cryptocurrency.NETWORKS.MAINNET.SCRIPT_ADDRESS_PREFIX,
+        script_address_prefix=cryptocurrency.NETWORKS.MAINNET.SCRIPT_ADDRESS_PREFIX
     ) == dump["derivation"]["address"]

@@ -74,7 +74,7 @@ def test_bip49_from_entropy_compressed(data):
 
     assert hdwallet.address(
         address="P2WPKH-In-P2SH",
-        script_address_prefix=cryptocurrency.NETWORKS.MAINNET.SCRIPT_ADDRESS_PREFIX,
+        script_address_prefix=cryptocurrency.NETWORKS.MAINNET.SCRIPT_ADDRESS_PREFIX
     ) == data["hdwallet"]["BIP49"]["compressed"]["derivations"][-1]["address"]
 
     assert hdwallet.dumps() == data["hdwallet"]["BIP49"]["compressed"]
@@ -143,7 +143,7 @@ def test_bip49_from_entropy_uncompressed(data):
 
     assert hdwallet.address(
         address="P2WPKH-In-P2SH",
-        script_address_prefix=cryptocurrency.NETWORKS.MAINNET.SCRIPT_ADDRESS_PREFIX,
+        script_address_prefix=cryptocurrency.NETWORKS.MAINNET.SCRIPT_ADDRESS_PREFIX
     ) == data["hdwallet"]["BIP49"]["uncompressed"]["derivations"][-1]["address"]
 
     assert hdwallet.dumps() == data["hdwallet"]["BIP49"]["uncompressed"]
