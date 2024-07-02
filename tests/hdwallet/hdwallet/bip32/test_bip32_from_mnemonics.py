@@ -8,11 +8,11 @@
 from hdwallet import HDWallet
 from hdwallet.cryptocurrencies import CRYPTOCURRENCIES
 from hdwallet.derivations import DERIVATIONS
-from hdwallet.entropies import BIP39Entropy
+from hdwallet.mnemonics import BIP39Mnemonic
 from hdwallet.hds import HDS
 
 
-def test_bip32_from_entropy_compressed(data):
+def test_bip32_from_mnemonic_compressed(data):
 
     cryptocurrency = CRYPTOCURRENCIES.cryptocurrency(
         data["hdwallet"]["BIP32"]["compressed"]["cryptocurrency"]
@@ -25,9 +25,9 @@ def test_bip32_from_entropy_compressed(data):
         network=data["hdwallet"]["BIP32"]["compressed"]["network"],
         language=data["hdwallet"]["BIP32"]["compressed"]["language"].lower(),
         public_key_type=data["hdwallet"]["BIP32"]["compressed"]["public_key_type"]
-    ).from_entropy(
-        entropy=BIP39Entropy(
-            entropy=data["hdwallet"]["BIP32"]["compressed"]["entropy"]
+    ).from_mnemonic(
+        mnemonic=BIP39Mnemonic(
+            mnemonic=data["hdwallet"]["BIP32"]["compressed"]["mnemonic"]
         )
     ).from_derivation(
         derivation=DERIVATIONS.derivation(data["hdwallet"]["BIP32"]["derivation"]["name"])(
@@ -113,7 +113,7 @@ def test_bip32_from_entropy_compressed(data):
     assert hdwallet.dump() == dump
 
 
-def test_bip32_from_entropy_uncompressed(data):
+def test_bip32_from_mnemonic_uncompressed(data):
 
     cryptocurrency = CRYPTOCURRENCIES.cryptocurrency(
         data["hdwallet"]["BIP32"]["uncompressed"]["cryptocurrency"]
@@ -126,9 +126,9 @@ def test_bip32_from_entropy_uncompressed(data):
         network=data["hdwallet"]["BIP32"]["uncompressed"]["network"],
         language=data["hdwallet"]["BIP32"]["uncompressed"]["language"].lower(),
         public_key_type=data["hdwallet"]["BIP32"]["uncompressed"]["public_key_type"]
-    ).from_entropy(
-        entropy=BIP39Entropy(
-            entropy=data["hdwallet"]["BIP32"]["uncompressed"]["entropy"]
+    ).from_mnemonic(
+        mnemonic=BIP39Mnemonic(
+            mnemonic=data["hdwallet"]["BIP32"]["uncompressed"]["mnemonic"]
         )
     ).from_derivation(
         derivation=DERIVATIONS.derivation(data["hdwallet"]["BIP32"]["derivation"]["name"])(
