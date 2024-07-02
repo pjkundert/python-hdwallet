@@ -33,6 +33,18 @@ class ElectrumDerivation(IDerivation):
 
     @classmethod
     def name(cls) -> str:
+        """
+        Get the name of the derivation class.
+
+        :return: The name of the derivation class.
+        :rtype: str
+
+        >>> from hdwallet.derivations.custom import CustomDerivation
+        >>> derivation: CustomDerivation = CustomDerivation(electrum="...")
+        >>> derivation.name()
+        "Electrum"
+        """
+
         return "Electrum"
 
     def from_change(self, change: Union[str, int, Tuple[int, int]]) -> "ElectrumDerivation":

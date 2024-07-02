@@ -22,6 +22,18 @@ class CustomDerivation(IDerivation):
 
     @classmethod
     def name(cls) -> str:
+        """
+        Get the name of the derivation class.
+
+        :return: The name of the derivation class.
+        :rtype: str
+
+        >>> from hdwallet.derivations.custom import CustomDerivation
+        >>> derivation: CustomDerivation = CustomDerivation(custom="...")
+        >>> derivation.name()
+        "Custom"
+        """
+
         return "Custom"
 
     def from_path(self, path: str) -> "CustomDerivation":

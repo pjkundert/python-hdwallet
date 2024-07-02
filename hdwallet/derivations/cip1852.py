@@ -63,6 +63,18 @@ class CIP1852Derivation(IDerivation):  # https://github.com/cardano-foundation/C
         
     @classmethod
     def name(cls) -> str:
+        """
+        Get the name of the derivation class.
+
+        :return: The name of the derivation class.
+        :rtype: str
+
+        >>> from hdwallet.derivations.cip1852 import CIP1852Derivation
+        >>> derivation: CIP1852Derivation = CIP1852Derivation(CIP1852="...")
+        >>> derivation.name()
+        "CIP1852"
+        """
+
         return "CIP1852"
 
     def from_coin_type(self, coin_type: Union[str, int]) -> "CIP1852Derivation":
