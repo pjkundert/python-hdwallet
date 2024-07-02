@@ -7,6 +7,7 @@
 
 from hdwallet import HDWallet
 from hdwallet.cryptocurrencies import CRYPTOCURRENCIES
+from hdwallet.derivations import DERIVATIONS
 from hdwallet.entropies import BIP39Entropy
 from hdwallet.hds import HDS
 
@@ -27,6 +28,10 @@ def test_bip32_from_entropy_compressed(data):
     ).from_entropy(
         entropy=BIP39Entropy(
             entropy=data["hdwallet"]["BIP32"]["compressed"]["entropy"]
+        )
+    ).from_derivation(
+        derivation=DERIVATIONS.derivation(data["hdwallet"]["BIP32"]["derivation"]["name"])(
+            **data["hdwallet"]["BIP32"]["derivation"]["args"]
         )
     )
 
@@ -51,54 +56,61 @@ def test_bip32_from_entropy_compressed(data):
     assert hdwallet.public_key_type() == data["hdwallet"]["BIP32"]["compressed"]["public_key_type"]
     assert hdwallet.wif_type() == data["hdwallet"]["BIP32"]["compressed"]["wif_type"]
 
-    assert hdwallet.path() == data["hdwallet"]["BIP32"]["compressed"]["derivation"]["at"]["path"]
-    assert hdwallet.indexes() == data["hdwallet"]["BIP32"]["compressed"]["derivation"]["at"]["indexes"]
-    assert hdwallet.depth() == data["hdwallet"]["BIP32"]["compressed"]["derivation"]["at"]["depth"]
-    assert hdwallet.index() == data["hdwallet"]["BIP32"]["compressed"]["derivation"]["at"]["index"]
+    assert hdwallet.path() == data["hdwallet"]["BIP32"]["compressed"]["derivations"][-1]["at"]["path"]
+    assert hdwallet.indexes() == data["hdwallet"]["BIP32"]["compressed"]["derivations"][-1]["at"]["indexes"]
+    assert hdwallet.depth() == data["hdwallet"]["BIP32"]["compressed"]["derivations"][-1]["at"]["depth"]
+    assert hdwallet.index() == data["hdwallet"]["BIP32"]["compressed"]["derivations"][-1]["at"]["index"]
 
-    assert hdwallet.xprivate_key() == data["hdwallet"]["BIP32"]["compressed"]["derivation"]["xprivate_key"]
-    assert hdwallet.xpublic_key() == data["hdwallet"]["BIP32"]["compressed"]["derivation"]["xpublic_key"]
-    assert hdwallet.private_key() == data["hdwallet"]["BIP32"]["compressed"]["derivation"]["private_key"]
-    assert hdwallet.wif() == data["hdwallet"]["BIP32"]["compressed"]["derivation"]["wif"]
-    assert hdwallet.chain_code() == data["hdwallet"]["BIP32"]["compressed"]["derivation"]["chain_code"]
-    assert hdwallet.public_key() == data["hdwallet"]["BIP32"]["compressed"]["derivation"]["public_key"]
-    assert hdwallet.uncompressed() == data["hdwallet"]["BIP32"]["compressed"]["derivation"]["uncompressed"]
-    assert hdwallet.compressed() == data["hdwallet"]["BIP32"]["compressed"]["derivation"]["compressed"]
-    assert hdwallet.hash() == data["hdwallet"]["BIP32"]["compressed"]["derivation"]["hash"]
-    assert hdwallet.fingerprint() == data["hdwallet"]["BIP32"]["compressed"]["derivation"]["fingerprint"]
-    assert hdwallet.parent_fingerprint() == data["hdwallet"]["BIP32"]["compressed"]["derivation"]["parent_fingerprint"]
+    assert hdwallet.xprivate_key() == data["hdwallet"]["BIP32"]["compressed"]["derivations"][-1]["xprivate_key"]
+    assert hdwallet.xpublic_key() == data["hdwallet"]["BIP32"]["compressed"]["derivations"][-1]["xpublic_key"]
+    assert hdwallet.private_key() == data["hdwallet"]["BIP32"]["compressed"]["derivations"][-1]["private_key"]
+    assert hdwallet.wif() == data["hdwallet"]["BIP32"]["compressed"]["derivations"][-1]["wif"]
+    assert hdwallet.chain_code() == data["hdwallet"]["BIP32"]["compressed"]["derivations"][-1]["chain_code"]
+    assert hdwallet.public_key() == data["hdwallet"]["BIP32"]["compressed"]["derivations"][-1]["public_key"]
+    assert hdwallet.uncompressed() == data["hdwallet"]["BIP32"]["compressed"]["derivations"][-1]["uncompressed"]
+    assert hdwallet.compressed() == data["hdwallet"]["BIP32"]["compressed"]["derivations"][-1]["compressed"]
+    assert hdwallet.hash() == data["hdwallet"]["BIP32"]["compressed"]["derivations"][-1]["hash"]
+    assert hdwallet.fingerprint() == data["hdwallet"]["BIP32"]["compressed"]["derivations"][-1]["fingerprint"]
+    assert hdwallet.parent_fingerprint() == data["hdwallet"]["BIP32"]["compressed"]["derivations"][-1]["parent_fingerprint"]
 
     assert hdwallet.address(
         address=cryptocurrency.ADDRESSES.P2PKH,
         public_key_address_prefix=cryptocurrency.NETWORKS.MAINNET.PUBLIC_KEY_ADDRESS_PREFIX
-    ) == data["hdwallet"]["BIP32"]["compressed"]["derivation"]["addresses"]["p2pkh"]
+    ) == data["hdwallet"]["BIP32"]["compressed"]["derivations"][-1]["addresses"]["p2pkh"]
     assert hdwallet.address(
         address=cryptocurrency.ADDRESSES.P2SH,
         script_address_prefix=cryptocurrency.NETWORKS.MAINNET.SCRIPT_ADDRESS_PREFIX
-    ) == data["hdwallet"]["BIP32"]["compressed"]["derivation"]["addresses"]["p2sh"]
+    ) == data["hdwallet"]["BIP32"]["compressed"]["derivations"][-1]["addresses"]["p2sh"]
     assert hdwallet.address(
         address=cryptocurrency.ADDRESSES.P2TR,
         hrp=cryptocurrency.NETWORKS.MAINNET.HRP,
         witness_version=cryptocurrency.NETWORKS.MAINNET.WITNESS_VERSIONS.P2TR
-    ) == data["hdwallet"]["BIP32"]["compressed"]["derivation"]["addresses"]["p2tr"]
+    ) == data["hdwallet"]["BIP32"]["compressed"]["derivations"][-1]["addresses"]["p2tr"]
     assert hdwallet.address(
         address=cryptocurrency.ADDRESSES.P2WPKH,
         hrp=cryptocurrency.NETWORKS.MAINNET.HRP,
         witness_version=cryptocurrency.NETWORKS.MAINNET.WITNESS_VERSIONS.P2WPKH
-    ) == data["hdwallet"]["BIP32"]["compressed"]["derivation"]["addresses"]["p2wpkh"]
+    ) == data["hdwallet"]["BIP32"]["compressed"]["derivations"][-1]["addresses"]["p2wpkh"]
     assert hdwallet.address(
         address=cryptocurrency.ADDRESSES.P2WPKH_IN_P2SH,
         script_address_prefix=cryptocurrency.NETWORKS.MAINNET.SCRIPT_ADDRESS_PREFIX
-    ) == data["hdwallet"]["BIP32"]["compressed"]["derivation"]["addresses"]["p2wpkh_in_p2sh"]
+    ) == data["hdwallet"]["BIP32"]["compressed"]["derivations"][-1]["addresses"]["p2wpkh_in_p2sh"]
     assert hdwallet.address(
         address=cryptocurrency.ADDRESSES.P2WSH,
         hrp=cryptocurrency.NETWORKS.MAINNET.HRP,
         witness_version=cryptocurrency.NETWORKS.MAINNET.WITNESS_VERSIONS.P2WSH
-    ) == data["hdwallet"]["BIP32"]["compressed"]["derivation"]["addresses"]["p2wsh"]
+    ) == data["hdwallet"]["BIP32"]["compressed"]["derivations"][-1]["addresses"]["p2wsh"]
     assert hdwallet.address(
         address=cryptocurrency.ADDRESSES.P2WSH_IN_P2SH,
         script_address_prefix=cryptocurrency.NETWORKS.MAINNET.SCRIPT_ADDRESS_PREFIX
-    ) == data["hdwallet"]["BIP32"]["compressed"]["derivation"]["addresses"]["p2wsh_in_p2sh"]
+    ) == data["hdwallet"]["BIP32"]["compressed"]["derivations"][-1]["addresses"]["p2wsh_in_p2sh"]
+
+    assert hdwallet.dumps() == data["hdwallet"]["BIP32"]["compressed"]
+
+    dump = data["hdwallet"]["BIP32"]["compressed"].copy()
+    del dump["derivations"]
+    dump["derivation"] = data["hdwallet"]["BIP32"]["compressed"]["derivations"][-1]
+    assert hdwallet.dump() == dump
 
 
 def test_bip32_from_entropy_uncompressed(data):
@@ -117,6 +129,10 @@ def test_bip32_from_entropy_uncompressed(data):
     ).from_entropy(
         entropy=BIP39Entropy(
             entropy=data["hdwallet"]["BIP32"]["uncompressed"]["entropy"]
+        )
+    ).from_derivation(
+        derivation=DERIVATIONS.derivation(data["hdwallet"]["BIP32"]["derivation"]["name"])(
+            **data["hdwallet"]["BIP32"]["derivation"]["args"]
         )
     )
 
@@ -141,51 +157,58 @@ def test_bip32_from_entropy_uncompressed(data):
     assert hdwallet.public_key_type() == data["hdwallet"]["BIP32"]["uncompressed"]["public_key_type"]
     assert hdwallet.wif_type() == data["hdwallet"]["BIP32"]["uncompressed"]["wif_type"]
 
-    assert hdwallet.path() == data["hdwallet"]["BIP32"]["uncompressed"]["derivation"]["at"]["path"]
-    assert hdwallet.indexes() == data["hdwallet"]["BIP32"]["uncompressed"]["derivation"]["at"]["indexes"]
-    assert hdwallet.depth() == data["hdwallet"]["BIP32"]["uncompressed"]["derivation"]["at"]["depth"]
-    assert hdwallet.index() == data["hdwallet"]["BIP32"]["uncompressed"]["derivation"]["at"]["index"]
+    assert hdwallet.path() == data["hdwallet"]["BIP32"]["uncompressed"]["derivations"][-1]["at"]["path"]
+    assert hdwallet.indexes() == data["hdwallet"]["BIP32"]["uncompressed"]["derivations"][-1]["at"]["indexes"]
+    assert hdwallet.depth() == data["hdwallet"]["BIP32"]["uncompressed"]["derivations"][-1]["at"]["depth"]
+    assert hdwallet.index() == data["hdwallet"]["BIP32"]["uncompressed"]["derivations"][-1]["at"]["index"]
 
-    assert hdwallet.xprivate_key() == data["hdwallet"]["BIP32"]["uncompressed"]["derivation"]["xprivate_key"]
-    assert hdwallet.xpublic_key() == data["hdwallet"]["BIP32"]["uncompressed"]["derivation"]["xpublic_key"]
-    assert hdwallet.private_key() == data["hdwallet"]["BIP32"]["uncompressed"]["derivation"]["private_key"]
-    assert hdwallet.wif() == data["hdwallet"]["BIP32"]["uncompressed"]["derivation"]["wif"]
-    assert hdwallet.chain_code() == data["hdwallet"]["BIP32"]["uncompressed"]["derivation"]["chain_code"]
-    assert hdwallet.public_key() == data["hdwallet"]["BIP32"]["uncompressed"]["derivation"]["public_key"]
-    assert hdwallet.uncompressed() == data["hdwallet"]["BIP32"]["uncompressed"]["derivation"]["uncompressed"]
-    assert hdwallet.compressed() == data["hdwallet"]["BIP32"]["uncompressed"]["derivation"]["compressed"]
-    assert hdwallet.hash() == data["hdwallet"]["BIP32"]["uncompressed"]["derivation"]["hash"]
-    assert hdwallet.fingerprint() == data["hdwallet"]["BIP32"]["uncompressed"]["derivation"]["fingerprint"]
-    assert hdwallet.parent_fingerprint() == data["hdwallet"]["BIP32"]["uncompressed"]["derivation"]["parent_fingerprint"]
+    assert hdwallet.xprivate_key() == data["hdwallet"]["BIP32"]["uncompressed"]["derivations"][-1]["xprivate_key"]
+    assert hdwallet.xpublic_key() == data["hdwallet"]["BIP32"]["uncompressed"]["derivations"][-1]["xpublic_key"]
+    assert hdwallet.private_key() == data["hdwallet"]["BIP32"]["uncompressed"]["derivations"][-1]["private_key"]
+    assert hdwallet.wif() == data["hdwallet"]["BIP32"]["uncompressed"]["derivations"][-1]["wif"]
+    assert hdwallet.chain_code() == data["hdwallet"]["BIP32"]["uncompressed"]["derivations"][-1]["chain_code"]
+    assert hdwallet.public_key() == data["hdwallet"]["BIP32"]["uncompressed"]["derivations"][-1]["public_key"]
+    assert hdwallet.uncompressed() == data["hdwallet"]["BIP32"]["uncompressed"]["derivations"][-1]["uncompressed"]
+    assert hdwallet.compressed() == data["hdwallet"]["BIP32"]["uncompressed"]["derivations"][-1]["compressed"]
+    assert hdwallet.hash() == data["hdwallet"]["BIP32"]["uncompressed"]["derivations"][-1]["hash"]
+    assert hdwallet.fingerprint() == data["hdwallet"]["BIP32"]["uncompressed"]["derivations"][-1]["fingerprint"]
+    assert hdwallet.parent_fingerprint() == data["hdwallet"]["BIP32"]["uncompressed"]["derivations"][-1]["parent_fingerprint"]
 
     assert hdwallet.address(
         address=cryptocurrency.ADDRESSES.P2PKH,
         public_key_address_prefix=cryptocurrency.NETWORKS.MAINNET.PUBLIC_KEY_ADDRESS_PREFIX
-    ) == data["hdwallet"]["BIP32"]["uncompressed"]["derivation"]["addresses"]["p2pkh"]
+    ) == data["hdwallet"]["BIP32"]["uncompressed"]["derivations"][-1]["addresses"]["p2pkh"]
     assert hdwallet.address(
         address=cryptocurrency.ADDRESSES.P2SH,
         script_address_prefix=cryptocurrency.NETWORKS.MAINNET.SCRIPT_ADDRESS_PREFIX
-    ) == data["hdwallet"]["BIP32"]["uncompressed"]["derivation"]["addresses"]["p2sh"]
+    ) == data["hdwallet"]["BIP32"]["uncompressed"]["derivations"][-1]["addresses"]["p2sh"]
     assert hdwallet.address(
         address=cryptocurrency.ADDRESSES.P2TR,
         hrp=cryptocurrency.NETWORKS.MAINNET.HRP,
         witness_version=cryptocurrency.NETWORKS.MAINNET.WITNESS_VERSIONS.P2TR
-    ) == data["hdwallet"]["BIP32"]["uncompressed"]["derivation"]["addresses"]["p2tr"]
+    ) == data["hdwallet"]["BIP32"]["uncompressed"]["derivations"][-1]["addresses"]["p2tr"]
     assert hdwallet.address(
         address=cryptocurrency.ADDRESSES.P2WPKH,
         hrp=cryptocurrency.NETWORKS.MAINNET.HRP,
         witness_version=cryptocurrency.NETWORKS.MAINNET.WITNESS_VERSIONS.P2WPKH
-    ) == data["hdwallet"]["BIP32"]["uncompressed"]["derivation"]["addresses"]["p2wpkh"]
+    ) == data["hdwallet"]["BIP32"]["uncompressed"]["derivations"][-1]["addresses"]["p2wpkh"]
     assert hdwallet.address(
         address=cryptocurrency.ADDRESSES.P2WPKH_IN_P2SH,
         script_address_prefix=cryptocurrency.NETWORKS.MAINNET.SCRIPT_ADDRESS_PREFIX
-    ) == data["hdwallet"]["BIP32"]["uncompressed"]["derivation"]["addresses"]["p2wpkh_in_p2sh"]
+    ) == data["hdwallet"]["BIP32"]["uncompressed"]["derivations"][-1]["addresses"]["p2wpkh_in_p2sh"]
     assert hdwallet.address(
         address=cryptocurrency.ADDRESSES.P2WSH,
         hrp=cryptocurrency.NETWORKS.MAINNET.HRP,
         witness_version=cryptocurrency.NETWORKS.MAINNET.WITNESS_VERSIONS.P2WSH
-    ) == data["hdwallet"]["BIP32"]["uncompressed"]["derivation"]["addresses"]["p2wsh"]
+    ) == data["hdwallet"]["BIP32"]["uncompressed"]["derivations"][-1]["addresses"]["p2wsh"]
     assert hdwallet.address(
         address=cryptocurrency.ADDRESSES.P2WSH_IN_P2SH,
         script_address_prefix=cryptocurrency.NETWORKS.MAINNET.SCRIPT_ADDRESS_PREFIX
-    ) == data["hdwallet"]["BIP32"]["uncompressed"]["derivation"]["addresses"]["p2wsh_in_p2sh"]
+    ) == data["hdwallet"]["BIP32"]["uncompressed"]["derivations"][-1]["addresses"]["p2wsh_in_p2sh"]
+
+    assert hdwallet.dumps() == data["hdwallet"]["BIP32"]["uncompressed"]
+
+    dump = data["hdwallet"]["BIP32"]["uncompressed"].copy()
+    del dump["derivations"]
+    dump["derivation"] = data["hdwallet"]["BIP32"]["uncompressed"]["derivations"][-1]
+    assert hdwallet.dump() == dump

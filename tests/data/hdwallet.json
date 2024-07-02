@@ -1,5 +1,11 @@
 {
     "BIP32": {
+        "derivation":{
+            "name": "Custom",
+            "args":{
+                "path": "m/0-1"
+            }
+        },
         "compressed": {
             "cryptocurrency": "Bitcoin",
             "symbol": "BTC",
@@ -22,34 +28,68 @@
             "strict": true,
             "public_key_type": "compressed",
             "wif_type": "wif-compressed",
-            "derivation": {
-                "at": {
-                    "path": "m/",
-                    "indexes": [],
-                    "depth": 0,
-                    "index": 0
+            "derivations": [
+                {
+                    "at": {
+                        "path": "m/0",
+                        "indexes": [
+                            0
+                        ],
+                        "depth": 1,
+                        "index": 0
+                    },
+                    "xprivate_key": "xprv9v7ymn7iJtruhh8Aor9AoagnWC5D8DiyxEzKkybRmiYunW89fHuqaAq5qKKgmcKFdWZnFd1eLrG1sqNMTVdBtKYJtjagtCaVJrRn5HUcdQ8",
+                    "xpublic_key": "xpub697LBHec9GRCvBCdusgBAidX4DuhXgSqKTuvZN13L45tfJTJCqE67y9ZgcCmTZ2LMxGMqTraP6GkT2ojvzDAmpxm7sCwoTvH9zCqA8z7K9G",
+                    "private_key": "d98aad6db70b3a4f7d03ded0660d342144a977f82a61144507f3a1446a74742d",
+                    "wif": "L4WaoGYtPR1SG9SrPhiyex1qpGstiJLuQMRL4FLbFPNFZEHtqBJZ",
+                    "chain_code": "e6277b4f206e5ec3f2b5865ac1272ee99df216c160830d615950077d2f42abfc",
+                    "public_key": "03cd366ee429549f7f5099eebf308411e0c3dd4f066ef8a07d9d4845a5e2a60476",
+                    "uncompressed": "04cd366ee429549f7f5099eebf308411e0c3dd4f066ef8a07d9d4845a5e2a60476a868feecae57a72ac27dbb6ccdd31dbc03ce48cbd09bd49e17ff74dffa80ff9f",
+                    "compressed": "03cd366ee429549f7f5099eebf308411e0c3dd4f066ef8a07d9d4845a5e2a60476",
+                    "hash": "9fb3eced4470a1cc80a5d540d93406960fbf6308",
+                    "fingerprint": "9fb3eced",
+                    "parent_fingerprint": "a627a6ab",
+                    "addresses": {
+                        "p2pkh": "1FZRywjMAi8v6mDQmbi5FWcTNRguHjmEPy",
+                        "p2sh": "3QCHs6q5uN9yVkZ34DhsVRWhf1tj4W5cSJ",
+                        "p2tr": "bc1ptcnjs2lpc8h0cg3vunnwk6pehv3hh6tqag0at8k9xf0c67hfzj0sv5tqxz",
+                        "p2wpkh": "bc1qn7e7em2ywzsueq9964qdjdqxjc8m7ccg5rdetq",
+                        "p2wpkh_in_p2sh": "35Mx4HXDbwJrkvtZH82eoK7Ld7sWAcptm4",
+                        "p2wsh": "bc1qp9kq2d9yzetqz55dfeu3qnl4nyvp4yj70jdqpr6amhpymh4sdy4q2wkc38",
+                        "p2wsh_in_p2sh": "37B675qoGvZJ8eViNad9vba7sC3Vu9TWCp"
+                    }
                 },
-                "xprivate_key": "xprv9s21ZrQH143K2vrrQFKzDyDJ6KR678AXpFLTLp34sTfFgDZcZ368TQJ6ZEem3EukEUteS8CXJ5Cds7Py5cXsPtppsPMGDLf4vfz1Af5GczB",
-                "xpublic_key": "xpub661MyMwAqRbcFQwKWGrzb7A2eMFaWatPBUG49CSgRoCEZ1tm6aQP1CcaQWBSLvpb4rgie2v2WH7ETBnenbNvt9yDLc6Yscy9NDY1R35o34y",
-                "private_key": "71d5fdac4b53dd572e2ee1ce68a44c188f23d52d9da2d1eb68be1aec64dbd895",
-                "wif": "L12zYhjufRFMT4xnF7uhMKexvB4V1E2wxp9cNdGh5zzQZkHuJfep",
-                "chain_code": "57757c7c8766fc0f7a4420ea6ee13a1a90afdd16df5bc80ad0afcb68bb330dbd",
-                "public_key": "02b37b9b64e46492ebadd9673ced57bca0ea2604d5f0b8f2e078d0c6953551b39b",
-                "uncompressed": "04b37b9b64e46492ebadd9673ced57bca0ea2604d5f0b8f2e078d0c6953551b39bf18952c2a93d8d6f7319e70948697d55fb5e126aec2197163e18bd22bf09c9ea",
-                "compressed": "02b37b9b64e46492ebadd9673ced57bca0ea2604d5f0b8f2e078d0c6953551b39b",
-                "hash": "a627a6ab71e820bb44a915675766a04538fca86f",
-                "fingerprint": "a627a6ab",
-                "parent_fingerprint": "00000000",
-                "addresses": {
-                    "p2pkh": "1G9Yfr9UouTL2NRZKS2m3GKisV5kznJhPP",
-                    "p2sh": "31iuKoWg3yCA1fgX6tkRdv3KBEq6NHDXzv",
-                    "p2tr": "bc1p7dpa87yh9j82ldr95rgudnw0vg5zl06a52na8gphllutg2lz7qfs68gepw",
-                    "p2wpkh": "bc1q5cn6d2m3aqstk39fz4n4we4qg5u0e2r0qc046u",
-                    "p2wpkh_in_p2sh": "38gHMwPT6aZozU9Lj6eMAxQhdf2Bnpfiuu",
-                    "p2wsh": "bc1qjvy4rxf502qzdnndax0h8zuz9nuaeq2xn6ep3vsktu3gl5y23z7qz6pm80",
-                    "p2wsh_in_p2sh": "3DyQ9Hqjqrdzz78XajHuKdbGWCd35K6qyF"
+                {
+                    "at": {
+                        "path": "m/1",
+                        "indexes": [
+                            1
+                        ],
+                        "depth": 1,
+                        "index": 1
+                    },
+                    "xprivate_key": "xprv9v7ymn7iJtruiQ76w1EgqSHe9Rtma3VoR44TUkS6CiDAvjJfwpV6a3TW6cXHfkHPBMhX4t28KHDV8aoDYEC3KzBTciQRvM7CxZ8M2rQr36D",
+                    "xpublic_key": "xpub697LBHec9GRCvtBa32mhCaENhTjFyWDenGz4H8qhm3k9oXdpVMoM7qmywtAs4uZT6qK93PcR5bwJYNofZ1ryAgj8Vbwa1NLjJpg94ftKMye",
+                    "private_key": "1ccea826a81b6187600b23a893e327776a266aaa9c39ebe8280203c919f228e7",
+                    "wif": "KxBi3NNQvDWFhGXE3ednff5GQ6vmhMRdULAWmDRd94z93zEffkSb",
+                    "chain_code": "2d1fcc7dd7d0abb4803cac90de409d101388141e4e521b77c5fde69d3887fa66",
+                    "public_key": "026e1e0a939bdac86d42f8882a79ef8781c9be6b77778c0f213c5da290f8da3042",
+                    "uncompressed": "046e1e0a939bdac86d42f8882a79ef8781c9be6b77778c0f213c5da290f8da30420804d9d0d177f15c3a5bfec31f6e4e7cef762bc4437726dbc81646a236133b02",
+                    "compressed": "026e1e0a939bdac86d42f8882a79ef8781c9be6b77778c0f213c5da290f8da3042",
+                    "hash": "30d011e741cc1ca19a4404ff0e94b4418339406e",
+                    "fingerprint": "30d011e7",
+                    "parent_fingerprint": "a627a6ab",
+                    "addresses": {
+                        "p2pkh": "15T6hAJYdMbEbJgPqKhufVDBCBLhkgVrLS",
+                        "p2sh": "3FL6pupdxb6CjnashvQEgdJJzMBTToK77g",
+                        "p2tr": "bc1p6nf5l0uaf75ffmc8p65sdrdz3yhwcm0xuxz49q3mkv9ju030zamq9899qr",
+                        "p2wpkh": "bc1qxrgpre6pesw2rxjyqnlsa995gxpnjsrwtsfdaw",
+                        "p2wpkh_in_p2sh": "3HdYx4g3W52P9VrFyeGvCx4ih3h6PupCBG",
+                        "p2wsh": "bc1q970run9ed44jptxwa8vp7egz7c4a5zrmzynvhyhlxtqv56kz325qctr3lw",
+                        "p2wsh_in_p2sh": "33Rfq4krEbhwNReyiQdN6XDYFzte22tEHc"
+                    }
                 }
-            }
+            ]
         },
         "uncompressed": {
             "cryptocurrency": "Bitcoin",
@@ -73,34 +113,68 @@
             "strict": true,
             "public_key_type": "uncompressed",
             "wif_type": "wif",
-            "derivation": {
-                "at": {
-                    "path": "m/",
-                    "indexes": [],
-                    "depth": 0,
-                    "index": 0
+            "derivations": [
+                {
+                    "at": {
+                        "path": "m/0",
+                        "indexes": [
+                            0
+                        ],
+                        "depth": 1,
+                        "index": 0
+                    },
+                    "xprivate_key": "xprv9uAh5AVMDvRr6mUrhHd9WwgtvFyyLWz8DgfHMBamZGJu7VJXfrcowsT7DZf1XBN8o4XKQZhysUoMdgDA2XnBRFUypMxoh3yezhzimgKm5H1",
+                    "xpublic_key": "xpub68A3Ug2F4Hz9KFZKoKA9t5ddUHpTjyhyauat9ZzP7bqszHdgDPw4Vfmb4rY6D85DXWDtzQYuuip6CseYW2NAJkuS3Vb4cKKSqqmmrThZQ31",
+                    "private_key": "d98aad6db70b3a4f7d03ded0660d342144a977f82a61144507f3a1446a74742d",
+                    "wif": "5KU6PiaxbXpDySvtX4nm6syqDXLEXeuze1Yo1HPZgWY6Zm237id",
+                    "chain_code": "e6277b4f206e5ec3f2b5865ac1272ee99df216c160830d615950077d2f42abfc",
+                    "public_key": "04cd366ee429549f7f5099eebf308411e0c3dd4f066ef8a07d9d4845a5e2a60476a868feecae57a72ac27dbb6ccdd31dbc03ce48cbd09bd49e17ff74dffa80ff9f",
+                    "uncompressed": "04cd366ee429549f7f5099eebf308411e0c3dd4f066ef8a07d9d4845a5e2a60476a868feecae57a72ac27dbb6ccdd31dbc03ce48cbd09bd49e17ff74dffa80ff9f",
+                    "compressed": "03cd366ee429549f7f5099eebf308411e0c3dd4f066ef8a07d9d4845a5e2a60476",
+                    "hash": "f892e38a4dc60b56b4d93823f550a9db3699b658",
+                    "fingerprint": "f892e38a",
+                    "parent_fingerprint": "24772cf1",
+                    "addresses": {
+                        "p2pkh": "1PfLYb9S2es23jgFjeipDDgf2cVLgwz4rA",
+                        "p2sh": "33tAQV5Z4TB6jTLbE4BP76cr95AV17rriL",
+                        "p2tr": "bc1ptcnjs2lpc8h0cg3vunnwk6pehv3hh6tqag0at8k9xf0c67hfzj0sv5tqxz",
+                        "p2wpkh": "bc1qlzfw8zjdcc94ddxe8q3l259fmvmfndjc6lewgc",
+                        "p2wpkh_in_p2sh": "37U4UuoTw5JWbcNrUgPQmZkbTws2kadx3X",
+                        "p2wsh": "bc1qv2khaz20szd7wpua7pj7dz7pj6trv2966kwyzhk482vwjt90w58qhx8cfq",
+                        "p2wsh_in_p2sh": "3Ncmfi8aYDJdNErkqoVZkyy4cUz9ioDpko"
+                    }
                 },
-                "xprivate_key": "xprv9s21ZrQH143K2vrrQFKzDyDJ6KR678AXpFLTLp34sTfFgDZcZ368TQJ6ZEem3EukEUteS8CXJ5Cds7Py5cXsPtppsPMGDLf4vfz1Af5GczB",
-                "xpublic_key": "xpub661MyMwAqRbcFQwKWGrzb7A2eMFaWatPBUG49CSgRoCEZ1tm6aQP1CcaQWBSLvpb4rgie2v2WH7ETBnenbNvt9yDLc6Yscy9NDY1R35o34y",
-                "private_key": "71d5fdac4b53dd572e2ee1ce68a44c188f23d52d9da2d1eb68be1aec64dbd895",
-                "wif": "5JgRNEJsuCqZjA485ZNueEHkwBtYGTWtsi3QRPGLWE92GBngBMd",
-                "chain_code": "57757c7c8766fc0f7a4420ea6ee13a1a90afdd16df5bc80ad0afcb68bb330dbd",
-                "public_key": "04b37b9b64e46492ebadd9673ced57bca0ea2604d5f0b8f2e078d0c6953551b39bf18952c2a93d8d6f7319e70948697d55fb5e126aec2197163e18bd22bf09c9ea",
-                "uncompressed": "04b37b9b64e46492ebadd9673ced57bca0ea2604d5f0b8f2e078d0c6953551b39bf18952c2a93d8d6f7319e70948697d55fb5e126aec2197163e18bd22bf09c9ea",
-                "compressed": "02b37b9b64e46492ebadd9673ced57bca0ea2604d5f0b8f2e078d0c6953551b39b",
-                "hash": "24772cf1b8a08a0c1b42d2a8969f8e75588bec33",
-                "fingerprint": "24772cf1",
-                "parent_fingerprint": "00000000",
-                "addresses": {
-                    "p2pkh": "14Kp6NR1EVom3eV1zkZztczmhJ5Vq5PJaM",
-                    "p2sh": "3EjUAP625bnpjLH6gCoaRTZAg4Q5udPU7b",
-                    "p2tr": "bc1p7dpa87yh9j82ldr95rgudnw0vg5zl06a52na8gphllutg2lz7qfs68gepw",
-                    "p2wpkh": "bc1qy3mjeudc5z9qcx6z625fd8uww4vghmpnhaz7y3",
-                    "p2wpkh_in_p2sh": "3LEYmXREqdjyCTVn4uxJCk1fDu3jk8BTjq",
-                    "p2wsh": "bc1qahwshfhswku0s8j5qtsw8erfj3rmvtns5s0e82s0t9aemnkny20s0q8a3z",
-                    "p2wsh_in_p2sh": "3PaZYS599WMdhQjt33M8KY1CW6FSzK1Aoc"
+                {
+                    "at": {
+                        "path": "m/1",
+                        "indexes": [
+                            1
+                        ],
+                        "depth": 1,
+                        "index": 1
+                    },
+                    "xprivate_key": "xprv9uAh5AVMDvRr7UTnpSifYoHkZVoXnLkwgVjR4xRRzFyAFiV3xPC4wk5XUrrcRKLGLuf4DpiTqukptRe27GM2rv88YLnYjCWNeQhHjDeEQs1",
+                    "xpublic_key": "xpub68A3Ug2F4Hz9KxYFvUFfuwEV7Xe2BoUo3if1sLq3YbW98WpCVvWKVYQ1L8WBpUcLGPGgCLJkcEUeJDeU841xhcfoREKgpDjtzgF5m6nZ7Ur",
+                    "private_key": "1ccea826a81b6187600b23a893e327776a266aaa9c39ebe8280203c919f228e7",
+                    "wif": "5J2yRZ2gQPKQikPi246ASXNozLvRB3pGWkmJAZiq4e9sJuGZzqS",
+                    "chain_code": "2d1fcc7dd7d0abb4803cac90de409d101388141e4e521b77c5fde69d3887fa66",
+                    "public_key": "046e1e0a939bdac86d42f8882a79ef8781c9be6b77778c0f213c5da290f8da30420804d9d0d177f15c3a5bfec31f6e4e7cef762bc4437726dbc81646a236133b02",
+                    "uncompressed": "046e1e0a939bdac86d42f8882a79ef8781c9be6b77778c0f213c5da290f8da30420804d9d0d177f15c3a5bfec31f6e4e7cef762bc4437726dbc81646a236133b02",
+                    "compressed": "026e1e0a939bdac86d42f8882a79ef8781c9be6b77778c0f213c5da290f8da3042",
+                    "hash": "af22b4a5030461505ada965d864ce472dfe03c32",
+                    "fingerprint": "af22b4a5",
+                    "parent_fingerprint": "24772cf1",
+                    "addresses": {
+                        "p2pkh": "1Gy2pxigKVf9rriALeHL4uti7Bk6Bgr4tG",
+                        "p2sh": "3LtA5FYmndbwJCWhmCwyi9APzgkhj2MruF",
+                        "p2tr": "bc1p6nf5l0uaf75ffmc8p65sdrdz3yhwcm0xuxz49q3mkv9ju030zamq9899qr",
+                        "p2wpkh": "bc1q4u3tffgrq3s4qkk6jewcvn8ywt07q0pj76fmvn",
+                        "p2wpkh_in_p2sh": "3H11pHvnyYhknXCuHHJz2aUZAWhKVnFTyY",
+                        "p2wsh": "bc1qq502jq55atp720w490fmp5fhcq4dnzsefglufe7spw3elvd0fu0qtvjrx5",
+                        "p2wsh_in_p2sh": "3Ew1QYzeN9bG6Z9wYH4wBJ1zX2PhM6suxM"
+                    }
                 }
-            }
+            ]
         }
     }
 }
