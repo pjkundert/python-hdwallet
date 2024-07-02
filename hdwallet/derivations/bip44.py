@@ -22,6 +22,15 @@ class CHANGES:
 
 
 class BIP44Derivation(IDerivation):  # https://github.com/bitcoin/bips/blob/master/bip-0044.mediawiki
+    """
+    +-----------------------+------------------+
+    | Name                  | Value            |
+    +=======================+==================+
+    | EXTERNAL_CHAIN        | external-chain   |
+    +-----------------------+------------------+
+    | INTERNAL_CHAIN        | internal-chain   |
+    +-----------------------+------------------+
+    """
 
     _purpose: Tuple[int, bool] = (44, True)
     _coin_type: Tuple[int, bool]
@@ -103,6 +112,10 @@ class BIP44Derivation(IDerivation):  # https://github.com/bitcoin/bips/blob/mast
 
         :return: The updated `BIP44Derivation` object itself after setting the coin type.
         :rtype: BIP44Derivation
+
+        >>> from hdwallet.derivations.bip44 import BIP44Derivation
+        >>> BIP44Derivation.from_coin_type(coin_type=...)
+        "..."
         """
         self._coin_type = normalize_index(index=coin_type, hardened=True)
         self._path, self._indexes, self._derivations = normalize_derivation(path=(
@@ -124,6 +137,10 @@ class BIP44Derivation(IDerivation):  # https://github.com/bitcoin/bips/blob/mast
 
         :return: The updated `BIP44Derivation` object itself after setting the account.
         :rtype: BIP44Derivation
+
+        >>> from hdwallet.derivations.bip44 import BIP44Derivation
+        >>> BIP44Derivation.from_account(account=...)
+        "..."
         """
         self._account = normalize_index(index=account, hardened=True)
         self._path, self._indexes, self._derivations = normalize_derivation(path=(
@@ -145,6 +162,10 @@ class BIP44Derivation(IDerivation):  # https://github.com/bitcoin/bips/blob/mast
 
         :return: The updated `BIP44Derivation` object itself after setting the change.
         :rtype: BIP44Derivation
+
+        >>> from hdwallet.derivations.bip44 import BIP44Derivation
+        >>> BIP44Derivation.from_change(change=...)
+        "..."
         """
 
         if change not in [*self.changes.keys(), 0, "0", 1, "1"]:
@@ -173,6 +194,10 @@ class BIP44Derivation(IDerivation):  # https://github.com/bitcoin/bips/blob/mast
 
         :return: The updated `BIP44Derivation` object itself after setting the address.
         :rtype: BIP44Derivation
+
+        >>> from hdwallet.derivations.bip44 import BIP44Derivation
+        >>> BIP44Derivation.from_address(address=...)
+        "..."
         """
 
         self._address = normalize_index(index=address, hardened=False)
@@ -191,6 +216,10 @@ class BIP44Derivation(IDerivation):  # https://github.com/bitcoin/bips/blob/mast
 
         :return: The updated `BIP44Derivation` object itself after cleaning.
         :rtype: BIP44Derivation
+
+        >>> from hdwallet.derivations.bip44 import BIP44Derivation
+        >>> BIP44Derivation.clean()
+        "..."
         """
 
         self._account = normalize_index(index=0, hardened=True)
@@ -213,6 +242,10 @@ class BIP44Derivation(IDerivation):  # https://github.com/bitcoin/bips/blob/mast
 
         :return: The purpose value stored in `_purpose`.
         :rtype: int
+
+        >>> from hdwallet.derivations.bip44 import BIP44Derivation
+        >>> BIP44Derivation.purpose()
+        ...
         """
 
         return self._purpose[0]
@@ -225,6 +258,10 @@ class BIP44Derivation(IDerivation):  # https://github.com/bitcoin/bips/blob/mast
 
         :return: The coin type value stored in `_coin_type`.
         :rtype: int
+
+        >>> from hdwallet.derivations.bip44 import BIP44Derivation
+        >>> BIP44Derivation.coin_type()
+        ...
         """
 
         return self._coin_type[0]
@@ -238,6 +275,10 @@ class BIP44Derivation(IDerivation):  # https://github.com/bitcoin/bips/blob/mast
 
         :return: The account value stored in `_account`.
         :rtype: int
+
+        >>> from hdwallet.derivations.bip44 import BIP44Derivation
+        >>> BIP44Derivation.account()
+        ...
         """
 
         return (
@@ -253,6 +294,10 @@ class BIP44Derivation(IDerivation):  # https://github.com/bitcoin/bips/blob/mast
 
         :return: The key from the `changes` dictionary that corresponds to the `_change` value, or `None` if not found.
         :rtype: str
+
+        >>> from hdwallet.derivations.bip44 import BIP44Derivation
+        >>> BIP44Derivation.change()
+        "..."
         """
 
         _change: Optional[str] = None
@@ -268,6 +313,10 @@ class BIP44Derivation(IDerivation):  # https://github.com/bitcoin/bips/blob/mast
 
         :return: The address value.
         :rtype: int
+
+        >>> from hdwallet.derivations.bip44 import BIP44Derivation
+        >>> BIP44Derivation.address()
+        ...
         """
 
         return (
