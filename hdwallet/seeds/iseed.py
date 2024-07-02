@@ -15,11 +15,24 @@ from ..mnemonics import IMnemonic
 
 
 class ISeed(ABC):
+    """
+    Interface class for Seed.
+    """
 
     _name: str
     _seed: str
 
     def __init__(self, seed: str, **kwargs) -> None:
+        """
+        Initialize an object with a seed value.
+
+        :param seed: The seed value used for initialization.
+        :type seed: str
+
+        :return: No return
+        :rtype: NoneType
+        """
+
         self._seed = seed
 
     @classmethod
@@ -27,6 +40,18 @@ class ISeed(ABC):
         pass
 
     def seed(self) -> str:
+        """
+        Retrieves the seed associated with the current instance.
+
+        :return: The seed as a string.
+        :rtype: str
+
+        >>> from {module_path} import {class_name}
+        >>> seed: {class_name} = {class_name}(seed="...")
+        >>> seed.seed()
+        "..."
+        """
+
         return self._seed
 
     @classmethod

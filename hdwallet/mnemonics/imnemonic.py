@@ -17,6 +17,9 @@ from ..entropies import IEntropy
 
 
 class IMnemonic(ABC):
+    """
+    Interface class for Mnemonic.
+    """
 
     _mnemonic: List[str]
     _words: int
@@ -29,7 +32,7 @@ class IMnemonic(ABC):
 
     def __init__(self, mnemonic: Union[str, List[str]], **kwargs) -> None:
         """
-        Initialize an instance of YourClassName with a mnemonic.
+        Initialize an instance of IMnemonic with a mnemonic.
 
         :param mnemonic: The mnemonic to initialize with, which can be a string or a list of strings.
         :type mnemonic: Union[str, List[str]]
