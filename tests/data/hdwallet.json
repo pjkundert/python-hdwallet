@@ -1456,6 +1456,104 @@
             ]
         }
     },
+    "Electrum-V1":{
+        "derivation":{
+            "name": "Electrum",
+            "args":{
+                "change": "0-1"
+            }
+        },
+        "compressed": {
+            "cryptocurrency": "Bitcoin",
+            "symbol": "BTC",
+            "network": "mainnet",
+            "coin_type": 0,
+            "entropy": "ad0c193bff3d2de77ed60a2d78d356fe",
+            "strength": 128,
+            "mnemonic": "amaze dirt anymore place fairy crap table quiet carefully mist bee moon",
+            "passphrase": null,
+            "language": "English",
+            "seed": "3fb117a3e9daf2d60d5bb85f999fba2347996721497e49d00debf48d9e34755e",
+            "ecc": "SLIP10-Secp256k1",
+            "hd": "Electrum-V1",
+            "master_private_key": "3fb117a3e9daf2d60d5bb85f999fba2347996721497e49d00debf48d9e34755e",
+            "master_wif": "KyMX5Mjd5sBoVWeJ6Y93QrJGG5EttkWxnGcSCM42QGeat53HhxA4",
+            "master_public_key": "0205054f7081bc286e4e5dbbf778ddd120b87d03737500d54d5d75df72f9e7dbb6",
+            "public_key_type": "compressed",
+            "wif_type": "wif-compressed",
+            "derivations": [
+                {
+                    "at": {
+                        "change": 0,
+                        "address": 0
+                    },
+                    "private_key": "a27348adb4659407ba6bad257a5e566d8e691fff6c336b932525cb3081c4f81f",
+                    "wif": "L2fVZ1Var35tL57bNmQZdexmj8btvsw9M188kLT8xTQphi7WsYAB",
+                    "public_key": "0288459a40960ce69fdd84a8863f7d106322185b3538f094aa665a2c799a291995",
+                    "uncompressed": "0488459a40960ce69fdd84a8863f7d106322185b3538f094aa665a2c799a291995010a975c864836cd217ce8b4ceed9b9996a878576723da603257a05dabdd4d94",
+                    "compressed": "0288459a40960ce69fdd84a8863f7d106322185b3538f094aa665a2c799a291995",
+                    "address": "19Pei4v2MLKVswXtRzMELh4uKTwjpPhbR7"
+                },
+                {
+                    "at": {
+                        "change": 1,
+                        "address": 0
+                    },
+                    "private_key": "aad0610d593a1f77460a577dfae12bbb8eaa86fed43a10694937b4a89c65814c",
+                    "wif": "L2wkWQtrpEa1k1govrsnTiouFNYPtwTGxPAbxujMynuDyK9pjbDH",
+                    "public_key": "0274dfe50c9ecacb41362d93a79ebf747bd5945900c7630b317eca3d28d75184b5",
+                    "uncompressed": "0474dfe50c9ecacb41362d93a79ebf747bd5945900c7630b317eca3d28d75184b55b37c4dc0dcc8887035fdbdf7f179280456040945855f1a3f98647367c18b314",
+                    "compressed": "0274dfe50c9ecacb41362d93a79ebf747bd5945900c7630b317eca3d28d75184b5",
+                    "address": "1QGriCwuk3X51GfL5HcghGjp1VfPF17oQR"
+                }
+            ]
+        },
+        "uncompressed": {
+            "cryptocurrency": "Bitcoin",
+            "symbol": "BTC",
+            "network": "mainnet",
+            "coin_type": 0,
+            "entropy": "ad0c193bff3d2de77ed60a2d78d356fe",
+            "strength": 128,
+            "mnemonic": "amaze dirt anymore place fairy crap table quiet carefully mist bee moon",
+            "passphrase": null,
+            "language": "English",
+            "seed": "3fb117a3e9daf2d60d5bb85f999fba2347996721497e49d00debf48d9e34755e",
+            "ecc": "SLIP10-Secp256k1",
+            "hd": "Electrum-V1",
+            "master_private_key": "3fb117a3e9daf2d60d5bb85f999fba2347996721497e49d00debf48d9e34755e",
+            "master_wif": "5JJLW5hUCygc17iXcErQCkLmh7rNGoZckLPyusJuRksf38QKkC6",
+            "master_public_key": "0405054f7081bc286e4e5dbbf778ddd120b87d03737500d54d5d75df72f9e7dbb62d092b43fb272ba0935deb08ba80529f6bb8c185a8b3b09b7bf3823eae7e39a6",
+            "public_key_type": "uncompressed",
+            "wif_type": "wif",
+            "derivations": [
+                {
+                    "at": {
+                        "change": 0,
+                        "address": 0
+                    },
+                    "private_key": "a27348adb4659407ba6bad257a5e566d8e691fff6c336b932525cb3081c4f81f",
+                    "wif": "5K3qA4jj78GcC7piKXTBZmrLee4q1sxmV6TzVPz8EvZavFsrtjA",
+                    "public_key": "0488459a40960ce69fdd84a8863f7d106322185b3538f094aa665a2c799a291995010a975c864836cd217ce8b4ceed9b9996a878576723da603257a05dabdd4d94",
+                    "uncompressed": "0488459a40960ce69fdd84a8863f7d106322185b3538f094aa665a2c799a291995010a975c864836cd217ce8b4ceed9b9996a878576723da603257a05dabdd4d94",
+                    "compressed": "0288459a40960ce69fdd84a8863f7d106322185b3538f094aa665a2c799a291995",
+                    "address": "1Csp2j6cFF8ZEqzbQDE34YxpFtjhkEd5zr"
+                },
+                {
+                    "at": {
+                        "change": 1,
+                        "address": 0
+                    },
+                    "private_key": "aad0610d593a1f77460a577dfae12bbb8eaa86fed43a10694937b4a89c65814c",
+                    "wif": "5K7Wo5xhjseqeqe7Z98RoPAGTpUWCmWWtyE3wMZFisGunUHoQYh",
+                    "public_key": "0474dfe50c9ecacb41362d93a79ebf747bd5945900c7630b317eca3d28d75184b55b37c4dc0dcc8887035fdbdf7f179280456040945855f1a3f98647367c18b314",
+                    "uncompressed": "0474dfe50c9ecacb41362d93a79ebf747bd5945900c7630b317eca3d28d75184b55b37c4dc0dcc8887035fdbdf7f179280456040945855f1a3f98647367c18b314",
+                    "compressed": "0274dfe50c9ecacb41362d93a79ebf747bd5945900c7630b317eca3d28d75184b5",
+                    "address": "183bsoAUvH7LTS8CBsXZ4P1Mkr2vxRZzpB"
+                }
+            ]
+        }
+    },
     "Monero": {
         "derivation":{
             "name": "Monero",
