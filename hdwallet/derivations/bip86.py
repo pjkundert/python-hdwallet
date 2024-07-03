@@ -15,4 +15,16 @@ class BIP86Derivation(BIP44Derivation):  # https://github.com/bitcoin/bips/blob/
 
     @classmethod
     def name(cls) -> str:
+        """
+        Get the name of the derivation class.
+
+        :return: The name of the derivation class.
+        :rtype: str
+
+        >>> from hdwallet.derivations.bip86 import BIP86Derivation
+        >>> derivation: BIP86Derivation = BIP86Derivation(bip86="...")
+        >>> derivation.name()
+        "BIP86"
+        """
+
         return "BIP86"

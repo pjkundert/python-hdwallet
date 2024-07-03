@@ -20,11 +20,36 @@ class IDerivation:
     def __init__(
         self, path: Optional[str] = None, indexes: Optional[List[int]] = None, **kwargs
     ) -> None:
+        """
+        Initializes an object for iderivation.
+
+        :param path: Optional derivation path string.
+        :type path: Optional[str]
+
+        :param indexes: Optional list of derivation indexes.
+        :type indexes: Optional[List[int]]
+
+        :return: No return
+        :rtype: NoneType
+        """
+
         self._path, self._indexes, self._derivations = normalize_derivation(
             path=path, indexes=indexes
         )
 
     def __str__(self) -> str:
+        """
+        Return the string representation of the derivation path.
+
+        :return: The derivation path as a string.
+        :rtype: str
+
+        >>> from {module_path} import {class_name}
+        >>> derivation: {class_name} = {class_name}(derivation="...")
+        >>> derivation.__str__()
+        "..."
+        """
+
         return self._path
 
     @classmethod
@@ -35,15 +60,62 @@ class IDerivation:
         pass
 
     def path(self) -> str:
+        """
+        Retrieves the path associated with the current instance.
+
+        :return: The derivation as a string.
+        :rtype: str
+
+        >>> from {module_path} import {class_name}
+        >>> derivation: {class_name} = {class_name}(derivation="...")
+        >>> derivation.path()
+        "..."
+        """
+
         return self._path
 
     def indexes(self) -> List[int]:
+        """
+        Retrieve the list of indexes in the derivation path.
+
+        :return: A list of integer indexes used in the derivation path.
+        :rtype: List[int]
+
+        >>> from {module_path} import {class_name}
+        >>> derivation: {class_name} = {class_name}(derivation="...")
+        >>> derivation.indexes()
+        ...
+        """
+
         return self._indexes
 
     def derivations(self) -> List[Tuple[int, bool]]:
+        """
+        Retrieve the list of derivations in the derivation path.
+
+        :return: A list of tuples where each tuple contains an index and a boolean indicating whether the index is hardened.
+        :rtype: List[Tuple[int, bool]]
+
+        >>> from {module_path} import {class_name}
+        >>> derivation: {class_name} = {class_name}(derivation="...")
+        >>> derivation.derivations()
+        ...
+        """
+
         return self._derivations
 
     def depth(self) -> int:
+        """
+        Retrieve the depth of the derivation path.
+
+        :return: The number of derivation levels in the path.
+        :rtype: int
+
+        >>> from {module_path} import {class_name}
+        >>> {class_name}.depth(derivation="...")
+        ...
+        """
+
         return len(self._derivations)
 
     def purpose(self) -> int:
