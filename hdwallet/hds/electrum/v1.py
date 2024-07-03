@@ -147,15 +147,11 @@ class ElectrumV1HD(IHD):
             )
         return self
 
-    def seed(self) -> str:
-        return bytes_to_string(self._seed)
+    def seed(self) -> Optional[str]:
+        return bytes_to_string(self._seed) if self._seed else None
 
     def master_private_key(self) -> Optional[str]:
-
-        if not self._master_private_key:
-            return None
-
-        return bytes_to_string(self._master_private_key.raw())
+        return bytes_to_string(self._master_private_key.raw()) if self._master_private_key else None
 
     def master_wif(self, wif_type: Optional[str] = None) -> Optional[str]:
 
