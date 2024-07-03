@@ -1056,5 +1056,404 @@
                 }
             ]
         }
+    },
+    "Cardano": {
+        "derivation":{
+            "name": "CIP1852",
+            "args":{
+                "account": "0-1"
+            }
+        },
+        "byron-icarus": {
+            "cryptocurrency": "Cardano",
+            "symbol": "ADA",
+            "network": "mainnet",
+            "coin_type": 1815,
+            "entropy": "46cee0c87543fb17ac72fc1a4f545dac0f533fe67c7a48c51c46c401",
+            "strength": 224,
+            "mnemonic": "kapybara negace herec vydat jasno orlice rodokmen limetka cyklista nominace cigareta kultura zatemnit pomlka plno ovanout kemp exekuce cela okrasa clona",
+            "passphrase": null,
+            "language": "Czech",
+            "seed": "46cee0c87543fb17ac72fc1a4f545dac0f533fe67c7a48c51c46c401",
+            "ecc": "Kholaw-Ed25519",
+            "hd": "Cardano",
+            "cardano_type": "byron-icarus",
+            "root_xprivate_key": "xprv3QESAWYc9vDdZM9Bdjesu5kg7y96U53wy8U5NCuCxCu59ABX79xHenzyQR5VRnUkSjcVLrWhzG5t72tmWEKnWTd4z9RsRbxFSUfxRda8S2gcaS6jvU3Pvu4NwafqTT4LVko7GByLMjktccqC7BeVSGB",
+            "root_xpublic_key": "xpub661MyMwAqRbcEpLLkU4DJZnF85evKTzsTsZSD7yfGVKsqd7axPZwv1JsMHtX8RZgR4qLsfD7cotehYBdL3HFEzSZiXTsTqKQ5EADGK6CsiZ",
+            "root_private_key": "f0534df6179ab919521676c5a7fded650a1479a9bac5d200bcededa083f83c48292d592161a0f52d96412aa7cdeafd66803eef0e2e9de8f595e8aeaf0f4fad31",
+            "root_chain_code": "1b88f3efb562e6d354bb60cc86e951881cfa2efd8b25f5682b85f00978c83af5",
+            "root_public_key": "008c7eee4141ecb2481066cfb2c178b7100497f76ed53fbae417c8a92c49385c38",
+            "strict": true,
+            "public_key_type": "compressed",
+            "derivations": [
+                {
+                    "at": {
+                        "path": "m/1852'/1815'/0'/0/0",
+                        "indexes": [
+                            2147485500,
+                            2147485463,
+                            2147483648,
+                            0,
+                            0
+                        ],
+                        "depth": 5,
+                        "purpose": 1852,
+                        "coin_type": 1815,
+                        "account": 0,
+                        "role": "external-chain",
+                        "address": 0
+                    },
+                    "xprivate_key": "xprv3T9LBifNZwd8snsQwtpRg2vr8Gz27GBiqG7EeTBTmeAstpNcBjaPhd25SVyocb2zf4weizGiZFyinpMoJ2Rof7SPrtVB3qZ3DfqE6LrquG45GpgAkSLrrqqvrJG3SGtGogp99DVg1hXvmTEfrccPqw3",
+                    "xpublic_key": "xpub6FovKQsdtE73wkkga9jRo8grkKT6o9dKHnnoA4uP3vb6q4g6oUm8Fhq3gUVZdzUvqBQigSpN2H7jmzNGWQPYqmzmez8MYJLcQEwWBXNT9DM",
+                    "private_key": "a84e31ecff005445c5dce571afdc5ef2571cb99a811cb40b1d1356449bf83c48554ac50ff2cf18ce60a0288d5cca4c433be876a19ced94f7cd9c601efa61a5de",
+                    "chain_code": "fd765c1b642a27323ae5d0d9d13ab1354c28c0983e3c3cea981142781fc92530",
+                    "public_key": "00f9af4262576bb2e1d22e1d29aa83971e6640e149e9af4b2f0c0e828703f979a9",
+                    "hash": "131a8c7ad70f6364f36203a7402e2929915b4506",
+                    "fingerprint": "131a8c7a",
+                    "parent_fingerprint": "35ab9cf6",
+                    "address": "Ae2tdPwUPEZHRJzGNXCFGU8N4KJj91cGVfmobV26Jmm3GcrVfnyMAtkTCGs"
+                },
+                {
+                    "at": {
+                        "path": "m/1852'/1815'/1'/0/0",
+                        "indexes": [
+                            2147485500,
+                            2147485463,
+                            2147483649,
+                            0,
+                            0
+                        ],
+                        "depth": 5,
+                        "purpose": 1852,
+                        "coin_type": 1815,
+                        "account": 1,
+                        "role": "external-chain",
+                        "address": 0
+                    },
+                    "xprivate_key": "xprv3TQsBssrn2Cu8JL3G6s1wMP7v8wAms9tRiu4o4AstM5rA4TpDoaUFUjNARrdkLarMmVEMBeCHd81ytrfNi7Zc6Dk3Cnt2UWpvu89hSVJjobm9uQwLM2ctwWh57dNvrd4N5r6UtQnUfqt5B8ozspazov",
+                    "xpublic_key": "xpub6GiDN4EfTs6Ya6uEX5XQd1uZJMFSWxP2QvjW5dmKRfSodpjJVJUKHPTtmKvNmgE8wwgTgu3EAqK4Wb83J7E36uj2JU2eC6fPq1tH9WzjYi8",
+                    "private_key": "a89d328e8bdd102d42f0136669f3e361b35cbc62ced86ea6ec55c16695f83c488a99328b5c5b3b08364933ce53f1e92890a871bf11fe6cef16666491fab83d80",
+                    "chain_code": "4591a73ee54f409219d66281d6f3566cef2195381c7d24d1afe8ec040c69ceff",
+                    "public_key": "00903a09dec22f6fa5cb7fdf63fa88f3f540f75d92bdba6150233d70e36776673a",
+                    "hash": "d4deaba5a0c85ed2b13d9d6e984bee1f388bb2c6",
+                    "fingerprint": "d4deaba5",
+                    "parent_fingerprint": "b056290a",
+                    "address": "Ae2tdPwUPEZGDBgy33xKkisC65CHfATVQ8gSieTqA9DkKwoDDCVjAfhMbD4"
+                }
+            ]
+        },
+        "byron-ledger": {
+            "cryptocurrency": "Cardano",
+            "symbol": "ADA",
+            "network": "mainnet",
+            "coin_type": 1815,
+            "entropy": "46cee0c87543fb17ac72fc1a4f545dac0f533fe67c7a48c51c46c401",
+            "strength": 224,
+            "mnemonic": "kapybara negace herec vydat jasno orlice rodokmen limetka cyklista nominace cigareta kultura zatemnit pomlka plno ovanout kemp exekuce cela okrasa clona",
+            "passphrase": null,
+            "language": "Czech",
+            "seed": "ad640d79a85fc8a86ecf9966294f0da76e314538a27bbb2ffcacdb7fbe7e2be33d9ae37d9975c406206eb44d13d06ca8e20f877f29e769df690f8c700c5153a0",
+            "ecc": "Kholaw-Ed25519",
+            "hd": "Cardano",
+            "cardano_type": "byron-ledger",
+            "root_xprivate_key": "xprv3QESAWYc9vDdZwJJo2ifc3reQ4o8bdWE42JgQMeYwLRQDUjzPrC6d7pJmZtSpNS5D3J6canMUaEJQYyDY95CE1UBid88ZvxyKZTJ3gMVQu9WkWqKXz1Ft1mnXTRu6KVfghLgmoDKKRwtpMwXvoqZQEi",
+            "root_xpublic_key": "xpub661MyMwAqRbcGoKPzwdHUnwLK5Rc9rdJwMaV3jxH2NAK48qsr945aeVm6L2H7kzv98MbSgeda2PRKZbY5bLow4r7R3N7YHbeKzPkdoM3T6A",
+            "root_private_key": "689308a99f89083e4b1d9f59e8aa386ccdcbaf6446a4e1ff755780191cb2eb503126caf83627a9abede5a5f87e77449f30f523a280217729b8c85bc7e6d69144",
+            "root_chain_code": "e2a8861279f6b5836b6f9794599926cf656879a4b540cc42d1271082e9718a57",
+            "root_public_key": "006e775855ec2f1b95bfe8b5278f203f81d14688b789a6d4ca18d8688d80c82943",
+            "strict": true,
+            "public_key_type": "compressed",
+            "derivations": [
+                {
+                    "at": {
+                        "path": "m/1852'/1815'/0'/0/0",
+                        "indexes": [
+                            2147485500,
+                            2147485463,
+                            2147483648,
+                            0,
+                            0
+                        ],
+                        "depth": 5,
+                        "purpose": 1852,
+                        "coin_type": 1815,
+                        "account": 0,
+                        "role": "external-chain",
+                        "address": 0
+                    },
+                    "xprivate_key": "xprv3T83ARoqwao6oRjXWZZRaLLqTgXXJEnEs3DiGtRfqSk5Jb7qaX4Dg8nGSyihNm1mdeSNcMcCSBqY95QPvQ1tvScXyvAJndHNTUVhHys6goy2hgf6Na65ZKRpeKfqHU99yEJF7WuY5A2tajasyx2gWXA",
+                    "xpublic_key": "xpub6FjZmfPEJDfym7oMDk9VMzhHk8Y4K1eHgkkhDmKLrZFLRVgpFNfH8Vr3VbidhCfaWQYfct8nA5Bsf7FcJi4a5TH9Xg7sHUvKJxh4J3Hf2wd",
+                    "private_key": "688822e88a19f53c32e1b242091be1f0a23f737abf1b3600204ca4ff38b2eb502aa04d1afc055a108b94394a1526403440e2113ed5f50b80e5179027e5df31ec",
+                    "chain_code": "15ff1979a243629ff24b883c1e8a746d366726c340b097792d69c027dc197f7c",
+                    "public_key": "00c14e228ad7e35bc0efe2feb629d817b027be6d7227dd62524cf8ae7e8261a9ac",
+                    "hash": "8a5f0851f20766ccffa35066a96c4801b32045df",
+                    "fingerprint": "8a5f0851",
+                    "parent_fingerprint": "2b74defc",
+                    "address": "Ae2tdPwUPEYxTNnVGMnUY7THbzx1QS94NSh8PwM6i8inf667ThQgNKtC4SA"
+                },
+                {
+                    "at": {
+                        "path": "m/1852'/1815'/1'/0/0",
+                        "indexes": [
+                            2147485500,
+                            2147485463,
+                            2147483649,
+                            0,
+                            0
+                        ],
+                        "depth": 5,
+                        "purpose": 1852,
+                        "coin_type": 1815,
+                        "account": 1,
+                        "role": "external-chain",
+                        "address": 0
+                    },
+                    "xprivate_key": "xprv3TVxtWTSqs9TxSTtn696tQ5GaWjCfBV3WaVzEVcDCiYe529uEakgPWpp8EyA9CiMckAZ8nooH5pAS4sCa3eC5gLbHUzgxo346bigL5quWPi4z12kbfvNEX4cchsA5SXsgbmisWpRPGdr5YjzSJdMNvM",
+                    "xpublic_key": "xpub6H1NnE4HKfdLXvbKTVriyT7Zy2vbvQBnSGiymqTvn6ssoJNHrSVzAWpgeqb3ck3V6CjWwVbdJVy9x6VhmzFkyDYidqcXQMYTcJHbZYmMVsj",
+                    "private_key": "4863d73c8c8f2a631f699d97d68f9c71f476f4df022c1fb05b632d4430b2eb50ba89e93863e1ed01b22b7fdb51eed33b45f451ab13be26e2501e4c75aadfdf63",
+                    "chain_code": "299c949f83507cee32e8fd103f62bb33cfd660dcff61ea1e0b43383b4ceef0f7",
+                    "public_key": "009064decda01b3fde762eb5cac26338a05d2adbc7a2524d71aee91df36729fd01",
+                    "hash": "a34db7c7616265c1ef5efbb8f9cf321b10c26b8c",
+                    "fingerprint": "a34db7c7",
+                    "parent_fingerprint": "d8982d77",
+                    "address": "Ae2tdPwUPEZKCD4c5do8Y9odc8AwQrSVkZLwYkCAhpWg5B8Un7c4yfcYY4S"
+                }
+            ]
+        },
+        "byron-legacy": {
+            "cryptocurrency": "Cardano",
+            "symbol": "ADA",
+            "network": "mainnet",
+            "coin_type": 1815,
+            "entropy": "46cee0c87543fb17ac72fc1a4f545dac0f533fe67c7a48c51c46c401",
+            "strength": 224,
+            "mnemonic": "kapybara negace herec vydat jasno orlice rodokmen limetka cyklista nominace cigareta kultura zatemnit pomlka plno ovanout kemp exekuce cela okrasa clona",
+            "passphrase": null,
+            "language": "Czech",
+            "seed": "cce7ebb0de741cb8829075d35bb2e7cacf21d994e50a1e68635498b4007e03af",
+            "ecc": "Kholaw-Ed25519",
+            "hd": "Cardano",
+            "cardano_type": "byron-legacy",
+            "root_xprivate_key": "xprv3QESAWYc9vDdZYxy9Ry7sfpow1v5c3MuvPju4bvk2ivjayGW1YaYarf57rvRCFbrUuxdmeRLvbtEWA5RbF6ccGJ9R7Vzra4WFotMAd5taAeZN5XbNgBbFuKnNHWrf4CuQnJKBcx3tK45wsBW6bYP93a",
+            "root_xpublic_key": "xpub661MyMwAqRbcFW8u4PUZ8nbdemp8BgccjykSrnSMFFHEYhVpca7SsXZtaWCBsxmv1tW6jwS9go9yhGzradA1F13QkgAzKa8uHpjRAkrEwdZ",
+            "root_private_key": "1850d3bdca31799bb2b43814227f921c04eb92c0ed39d9f0c31067bb4014904e141bd05618158045ecbe7fbd25e2954c60fa86c366b28e859ffc875f31b599a2",
+            "root_chain_code": "6076a1706cdc45faed7fd7626b6ad4dbcdd1f5a19d1872c3b9de0884ddb99724",
+            "root_public_key": "003ac7e2918f8565adf9c16b25bb147a260e35bd1f7f4bc10839dbcf5ee5d53906",
+            "path_key": "aaf5ba7df4510e29d1128b4dd75c67fd9c93118b0944a6f04c93149bbae7c676",
+            "strict": true,
+            "public_key_type": "compressed",
+            "derivations": [
+                {
+                    "at": {
+                        "path": "m/1852'/1815'/0'/0/0",
+                        "indexes": [
+                            2147485500,
+                            2147485463,
+                            2147483648,
+                            0,
+                            0
+                        ],
+                        "depth": 5,
+                        "purpose": 1852,
+                        "coin_type": 1815,
+                        "account": 0,
+                        "role": "external-chain",
+                        "address": 0
+                    },
+                    "xprivate_key": "xprv3TGv5xhzWqCQiSHg81nG7DhDdWqVK62Dv2PMB9pWLJnfezM9RLFh5Tp9CX4ajP8aeFTcRLxC4E4o5K2oCfbovDXDLGsHo56Ct4LLaMQXyTt81fka9wJ4ZHqU2nx5kYfrxmNS9mrrhK6i1mynDsmntnc",
+                    "xpublic_key": "xpub6GFTA1QDAouNTVDRbxrrzRNGH7AEwD9YPmWq2Lqz2PLTz7p9HhVyuN4icW9E9s55uVn64wWMZgMgDkEEtSYKY5jY6HKoPLPAefNy4wi8MXT",
+                    "private_key": "340ddc2dbde372e38ec2145c511872a8c2ad159bffdbd2fb25bbc13de2250300b8f2a806f135da38fab0443f924858761efe1fa88badb0601fbcc3da53fb2d03",
+                    "chain_code": "f9c5be63fb16428b341e7335e55637bdea3e216ad671f354cf5709017f8a8817",
+                    "public_key": "00dec61c3987a6826a1b5b50c077c4747cec92a376450934aff0e3d2d22f1ad051",
+                    "hash": "686b009c4a006686879c2c47cbed931ec41c4f6e",
+                    "fingerprint": "686b009c",
+                    "parent_fingerprint": "718f6c78",
+                    "address": "37btjrVyb4KFsdvxLakJZbS1HPVZwfrAGD8e1ZWYKvhkp6DXAvzDiA9inYcaGkpbuaErq2fMjwTyUwU8KLhVxrCHaVyBXU5ZABMTCo4wiZfZUVfoGj"
+                },
+                {
+                    "at": {
+                        "path": "m/1852'/1815'/1'/0/0",
+                        "indexes": [
+                            2147485500,
+                            2147485463,
+                            2147483649,
+                            0,
+                            0
+                        ],
+                        "depth": 5,
+                        "purpose": 1852,
+                        "coin_type": 1815,
+                        "account": 1,
+                        "role": "external-chain",
+                        "address": 0
+                    },
+                    "xprivate_key": "xprv3TTHL2ZoUAtik5LZP3fsPfjYmZrPGp28pbca8eJuKs96Sc2vXGwnZ6WgxE3EEiyqNeZXwNfFPJ3GKHP4rH37fthuyXrEQhndmNtnTbtCqtggCK6GpftpiqM8tHaoim3CLungR4Wr4xDwLVAJ7EyrDGh",
+                    "xpublic_key": "xpub6GrM7r8bMGZfm7H7h3iTCGMfAJQQzFYsCxVJ7oytacExHBezC2aEa4HyCuPNUwFmmJkwCmhrZcT4TVeQYyPCc4HFDh7adyAM1Fp5jD1n8o8",
+                    "private_key": "db3249f5b01b175a7672be9597aeb7a819959c4aa7831bec468ada16d3d64908857924e769246f3c0bedf527807527914e3f2beb308162f6bf64cb7b5bf68159",
+                    "chain_code": "b0266689a166c925ffa529900bbab1219558e6ae83ff241f8057bfcfef4f9e49",
+                    "public_key": "00baa0306677f2ca83a5705e68640ff2043ae3f34c2a654a80146253c9fa3e56de",
+                    "hash": "7c6fd6313c2c53c16cf56960641366d2bc198ace",
+                    "fingerprint": "7c6fd631",
+                    "parent_fingerprint": "c36a763e",
+                    "address": "37btjrVyb4KBiSMvdviUMCWx4GXH99jSpvjeTwZyyMYmi2PnGEZbCXk8f3Nzz2GH7uTxohUJ9dSBxr6c698uEpmj1TjQWgJgzPKpe86b4noDgQDgMt"
+                }
+            ]
+        },
+        "shelley-icarus": {
+            "cryptocurrency": "Cardano",
+            "symbol": "ADA",
+            "network": "mainnet",
+            "coin_type": 1815,
+            "entropy": "46cee0c87543fb17ac72fc1a4f545dac0f533fe67c7a48c51c46c401",
+            "strength": 224,
+            "mnemonic": "kapybara negace herec vydat jasno orlice rodokmen limetka cyklista nominace cigareta kultura zatemnit pomlka plno ovanout kemp exekuce cela okrasa clona",
+            "passphrase": null,
+            "language": "Czech",
+            "seed": "46cee0c87543fb17ac72fc1a4f545dac0f533fe67c7a48c51c46c401",
+            "ecc": "Kholaw-Ed25519",
+            "hd": "Cardano",
+            "cardano_type": "shelley-icarus",
+            "root_xprivate_key": "xprv3QESAWYc9vDdZM9Bdjesu5kg7y96U53wy8U5NCuCxCu59ABX79xHenzyQR5VRnUkSjcVLrWhzG5t72tmWEKnWTd4z9RsRbxFSUfxRda8S2gcaS6jvU3Pvu4NwafqTT4LVko7GByLMjktccqC7BeVSGB",
+            "root_xpublic_key": "xpub661MyMwAqRbcEpLLkU4DJZnF85evKTzsTsZSD7yfGVKsqd7axPZwv1JsMHtX8RZgR4qLsfD7cotehYBdL3HFEzSZiXTsTqKQ5EADGK6CsiZ",
+            "root_private_key": "f0534df6179ab919521676c5a7fded650a1479a9bac5d200bcededa083f83c48292d592161a0f52d96412aa7cdeafd66803eef0e2e9de8f595e8aeaf0f4fad31",
+            "root_chain_code": "1b88f3efb562e6d354bb60cc86e951881cfa2efd8b25f5682b85f00978c83af5",
+            "root_public_key": "008c7eee4141ecb2481066cfb2c178b7100497f76ed53fbae417c8a92c49385c38",
+            "strict": true,
+            "public_key_type": "compressed",
+            "derivations": [
+                {
+                    "at": {
+                        "path": "m/1852'/1815'/0'/0/0",
+                        "indexes": [
+                            2147485500,
+                            2147485463,
+                            2147483648,
+                            0,
+                            0
+                        ],
+                        "depth": 5,
+                        "purpose": 1852,
+                        "coin_type": 1815,
+                        "account": 0,
+                        "role": "external-chain",
+                        "address": 0
+                    },
+                    "xprivate_key": "xprv3T9LBifNZwd8snsQwtpRg2vr8Gz27GBiqG7EeTBTmeAstpNcBjaPhd25SVyocb2zf4weizGiZFyinpMoJ2Rof7SPrtVB3qZ3DfqE6LrquG45GpgAkSLrrqqvrJG3SGtGogp99DVg1hXvmTEfrccPqw3",
+                    "xpublic_key": "xpub6FovKQsdtE73wkkga9jRo8grkKT6o9dKHnnoA4uP3vb6q4g6oUm8Fhq3gUVZdzUvqBQigSpN2H7jmzNGWQPYqmzmez8MYJLcQEwWBXNT9DM",
+                    "private_key": "a84e31ecff005445c5dce571afdc5ef2571cb99a811cb40b1d1356449bf83c48554ac50ff2cf18ce60a0288d5cca4c433be876a19ced94f7cd9c601efa61a5de",
+                    "chain_code": "fd765c1b642a27323ae5d0d9d13ab1354c28c0983e3c3cea981142781fc92530",
+                    "public_key": "00f9af4262576bb2e1d22e1d29aa83971e6640e149e9af4b2f0c0e828703f979a9",
+                    "hash": "131a8c7ad70f6364f36203a7402e2929915b4506",
+                    "fingerprint": "131a8c7a",
+                    "parent_fingerprint": "35ab9cf6",
+                    "address": "stake1u8lyda342lcffpphsm3cum52xj005vq0avlzkjvztwdwyrq2zwry8"
+                },
+                {
+                    "at": {
+                        "path": "m/1852'/1815'/1'/0/0",
+                        "indexes": [
+                            2147485500,
+                            2147485463,
+                            2147483649,
+                            0,
+                            0
+                        ],
+                        "depth": 5,
+                        "purpose": 1852,
+                        "coin_type": 1815,
+                        "account": 1,
+                        "role": "external-chain",
+                        "address": 0
+                    },
+                    "xprivate_key": "xprv3TQsBssrn2Cu8JL3G6s1wMP7v8wAms9tRiu4o4AstM5rA4TpDoaUFUjNARrdkLarMmVEMBeCHd81ytrfNi7Zc6Dk3Cnt2UWpvu89hSVJjobm9uQwLM2ctwWh57dNvrd4N5r6UtQnUfqt5B8ozspazov",
+                    "xpublic_key": "xpub6GiDN4EfTs6Ya6uEX5XQd1uZJMFSWxP2QvjW5dmKRfSodpjJVJUKHPTtmKvNmgE8wwgTgu3EAqK4Wb83J7E36uj2JU2eC6fPq1tH9WzjYi8",
+                    "private_key": "a89d328e8bdd102d42f0136669f3e361b35cbc62ced86ea6ec55c16695f83c488a99328b5c5b3b08364933ce53f1e92890a871bf11fe6cef16666491fab83d80",
+                    "chain_code": "4591a73ee54f409219d66281d6f3566cef2195381c7d24d1afe8ec040c69ceff",
+                    "public_key": "00903a09dec22f6fa5cb7fdf63fa88f3f540f75d92bdba6150233d70e36776673a",
+                    "hash": "d4deaba5a0c85ed2b13d9d6e984bee1f388bb2c6",
+                    "fingerprint": "d4deaba5",
+                    "parent_fingerprint": "b056290a",
+                    "address": "stake1u9mpm4zjxr9m0ulwts7xu5hjr8jxvechra42qrc0unf8wngvm5z5z"
+                }
+            ]
+        },
+        "shelley-ledger": {
+            "cryptocurrency": "Cardano",
+            "symbol": "ADA",
+            "network": "mainnet",
+            "coin_type": 1815,
+            "entropy": "46cee0c87543fb17ac72fc1a4f545dac0f533fe67c7a48c51c46c401",
+            "strength": 224,
+            "mnemonic": "kapybara negace herec vydat jasno orlice rodokmen limetka cyklista nominace cigareta kultura zatemnit pomlka plno ovanout kemp exekuce cela okrasa clona",
+            "passphrase": null,
+            "language": "Czech",
+            "seed": "ad640d79a85fc8a86ecf9966294f0da76e314538a27bbb2ffcacdb7fbe7e2be33d9ae37d9975c406206eb44d13d06ca8e20f877f29e769df690f8c700c5153a0",
+            "ecc": "Kholaw-Ed25519",
+            "hd": "Cardano",
+            "cardano_type": "shelley-ledger",
+            "root_xprivate_key": "xprv3QESAWYc9vDdZwJJo2ifc3reQ4o8bdWE42JgQMeYwLRQDUjzPrC6d7pJmZtSpNS5D3J6canMUaEJQYyDY95CE1UBid88ZvxyKZTJ3gMVQu9WkWqKXz1Ft1mnXTRu6KVfghLgmoDKKRwtpMwXvoqZQEi",
+            "root_xpublic_key": "xpub661MyMwAqRbcGoKPzwdHUnwLK5Rc9rdJwMaV3jxH2NAK48qsr945aeVm6L2H7kzv98MbSgeda2PRKZbY5bLow4r7R3N7YHbeKzPkdoM3T6A",
+            "root_private_key": "689308a99f89083e4b1d9f59e8aa386ccdcbaf6446a4e1ff755780191cb2eb503126caf83627a9abede5a5f87e77449f30f523a280217729b8c85bc7e6d69144",
+            "root_chain_code": "e2a8861279f6b5836b6f9794599926cf656879a4b540cc42d1271082e9718a57",
+            "root_public_key": "006e775855ec2f1b95bfe8b5278f203f81d14688b789a6d4ca18d8688d80c82943",
+            "strict": true,
+            "public_key_type": "compressed",
+            "derivations": [
+                {
+                    "at": {
+                        "path": "m/1852'/1815'/0'/0/0",
+                        "indexes": [
+                            2147485500,
+                            2147485463,
+                            2147483648,
+                            0,
+                            0
+                        ],
+                        "depth": 5,
+                        "purpose": 1852,
+                        "coin_type": 1815,
+                        "account": 0,
+                        "role": "external-chain",
+                        "address": 0
+                    },
+                    "xprivate_key": "xprv3T83ARoqwao6oRjXWZZRaLLqTgXXJEnEs3DiGtRfqSk5Jb7qaX4Dg8nGSyihNm1mdeSNcMcCSBqY95QPvQ1tvScXyvAJndHNTUVhHys6goy2hgf6Na65ZKRpeKfqHU99yEJF7WuY5A2tajasyx2gWXA",
+                    "xpublic_key": "xpub6FjZmfPEJDfym7oMDk9VMzhHk8Y4K1eHgkkhDmKLrZFLRVgpFNfH8Vr3VbidhCfaWQYfct8nA5Bsf7FcJi4a5TH9Xg7sHUvKJxh4J3Hf2wd",
+                    "private_key": "688822e88a19f53c32e1b242091be1f0a23f737abf1b3600204ca4ff38b2eb502aa04d1afc055a108b94394a1526403440e2113ed5f50b80e5179027e5df31ec",
+                    "chain_code": "15ff1979a243629ff24b883c1e8a746d366726c340b097792d69c027dc197f7c",
+                    "public_key": "00c14e228ad7e35bc0efe2feb629d817b027be6d7227dd62524cf8ae7e8261a9ac",
+                    "hash": "8a5f0851f20766ccffa35066a96c4801b32045df",
+                    "fingerprint": "8a5f0851",
+                    "parent_fingerprint": "2b74defc",
+                    "address": "stake1u8hehajna4276s69a887675vuduljnzps34nt6nxfvdcwjqxsflh9"
+                },
+                {
+                    "at": {
+                        "path": "m/1852'/1815'/1'/0/0",
+                        "indexes": [
+                            2147485500,
+                            2147485463,
+                            2147483649,
+                            0,
+                            0
+                        ],
+                        "depth": 5,
+                        "purpose": 1852,
+                        "coin_type": 1815,
+                        "account": 1,
+                        "role": "external-chain",
+                        "address": 0
+                    },
+                    "xprivate_key": "xprv3TVxtWTSqs9TxSTtn696tQ5GaWjCfBV3WaVzEVcDCiYe529uEakgPWpp8EyA9CiMckAZ8nooH5pAS4sCa3eC5gLbHUzgxo346bigL5quWPi4z12kbfvNEX4cchsA5SXsgbmisWpRPGdr5YjzSJdMNvM",
+                    "xpublic_key": "xpub6H1NnE4HKfdLXvbKTVriyT7Zy2vbvQBnSGiymqTvn6ssoJNHrSVzAWpgeqb3ck3V6CjWwVbdJVy9x6VhmzFkyDYidqcXQMYTcJHbZYmMVsj",
+                    "private_key": "4863d73c8c8f2a631f699d97d68f9c71f476f4df022c1fb05b632d4430b2eb50ba89e93863e1ed01b22b7fdb51eed33b45f451ab13be26e2501e4c75aadfdf63",
+                    "chain_code": "299c949f83507cee32e8fd103f62bb33cfd660dcff61ea1e0b43383b4ceef0f7",
+                    "public_key": "009064decda01b3fde762eb5cac26338a05d2adbc7a2524d71aee91df36729fd01",
+                    "hash": "a34db7c7616265c1ef5efbb8f9cf321b10c26b8c",
+                    "fingerprint": "a34db7c7",
+                    "parent_fingerprint": "d8982d77",
+                    "address": "stake1uxvfw9956t7t02ell4eumur3klgxf8pju9xvarw5kurdvdsyy975k"
+                }
+            ]
+        }
     }
 }
