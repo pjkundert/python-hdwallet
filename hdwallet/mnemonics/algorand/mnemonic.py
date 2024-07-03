@@ -24,16 +24,42 @@ from ..imnemonic import IMnemonic
 
 
 class ALGORAND_MNEMONIC_WORDS:
+    """
+    Constants representing algorand mnemonic words.
+    """
 
     TWENTY_FIVE: int = 25
 
 
 class ALGORAND_MNEMONIC_LANGUAGES:
+    """
+    Constants representing algorand mnemonic language.
+    """
 
     ENGLISH: str = "english"
 
 
 class AlgorandMnemonic(IMnemonic):
+    """
+    Used to generate and manage mnemonics specifically for the Algorand blockchain,
+    ensuring secure key derivation and backup.
+
+    Here are available Algorand mnemonic words:
+
+    +-----------------------+----------------------+
+    | Name                  | Value                |
+    +=======================+======================+
+    | TWENTY_FIVE           | 25                   |
+    +-----------------------+----------------------+
+
+    Here are available Algorand mnemonic languages:
+
+    +-----------------------+----------------------+
+    | Name                  | Value                |
+    +=======================+======================+
+    | ENGLISH               | english              |
+    +-----------------------+----------------------+
+    """
 
     checksum_length: int = 2
     words_list: List[int] = [
@@ -51,10 +77,38 @@ class AlgorandMnemonic(IMnemonic):
 
     @classmethod
     def name(cls) -> str:
+        """
+        Get the name of the mnemonic class.
+
+        :return: The name of the mnemonic class.
+        :rtype: str
+
+        >>> from hdwallet.mnemonics.algorand import AlgorandMnemonic
+        >>> mnemonic: AlgorandMnemonic = AlgorandMnemonic(mnemonic="...")
+        >>> mnemonic.name()
+        "..."
+        """
+
         return "Algorand"
 
     @classmethod
     def from_words(cls, words: int, language: str) -> str:
+        """
+        Generates a mnemonic phrase from a specified number of words and language.
+
+        :param words: The number of words in the mnemonic phrase.
+        :type words: int
+        :param language: The language for which to generate the mnemonic phrase.
+        :type language: str
+
+        :return: The generated mnemonic phrase.
+        :rtype: str
+
+        >>> from hdwallet.mnemonics.algorand import AlgorandMnemonic
+        >>> AlgorandMnemonic.from_words(words=..., language="...")
+        "..."
+        """
+
         if words not in cls.words_list:
             raise MnemonicError("Invalid mnemonic words number", expected=cls.words_list, got=words)
 
@@ -64,6 +118,22 @@ class AlgorandMnemonic(IMnemonic):
 
     @classmethod
     def from_entropy(cls, entropy: Union[str, bytes, IEntropy], language: str) -> str:
+        """
+        Generates a mnemonic phrase from entropy data.
+
+        :param entropy: The entropy data used to generate the mnemonic phrase.
+        :type entropy: Union[str, bytes, IEntropy]
+        :param language: The language for which to generate the mnemonic phrase.
+        :type language: str
+
+
+        :return: The generated mnemonic phrase.
+        :rtype: str
+
+        >>> from hdwallet.mnemonics.algorand import AlgorandMnemonic
+        >>> AlgorandMnemonic.from_entropy(entropy="...", language="...")
+        "..."
+        """
         if isinstance(entropy, str) or isinstance(entropy, bytes):
             return cls.encode(entropy=entropy, language=language)
         elif isinstance(entropy, AlgorandEntropy):
@@ -74,6 +144,25 @@ class AlgorandMnemonic(IMnemonic):
 
     @classmethod
     def encode(cls, entropy: Union[str, bytes], language: str) -> str:
+        """
+        Encodes entropy data into a mnemonic phrase using the specified language.
+
+        This method converts the provided entropy data into a mnemonic phrase based on the specified language.
+        It ensures the entropy has a valid strength and includes a checksum in the mnemonic phrase.
+
+        :param entropy: The entropy data to be encoded. Can be a string or bytes.
+        :type entropy: Union[str, bytes]
+        :param language: The language for the mnemonic phrase.
+        :type language: str
+
+        :return: The generated mnemonic phrase.
+        :rtype: str
+
+        >>> from hdwallet.mnemonics.algorand import AlgorandMnemonic
+        >>> AlgorandMnemonic.encode(entropy="...", language="...")
+        "..."
+        """
+
         entropy: bytes = get_bytes(entropy)
         if not AlgorandEntropy.is_valid_bytes_strength(len(entropy)):
             raise EntropyError(
@@ -92,6 +181,21 @@ class AlgorandMnemonic(IMnemonic):
 
     @classmethod
     def decode(cls, mnemonic: str, **kwargs) -> str:
+        """
+        Decodes a mnemonic phrase into entropy data.
+
+        :param mnemonic: The mnemonic phrase to decode.
+        :type mnemonic: str
+        :param kwargs: Additional keyword arguments (language, checksum).
+
+        :return: The decoded entropy data.
+        :rtype: str
+
+        >>> from hdwallet.mnemonics.algorand import AlgorandMnemonic
+        >>> AlgorandMnemonic.decode(mnemonic="...")
+        "..."
+        """
+
         words: list = cls.normalize(mnemonic)
         if len(words) not in cls.words_list:
             raise MnemonicError("Invalid mnemonic words count", expected=cls.words_list, got=len(words))
@@ -117,5 +221,19 @@ class AlgorandMnemonic(IMnemonic):
 
     @classmethod
     def normalize(cls, mnemonic: Union[str, List[str]]) -> List[str]:
+        """
+        Normalizes the given mnemonic by splitting it into a list of words if it is a string.
+
+        :param mnemonic: The mnemonic value, which can be a single string of words or a list of words.
+        :type mnemonic: Union[str, List[str]]
+
+        :return: A list of words from the mnemonic.
+        :rtype: List[str]
+
+        >>> from hdwallet.mnemonics.algorand import AlgorandMnemonic
+        >>> AlgorandMnemonic.normalize(mnemonic="...")
+        "..."
+        """
+
         mnemonic: list = mnemonic.split() if isinstance(mnemonic, str) else mnemonic
         return list(map(lambda _: unicodedata.normalize("NFKD", _.lower()), mnemonic))

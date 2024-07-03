@@ -1,6 +1,6 @@
 # This workflow will install Swap package dependencies, run tests and lint with a variety of Python versions.
 
-name: hdwallet-workflow
+name: Python-HDWallet
 
 on:
   push:
@@ -26,9 +26,13 @@ jobs:
       uses: actions/setup-python@master
       with:
         python-version: ${{ matrix.python-version }}
-    - name: Install dependencies
+    - name: Install System dependencies
       run: |
-        python -m pip install --upgrade pip
+        sudo apt-get update
+        sudo apt-get install -y libffi-dev libsecp256k1-dev
+    - name: Install Python dependencies
+      run: |
+        python -m pip install --upgrade pip setuptools wheel
         pip install -e .[cli,tests,docs]
     - name: Test with pytest
       run: pytest

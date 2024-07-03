@@ -23,16 +23,43 @@ from ...imnemonic import IMnemonic
 
 
 class ELECTRUM_V1_MNEMONIC_WORDS:
+    """
+    Constants for electrum v1 mnemonic words.
+    """
 
     TWELVE: int = 12
 
 
 class ELECTRUM_V1_MNEMONIC_LANGUAGES:
+    """
+    Constants for electrum v1 mnemonic languages.
+    """
 
     ENGLISH: str = "english"
 
 
 class ElectrumV1Mnemonic(IMnemonic):
+    """
+    Manages the first version of Electrum mnemonics, used for seed phrases
+    in the Electrum Bitcoin wallet, providing a simple and efficient way
+    to backup keys.
+
+    Here are available Electrum-V1 mnemonic words:
+
+    +-----------------------+----------------------+
+    | Name                  | Value                |
+    +=======================+======================+
+    | TWELVE                | 12                   |
+    +-----------------------+----------------------+
+
+    Here are available Electrum-V1 mnemonic languages:
+
+    +-----------------------+----------------------+
+    | Name                  | Value                |
+    +=======================+======================+
+    | ENGLISH               | english              |
+    +-----------------------+----------------------+
+    """
 
     words_list: List[int] = [
         ELECTRUM_V1_MNEMONIC_WORDS.TWELVE
@@ -50,10 +77,42 @@ class ElectrumV1Mnemonic(IMnemonic):
 
     @classmethod
     def name(cls) -> str:
+        """
+        Get the name of the mnemonic class.
+
+        :return: The name of the mnemonic class.
+        :rtype: str
+
+        >>> from hdwallet.mnemonics.electrum.v1 import ElectrumV1Mnemonic
+        >>> mnemonic: ElectrumV1Mnemonic = ElectrumV1Mnemonic(mnemonic="...")
+        >>> mnemonic.name()
+        "..."
+        """
+
         return "Electrum-V1"
 
     @classmethod
     def from_words(cls, words: int, language: str) -> str:
+        """
+        Generates a mnemonic phrase from a specified number of words and language.
+
+        This method generates a mnemonic phrase by first validating the number of words against the allowed word list sizes.
+        It then generates entropy based on the specified number of words and uses it to create a mnemonic phrase in the
+        specified language.
+
+        :param words: The number of words in the mnemonic phrase.
+        :type words: int
+        :param language: The language for which to generate the mnemonic phrase.
+        :type language: str
+
+        :return: The generated mnemonic phrase.
+        :rtype: str
+
+        >>> from hdwallet.mnemonics.electrum.v1 import ElectrumV1Mnemonic
+        >>> ElectrumV1Mnemonic.from_words(words=..., language="...")
+        "..."
+        """
+
         if words not in cls.words_list:
             raise MnemonicError("Invalid mnemonic words number", expected=cls.words_list, got=words)
 
@@ -63,6 +122,24 @@ class ElectrumV1Mnemonic(IMnemonic):
 
     @classmethod
     def from_entropy(cls, entropy: Union[str, bytes, IEntropy], language: str) -> str:
+        """
+        Generates a mnemonic phrase from entropy data.
+
+        This method generates a mnemonic phrase from the given entropy data using the specified language's word list.
+
+        :param entropy: The entropy data used to generate the mnemonic phrase, either as a string or bytes.
+        :type entropy: Union[str, bytes, IEntropy]
+        :param language: The language for which to generate the mnemonic phrase.
+        :type language: str
+
+        :return: The generated mnemonic phrase.
+        :rtype: str
+
+        >>> from hdwallet.mnemonics.electrum.v1 import ElectrumV1Mnemonic
+        >>> ElectrumV1Mnemonic.from_entropy(entropy="...", language="...")
+        "..."
+        """
+
         if isinstance(entropy, str) or isinstance(entropy, bytes):
             return cls.encode(entropy=entropy, language=language)
         elif isinstance(entropy, ElectrumV1Entropy):
@@ -73,6 +150,23 @@ class ElectrumV1Mnemonic(IMnemonic):
 
     @classmethod
     def encode(cls, entropy: Union[str, bytes], language: str) -> str:
+        """
+        Generates a mnemonic phrase from entropy data.
+
+        This method generates a mnemonic phrase from the given entropy data using the specified language's word list.
+
+        :param entropy: The entropy data used to generate the mnemonic phrase, either as a string or bytes.
+        :type entropy: Union[str, bytes]
+        :param language: The language for which to generate the mnemonic phrase.
+        :type language: str
+
+        :return: The generated mnemonic phrase.
+        :rtype: str
+
+        >>> from hdwallet.mnemonics.electrum.v1 import ElectrumV1Mnemonic
+        >>> ElectrumV1Mnemonic.encode(entropy="...", language="...")
+        "..."
+        """
 
         entropy: bytes = get_bytes(entropy)
         if not ElectrumV1Entropy.is_valid_bytes_strength(len(entropy)):
@@ -104,6 +198,28 @@ class ElectrumV1Mnemonic(IMnemonic):
     def decode(
         cls, mnemonic: str, words_list: Optional[List[str]] = None, words_list_with_index: Optional[dict] = None
     ) -> str:
+        """
+        Decodes a mnemonic phrase back into entropy data.
+
+        This method decodes the given mnemonic phrase into its original entropy data, using the provided
+        word list and index mapping or fetching them based on the mnemonic's language if not provided.
+
+        :param mnemonic: The mnemonic phrase to decode, either as a space-separated string or a list of words.
+        :type mnemonic: str
+        :param words_list: Optional list of valid words for the mnemonic phrase, normalized and in the correct order.
+                           If not provided, uses `cls.get_words_list_by_language` to fetch the list based on the default language.
+        :type words_list: Optional[List[str]], optional
+        :param words_list_with_index: Optional dictionary mapping words to their indices for quick lookup.
+                                      If not provided, constructs this mapping based on `words_list`.
+        :type words_list_with_index: Optional[dict], optional
+
+        :return: The decoded entropy data as a byte string.
+        :rtype: str
+
+        >>> from hdwallet.mnemonics.electrum.v1 import ElectrumV1Mnemonic
+        >>> ElectrumV1Mnemonic.decode(mnemonic="...")
+        "..."
+        """
 
         words: list = cls.normalize(mnemonic)
         if len(words) not in cls.words_list:
@@ -136,6 +252,28 @@ class ElectrumV1Mnemonic(IMnemonic):
     def is_valid(
         cls, mnemonic: Union[str, List[str]], words_list: Optional[List[str]] = None, words_list_with_index: Optional[dict] = None
     ) -> bool:
+        """
+        Checks if the given mnemonic phrase is valid.
+
+        This method decodes the mnemonic phrase and verifies its validity using the specified word lists and index mappings.
+
+        :param mnemonic: The mnemonic phrase to check, either as a space-separated string or a list of words.
+        :type mnemonic: Union[str, List[str]]
+        :param words_list: Optional list of valid words for the mnemonic phrase, normalized and in the correct order.
+                           If not provided, uses `cls.get_words_list_by_language` to fetch the list based on the default language.
+        :type words_list: Optional[List[str]], optional
+        :param words_list_with_index: Optional dictionary mapping words to their indices for quick lookup.
+                                      If not provided, constructs this mapping based on `words_list`.
+        :type words_list_with_index: Optional[dict], optional
+
+        :return: True if the mnemonic phrase is valid, False otherwise.
+        :rtype: bool
+
+        >>> from hdwallet.mnemonics.electrum.v1 import ElectrumV1Mnemonic
+        >>> ElectrumV1Mnemonic.is_valid(mnemonic="...")
+        ...
+        """
+
         try:
             cls.decode(mnemonic=mnemonic, words_list=words_list, words_list_with_index=words_list_with_index)
             return True
@@ -144,5 +282,19 @@ class ElectrumV1Mnemonic(IMnemonic):
 
     @classmethod
     def normalize(cls, mnemonic: Union[str, List[str]]) -> List[str]:
+        """
+        Normalizes the given mnemonic by splitting it into a list of words if it is a string.
+
+        :param mnemonic: The mnemonic value, which can be a single string of words or a list of words.
+        :type mnemonic: Union[str, List[str]]
+
+        :return: A list of words from the mnemonic.
+        :rtype: List[str]
+
+        >>> from hdwallet.mnemonics.electrum.v1 import ElectrumV1Mnemonic
+        >>> ElectrumV1Mnemonic.normalize(mnemonic="...")
+        "..."
+        """
+
         mnemonic: list = mnemonic.split() if isinstance(mnemonic, str) else mnemonic
         return list(map(lambda _: unicodedata.normalize("NFKD", _.lower()), mnemonic))

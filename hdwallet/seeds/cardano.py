@@ -33,6 +33,19 @@ class CardanoSeed(ISeed):
     def __init__(
         self, seed: str, cardano_type: str = Cardano.TYPES.BYRON_ICARUS, passphrase: Optional[str] = None
     ) -> None:
+        """
+        Initialize a CardanoSeed object.
+
+        :param seed: The seed value used to generate Cardano keys.
+        :type seed: str
+
+        :param cardano_type: The type of Cardano seed. Defaults to Cardano.TYPES.BYRON_ICARUS.
+        :type cardano_type: str, optional
+
+        :param passphrase: Optional passphrase for deriving the seed. Defaults to None.
+        :type passphrase: str, optional
+        """
+
         super(CardanoSeed, self).__init__(
             seed=seed, cardano_type=cardano_type, passphrase=passphrase
         )
@@ -47,9 +60,33 @@ class CardanoSeed(ISeed):
 
     @classmethod
     def name(cls) -> str:
+        """
+        Get the name of the seeds class.
+
+        :return: The name of the seeds class.
+        :rtype: str
+
+        >>> from hdwallet.seeds.cardano import CardanoSeed
+        >>> seed: CardanoSeed = CardanoSeed(seed="...")
+        >>> seed.name()
+        "Cardano"
+        """
+
         return "Cardano"
 
     def cardano_type(self) -> str:
+        """
+        Returns the Cardano type associated with this instance.
+
+        :return: The Cardano type as a string.
+        :rtype: str
+
+        >>> from hdwallet.seeds.cardano import CardanoSeed
+        >>> seed: CardanoSeed = CardanoSeed(seed="...")
+        >>> seed.cardano_type()
+        "..."
+        """
+
         return self._cardano_type
 
     @classmethod
@@ -59,6 +96,28 @@ class CardanoSeed(ISeed):
         passphrase: Optional[str] = None,
         cardano_type: str = Cardano.TYPES.BYRON_ICARUS
     ) -> str:
+        """
+        Generates a Cardano wallet seed based on the specified cardano_type.
+
+        This method allows generating different types of Cardano wallet seeds based on the `cardano_type` parameter.
+
+        :param mnemonic: The mnemonic phrase to be used for seed generation. Can be a string or an instance of `IMnemonic`.
+        :type mnemonic: Union[str, IMnemonic]
+
+        :param passphrase: Optional passphrase used for seed derivation, default is `None`.
+        :type passphrase: Optional[str]
+
+        :param cardano_type: Specifies the type of Cardano seed to generate. Default is Byron Icarus.
+                             Valid options are defined in `Cardano.TYPES`.
+        :type cardano_type: str
+
+        :return: The generated Cardano wallet seed as a string.
+        :rtype: str
+
+        >>> from hdwallet.seeds.cardano import CardanoSeed
+        >>> CardanoSeed.from_mnemonic(mnemonic="...", passphrase="...", cardano_type="...")
+        "..."
+        """
 
         if cardano_type == Cardano.TYPES.BYRON_ICARUS:
             return cls.generate_byron_icarus(mnemonic=mnemonic)
@@ -80,6 +139,19 @@ class CardanoSeed(ISeed):
 
     @classmethod
     def generate_byron_icarus(cls, mnemonic: Union[str, IMnemonic]) -> str:
+        """
+        Generates a Byron Icarus seed from a given mnemonic phrase.
+
+        :param mnemonic: The mnemonic phrase to be used for seed generation. Can be a string or an instance of `IMnemonic`.
+        :type mnemonic: Union[str, IMnemonic]
+
+        :return: The derived Byron Icarus seed as a string.
+        :rtype: str
+
+        >>> from hdwallet.seeds.cardano import CardanoSeed
+        >>> CardanoSeed.generate_byron_icarus(mnemonic="...")
+        "..."
+        """
 
         mnemonic = (
             mnemonic.mnemonic()
@@ -93,6 +165,23 @@ class CardanoSeed(ISeed):
 
     @classmethod
     def generate_byron_ledger(cls, mnemonic: Union[str, IMnemonic], passphrase: Optional[str] = None) -> str:
+        """
+        Generates a Byron Ledger seed from a given mnemonic phrase and optional passphrase.
+
+        :param mnemonic: The mnemonic phrase to be used for seed generation. Can be a string or an instance of `IMnemonic`.
+        :type mnemonic: Union[str, IMnemonic]
+
+        :param passphrase: An optional passphrase to be used in the seed generation process.
+        :type passphrase: Optional[str]
+
+        :return: The derived Byron Ledger seed as a string.
+        :rtype: str
+
+        >>> from hdwallet.seeds.cardano import CardanoSeed
+        >>> CardanoSeed.generate_byron_ledger(mnemonic="...", passphrase="...")
+        "..."
+        """
+
         mnemonic = (
             mnemonic.mnemonic()
             if isinstance(mnemonic, IMnemonic) else
@@ -102,6 +191,19 @@ class CardanoSeed(ISeed):
 
     @classmethod
     def generate_byron_legacy(cls, mnemonic: Union[str, IMnemonic]) -> str:
+        """
+        Generates a Byron Legacy seed from a given mnemonic phrase.
+
+        :param mnemonic: The mnemonic phrase to be used for seed generation. Can be a string or an instance of `IMnemonic`.
+        :type mnemonic: Union[str, IMnemonic]
+
+        :return: The derived Byron Legacy seed as a string.
+        :rtype: str
+
+        >>> from hdwallet.seeds.cardano import CardanoSeed
+        >>> CardanoSeed.generate_byron_legacy(mnemonic="...")
+        "..."
+        """
 
         mnemonic = (
             mnemonic.mnemonic()
@@ -117,12 +219,42 @@ class CardanoSeed(ISeed):
 
     @classmethod
     def generate_shelley_icarus(cls, mnemonic: Union[str, IMnemonic]) -> str:
+        """
+        Generates a Shelley Icarus seed from a given mnemonic phrase.
+
+        :param mnemonic: The mnemonic phrase to be used for seed generation. Can be a string or an instance of `IMnemonic`.
+        :type mnemonic: Union[str, IMnemonic]
+
+        :return: The derived Shelley Icarus seed as a string.
+        :rtype: str
+
+        >>> from hdwallet.seeds.cardano import CardanoSeed
+        >>> CardanoSeed.generate_shelley_icarus(mnemonic="...")
+        "..."
+        """
+
         return cls.generate_byron_icarus(
             mnemonic=mnemonic
         )
 
     @classmethod
     def generate_shelley_ledger(cls, mnemonic: str, passphrase: Optional[str] = None) -> str:
+        """
+        Generates a Shelley ledger seed from a given mnemonic phrase and optional passphrase.
+
+        :param mnemonic: The mnemonic phrase to be used for seed generation.
+        :type mnemonic: str
+        :param passphrase: An optional passphrase to strengthen the security of the seed. Defaults to None.
+        :type passphrase: Optional[str]
+
+        :return: The derived Shelley ledger seed as a string.
+        :rtype: str
+
+        >>> from hdwallet.seeds.cardano import CardanoSeed
+        >>> CardanoSeed.generate_shelley_ledger(mnemonic="...", passphrase="...")
+        "..."
+        """
+
         return cls.generate_byron_ledger(
             mnemonic=mnemonic, passphrase=passphrase
         )
