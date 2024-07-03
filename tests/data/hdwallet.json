@@ -1455,5 +1455,87 @@
                 }
             ]
         }
+    },
+    "Monero": {
+        "derivation":{
+            "name": "Monero",
+            "args":{
+                "minor": "1",
+                "major": "1-2"
+            }
+        },
+        "dumps": {
+            "cryptocurrency": "Monero",
+            "symbol": "XMR",
+            "network": "mainnet",
+            "coin_type": 128,
+            "entropy": "fb57a097f01c2180c4d853420fbd78aa",
+            "strength": 128,
+            "mnemonic": "guizo melro cirurgico enlutar fiquei slide ilharga flotilha musselina socratico muon encurvar",
+            "passphrase": null,
+            "language": "Portuguese",
+            "seed": "fb57a097f01c2180c4d853420fbd78aa",
+            "ecc": "SLIP10-Ed25519-Monero",
+            "hd": "Monero",
+            "private_key": null,
+            "spend_private_key": "80f1b5c1a12f77a401f2dc153666509a24499a240f5dd65e182aef13f0c3af0e",
+            "view_private_key": "ba897a1c51b73db7a4b4ab35ba34de1b23041298ea2e7e9a03f930c00362d804",
+            "spend_public_key": "8b9584b8f50858284a5b69c3964f43189f64197c22aeb1f1f3239b2cae53d705",
+            "view_public_key": "df90f5f069af7f5d7120cac0c8aa588bfc4c75cbbc3b0c9609f1468bf4ce8d3f",
+            "primary_address": "46uuVwodD7D7jsLdv9h8JE57sUas5GMnQhUDWrRQy7vE1yykQvSW85cGdWCvXftYKHQR336sjsftwS6ZkZWenc8L887nV8C",
+            "integrated_address": "4GcaWkd7pNj7jsLdv9h8JE57sUas5GMnQhUDWrRQy7vE1yykQvSW85cGdWCvXftYKHQR336sjsftwS6ZkZWenc8LBejptb1QCmvEb6GK3v",
+            "derivations": [
+                {
+                    "at": {
+                        "minor": 1,
+                        "major": 1
+                    },
+                    "sub_address": "86xohQ91KZvNY1EDcWJddXLPttqZGWhdoapNN6WfjEfmZbeergc3eTiSrH1JdEXXynfgubNu1PEsnehjLSP81vuvScmwt5u"
+                },
+                {
+                    "at": {
+                        "minor": 1,
+                        "major": 2
+                    },
+                    "sub_address": "85H7BJLS4x9eRsWy1H2Cu767fMBVAVN53GFAnYwpx4mKJdgZkbJYvSWSzVtJZE5v6aXmQWb2VtvM3632xEKRMphoLpgwfAW"
+                }
+            ]
+        },
+        "from-private-key":{
+            "cryptocurrency": "Monero",
+            "symbol": "XMR",
+            "network": "mainnet",
+            "coin_type": 128,
+            "entropy": null,
+            "strength": null,
+            "mnemonic": null,
+            "passphrase": null,
+            "language": null,
+            "seed": null,
+            "ecc": "SLIP10-Ed25519-Monero",
+            "hd": "Monero",
+            "private_key": "0fea3ff3b19b033672e8ac8a3b26fed252daf30762c8294e9dd62dc417d2108e",
+            "spend_private_key": "ee08ca4c8556cf0e8f32a1663f9b9a695be2ed4d561244f7127d3753e5f9c802",
+            "view_private_key": "cf4b32d08edba418d149ea301b14478ee72c5da5eb92138f627bdcbee31d620b",
+            "spend_public_key": "07ed040f93261199b4b745bf6100f7b8aa6768898ffb3320a0e0b44ca6375b42",
+            "view_public_key": "6c87331e638a69934bb766d41a249788ff4d9cc7493288f1ca8a17f3993434a2",
+            "primary_address": "41vXeBrEVVrSi97tVqkVcaXtVJkABQL7L6TY8E4hdZcnC7Pw99pPuSGRdxJR12Jx3pPv3d5Lz5sVRhSgHBoxp5jRKNV64QE",
+            "derivations": [
+                {
+                    "at": {
+                        "minor": 1,
+                        "major": 1
+                    },
+                    "sub_address": "86gHLxA8Myy5zviNyc2eRYa7ZDyNdb1JaDpRWxVvmvYZhWXT46BsTBJgq4MFmRWGeGKspb6peRivSLRNCDSZdCEBKcLBN1t"
+                },
+                {
+                    "at": {
+                        "minor": 1,
+                        "major": 2
+                    },
+                    "sub_address": "8BH7CoitJjYKjkcVuQoeR5buX3FkR4HQ8NJuAys576yrFAjZA5vU3ng7Tgq2qUhNcnaed9fdDhN82baXkwEobY5S2pxmeHy"
+                }
+            ]
+        }
     }
 }
