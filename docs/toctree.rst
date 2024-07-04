@@ -16,3 +16,4 @@ HDWallet
     Mnemonics <mnemonics.rst>
     Seeds <seeds.rst>
     Derivations <derivations.rst>
+    Elliptic Curve Cryptography (ECC) <ecc.rst>
