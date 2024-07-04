@@ -14,21 +14,88 @@ class SLIP10Ed25519MoneroPublicKey(SLIP10Ed25519PublicKey):
 
     @staticmethod
     def name() -> str:
+        """
+        Get the name of the ecc class.
+
+        :return: The name of the ecc class.
+        :rtype: str
+
+        >>> from hdwallet.ecc.slip10.ed25519.monero.public_key import SLIP10Ed25519MoneroPublicKey
+        >>> ecc:  = SLIP10Ed25519MoneroPublicKey(public_key=...)
+        >>> ecc.name()
+        "SLIP10-Ed25519-Monero"
+        """
+
         return "SLIP10-Ed25519-Monero"
 
     @staticmethod
     def compressed_length() -> int:
+        """
+        Returns the compressed length of the Ed25519 Monero public key.
+
+        :return: The compressed length of the Ed25519 Monero public key.
+        :rtype: int
+
+        >>> from hdwallet.ecc.slip10.ed25519.monero.public_key import SLIP10Ed25519MoneroPublicKey
+        >>> SLIP10Ed25519MoneroPublicKey.compressed_length()
+        ...
+        """
+
         return SLIP10_ED25519_CONST.PUBLIC_KEY_BYTE_LENGTH
 
     @staticmethod
     def uncompressed_length() -> int:
+        """
+        Returns the uncompressed length of the Ed25519 Monero public key.
+
+        :return: The uncompressed length of the Ed25519 Monero public key.
+        :rtype: int
+
+        >>> from hdwallet.ecc.slip10.ed25519.monero.public_key import SLIP10Ed25519MoneroPublicKey
+        >>> SLIP10Ed25519MoneroPublicKey.uncompressed_length()
+        ...
+        """
+
         return SLIP10Ed25519MoneroPublicKey.compressed_length()
 
     def raw_compressed(self) -> bytes:
+        """
+        Retrieves the raw compressed public key bytes.
+
+        :return: The raw compressed public key bytes.
+        :rtype: bytes
+
+        >>> from hdwallet.ecc.slip10.ed25519.monero.public_key import SLIP10Ed25519MoneroPublicKey
+        >>> SLIP10Ed25519MoneroPublicKey.raw_compressed()
+        ...
+        """
+
         return bytes(self.verify_key)
 
     def raw_uncompressed(self) -> bytes:
+        """
+        Retrieves the raw uncompressed public key bytes.
+
+        :return: The raw compressed public key bytes.
+        :rtype: bytes
+
+        >>> from hdwallet.ecc.slip10.ed25519.monero.public_key import SLIP10Ed25519MoneroPublicKey
+        >>> SLIP10Ed25519MoneroPublicKey.raw_uncompressed()
+        ...
+        """
+
         return self.raw_compressed()
 
     def point(self) -> IPoint:
+        """
+        Retrieves the point on the elliptic curve corresponding to the public key.
+
+        :return: The elliptic curve point corresponding to the public key.
+        :rtype: IPoint
+
+        >>> from hdwallet.ecc.slip10.ed25519.monero.public_key import SLIP10Ed25519MoneroPublicKey
+        >>> SLIP10Ed25519MoneroPublicKey.point()
+        "..."
+        """
+
         return SLIP10Ed25519MoneroPoint(bytes(self.verify_key))

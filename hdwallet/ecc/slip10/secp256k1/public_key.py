@@ -23,14 +23,46 @@ class SLIP10Secp256k1PublicKeyCoincurve(IPublicKey):
     verify_key: coincurve.PublicKey
 
     def __init__(self, public_key: coincurve.PublicKey) -> None:
+        """
+        Initialize the public key object.
+
+        :param public_key: The coincurve PublicKey object representing the public key.
+        :type public_key: coincurve.PublicKey
+        """
         self.verify_key = public_key
 
     @staticmethod
     def name() -> str:
+        """
+        Get the name of the ecc class.
+
+        :return: The name of the ecc class.
+        :rtype: str
+
+        >>> from hdwallet.ecc.slip10.secp256k1.public_key import SLIP10Secp256k1PublicKeyCoincurve
+        >>> ecc:  = SLIP10Secp256k1PublicKeyCoincurve(public_key=...)
+        >>> ecc.name()
+        "SLIP10-Secp256k1"
+        """
+
         return "SLIP10-Secp256k1"
 
     @classmethod
     def from_bytes(cls, public_key: bytes) -> IPublicKey:
+        """
+        Create a public key instance from a byte representation.
+
+        :param public_key: The byte representation of the public key.
+        :type public_key: bytes
+
+        :return: An instance of the public key created from the byte representation.
+        :rtype: IPublicKey
+
+        >>> from hdwallet.ecc.slip10.secp256k1.public_key import SLIP10Secp256k1PublicKeyCoincurve
+        >>> SLIP10Secp256k1PublicKeyCoincurve.from_bytes(public_key=...)
+        "..."
+        """
+
         try:
             return cls(coincurve.PublicKey(public_key))
         except ValueError as ex:
@@ -38,6 +70,20 @@ class SLIP10Secp256k1PublicKeyCoincurve(IPublicKey):
 
     @classmethod
     def from_point(cls, point: IPoint) -> IPublicKey:
+        """
+        Create a public key instance from a given elliptic curve point.
+
+        :param point: The elliptic curve point containing x and y coordinates.
+        :type point: IPoint
+
+        :return: An instance of the public key derived from the elliptic curve point.
+        :rtype: IPublicKey
+
+        >>> from hdwallet.ecc.slip10.secp256k1.public_key import SLIP10Secp256k1PublicKeyCoincurve
+        >>> SLIP10Secp256k1PublicKeyCoincurve.from_point(point=...)
+        "..."
+        """
+
         try:
             return cls(
                 coincurve.PublicKey.from_point(
@@ -49,22 +95,88 @@ class SLIP10Secp256k1PublicKeyCoincurve(IPublicKey):
 
     @staticmethod
     def compressed_length() -> int:
+        """
+        Get the length of the compressed public key in bytes.
+
+        :return: Length of the compressed public key in bytes.
+        :rtype: int
+
+        >>> from hdwallet.ecc.slip10.secp256k1.public_key import SLIP10Secp256k1PublicKeyCoincurve
+        >>> SLIP10Secp256k1PublicKeyCoincurve.compressed_length()
+        ...
+        """
+
         return SLIP10_SECP256K1_CONST.PUBLIC_KEY_COMPRESSED_BYTE_LENGTH
 
     @staticmethod
     def uncompressed_length() -> int:
+        """
+        Returns the length of an uncompressed public key in bytes.
+
+        :return: The length of an uncompressed public key in bytes.
+        :rtype: int
+
+        >>> from hdwallet.ecc.slip10.secp256k1.public_key import SLIP10Secp256k1PublicKeyCoincurve
+        >>> SLIP10Secp256k1PublicKeyCoincurve.uncompressed_length()
+        ...
+        """
+
         return SLIP10_SECP256K1_CONST.PUBLIC_KEY_UNCOMPRESSED_BYTE_LENGTH
 
     def underlying_object(self) -> Any:
+        """
+        Returns the underlying verification key object.
+
+        :return: The underlying verification key object.
+        :rtype: Any
+
+        >>> from hdwallet.ecc.slip10.secp256k1.public_key import SLIP10Secp256k1PublicKeyCoincurve
+        >>> SLIP10Secp256k1PublicKeyCoincurve.underlying_object()
+        "..."
+        """
+
         return self.verify_key
 
     def raw_compressed(self) -> bytes:
+        """
+        Retrieves the raw compressed representation of the public key.
+
+        :return: The compressed public key bytes.
+        :rtype: bytes
+
+        >>> from hdwallet.ecc.slip10.secp256k1.public_key import SLIP10Secp256k1PublicKeyCoincurve
+        >>> SLIP10Secp256k1PublicKeyCoincurve.raw_uncompressed()
+        ...
+        """
+
         return self.verify_key.format(True)
 
     def raw_uncompressed(self) -> bytes:
+        """
+        Get the uncompressed raw representation of the verifying key.
+
+        :return: Uncompressed raw bytes of the verifying key.
+        :rtype: bytes
+
+        >>> from hdwallet.ecc.slip10.secp256k1.public_key import SLIP10Secp256k1PublicKeyCoincurve
+        >>> SLIP10Secp256k1PublicKeyCoincurve.raw_uncompressed()
+        ...
+        """
+
         return self.verify_key.format(False)
 
     def point(self) -> IPoint:
+        """
+        Get the cryptographic point associated with the verifying key.
+
+        :return: The cryptographic point.
+        :rtype: IPoint
+
+        >>> from hdwallet.ecc.slip10.secp256k1.public_key import SLIP10Secp256k1PublicKeyCoincurve
+        >>> SLIP10Secp256k1PublicKeyCoincurve.point()
+        "..."
+        """
+
         point = self.verify_key.point()
         return SLIP10Secp256k1PointCoincurve.from_coordinates(
             point[0], point[1]
@@ -76,14 +188,47 @@ class SLIP10Secp256k1PublicKeyECDSA(IPublicKey):
     verify_key: VerifyingKey
 
     def __init__(self, verify_key: VerifyingKey) -> None:
+        """
+        Initialize the instance with a verifying key.
+
+        :param verify_key: The verifying key used for cryptographic operations.
+        :type verify_key: VerifyingKey
+        """
+
         self.verify_key = verify_key
 
     @staticmethod
     def name() -> str:
+        """
+        Get the name of the ecc class.
+
+        :return: The name of the ecc class.
+        :rtype: str
+
+        >>> from hdwallet.ecc.slip10.secp256k1.public_key import SLIP10Secp256k1PublicKeyECDSA
+        >>> ecc:  = SLIP10Secp256k1PublicKeyECDSA(public_key=...)
+        >>> ecc.name()
+        "SLIP10-Secp256k1"
+        """
+
         return "SLIP10-Secp256k1"
 
     @classmethod
     def from_bytes(cls, public_key: bytes) -> IPublicKey:
+        """
+        Create a public key instance from bytes representation.
+
+        :param public_key: The bytes representation of the public key.
+        :type public_key: bytes
+
+        :return: An instance of the public key derived from the given bytes.
+        :rtype: IPublicKey
+
+        >>> from hdwallet.ecc.slip10.secp256k1.public_key import SLIP10Secp256k1PublicKeyECDSA
+        >>> SLIP10Secp256k1PublicKeyECDSA.from_bytes(public_key=...)
+        "..."
+        """
+
         try:
             return cls(
                 VerifyingKey.from_string(
@@ -95,6 +240,20 @@ class SLIP10Secp256k1PublicKeyECDSA(IPublicKey):
 
     @classmethod
     def from_point(cls, point: IPoint) -> IPublicKey:
+        """
+        Create a public key instance from an elliptic curve point.
+
+        :param point: The elliptic curve point representing the public key.
+        :type point: IPoint
+
+        :return: An instance of the public key derived from the given point.
+        :rtype: IPublicKey
+
+        >>> from hdwallet.ecc.slip10.secp256k1.public_key import SLIP10Secp256k1PublicKeyECDSA
+        >>> SLIP10Secp256k1PublicKeyECDSA.from_point(point=...)
+        "..."
+        """
+
         try:
             return cls(
                 VerifyingKey.from_public_point(
@@ -109,22 +268,88 @@ class SLIP10Secp256k1PublicKeyECDSA(IPublicKey):
 
     @staticmethod
     def compressed_length() -> int:
+        """
+        Returns the length of a compressed public key in bytes.
+
+        :return: The length of a compressed public key in bytes.
+        :rtype: int
+
+        >>> from hdwallet.ecc.slip10.secp256k1.public_key import SLIP10Secp256k1PublicKeyECDSA
+        >>> SLIP10Secp256k1PublicKeyECDSA.compressed_length()
+        ...
+        """
+
         return SLIP10_SECP256K1_CONST.PUBLIC_KEY_COMPRESSED_BYTE_LENGTH
 
     @staticmethod
     def uncompressed_length() -> int:
+        """
+        Returns the length of an uncompressed public key in bytes.
+
+        :return: The length of an uncompressed public key in bytes.
+        :rtype: int
+
+        >>> from hdwallet.ecc.slip10.secp256k1.public_key import SLIP10Secp256k1PublicKeyECDSA
+        >>> SLIP10Secp256k1PublicKeyECDSA.uncompressed_length()
+        ...
+        """
+
         return SLIP10_SECP256K1_CONST.PUBLIC_KEY_UNCOMPRESSED_BYTE_LENGTH
 
     def underlying_object(self) -> Any:
+        """
+        Returns the underlying verification key object.
+
+        :return: The underlying verification key object.
+        :rtype: Any
+
+        >>> from hdwallet.ecc.slip10.secp256k1.public_key import SLIP10Secp256k1PublicKeyECDSA
+        >>> SLIP10Secp256k1PublicKeyECDSA.underlying_object()
+        "..."
+        """
+
         return self.verify_key
 
     def raw_compressed(self) -> bytes:
+        """
+        Retrieves the raw compressed representation of the public key.
+
+        :return: The compressed public key bytes.
+        :rtype: bytes
+
+        >>> from hdwallet.ecc.slip10.secp256k1.public_key import SLIP10Secp256k1PublicKeyECDSA
+        >>> SLIP10Secp256k1PublicKeyECDSA.raw_compressed()
+        ...
+        """
+
         return self.verify_key.to_string("compressed")
 
     def raw_uncompressed(self) -> bytes:
+        """
+        Retrieves the raw uncompressed representation of the public key.
+
+        :return: The uncompressed public key bytes.
+        :rtype: bytes
+
+        >>> from hdwallet.ecc.slip10.secp256k1.public_key import SLIP10Secp256k1PublicKeyECDSA
+        >>> SLIP10Secp256k1PublicKeyECDSA.raw_uncompressed()
+        ...
+        """
+
         return self.verify_key.to_string("uncompressed")
 
     def point(self) -> IPoint:
+        """
+        Retrieves the point object associated with the public key.
+
+        :return: The point object implementing the IPoint interface.
+        :rtype: IPoint
+
+        >>> from hdwallet.ecc.slip10.secp256k1.public_key import SLIP10Secp256k1PublicKeyECDSA
+        >>> SLIP10Secp256k1PublicKeyECDSA.point()
+        "..."
+        """
+
         return SLIP10Secp256k1PointECDSA(self.verify_key.pubkey.point)
 
 
