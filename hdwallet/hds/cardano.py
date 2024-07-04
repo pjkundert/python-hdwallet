@@ -184,6 +184,25 @@ class CardanoHD(BIP32HD):
         self._strict = True
         return self
 
+    def from_private_key(self, private_key: str) -> "CardanoHD":
+        if self._cardano_type in [
+            Cardano.TYPES.BYRON_ICARUS, Cardano.TYPES.BYRON_LEGACY, Cardano.TYPES.BYRON_LEDGER
+        ]:
+            raise Error(f"From private key is not implemented for Cardano {self._cardano_type} type")
+        self._private_key = self._ecc.PRIVATE_KEY.from_bytes(get_bytes(private_key))
+        self._public_key = self._private_key.public_key()
+        self._strict = None
+        return self
+
+    def from_public_key(self, public_key: str) -> "CardanoHD":
+        if self._cardano_type in [
+            Cardano.TYPES.BYRON_ICARUS, Cardano.TYPES.BYRON_LEGACY, Cardano.TYPES.BYRON_LEDGER
+        ]:
+            raise Error(f"From public key is not implemented for Cardano {self._cardano_type} type")
+        self._public_key = self._ecc.PUBLIC_KEY.from_bytes(get_bytes(public_key))
+        self._strict = None
+        return self
+
     def drive(self, index: int) -> Optional["CardanoHD"]:
 
         hmac_half_length: int = hashlib.sha512().digest_size // 2
