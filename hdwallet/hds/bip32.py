@@ -70,6 +70,22 @@ class BIP32HD(IHD):
     def __init__(
         self, ecc: Type[IEllipticCurveCryptography], public_key_type: str = PUBLIC_KEY_TYPES.COMPRESSED, **kwargs
     ) -> None:
+        """
+        Initializes a new instance of the BIP32HD class.
+
+        :param ecc: The elliptic curve cryptography class to be used. Must be a type of `IEllipticCurveCryptography`.
+        :type ecc: Type[IEllipticCurveCryptography]
+
+        :param public_key_type: The type of public key to be used, either `PUBLIC_KEY_TYPES.COMPRESSED` or
+                                `PUBLIC_KEY_TYPES.UNCOMPRESSED`. Defaults to `PUBLIC_KEY_TYPES.COMPRESSED`.
+        :type public_key_type: str
+
+        :param kwargs: Additional keyword arguments for custom derivation paths and indexes.
+        :type kwargs: dict
+
+        :return: None
+        """
+
         super(BIP32HD, self).__init__(**kwargs)
 
         self._ecc: IEllipticCurveCryptography = ecc.__call__()
@@ -90,13 +106,50 @@ class BIP32HD(IHD):
 
     @classmethod
     def name(cls) -> str:
+        """
+        Get the name of the bip class.
+
+        :return: The name of the bip class.
+        :rtype: str
+
+        >>> from {module_path} import {class_name}
+        >>> bip32: {class_name} = {class_name}(bip="...")
+        >>> bip32.name()
+        "BIP32"
+        """
         return "BIP32"
 
     def __update__(self) -> "BIP32HD":
+        """
+        Updates the BIP32HD instance by applying the current derivation path.
+
+        :return: The updated instance of BIP32HD.
+        :rtype: BIP32HD
+
+        >>> from {module_path} import {class_name}
+        >>> {class_name}.__update__()
+        "..."
+        """
+
         self.from_derivation(derivation=self._derivation)
         return self
 
     def from_seed(self, seed: Union[bytes, str, ISeed], **kwargs) -> "BIP32HD":
+        """
+        Initializes the BIP32HD instance from the given seed.
+
+        :param seed: The seed to initialize the instance. It can be of type `bytes`, `str`, or `ISeed`.
+        :type seed: Union[bytes, str, ISeed]
+
+        :param kwargs: Additional keyword arguments.
+
+        :return: The initialized BIP32HD instance.
+        :rtype: BIP32HD
+
+        >>> from {module_path} import {class_name}
+        >>> {class_name}.from_seed(seed=...)
+        "..."
+        """
 
         self._seed = get_bytes(
             seed.seed() if isinstance(seed, ISeed) else seed
@@ -172,6 +225,25 @@ class BIP32HD(IHD):
     def from_xprivate_key(
         self, xprivate_key: str, encoded: bool = True, strict: bool = False
     ) -> "BIP32HD":
+        """
+        Initializes the BIP32HD instance from the given extended private key (xprivate key).
+
+        :param xprivate_key: The extended private key to initialize the instance. It should be a string.
+        :type xprivate_key: str
+
+        :param encoded: Indicates if the xprivate key is encoded. Defaults to True.
+        :type encoded: bool
+
+        :param strict: If set to True, enforces strict checking to ensure the xprivate key is a root key. Defaults to False.
+        :type strict: bool
+
+        :return: The initialized BIP32HD instance.
+        :rtype: BIP32HD
+
+        >>> from {module_path} import {class_name}
+        >>> {class_name}.from_xprivate_key(xprivate_key="...", encoded=..., strict=...)
+        "..."
+        """
 
         if len(check_decode(xprivate_key) if encoded else xprivate_key) not in [78, 110]:
             raise ExtendedKeyError("Invalid extended(x) private key")
@@ -202,6 +274,25 @@ class BIP32HD(IHD):
     def from_xpublic_key(
         self, xpublic_key: str, encoded: bool = True, strict: bool = False
     ) -> "BIP32HD":
+        """
+        Initializes the BIP32HD instance from the given extended public key (xpublic key).
+
+        :param xpublic_key: The extended public key to initialize the instance. It should be a string.
+        :type xpublic_key: str
+
+        :param encoded: Indicates if the xpublic key is encoded. Defaults to True.
+        :type encoded: bool
+
+        :param strict: If set to True, enforces strict checking to ensure the xpublic key is a root key. Defaults to False.
+        :type strict: bool
+
+        :return: The initialized BIP32HD instance.
+        :rtype: BIP32HD
+
+        >>> from {module_path} import {class_name}
+        >>> {class_name}.from_xpublic_key(xpublic_key="...", encoded=..., strict=...)
+        "..."
+        """
 
         if len(check_decode(xpublic_key) if encoded else xpublic_key) != 78:
             raise ExtendedKeyError("Invalid extended(x) public key")
@@ -229,22 +320,78 @@ class BIP32HD(IHD):
         return self
 
     def from_wif(self, wif: str) -> "BIP32HD":
+        """
+        Initializes the BIP32HD instance from the given Wallet Import Format (WIF) key.
+
+        :param wif: The Wallet Import Format (WIF) key to initialize the instance.
+        :type wif: str
+
+        :return: The initialized BIP32HD instance.
+        :rtype: BIP32HD
+
+        >>> from {module_path} import {class_name}
+        >>> {class_name}.from_wif(wif="...")
+        "..."
+        """
+
         self.from_private_key(private_key=wif_to_private_key(wif=wif))
         self._strict = None
         return self
 
     def from_private_key(self, private_key: str) -> "BIP32HD":
+        """
+        Initializes the BIP32HD instance from the given private key.
+
+        :param private_key: The private key to initialize the instance, represented as a string.
+        :type private_key: str
+
+        :return: The initialized BIP32HD instance.
+        :rtype: BIP32HD
+
+        >>> from {module_path} import {class_name}
+        >>> {class_name}.from_private_key(private_key="...")
+        "..."
+        """
+
         self._private_key = self._ecc.PRIVATE_KEY.from_bytes(get_bytes(private_key))
         self._public_key = self._private_key.public_key()
         self._strict = None
         return self
 
     def from_public_key(self, public_key: str) -> "BIP32HD":
+        """
+        Initializes the BIP32HD instance from the given public key.
+
+        :param public_key: The public key to initialize the instance, represented as a string.
+        :type public_key: str
+
+        :return: The initialized BIP32HD instance.
+        :rtype: BIP32HD
+
+        >>> from {module_path} import {class_name}
+        >>> {class_name}.from_public_key(public_key="...")
+        "..."
+        """
+
         self._public_key = self._ecc.PUBLIC_KEY.from_bytes(get_bytes(public_key))
         self._strict = None
         return self
 
     def from_derivation(self, derivation: IDerivation) -> "BIP32HD":
+        """
+        Initializes the BIP32HD instance using the specified derivation path.
+
+        :param derivation: The derivation path to initialize the instance.
+                           It must be an instance of `IDerivation`.
+        :type derivation: IDerivation
+
+        :return: The initialized BIP32HD instance.
+        :rtype: BIP32HD
+
+        >>> from {module_path} import {class_name}
+        >>> {class_name}.from_derivation(derivation="...")
+        "..."
+        """
 
         if not isinstance(derivation, IDerivation):
             raise DerivationError("Invalid derivation instance", expected=IDerivation, got=type(derivation))
@@ -255,6 +402,22 @@ class BIP32HD(IHD):
         return self
 
     def update_derivation(self, derivation: IDerivation) -> "BIP32HD":
+        """
+        Updates the derivation path for the BIP32HD instance.
+
+        This method first cleans the current derivation path and then sets the new
+        derivation path provided. It drives the instance through the new derivation path.
+
+        :param derivation: The new derivation path to set. It must be an instance of `IDerivation`.
+        :type derivation: IDerivation
+
+        :return: The updated BIP32HD instance.
+        :rtype: BIP32HD
+
+        >>> from {module_path} import {class_name}
+        >>> {class_name}.update_derivation(derivation="...")
+        "..."
+        """
 
         self.clean_derivation()
         self.from_derivation(
@@ -263,6 +426,17 @@ class BIP32HD(IHD):
         return self
 
     def clean_derivation(self) -> "BIP32HD":
+        """
+        Cleans the derivation path of the BIP32HD instance.
+
+        :return: The cleaned BIP32HD instance.
+        :rtype: BIP32HD
+
+        >>> from {module_path} import {class_name}
+        >>> {class_name}.clean_derivation()
+        "..."
+        """
+
         if self._root_private_key:
             self._private_key, self._chain_code, self._parent_fingerprint = (
                 self._root_private_key, self._root_chain_code, (integer_to_bytes(0x00) * 4)
@@ -279,6 +453,19 @@ class BIP32HD(IHD):
         return self
 
     def drive(self, index: int) -> Optional["BIP32HD"]:
+        """
+        Drives the BIP32HD instance forward along the derivation path by deriving a child key at the given index.
+
+        :param index: The index to derive the child key.
+        :type index: int
+
+        :return: The updated BIP32HD instance with the derived child key, or None if the derivation fails.
+        :rtype: Optional[BIP32HD]
+
+        >>> from {module_path} import {class_name}
+        >>> {class_name}.drive(index=...)
+        "..."
+        """
 
         hmac_half_length: int = hashlib.sha512().digest_size // 2
 
@@ -489,11 +676,38 @@ class BIP32HD(IHD):
         return self
 
     def seed(self) -> Optional[str]:
+        """
+        Retrieves the seed value as a string if it exists.
+
+        :return: The seed value as a string, or None if the seed is not set.
+        :rtype: Optional[str]
+
+        >>> from {module_path} import {class_name}
+        >>> {class_name}.seed()
+        "..."
+        """
+
         return bytes_to_string(self._seed) if self._seed else None
 
     def root_xprivate_key(
         self, version: Union[bytes, int] = Bitcoin.NETWORKS.MAINNET.XPRIVATE_KEY_VERSIONS.P2PKH, encoded: bool = True
     ) -> Optional[str]:
+        """
+        Generates the root extended private key (xprv) in serialized format.
+
+        :param version: The version bytes for the extended key. Defaults to Bitcoin mainnet P2PKH version.
+        :type version: Union[bytes, int]
+
+        :param encoded: Whether to return the key in encoded format. Defaults to True.
+        :type encoded: bool
+
+        :return: The root extended private key (xprv) in serialized format, or None if the chain code is not set.
+        :rtype: Optional[str]
+
+        >>> from {module_path} import {class_name}
+        >>> {class_name}.root_xprivate_key(version=..., encoded=...)
+        "..."
+        """
 
         if not self.root_private_key():
             return None
@@ -513,6 +727,22 @@ class BIP32HD(IHD):
     def root_xpublic_key(
         self, version: Union[bytes, int] = Bitcoin.NETWORKS.MAINNET.XPUBLIC_KEY_VERSIONS.P2PKH, encoded: bool = True
     ) -> Optional[str]:
+        """
+        Generates the root extended public key (xpub) in serialized format.
+
+        :param version: The version bytes for the extended key. Defaults to Bitcoin mainnet P2PKH version.
+        :type version: Union[bytes, int]
+
+        :param encoded: Whether to return the key in encoded format. Defaults to True.
+        :type encoded: bool
+
+        :return: The root extended public key (xpub) in serialized format, or None if the chain code is not set.
+        :rtype: Optional[str]
+
+        >>> from {module_path} import {class_name}
+        >>> {class_name}.root_xpublic_key(version=..., encoded=...)
+        "..."
+        """
 
         return serialize(
             version=(
@@ -529,9 +759,34 @@ class BIP32HD(IHD):
         ) if self.root_chain_code() else None
 
     def root_private_key(self) -> Optional[str]:
+        """
+        Retrieves the root private key as a string.
+
+        :return: The root private key as a hexadecimal string, or None if not set.
+        :rtype: Optional[str]
+
+        >>> from {module_path} import {class_name}
+        >>> {class_name}.root_private_key()
+        "..."
+        """
+
         return bytes_to_string(self._root_private_key.raw()) if self._root_private_key else None
 
     def root_wif(self, wif_type: Optional[str] = None) -> Optional[str]:
+        """
+        Retrieves the root private key in WIF format.
+
+        :param wif_type: Optional. The type of WIF format to use ('WIF' or 'WIF_COMPRESSED').
+                        If not specified, uses the default type stored in `_wif_type`.
+        :type wif_type: Optional[str]
+
+        :return: The root private key in WIF format as a string, or None if the root private key is not set.
+        :rtype: Optional[str]
+
+        >>> from {module_path} import {class_name}
+        >>> {class_name}.root_wif(wif_type="...")
+        "..."
+        """
 
         if wif_type:
             if wif_type not in WIF_TYPES.get_types():
@@ -547,9 +802,34 @@ class BIP32HD(IHD):
         ) if self.root_private_key() else None
 
     def root_chain_code(self) -> Optional[str]:
+        """
+        Retrieves the root chain code as a string.
+
+        :return: The root chain code as a string, or None if the root chain code is not set.
+        :rtype: Optional[str]
+
+        >>> from {module_path} import {class_name}
+        >>> {class_name}.root_chain_code()
+        "..."
+        """
+
         return bytes_to_string(self._root_chain_code) if self._root_chain_code else None
 
     def root_public_key(self, public_key_type: Optional[str] = None) -> Optional[str]:
+        """
+        Retrieves the root public key as a string.
+
+        :param public_key_type: The type of public key to retrieve. If None, defaults to the current object's public key type.
+        :type public_key_type: Optional[str]
+
+        :return: The root public key as a string, or None if the root public key is not set.
+        :rtype: Optional[str]
+
+        >>> from {module_path} import {class_name}
+        >>> {class_name}.root_public_key(public_key_type="...")
+        "..."
+        """
+
         if not self._root_public_key:
             return None
 
@@ -572,6 +852,22 @@ class BIP32HD(IHD):
     def xprivate_key(
         self, version: Union[bytes, int] = Bitcoin.NETWORKS.MAINNET.XPRIVATE_KEY_VERSIONS.P2PKH, encoded: bool = True
     ) -> Optional[str]:
+        """
+        Retrieves the extended private key (xprivate key) as a serialized string.
+
+        :param version: The version bytes or integer version of the xprivate key.
+        :type version: Union[bytes, int]
+
+        :param encoded: Flag indicating whether the key should be encoded.
+        :type encoded: bool
+
+        :return: The serialized xprivate key as a string, or None if the private key or chain code is not set.
+        :rtype: Optional[str]
+
+        >>> from {module_path} import {class_name}
+        >>> {class_name}.xprivate_key(version=..., encoded=...)
+        "..."
+        """
 
         if not self.private_key():
             return None
@@ -591,6 +887,22 @@ class BIP32HD(IHD):
     def xpublic_key(
         self, version: Union[bytes, int] = Bitcoin.NETWORKS.MAINNET.XPUBLIC_KEY_VERSIONS.P2PKH, encoded: bool = True
     ) -> Optional[str]:
+        """
+        Retrieves the extended public key (xpublic key) as a serialized string.
+
+        :param version: The version bytes or integer version of the xpublic key.
+        :type version: Union[bytes, int]
+
+        :param encoded: Flag indicating whether the key should be encoded.
+        :type encoded: bool
+
+        :return: The serialized xpublic key as a string, or None if the chain code is not set.
+        :rtype: Optional[str]
+
+        >>> from {module_path} import {class_name}
+        >>> {class_name}.xpublic_key(version=..., encoded=...)
+        "..."
+        """
 
         return serialize(
             version=(
@@ -607,9 +919,34 @@ class BIP32HD(IHD):
         ) if self.chain_code() else None
 
     def private_key(self) -> Optional[str]:
+        """
+        Retrieves the private key as a string.
+
+        :return: The private key as a string, or None if the private key is not set.
+        :rtype: Optional[str]
+
+        >>> from {module_path} import {class_name}
+        >>> {class_name}.private_key()
+        "..."
+        """
+
         return bytes_to_string(self._private_key.raw()) if self._private_key else None
 
     def wif(self, wif_type: Optional[str] = None) -> Optional[str]:
+        """
+        Converts the private key to a WIF (Wallet Import Format) string.
+
+        :param wif_type: Optional parameter specifying the type of WIF. If None, uses the instance's default type.
+        :type wif_type: Optional[str]
+
+        :return: The WIF representation of the private key, or None if the private key is not set.
+        :rtype: Optional[str]
+
+        >>> from {module_path} import {class_name}
+        >>> {class_name}.wif(wif_type="...")
+        "..."
+        """
+
         if wif_type:
             if wif_type not in WIF_TYPES.get_types():
                 raise Error(
@@ -626,12 +963,49 @@ class BIP32HD(IHD):
         ) if self.private_key() else None
 
     def wif_type(self) -> Optional[str]:
+        """
+        Retrieves the current WIF (Wallet Import Format) type used by the instance.
+
+        :return: The current WIF type if a WIF is present, otherwise None.
+        :rtype: Optional[str]
+
+        >>> from {module_path} import {class_name}
+        >>> {class_name}.wif_type()
+        "..."
+        """
+
         return self._wif_type if self.wif() else None
 
     def chain_code(self) -> Optional[str]:
+        """
+        Retrieves the chain code associated with the current instance.
+
+        :return: The chain code as a string if available, otherwise None.
+        :rtype: Optional[str]
+
+        >>> from {module_path} import {class_name}
+        >>> {class_name}.chain_code()
+        "..."
+        """
+
         return bytes_to_string(self._chain_code) if self._chain_code else None
 
     def public_key(self, public_key_type: Optional[str] = None):
+        """
+        Retrieves the public key associated with the current instance.
+
+        :param public_key_type: Optional. Specifies the type of public key to return.
+                                If not provided, defaults to the type set during initialization.
+        :type public_key_type: Optional[str]
+
+        :return: The public key as a string based on the specified type.
+        :rtype: str
+
+        >>> from {module_path} import {class_name}
+        >>> {class_name}.public_key(public_key_type="...")
+        "..."
+        """
+
         if public_key_type:
             if public_key_type not in PUBLIC_KEY_TYPES.get_types():
                 raise Error(
@@ -649,47 +1023,196 @@ class BIP32HD(IHD):
             return self.compressed()
 
     def public_key_type(self) -> str:
+        """
+        Retrieves the type of public key associated with the current instance.
+
+        :return: The type of public key.
+        :rtype: str
+
+        >>> from {module_path} import {class_name}
+        >>> {class_name}.public_key_type()
+        "..."
+        """
+
         return self._public_key_type
 
     def compressed(self) -> str:
+        """
+        Retrieves the compressed form of the public key associated with the current instance.
+
+        :return: The compressed public key.
+        :rtype: str
+
+        >>> from {module_path} import {class_name}
+        >>> {class_name}.compressed()
+        "..."
+        """
+
         return bytes_to_string(self._public_key.raw_compressed())
 
     def uncompressed(self) -> str:
+        """
+        Retrieves the uncompressed form of the public key associated with the current instance.
+
+        :return: The uncompressed public key.
+        :rtype: str
+        >>> from {module_path} import {class_name}
+        >>> {class_name}.uncompressed()
+        "..."
+        """
+
         return bytes_to_string(self._public_key.raw_uncompressed())
 
     def hash(self) -> str:
+        """
+        Computes the hash of the public key using SHA-256 followed by RIPEMD-160.
+
+        :return: The hash of the public key.
+        :rtype: str
+
+        >>> from {module_path} import {class_name}
+        >>> {class_name}.hash()
+        "..."
+        """
+
         return bytes_to_string(ripemd160(sha256(get_bytes(self.public_key())).digest()))
 
     def fingerprint(self) -> str:
+        """
+        Computes the fingerprint of the BIP32HD object by hashing the public key
+        and taking the first 4 bytes (8 characters) of the resulting hash.
+
+        :return: The fingerprint of the BIP32HD object.
+        :rtype: str
+
+        >>> from {module_path} import {class_name}
+        >>> {class_name}.fingerprint()
+        "..."
+        """
+
         return self.hash()[:8]
 
     def parent_fingerprint(self) -> Optional[str]:
+        """
+        Retrieves the parent fingerprint of the BIP32HD object.
+
+        :return: The parent fingerprint if available, otherwise None.
+        :rtype: Optional[str]
+
+        >>> from {module_path} import {class_name}
+        >>> {class_name}.parent_fingerprint()
+        "..."
+        """
+
         return bytes_to_string(self._parent_fingerprint) if self._parent_fingerprint else None
 
     def depth(self) -> int:
+        """
+        Retrieves the depth of the BIP32HD object in the hierarchical tree.
+
+        :return: The depth of the object.
+        :rtype: int
+
+        >>> from {module_path} import {class_name}
+        >>> {class_name}.depth()
+        ...
+        """
+
         return self._depth
 
     def path(self) -> str:
+        """
+        Retrieves the derivation path associated with the BIP32HD object.
+
+        :return: The derivation path.
+        :rtype: str
+
+        >>> from {module_path} import {class_name}
+        >>> {class_name}.path()
+        "..."
+        """
+
         return self._derivation.path()
 
     def index(self) -> int:
+        """
+        Retrieves the index of the current BIP32HD object.
+
+        :return: The index value.
+        :rtype: int
+
+        >>> from {module_path} import {class_name}
+        >>> {class_name}.index()
+        ...
+        """
+
         return self._index
 
     def indexes(self) -> List[int]:
+        """
+        Retrieves the list of indexes from the derivation associated with this BIP32HD object.
+
+        :return: The list of indexes.
+        :rtype: List[int]
+
+        >>> from {module_path} import {class_name}
+        >>> {class_name}.indexes()
+        ...
+        """
+
         return self._derivation.indexes()
 
     def strict(self) -> Optional[bool]:
+        """
+        Retrieves the strict mode flag associated with this BIP32HD object.
+
+        :return: The strict mode flag.
+        :rtype: Optional[bool]
+
+        >>> from {module_path} import {class_name}
+        >>> {class_name}.strict()
+        ...
+        """
+
         return self._strict
 
     def address(
-        self,
-        address: str = Bitcoin.ADDRESSES.P2PKH,
-        public_key_address_prefix: int = Bitcoin.NETWORKS.MAINNET.PUBLIC_KEY_ADDRESS_PREFIX,
-        script_address_prefix: int = Bitcoin.NETWORKS.MAINNET.SCRIPT_ADDRESS_PREFIX,
-        hrp: str = Bitcoin.NETWORKS.MAINNET.HRP,
-        witness_version: int = Bitcoin.NETWORKS.MAINNET.WITNESS_VERSIONS.P2WPKH,
-        **kwargs
+            self,
+            address: str = Bitcoin.ADDRESSES.P2PKH,
+            public_key_address_prefix: int = Bitcoin.NETWORKS.MAINNET.PUBLIC_KEY_ADDRESS_PREFIX,
+            script_address_prefix: int = Bitcoin.NETWORKS.MAINNET.SCRIPT_ADDRESS_PREFIX,
+            hrp: str = Bitcoin.NETWORKS.MAINNET.HRP,
+            witness_version: int = Bitcoin.NETWORKS.MAINNET.WITNESS_VERSIONS.P2WPKH,
+            **kwargs
     ) -> str:
+        """
+        Generates an address based on the specified address type and parameters.
+
+        :param address: The type of address to generate (e.g., P2PKH, P2SH, P2TR, P2WPKH, P2WPKHInP2SH, P2WSH, P2WSHInP2SH).
+        :type address: str, optional
+
+        :param public_key_address_prefix: Public key address prefix for encoding addresses, defaults to ``Bitcoin.NETWORKS.MAINNET.PUBLIC_KEY_ADDRESS_PREFIX``
+        :type public_key_address_prefix: int, optional
+
+        :param script_address_prefix: Script address prefix for encoding addresses, defaults to ``Bitcoin.NETWORKS.MAINNET.SCRIPT_ADDRESS_PREFIX``
+        :type script_address_prefix: int, optional
+
+        :param hrp: Human-readable part for Bech32 addresses, defaults to ``Bitcoin.NETWORKS.MAINNET.HRP``
+        :type hrp: str, optional
+
+        :param witness_version: Witness version for SegWit addresses, defaults to ``Bitcoin.NETWORKS.MAINNET.WITNESS_VERSIONS.P2WPKH``
+        :type witness_version: int, optional
+
+        :param kwargs: Additional keyword arguments for address generation.
+
+        :return: The generated address.
+        :rtype: str
+
+        >>> from {module_path} import {class_name}
+        >>> {class_name}.address(address="...", public_key_address_prefix= ..., script_address_prefix=..., hrp="...", witness_version=...)
+        ...
+        """
+
         if address == P2PKHAddress.name():
             return P2PKHAddress.encode(
                 public_key=self._public_key,

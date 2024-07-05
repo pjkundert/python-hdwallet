@@ -18,3 +18,4 @@ HDWallet
     Seeds <seeds.rst>
     Derivations <derivations.rst>
     Elliptic Curve Cryptography (ECC) <ecc.rst>
+    Hierarchical Deterministic (HD) <hds.rst>
