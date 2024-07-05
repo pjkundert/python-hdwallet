@@ -22,10 +22,17 @@ def generate_seed(**kwargs) -> None:
             ), err=True)
             sys.exit()
 
-        mnemonic_name: str = "BIP39" if kwargs.get("name") == CardanoSeed.name() else kwargs.get("name")
-        if not MNEMONICS.mnemonic(name=mnemonic_name).is_valid(mnemonic=kwargs.get("mnemonic")):
-            click.echo(click.style(f"Invalid {mnemonic_name} mnemonic"), err=True)
-            sys.exit()
+        if kwargs.get("name") == "Electrum-V2":
+            if not MNEMONICS.mnemonic(name="Electrum-V2").is_valid(
+                mnemonic=kwargs.get("mnemonic"), mnemonic_type=kwargs.get("mnemonic_type")
+            ):
+                click.echo(click.style(f"Invalid Electrum-V2 mnemonic"), err=True)
+                sys.exit()
+        else:
+            mnemonic_name: str = "BIP39" if kwargs.get("name") == CardanoSeed.name() else kwargs.get("name")
+            if not MNEMONICS.mnemonic(name=mnemonic_name).is_valid(mnemonic=kwargs.get("mnemonic")):
+                click.echo(click.style(f"Invalid {mnemonic_name} mnemonic"), err=True)
+                sys.exit()
 
 
         if kwargs.get("name") == BIP39Seed.name():
