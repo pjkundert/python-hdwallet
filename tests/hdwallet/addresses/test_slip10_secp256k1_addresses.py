@@ -194,6 +194,18 @@ def test_ethereum_address(data):
         public_key_type=data["addresses"]["SLIP10-Secp256k1"]["addresses"]["Ethereum"]["compressed"]["args"]["public_key_type"]
     ) ==  data["addresses"]["SLIP10-Secp256k1"]["addresses"]["Ethereum"]["compressed"]["decode"]
 
+    assert EthereumAddress.encode(
+        public_key= data["addresses"]["SLIP10-Secp256k1"]["uncompressed-public-key"],
+        skip_checksum_encode=data["addresses"]["SLIP10-Secp256k1"]["addresses"]["Ethereum"]["uncompressed"]["args"]["skip_checksum_encode"],
+        public_key_type=data["addresses"]["SLIP10-Secp256k1"]["addresses"]["Ethereum"]["uncompressed"]["args"]["public_key_type"]
+    ) == data["addresses"]["SLIP10-Secp256k1"]["addresses"]["Ethereum"]["uncompressed"]["encode"]
+
+    assert EthereumAddress.decode(
+        address=data["addresses"]["SLIP10-Secp256k1"]["addresses"]["Ethereum"]["uncompressed"]["encode"],
+        skip_checksum_encode=data["addresses"]["SLIP10-Secp256k1"]["addresses"]["Ethereum"]["uncompressed"]["args"]["skip_checksum_encode"],
+        public_key_type=data["addresses"]["SLIP10-Secp256k1"]["addresses"]["Ethereum"]["uncompressed"]["args"]["public_key_type"]
+    ) ==  data["addresses"]["SLIP10-Secp256k1"]["addresses"]["Ethereum"]["uncompressed"]["decode"]
+
 
 def test_xinfin_address(data):
 
@@ -211,6 +223,18 @@ def test_xinfin_address(data):
         public_key_type=data["addresses"]["SLIP10-Secp256k1"]["addresses"]["XinFin"]["compressed"]["args"]["public_key_type"]
     ) ==  data["addresses"]["SLIP10-Secp256k1"]["addresses"]["XinFin"]["compressed"]["decode"]
 
+    assert XinFinAddress.encode(
+        public_key= data["addresses"]["SLIP10-Secp256k1"]["uncompressed-public-key"],
+        skip_checksum_encode=data["addresses"]["SLIP10-Secp256k1"]["addresses"]["XinFin"]["uncompressed"]["args"]["skip_checksum_encode"],
+        public_key_type=data["addresses"]["SLIP10-Secp256k1"]["addresses"]["XinFin"]["uncompressed"]["args"]["public_key_type"]
+    ) == data["addresses"]["SLIP10-Secp256k1"]["addresses"]["XinFin"]["uncompressed"]["encode"]
+
+    assert XinFinAddress.decode(
+        address=data["addresses"]["SLIP10-Secp256k1"]["addresses"]["XinFin"]["uncompressed"]["encode"],
+        skip_checksum_encode=data["addresses"]["SLIP10-Secp256k1"]["addresses"]["XinFin"]["uncompressed"]["args"]["skip_checksum_encode"],
+        public_key_type=data["addresses"]["SLIP10-Secp256k1"]["addresses"]["XinFin"]["uncompressed"]["args"]["public_key_type"]
+    ) ==  data["addresses"]["SLIP10-Secp256k1"]["addresses"]["XinFin"]["uncompressed"]["decode"]
+
 
 def test_tron_address(data):
 
@@ -227,6 +251,18 @@ def test_tron_address(data):
         skip_checksum_encode=data["addresses"]["SLIP10-Secp256k1"]["addresses"]["Tron"]["compressed"]["args"]["skip_checksum_encode"],
         public_key_type=data["addresses"]["SLIP10-Secp256k1"]["addresses"]["Tron"]["compressed"]["args"]["public_key_type"]
     ) ==  data["addresses"]["SLIP10-Secp256k1"]["addresses"]["Tron"]["compressed"]["decode"]
+
+    assert TronAddress.encode(
+        public_key= data["addresses"]["SLIP10-Secp256k1"]["uncompressed-public-key"],
+        skip_checksum_encode=data["addresses"]["SLIP10-Secp256k1"]["addresses"]["Tron"]["uncompressed"]["args"]["skip_checksum_encode"],
+        public_key_type=data["addresses"]["SLIP10-Secp256k1"]["addresses"]["Tron"]["uncompressed"]["args"]["public_key_type"]
+    ) == data["addresses"]["SLIP10-Secp256k1"]["addresses"]["Tron"]["uncompressed"]["encode"]
+
+    assert TronAddress.decode(
+        address=data["addresses"]["SLIP10-Secp256k1"]["addresses"]["Tron"]["uncompressed"]["encode"],
+        skip_checksum_encode=data["addresses"]["SLIP10-Secp256k1"]["addresses"]["Tron"]["uncompressed"]["args"]["skip_checksum_encode"],
+        public_key_type=data["addresses"]["SLIP10-Secp256k1"]["addresses"]["Tron"]["uncompressed"]["args"]["public_key_type"]
+    ) ==  data["addresses"]["SLIP10-Secp256k1"]["addresses"]["Tron"]["uncompressed"]["decode"]
 
 
 def test_ripple_address(data):
