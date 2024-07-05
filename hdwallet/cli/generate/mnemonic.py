@@ -80,6 +80,14 @@ def generate_mnemonic(**kwargs) -> None:
                     ),
                     mnemonic_type=kwargs.get("mnemonic_type")
                 )
+            elif kwargs.get("name") == MoneroMnemonic.name():
+                mnemonic: IMnemonic = MoneroMnemonic(
+                    mnemonic=MoneroMnemonic.from_entropy(
+                        entropy=kwargs.get("entropy"),
+                        language=language,
+                        checksum=kwargs.get("checksum")
+                    )
+                )
             else:
                 mnemonic: IMnemonic = MNEMONICS.mnemonic(name=kwargs.get("name")).__call__(
                     mnemonic=MNEMONICS.mnemonic(name=kwargs.get("name")).from_entropy(

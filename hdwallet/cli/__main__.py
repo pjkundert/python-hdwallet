@@ -105,6 +105,9 @@ def cli_entropy(**kwargs) -> None:
 @click.option(
     "-ma", "--max-attempts", type=int, default=(10 ** 60), help="Set Max attempts for Electrum-V2", show_default=True
 )
+@click.option(
+    "-c", "--checksum", type=bool, default=False, help="Set Checksum for Monero", show_default=True
+)
 def cli_mnemonic(**kwargs) -> None:
     return generate_mnemonic(**kwargs)
 
