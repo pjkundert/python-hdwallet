@@ -59,6 +59,20 @@ class IPublicKey(ABC):
 
     @classmethod
     def is_valid_bytes(cls, public_key: bytes) -> bool:
+        """
+        Checks if the given bytes represent a valid bytes.
+
+        :param public_key: The byte array to be validated.
+        :type public_key: bytes
+
+        :return: True if the byte array represents a valid public key, False otherwise.
+        :rtype: bool
+
+        >>> from {module_path} import {class_name}
+        >>> {class_name}.is_valid_bytes(public_key=...)
+        ...
+        """
+
         try:
             cls.from_bytes(public_key)
             return True
@@ -67,6 +81,20 @@ class IPublicKey(ABC):
 
     @classmethod
     def is_valid_point(cls, point: IPoint) -> bool:
+        """
+        Checks if the given point is a valid point.
+
+        :param point: The point to be validated.
+        :type point: IPoint
+
+        :return: True if the point is valid, False otherwise.
+        :rtype: bool
+
+        >>> from {module_path} import {class_name}
+        >>> {class_name}.is_valid_point(point=...)
+        ...
+        """
+
         try:
             cls.from_point(point)
             return True

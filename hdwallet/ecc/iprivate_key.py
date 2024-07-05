@@ -45,6 +45,20 @@ class IPrivateKey(ABC):
 
     @classmethod
     def is_valid_bytes(cls, private_key: bytes) -> bool:
+        """
+        Checks if the given point is a valid bytes.
+
+        :param private_key: The bytes to be validated.
+        :type private_key: bytes
+
+        :return: True if the point is valid, False otherwise.
+        :rtype: bool
+
+        >>> from {module_path} import {class_name}
+        >>> {class_name}.is_valid_bytes(private_key=...)
+        ...
+        """
+
         try:
             cls.from_bytes(private_key)
             return True
