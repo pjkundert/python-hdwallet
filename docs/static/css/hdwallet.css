@@ -2,6 +2,14 @@
     color: #2980B9;
 }
 
-.py-class {
-    font-size: 20px;
+.mixed-align-table td, .mixed-align-table th {
+    text-align: center;
+}
+
+.mixed-align-table td:first-child, .mixed-align-table th:first-child {
+    text-align: left;
+}
+
+.mixed-align-table td:last-child, .mixed-align-table th:last-child {
+    text-align: center; /*right*/
 }
