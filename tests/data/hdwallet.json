@@ -1554,6 +1554,202 @@
             ]
         }
     },
+    "Electrum-V2":{
+        "derivation":{
+            "name": "Electrum",
+            "args":{
+                "change": "0-1"
+            }
+        },
+        "segwit": {
+            "cryptocurrency": "Bitcoin",
+            "symbol": "BTC",
+            "network": "mainnet",
+            "coin_type": 0,
+            "entropy": "0909d49a61e5289873d16ddbe3f781ee7c",
+            "strength": 132,
+            "mnemonic": "repolho aferir vinco platina seiva urologia produto bovino comando fivela terno levitar",
+            "passphrase": null,
+            "language": "Portuguese",
+            "seed": "c70a8edce9ea5f6474e26619ff76894e9db87df869c07d7d095d821a9f183144261df71d305d2f24e0889be06f433d73842eac579565ac7154250b3f1bf8af35",
+            "ecc": "SLIP10-Secp256k1",
+            "hd": "Electrum-V2",
+            "mode": "segwit",
+            "mnemonic_type": "segwit",
+            "master_private_key": "602727f7e62a32e57154189b2382bafa7c8ae7d933ac8b7afc2272b9a01f986f",
+            "master_wif": "KzSctnSjTtGSQnuHS6vr2aEM96rCG3YHAMDnvLHGNBLVNUjMZxJx",
+            "master_public_key": "02412c5052d2fc824fc1e095c58a5f2379b4b3de2e8c0858f41baed444ef832325",
+            "public_key_type": "compressed",
+            "wif_type": "wif-compressed",
+            "derivations": [
+                {
+                    "at": {
+                        "change": 0,
+                        "address": 0
+                    },
+                    "private_key": "3d4c3cc74fa4d96a9294941cde6d14131514740a8fa5889dd2b170034cb410c7",
+                    "wif": "KyGsAoTB8H7vHSRXp7XwBPF4TnkzbnamPLiF7s847XccepgKYKcc",
+                    "public_key": "038a556b9ed1d1604daa120a23e393649c7e80e89c3ec5ff4a2b32f19679e63639",
+                    "uncompressed": "048a556b9ed1d1604daa120a23e393649c7e80e89c3ec5ff4a2b32f19679e6363924d4e98ee07926640c622fd0c9706208a0eeb6df70d538b5f10378b0e45aeb5f",
+                    "compressed": "038a556b9ed1d1604daa120a23e393649c7e80e89c3ec5ff4a2b32f19679e63639",
+                    "address": "bc1qrgexzauex4dvftmhk7h079vzrljpanr4ke0rd3"
+                },
+                {
+                    "at": {
+                        "change": 1,
+                        "address": 0
+                    },
+                    "private_key": "a46fad4b7e2b71e003fcbc85e9200496050e99c8a31a96b1f37e680e74713697",
+                    "wif": "L2jMTE7sXYux6FhL2noeDPDeYT591nVJwSpdRdpVByHFcD2oHEHv",
+                    "public_key": "026ecf43cfd2698d09b426519add66016735999a489982aa59a4ff2a6baefc9b10",
+                    "uncompressed": "046ecf43cfd2698d09b426519add66016735999a489982aa59a4ff2a6baefc9b106e341c154df8254d913f5e8380d8cb855eda6c15df3f5e84d6c51d455dabb8da",
+                    "compressed": "026ecf43cfd2698d09b426519add66016735999a489982aa59a4ff2a6baefc9b10",
+                    "address": "bc1qyut0xdk3pfa4e3qllkntmqxlczhm2em2ldz0p2"
+                }
+            ]
+        },
+        "segwit-2fa": {
+            "cryptocurrency": "Bitcoin",
+            "symbol": "BTC",
+            "network": "mainnet",
+            "coin_type": 0,
+            "entropy": "0909d49a61e5289873d16ddbe3f7822cfa",
+            "strength": 132,
+            "mnemonic": "milhar agarrar vinco platina seiva urologia produto bovino comando fivela terno levitar",
+            "passphrase": null,
+            "language": "Portuguese",
+            "seed": "4c5b0e28b1f0b8ece0382dcc27b4dadc9b5bad90d184b5b65d202ad12106ed6fd55c8b8940a08527c770a81dac6f25a4f091c3eb51fb0d55da58c9e4830da45c",
+            "ecc": "SLIP10-Secp256k1",
+            "hd": "Electrum-V2",
+            "mode": "segwit",
+            "mnemonic_type": "segwit-2fa",
+            "master_private_key": "8c282545c0e8dd21edefcc89d0a698b40197d36c613d8a6ff761cd78b3f1325e",
+            "master_wif": "L1vA5paSw7mpECUHCJQ3Rkgo9nQRPXh4sHScythzh1uVKSgL16pQ",
+            "master_public_key": "03f663a9e216e312b05d43595bbf614083e00808378c531abfaa992fc08e414db7",
+            "public_key_type": "compressed",
+            "wif_type": "wif-compressed",
+            "derivations": [
+                {
+                    "at": {
+                        "change": 0,
+                        "address": 0
+                    },
+                    "private_key": "6a463fd5eeece6bfca5db5daee2df0dbba20328f6d8aad7ae15307624d6ff435",
+                    "wif": "KznJ2nPLHz3gdtcHAki3W6M14DcdYZF9tot1dhWoiyfAV9kbCqEh",
+                    "public_key": "02eef47d46070d0db5882df19fac402ea68ba95d35b8e3b6fabf8f3f65b29def68",
+                    "uncompressed": "04eef47d46070d0db5882df19fac402ea68ba95d35b8e3b6fabf8f3f65b29def6865f1543196f5d286fb3d13149895213685a3ae0b93ff4870d15f5e427e6a3c6c",
+                    "compressed": "02eef47d46070d0db5882df19fac402ea68ba95d35b8e3b6fabf8f3f65b29def68",
+                    "address": "bc1qwrjjrlw8p92dq8atuwv6nfvscxq8zvhsnvd9a6"
+                },
+                {
+                    "at": {
+                        "change": 1,
+                        "address": 0
+                    },
+                    "private_key": "ac270b0c61b36c128b3b161f5e494766d7dec5af1e7bfc02ffa92df9a3835f74",
+                    "wif": "L2zMRJha3uCmLJdYBjaQnVbJLUT7DBb21et4r8dTX6woMQ9wsxRM",
+                    "public_key": "03fbdccb7ebd54c413187158ff68cb73151faf73a1c4a3ff43754d1239f9af0dba",
+                    "uncompressed": "04fbdccb7ebd54c413187158ff68cb73151faf73a1c4a3ff43754d1239f9af0dbab7221f6030cf56c2817c095588d4409bcb38f5f458c3bf0464f0b13e6adc5b65",
+                    "compressed": "03fbdccb7ebd54c413187158ff68cb73151faf73a1c4a3ff43754d1239f9af0dba",
+                    "address": "bc1q75zlpwf8yeh77g5eu4zck528q5w28a943ceyvc"
+                }
+            ]
+        },
+        "standard": {
+            "cryptocurrency": "Bitcoin",
+            "symbol": "BTC",
+            "network": "mainnet",
+            "coin_type": 0,
+            "entropy": "0909d49a61e5289873d16ddbe3f781eedf",
+            "strength": 132,
+            "mnemonic": "selvagem aferir vinco platina seiva urologia produto bovino comando fivela terno levitar",
+            "passphrase": null,
+            "language": "Portuguese",
+            "seed": "c4b76269e959316bc5cba4be73e50dce6765276745a92de1f535e113611ab3eddb60f82563de2a23d34fa90600809b502b0058c046a25044fb5615e19e686094",
+            "ecc": "SLIP10-Secp256k1",
+            "hd": "Electrum-V2",
+            "mode": "standard",
+            "mnemonic_type": "standard",
+            "master_private_key": "5e84cf213848dd665f5c78353be661c7b01d696f1d96a469e33dc8a5b1873a5e",
+            "master_wif": "KzPSefscvPRo8pBj42xsAiybfGcSREtffwNCHgAXSnMcQQZP6rg6",
+            "master_public_key": "029af3296b323876be85c04a86e8462c39159847f83e90ad2af4ae655287955a77",
+            "public_key_type": "compressed",
+            "wif_type": "wif-compressed",
+            "derivations": [
+                {
+                    "at": {
+                        "change": 0,
+                        "address": 0
+                    },
+                    "private_key": "5bb27ad7fbba4349f23e54afc727f80d0d4254acfaa915faeb8ba2e036d24883",
+                    "wif": "KzHxXjsdYGo2GCvzpAzLJfimjFgW3Er3JgJnWHZqATnqhqxmrRnH",
+                    "public_key": "025b6193b2142a292a6e5ad1659a2c69daecf5c03b5015c2317f0fb59784abc66f",
+                    "uncompressed": "045b6193b2142a292a6e5ad1659a2c69daecf5c03b5015c2317f0fb59784abc66f8b57e0995a3b3be25b0cc8fe445276ea41d9e53d220d4e50d99d47ef24dd35f4",
+                    "compressed": "025b6193b2142a292a6e5ad1659a2c69daecf5c03b5015c2317f0fb59784abc66f",
+                    "address": "1H2kocqwfuL64mLM1a5eUUvk9ykdJfcU6G"
+                },
+                {
+                    "at": {
+                        "change": 1,
+                        "address": 0
+                    },
+                    "private_key": "2e9c1fcc13c55daa4ad936cf50e4cedab4e5b2386f52f730cf282a0529eef886",
+                    "wif": "KxnKBkpmN6xLmW4bbycdv2rd816EbSmjmaWDEmCZrgzod8g56Jj8",
+                    "public_key": "03412e87aeb0c7708cdd9f5f9d9ad2829f9d6e0adc0a84a92d91df6b77721736e5",
+                    "uncompressed": "04412e87aeb0c7708cdd9f5f9d9ad2829f9d6e0adc0a84a92d91df6b77721736e59abc673c2a8df360c837ed926ecccea104ace828d8c10c934efe7c404b6b1665",
+                    "compressed": "03412e87aeb0c7708cdd9f5f9d9ad2829f9d6e0adc0a84a92d91df6b77721736e5",
+                    "address": "169PK21q9EsBeA7iRzqnuEPnYiAPjcJsh5"
+                }
+            ]
+        },
+        "standard-2fa": {
+            "cryptocurrency": "Bitcoin",
+            "symbol": "BTC",
+            "network": "mainnet",
+            "coin_type": 0,
+            "entropy": "0909d49a61e5289873d16ddbe3f781eedf",
+            "strength": 132,
+            "mnemonic": "selvagem aferir vinco platina seiva urologia produto bovino comando fivela terno levitar",
+            "passphrase": null,
+            "language": "Portuguese",
+            "seed": "c4b76269e959316bc5cba4be73e50dce6765276745a92de1f535e113611ab3eddb60f82563de2a23d34fa90600809b502b0058c046a25044fb5615e19e686094",
+            "ecc": "SLIP10-Secp256k1",
+            "hd": "Electrum-V2",
+            "mode": "standard",
+            "mnemonic_type": "standard",
+            "master_private_key": "5e84cf213848dd665f5c78353be661c7b01d696f1d96a469e33dc8a5b1873a5e",
+            "master_wif": "KzPSefscvPRo8pBj42xsAiybfGcSREtffwNCHgAXSnMcQQZP6rg6",
+            "master_public_key": "029af3296b323876be85c04a86e8462c39159847f83e90ad2af4ae655287955a77",
+            "public_key_type": "compressed",
+            "wif_type": "wif-compressed",
+            "derivations": [
+                {
+                    "at": {
+                        "change": 0,
+                        "address": 0
+                    },
+                    "private_key": "5bb27ad7fbba4349f23e54afc727f80d0d4254acfaa915faeb8ba2e036d24883",
+                    "wif": "KzHxXjsdYGo2GCvzpAzLJfimjFgW3Er3JgJnWHZqATnqhqxmrRnH",
+                    "public_key": "025b6193b2142a292a6e5ad1659a2c69daecf5c03b5015c2317f0fb59784abc66f",
+                    "uncompressed": "045b6193b2142a292a6e5ad1659a2c69daecf5c03b5015c2317f0fb59784abc66f8b57e0995a3b3be25b0cc8fe445276ea41d9e53d220d4e50d99d47ef24dd35f4",
+                    "compressed": "025b6193b2142a292a6e5ad1659a2c69daecf5c03b5015c2317f0fb59784abc66f",
+                    "address": "1H2kocqwfuL64mLM1a5eUUvk9ykdJfcU6G"
+                },
+                {
+                    "at": {
+                        "change": 1,
+                        "address": 0
+                    },
+                    "private_key": "2e9c1fcc13c55daa4ad936cf50e4cedab4e5b2386f52f730cf282a0529eef886",
+                    "wif": "KxnKBkpmN6xLmW4bbycdv2rd816EbSmjmaWDEmCZrgzod8g56Jj8",
+                    "public_key": "03412e87aeb0c7708cdd9f5f9d9ad2829f9d6e0adc0a84a92d91df6b77721736e5",
+                    "uncompressed": "04412e87aeb0c7708cdd9f5f9d9ad2829f9d6e0adc0a84a92d91df6b77721736e59abc673c2a8df360c837ed926ecccea104ace828d8c10c934efe7c404b6b1665",
+                    "compressed": "03412e87aeb0c7708cdd9f5f9d9ad2829f9d6e0adc0a84a92d91df6b77721736e5",
+                    "address": "169PK21q9EsBeA7iRzqnuEPnYiAPjcJsh5"
+                }
+            ]
+        }
+    },
     "Monero": {
         "derivation":{
             "name": "Monero",
