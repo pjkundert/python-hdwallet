@@ -307,6 +307,30 @@
                 "address": "Ae2tdPwUPEZFKBJht4tHyZMheER2yGTk9TPGQUmQoYH9cFnRuLJ3YKx4pJy"
             }
         },
+        "byron-icarus-passphrase": {
+            "name": "Cardano",
+            "seed": "578bbadb09b01b8e8a6548be8ec5d5f3",
+            "passphrase": "hdwallet",
+            "root-xprivate-key": "Har3K3MhV5fiuEp713ccirB68ZeM9fGHWMckkMBVkCJjd8jT9up7Tm93NLgvM8s527FLeHmBMFKNWWwz77uYi8Vbsv6uqAD8gkTHNXT22jtgd5yrPmMKrKzjggdsMDxh9cxkMT4zMXz9E9KRhm9wCXXZfh8",
+            "root-xpublic-key": "xpub661MyMwAqRbcGQ4iX3CBipCHhaSkLvEPPgZKunVP1VkTBW3Egyyd5PDy1sX9H7rQD6hS5S9H9bBDWwUEb89f1TZk81hLWsU2zji2qtJAfQW",
+            "root-private-key": "28663be6dc81ceb007a7e18dc80ff50244f48f0e26c0bd25eabac8442e787e4a403571ac9a324e1cb9114ecd2bcac85a7948ac6e9e00dab15d9b033691113d00",
+            "root-chain-code": "ba63c0c96961d7a73600b43bcd73342ca0edeef7dbdcecd9a633fad927c99040",
+            "root-public-key": "00f13a1a27477807f10905e9cc2494d8b85134674ca234b193da86d5d5988e3e22",
+            "derivation": {
+                "xprivate-key": "Har3K6TAHkDB3dxZQxXhvXnbT9fznsNmgT2Azm5kSCt4M9DkUJBzND4mrC7fxABxo6nxSeY4fxSS36jYwJN6KVzX1C5aZiHpmk1qfU9wgH3wf34whQN4VabzwWArBPWFLxxMcDgSfTdWjYetL1xB9uGhsEq",
+                "xpublic-key": "xpub6GRV8ckGRaeeiXAxirbXy9TxmHw2udzjh6rYktsDcUmbSwKTXh8Gqou27CZ79cz7fUFXqhqBQNETTXuyC32LEaHvrEtiosi9fAZCYHSmToX",
+                "private-key": "a8ec2e7be7d813566b87a72b6100f74096ca32bfc3a1c13214f3d16b3a787e4abc33530f07ee69e896fa1137fa5261f8248c3e7bf5bef32d88f8244c0d7fb3bd",
+                "chain-code": "41361dc036914c15c448f1ef24cc2342b1910e16d6288f9a8d9d014848123add",
+                "public-key": "000f752fbfc21fe6a66877fd0642d1d77a5fb11d9523bb67976da665f327ebf96c",
+                "depth": 5,
+                "path": "m/44'/1815'/0'/0/0",
+                "index": 0,
+                "indexes": [2147483692, 2147485463, 2147483648, 0, 0],
+                "fingerprint": "b70d34e8",
+                "parent-fingerprint": "8918e528",
+                "address": "Ae2tdPwUPEZ4UcrkUBh2ePfwjsU83pcoVcKxQDjA86WwfuNovpj8NykA7Jn"
+            }
+        },
         "byron-ledger": {
             "name": "Cardano",
             "seed": "90cf1d2b4395cdd90e8dc77531fd2d04dc149278ba9450a8d6d70a0f70ec1f1e9c26da9b27b4b479bf745b36f2992c3277e9ceb34c2251b346271746ef402a56",
@@ -388,6 +412,44 @@
                 "fingerprint": "9b1be243",
                 "parent-fingerprint": "3e728914",
                 "address": "addr1q96dp7d366wf0v8aqkwgsaym2twzp49f4uurjd4hf9qdg6n80e9yq3f454fkksdhjxp2m8v529tuq866e7wxh7s3vg4s9223m6"
+            }
+        },
+        "shelley-icarus-passphrase": {
+            "name": "Cardano",
+            "seed": "52c3453414d0db5d8b2e5a7d5e30ba1f",
+            "passphrase": "hdwallet",
+            "root-xprivate-key": "Har3K3MhV5fiuEp6znoWvZyHiiR6tNR4g9H1RBf98CoHvjcWvvXVZuKgsZNScWRk7eVgL85WZpLtNsm6A8eBjvzLmYQHcworoXJGHoMcvKWGmV8znocEsji9Df5VqzUkBkyEbVGbDiwjHz6EHmdEkfxYnKo",
+            "root-xpublic-key": "xpub661MyMwAqRbcFYCjCV6d9PAWEYHS7HvS87XYdZvkMUXopj5AdhjjCD7czRnLn5KUTqL3wcFJMHX9DszE7c52iSxGFQARpfAiRVj17R3wbao",
+            "root-private-key": "c861ec28496d9a4037c02eb0076d9e0e014f744c9b11b958e8acc423945d61487fef3ff9b8da81928834f5d1ccbd69e617b3231d2607c60ca15438d9427f79ca",
+            "root-chain-code": "640a900cb05338580b732b55c82cb5fa9319c258ec18810a6b76a4b920734ca4",
+            "root-public-key": "00a04697caeabcf9f1a9990ee6d9dca5e3a016241a95a676577e987b0a5dae7f0b",
+            "derivation-staking": {
+                "xprivate-key": "Har3K6X2saEVoHFBLDKRm9cLADnyXtcoakWYBgTWMceMZa3gWdFjvYr4p8oG8cfq5Ri7iM46ERmFwXnYPxoix3Ac8SreUmcaBpyZSeUYoKYFUN9xMB2JUERnu2vv8PAJQPL8VEug6si8My6vqNu8mk5d5un",
+                "xpublic-key": "xpub6GeX9ToE4B77PdA2DgPwdeWib9CgwVE5j8xoUAiJUbctDR45ccuvDdU4UkVMbX8RVdourgdBHBS3nSg2EAAGTJh8x5b5xjTEwX3wNV2xftt",
+                "private-key": "f885b4a8980ee5ee3cacd6c954d4be44a374398fa39ea55152e787a2ac5d614876898ea7221152a1012f404e8df0bd7ee0cd8332ddff0fd634b9ecc75ce59327",
+                "chain-code": "c407c8178ae76c868b9f4d57605b3d06076ada94663d893d22bebc379c1c2fba",
+                "public-key": "000eb771290a53e3dbed748b62f46aa66840218c5ba31d842adfe1b9cdabd5753f",
+                "depth": 5,
+                "path": "m/1852'/1815'/0'/2/0",
+                "index": 0,
+                "indexes": [2147485500, 2147485463, 2147483648, 2, 0],
+                "fingerprint": "ce28c129",
+                "parent-fingerprint": "a7ac4504",
+                "address": "stake1u9h4l6ha63n0jrj4tw9k250pqykfvvpj6gxdndk7qeswnngtzqszr"
+            },
+            "derivation-payment": {
+                "xprivate-key": "Har3K6J1qRHzPWoXfL2X5vraY42RfJtkAX6gE1T1UYNLvH8fQiYAicX5M7A6YizoZVAA4EF5Sqcpo8PdxQKTRbZgTMjwotYkwLmvYR5gNrAs8oHZXUff7oAzAQs7oiTukofCqEH3LvqandY3GD2wm9WZ4JN",
+                "xpublic-key": "xpub6FthTvxQJmAcZ1ahJcs6m1traveuwNyssGD3Na9v25bTq9SEdB33ukYRWL6Hawtfp5BQMwBPCvCmq7Lne22fpT1BHMZ2cLbaPfuzU1XnYeG",
+                "private-key": "d098622a6046565dd6e3588ff670b8ad2451ea7423ae6896d54f148baa5d6148925a952a09c951948383668a28cd4c1c0189d95a05ae1f38b1c2c0744a044270",
+                "chain-code": "6b56f5af26d2eaf09b4d1f48d61c5936d8ca94001b570b770819db7b1bdc56a5",
+                "public-key": "0054a44370615bd131070ed77efd946f7561339b3af13422c77a9104c87f09a95d",
+                "depth": 5,
+                "path": "m/1852'/1815'/0'/0/0",
+                "index": 0,
+                "indexes": [2147485500, 2147485463, 2147483648, 0, 0],
+                "fingerprint": "81166c8b",
+                "parent-fingerprint": "40e10b87",
+                "address": "addr1qxhaxf3urdqft28nf42r6l6em38hzemnrhgjlm6ys5g84rr0tl40m4rxly892kutv4g7zqfvjccr95svmxmdupnqa8xsgsdac5"
             }
         },
         "shelley-ledger": {
