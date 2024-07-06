@@ -34,15 +34,57 @@ class BIP141HD(BIP32HD):
         public_key_type: str = PUBLIC_KEY_TYPES.COMPRESSED,
         **kwargs
     ) -> None:
+        """
+        Initialize a BIP141HD instance with elliptic curve cryptography, semantic information,
+        public key type, and optional keyword arguments.
+
+        :param ecc: Elliptic curve cryptography class or type.
+        :type ecc: Type[IEllipticCurveCryptography]
+
+        :param semantic: Semantic information to initialize from.
+        :type semantic: str
+
+        :param public_key_type: Type of public key (default is PUBLIC_KEY_TYPES.COMPRESSED).
+        :type public_key_type: str
+
+        :param kwargs: Additional keyword arguments for initialization.
+        """
+
         super(BIP141HD, self).__init__(ecc=ecc, public_key_type=public_key_type, **kwargs)
 
         self.from_semantic(semantic=semantic, **kwargs)
 
     @classmethod
     def name(cls) -> str:
+        """
+        Get the name of the bip class.
+
+        :return: The name of the bip class.
+        :rtype: str
+
+        >>> from hdwallet.hds.bip141 import BIP141HD
+        >>> bip141: BIP141HD = BIP141HD(bip="...")
+        >>> bip141.name()
+        "BIP141"
+        """
         return "BIP141"
 
     def from_semantic(self, semantic: str, **kwargs) -> "BIP141HD":
+        """
+        Initialize the BIP141HD instance based on the provided semantic type.
+
+        :param semantic: Semantic type for address generation.
+        :type semantic: str
+
+        :param kwargs: Additional keyword arguments for specific semantic types.
+
+        :return: Self-reference for method chaining.
+        :rtype: BIP141HD
+
+        >>> from hdwallet.hds.bip141 import BIP141HD
+        >>> BIP141HD.from_semantic(semantic="...")
+        "..."
+        """
 
         if semantic not in [
             "P2WPKH", "P2WPKH_IN_P2SH", "P2WSH", "P2WSH_IN_P2SH"
@@ -87,11 +129,39 @@ class BIP141HD(BIP32HD):
         return self
 
     def semantic(self) -> str:
+        """
+        Retrieve the semantic type associated with this BIP141HD instance.
+
+        :return: Semantic type.
+        :rtype: str
+
+        >>> from hdwallet.hds.bip141 import BIP141HD
+        >>> BIP141HD.semantic()
+        "..."
+        """
         return self._semantic
 
     def root_xprivate_key(
         self, version: Optional[Union[bytes, int]] = None, encoded: bool = True
     ) -> Optional[str]:
+        """
+        Generate the root extended private key for the BIP141HD instance.
+
+        :param version: Optional version bytes or integer for the extended private key.
+                        If None, uses the instance's `_xprivate_key_version`.
+        :type version: Union[bytes, int], optional
+
+        :param encoded: Flag indicating whether the key should be encoded (default is True).
+        :type encoded: bool
+
+        :return: Root extended private key as a string, or None if not available.
+        :rtype: Optional[str]
+
+        >>> from hdwallet.hds.bip141 import BIP141HD
+        >>> BIP141HD.root_xprivate_key(version=..., encoded=...)
+        "..."
+        """
+
         return super(BIP141HD, self).root_xprivate_key(
             version=(self._xprivate_key_version if version is None else version), encoded=encoded
         )
@@ -99,6 +169,24 @@ class BIP141HD(BIP32HD):
     def root_xpublic_key(
         self, version: Optional[Union[bytes, int]] = None, encoded: bool = True
     ) -> Optional[str]:
+        """
+        Generate the root extended public key for the BIP141HD instance.
+
+        :param version: Optional version bytes or integer for the extended public key.
+                        If None, uses the instance's `_xpublic_key_version`.
+        :type version: Union[bytes, int], optional
+
+        :param encoded: Flag indicating whether the key should be encoded (default is True).
+        :type encoded: bool
+
+        :return: Root extended public key as a string, or None if not available.
+        :rtype: Optional[str]
+
+        >>> from hdwallet.hds.bip141 import BIP141HD
+        >>> BIP141HD.root_xpublic_key(version=..., encoded=...)
+        "..."
+        """
+
         return super(BIP141HD, self).root_xpublic_key(
             version=(self._xpublic_key_version if version is None else version), encoded=encoded
         )
@@ -106,6 +194,24 @@ class BIP141HD(BIP32HD):
     def xprivate_key(
         self, version: Optional[Union[bytes, int]] = None, encoded: bool = True
     ) -> Optional[str]:
+        """
+        Generate the extended private key for the BIP141HD instance.
+
+        :param version: Optional version bytes or integer for the extended private key.
+                        If None, uses the instance's `_xprivate_key_version`.
+        :type version: Union[bytes, int], optional
+
+        :param encoded: Flag indicating whether the key should be encoded (default is True).
+        :type encoded: bool
+
+        :return: Extended private key as a string, or None if not available.
+        :rtype: Optional[str]
+
+        >>> from hdwallet.hds.bip141 import BIP141HD
+        >>> BIP141HD.xprivate_key(version=..., encoded=...)
+        "..."
+        """
+
         return super(BIP141HD, self).xprivate_key(
             version=(self._xprivate_key_version if version is None else version), encoded=encoded
         )
@@ -113,6 +219,24 @@ class BIP141HD(BIP32HD):
     def xpublic_key(
         self, version: Optional[Union[bytes, int]] = None, encoded: bool = True
     ) -> Optional[str]:
+        """
+        Generate the extended public key for the BIP141HD instance.
+
+        :param version: Optional version bytes or integer for the extended public key.
+                        If None, uses the instance's `_xpublic_key_version`.
+        :type version: Union[bytes, int], optional
+
+        :param encoded: Flag indicating whether the key should be encoded (default is True).
+        :type encoded: bool
+
+        :return: Extended public key as a string, or None if not available.
+        :rtype: Optional[str]
+
+        >>> from hdwallet.hds.bip141 import BIP141HD
+        >>> BIP141HD.xpublic_key(version=..., encoded=...)
+        "..."
+        """
+
         return super(BIP141HD, self).xpublic_key(
             version=(self._xpublic_key_version if version is None else version) , encoded=encoded
         )
@@ -125,6 +249,30 @@ class BIP141HD(BIP32HD):
         witness_version: int = Bitcoin.NETWORKS.MAINNET.WITNESS_VERSIONS.P2WPKH,
         **kwargs
     ) -> str:
+        """
+        Generate an address based on the specified address type for the BIP141HD instance.
+
+        :param address: Optional address type to encode. If None, uses the instance's `_address`.
+        :type address: Optional[str]
+
+        :param script_address_prefix: Script address prefix for P2WPKH-in-P2SH and P2WSH-in-P2SH addresses.
+                                      Default is Bitcoin mainnet script address prefix.
+        :type script_address_prefix: int
+
+        :param hrp: Human-readable part for P2WPKH and P2WSH addresses. Default is Bitcoin mainnet HRP.
+        :type hrp: str
+
+        :param witness_version: Witness version for P2WPKH and P2WSH addresses. Default is Bitcoin mainnet witness version.
+        :type witness_version: int
+
+        :return: Encoded address string.
+        :rtype: str
+
+        >>> from hdwallet.hds.bip141 import BIP141HD
+        >>> BIP141HD.address(address="...", script_address_prefix=..., hrp="...", witness_version=...)
+        "..."
+        """
+
         if address is None:
             address = self._address
         if address == P2WPKHAddress.name():

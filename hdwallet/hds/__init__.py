@@ -40,14 +40,37 @@ class HDS:
 
     @classmethod
     def names(cls) -> List[str]:
+        """
+        Get a list of names from the dictionary attribute of the class.
+
+        :return: List of names from the class dictionary.
+        :rtype: List[str]
+        """
+
         return list(cls.dictionary.keys())
 
     @classmethod
     def classes(cls) -> List[Type[IHD]]:
+        """
+        Get a list of classes from the dictionary attribute of the class.
+
+        :return: List of classes from the class dictionary.
+        :rtype: List[Type[IHD]]
+        """
+
         return list(cls.dictionary.values())
 
     @classmethod
     def hd(cls, name: str) -> Type[IHD]:
+        """
+        Get the HD class type from the dictionary attribute of the class based on the given name.
+
+        :param name: The name of the HD class to retrieve.
+        :type name: str
+
+        :return: The HD class type corresponding to the given name.
+        :rtype: Type[IHD]
+        """
 
         if not cls.is_hd(name=name):
             raise HDError(
@@ -58,6 +81,15 @@ class HDS:
 
     @classmethod
     def is_hd(cls, name: str) -> bool:
+        """
+        Check if the given name corresponds to an HD class in the class dictionary.
+
+        :param name: The name to check.
+        :type name: str
+
+        :return: True if the name corresponds to an HD class, False otherwise.
+        :rtype: bool
+        """
         return name in cls.names()
 
 

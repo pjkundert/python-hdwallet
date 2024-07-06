@@ -43,6 +43,13 @@ class CardanoHD(BIP32HD):
     _cardano_type: str
 
     def __init__(self, cardano_type: str) -> None:
+        """
+        Initialize a CardanoHD instance with the specified Cardano type.
+
+        :param cardano_type: Type of Cardano instance to create.
+        :type cardano_type: str
+        """
+
         super(CardanoHD, self).__init__(
             ecc=KholawEd25519ECC
         )
@@ -54,9 +61,36 @@ class CardanoHD(BIP32HD):
 
     @classmethod
     def name(cls) -> str:
+        """
+        Get the name of the cardano class.
+
+        :return: The name of the cardano class.
+        :rtype: str
+
+        >>> from hdwallet.hds.cardano import CardanoHD
+        >>> cardano: CardanoHD = CardanoHD(cardano=...)
+        >>> cardano.name()
+        "Cardano"
+        """
         return "Cardano"
 
     def from_seed(self, seed: Union[str, ISeed], passphrase: Optional[str] = None) -> "CardanoHD":
+        """
+        Derive hierarchical deterministic keys from a seed for the specified Cardano type.
+
+        :param seed: Seed to derive keys from. Can be either a string or an instance of ISeed.
+        :type seed: Union[str, ISeed]
+
+        :param passphrase: Optional passphrase for key derivation (default is None).
+        :type passphrase: Optional[str]
+
+        :return: This CardanoHD instance with derived keys set.
+        :rtype: CardanoHD
+
+        >>> from hdwallet.hds.cardano import CardanoHD
+        >>> CardanoHD.from_seed(seed=..., passphrase="...")
+        "..."
+        """
 
         self._seed = get_bytes(
             seed.seed() if isinstance(seed, ISeed) else seed
@@ -185,6 +219,20 @@ class CardanoHD(BIP32HD):
         return self
 
     def from_private_key(self, private_key: str) -> "CardanoHD":
+        """
+        Initialize this CardanoHD instance from a given private key.
+
+        :param private_key: The private key to initialize from.
+        :type private_key: str
+
+        :return: This CardanoHD instance initialized with the provided private key.
+        :rtype: CardanoHD
+
+        >>> from hdwallet.hds.cardano import CardanoHD
+        >>> CardanoHD.from_private_key(private_key="...")
+        "..."
+        """
+
         if self._cardano_type in [
             Cardano.TYPES.BYRON_ICARUS, Cardano.TYPES.BYRON_LEGACY, Cardano.TYPES.BYRON_LEDGER
         ]:
@@ -195,6 +243,20 @@ class CardanoHD(BIP32HD):
         return self
 
     def from_public_key(self, public_key: str) -> "CardanoHD":
+        """
+        Initialize this CardanoHD instance from a given public key.
+
+        :param public_key: The public key to initialize from.
+        :type public_key: str
+
+        :return: This CardanoHD instance initialized with the provided public key.
+        :rtype: CardanoHD
+
+        >>> from hdwallet.hds.cardano import CardanoHD
+        >>> CardanoHD.from_public_key(public_key="...")
+        "..."
+        """
+
         if self._cardano_type in [
             Cardano.TYPES.BYRON_ICARUS, Cardano.TYPES.BYRON_LEGACY, Cardano.TYPES.BYRON_LEDGER
         ]:
@@ -204,6 +266,19 @@ class CardanoHD(BIP32HD):
         return self
 
     def drive(self, index: int) -> Optional["CardanoHD"]:
+        """
+        Derives a new CardanoHD instance at the specified index.
+
+        :param index: The index of the child HD wallet to derive.
+        :type index: int
+
+        :return: A new CardanoHD instance derived at the specified index.
+        :rtype: CardanoHD or None
+
+        >>> from hdwallet.hds.cardano import CardanoHD
+        >>> CardanoHD.drive(index=...)
+        "..."
+        """
 
         hmac_half_length: int = hashlib.sha512().digest_size // 2
 
@@ -337,6 +412,17 @@ class CardanoHD(BIP32HD):
         return self
 
     def path_key(self) -> Optional[str]:
+        """
+        Derives a path key based on the current CardanoHD instance.
+
+        :return: The derived path key as a hexadecimal string.
+        :rtype: str or None
+
+        >>> from hdwallet.hds.cardano import CardanoHD
+        >>> CardanoHD.path_key()
+        "..."
+        """
+
         if self._cardano_type == Cardano.TYPES.BYRON_LEGACY:
             self._root_public_key = self._root_private_key.public_key()
             return bytes_to_string(pbkdf2_hmac_sha512(
@@ -345,6 +431,19 @@ class CardanoHD(BIP32HD):
         return None
 
     def address(self, **kwargs) -> str:
+        """
+        Generates an address based on the current CardanoHD instance and specified parameters.
+
+        :param kwargs: Additional parameters based on Cardano type and address type.
+
+        :return: Generated Cardano address as a string.
+        :rtype: str
+
+        >>> from hdwallet.hds.cardano import CardanoHD
+        >>> CardanoHD.address()
+        "..."
+        """
+
         if self._cardano_type == Cardano.TYPES.BYRON_LEGACY:
             return CardanoAddress.encode_byron_legacy(
                 public_key=self._public_key,
