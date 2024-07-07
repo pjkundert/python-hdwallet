@@ -14,4 +14,11 @@ class HarmonyAddress(OKTChainAddress):
 
     @staticmethod
     def name() -> str:
+        """
+        Returns the name of the blockchain.
+
+        :return: The name of the blockchain.
+        :rtype: str
+        """
+
         return "Harmony"

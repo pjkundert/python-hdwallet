@@ -54,10 +54,26 @@ class MoneroAddress:
 
     @staticmethod
     def name() -> str:
+        """
+        Returns the name of the cryptocurrency, which is "Monero".
+
+        :return: The name of the cryptocurrency.
+        :rtype: str
+        """
+
         return "Monero"
 
     @classmethod
     def compute_checksum(cls, public_key: bytes) -> bytes:
+        """
+        Computes the checksum for the given public key using keccak256.
+
+        :param public_key: The public key bytes.
+        :type public_key: bytes
+
+        :return: The computed checksum.
+        :rtype: bytes
+        """
         return kekkak256(public_key)[:cls.checksum_length]
 
     @classmethod
@@ -69,6 +85,27 @@ class MoneroAddress:
         address_type: str = Monero.ADDRESS_TYPES.STANDARD,
         payment_id: Optional[bytes] = None
     ) -> str:
+        """
+        Encodes the given spend and view public keys into a Monero address.
+
+        :param spend_public_key: The spend public key.
+        :type spend_public_key: Union[bytes, str, IPublicKey]
+
+        :param view_public_key: The view public key.
+        :type view_public_key: Union[bytes, str, IPublicKey]
+
+        :param network: The network (default is "mainnet").
+        :type network: str
+
+        :param address_type: The address type (default is Monero.ADDRESS_TYPES.STANDARD).
+        :type address_type: str
+
+        :param payment_id: Optional payment ID bytes.
+        :type payment_id: Optional[bytes]
+
+        :return: The encoded Monero address.
+        :rtype: str
+        """
 
         spend_public_key: IPublicKey = validate_and_get_public_key(
             public_key=spend_public_key, public_key_cls=SLIP10Ed25519MoneroPublicKey
@@ -99,6 +136,24 @@ class MoneroAddress:
         address_type: str = Monero.ADDRESS_TYPES.STANDARD,
         payment_id: Optional[bytes] = None
     ) -> Tuple[str, str]:
+        """
+        Decodes a Monero address into spend and view public keys.
+
+        :param address: The Monero address to decode.
+        :type address: str
+
+        :param network: The network (default is "mainnet").
+        :type network: str
+
+        :param address_type: The address type (default is Monero.ADDRESS_TYPES.STANDARD).
+        :type address_type: str
+
+        :param payment_id: Optional payment ID bytes.
+        :type payment_id: Optional[bytes]
+
+        :return: A tuple containing the spend public key and view public key.
+        :rtype: Tuple[str, str]
+        """
 
         address_decode: bytes = decode_monero(address)
 

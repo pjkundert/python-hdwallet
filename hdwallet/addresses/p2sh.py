@@ -30,10 +30,32 @@ class P2SHAddress(IAddress):
 
     @staticmethod
     def name() -> str:
+        """
+        Return the name of the cryptocurrency, which is "P2SH".
+
+        :return: The name of the cryptocurrency.
+        :rtype: str
+        """
+
         return "P2SH"
 
     @classmethod
     def encode(cls, public_key: Union[bytes, str, IPublicKey], **kwargs: Any) -> str:
+        """
+        Encode a public key into a P2SH address.
+
+        :param public_key: The public key to encode. Can be bytes, str, or IPublicKey.
+        :type public_key: Union[bytes, str, IPublicKey]
+
+        :param kwargs: Additional keyword arguments.
+            - script_address_prefix: Prefix for the script address (optional).
+            - public_key_type: Type of the public key (optional).
+            - alphabet: Custom alphabet for encoding (optional).
+        :type kwargs: Any
+
+        :return: The encoded P2SH address.
+        :rtype: str
+        """
 
         script_address_prefix: bytes = integer_to_bytes(
             kwargs.get("script_address_prefix", cls.script_address_prefix)
@@ -58,6 +80,20 @@ class P2SHAddress(IAddress):
 
     @classmethod
     def decode(cls, address: str, **kwargs: Any) -> str:
+        """
+        Decode a P2SH address into its original public key hash.
+
+        :param address: The P2SH address to decode.
+        :type address: str
+
+        :param kwargs: Additional keyword arguments.
+            - script_address_prefix: Prefix for the script address (optional).
+            - alphabet: Custom alphabet for decoding (optional).
+        :type kwargs: Any
+
+        :return: The decoded public key hash as a string.
+        :rtype: str
+        """
 
         script_address_prefix: bytes = integer_to_bytes(
             kwargs.get("script_address_prefix", cls.script_address_prefix)

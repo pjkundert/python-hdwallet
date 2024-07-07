@@ -28,10 +28,32 @@ class P2WSHInP2SHAddress(P2SHAddress):
 
     @staticmethod
     def name() -> str:
+        """
+        Returns the name "P2WSH-In-P2SH".
+
+        :return: The name of the address type.
+        :rtype: str
+        """
+
         return "P2WSH-In-P2SH"
 
     @classmethod
     def encode(cls, public_key: Union[bytes, str, IPublicKey], **kwargs: Any) -> str:
+        """
+        Encode a public key into a P2WSH address.
+
+        :param public_key: The public key to encode.
+        :type public_key: Union[bytes, str, IPublicKey]
+
+        :param kwargs: Additional keyword arguments.
+            - script_address_prefix: Script address prefix (optional).
+            - public_key_type: Type of public key (optional).
+            - alphabet: Custom alphabet for encoding (optional).
+        :type kwargs: Any
+
+        :return: The encoded P2WSH address.
+        :rtype: str
+        """
 
         script_address_prefix: bytes = integer_to_bytes(
             kwargs.get("script_address_prefix", cls.script_address_prefix)

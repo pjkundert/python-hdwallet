@@ -26,10 +26,28 @@ class AptosAddress(IAddress):
 
     @staticmethod
     def name() -> str:
+        """
+        Returns the name of the cryptocurrency.
+
+        :return: The name of the cryptocurrency.
+        :rtype: str
+        """
+
         return "Aptos"
 
     @classmethod
     def encode(cls, public_key: Union[bytes, str, IPublicKey], **kwargs: Any) -> str:
+        """
+        Encodes a public key into an Aptos address.
+
+        :param public_key: The public key to encode. Can be of type bytes, str, or IPublicKey.
+        :type public_key: Union[bytes, str, IPublicKey]
+
+        :param kwargs: Additional arguments.
+
+        :return: The encoded Aptos address.
+        :rtype: str
+        """
 
         public_key: IPublicKey = validate_and_get_public_key(
             public_key=public_key, public_key_cls=SLIP10Ed25519PublicKey
@@ -40,6 +58,17 @@ class AptosAddress(IAddress):
 
     @classmethod
     def decode(cls, address: str, **kwargs: Any) -> str:
+        """
+        Decodes an Aptos address into its raw form without the prefix.
+
+        :param address: The Aptos address to decode.
+        :type address: str
+
+        :param kwargs: Additional arguments.
+
+        :return: The decoded address in its raw form.
+        :rtype: str
+        """
 
         address_prefix_got: str = address[:len(cls.address_prefix)]
         if cls.address_prefix != address_prefix_got:

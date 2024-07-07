@@ -25,10 +25,29 @@ class AvalancheAddress(IAddress):
 
     @staticmethod
     def name() -> str:
+        """
+        Returns the name of the cryptocurrency.
+
+        :return: The name of the cryptocurrency.
+        :rtype: str
+        """
+
         return "Avalanche"
 
     @classmethod
     def encode(cls, public_key: Union[bytes, str, IPublicKey], **kwargs: Any) -> str:
+        """
+        Encodes the given public key into an Avalanche address.
+
+        :param public_key: The public key to be encoded.
+        :type public_key: Union[bytes, str, IPublicKey]
+
+        :param kwargs: Additional keyword arguments, including "address_type".
+        :type kwargs: Any
+
+        :return: The encoded Avalanche address.
+        :rtype: str
+        """
 
         if not kwargs.get("address_type"):
             address_type: str = cls.address_types[Avalanche.DEFAULT_ADDRESS_TYPE]
@@ -47,6 +66,18 @@ class AvalancheAddress(IAddress):
 
     @classmethod
     def decode(cls, address: str, **kwargs: Any) -> str:
+        """
+        Decodes the given Avalanche address into its corresponding public key.
+
+        :param address: The Avalanche address to be decoded.
+        :type address: str
+
+        :param kwargs: Additional keyword arguments, including "address_type".
+        :type kwargs: Any
+
+        :return: The decoded public key.
+        :rtype: str
+        """
 
         if not kwargs.get("address_type"):
             address_type: str = cls.address_types[Avalanche.DEFAULT_ADDRESS_TYPE]

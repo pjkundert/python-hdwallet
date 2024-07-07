@@ -31,10 +31,30 @@ class TezosAddress(IAddress):
 
     @staticmethod
     def name() -> str:
+        """
+        Get the name of the blockchain protocol.
+
+        :return: The name of the blockchain protocol.
+        :rtype: str
+        """
+
         return "Tezos"
 
     @classmethod
     def encode(cls, public_key: Union[bytes, str, IPublicKey], **kwargs: Any) -> str:
+        """
+        Encode a public key into a Tezos address.
+
+        :param public_key: The public key to encode.
+        :type public_key: Union[bytes, str, IPublicKey]
+
+        :param kwargs: Additional keyword arguments.
+            - address_prefix: Address prefix (optional).
+        :type kwargs: Any
+
+        :return: The encoded Tezos address.
+        :rtype: str
+        """
 
         if not kwargs.get("address_prefix"):
             address_prefix: bytes = cls.address_prefixes[Tezos.DEFAULT_ADDRESS_PREFIX]
@@ -58,6 +78,19 @@ class TezosAddress(IAddress):
 
     @classmethod
     def decode(cls, address: str, **kwargs: Any) -> str:
+        """
+        Decode a Tezos address into its raw form.
+
+        :param address: The Tezos address to decode.
+        :type address: str
+
+        :param kwargs: Additional keyword arguments.
+            - address_prefix: Address prefix (optional).
+        :type kwargs: Any
+
+        :return: The decoded raw bytes of the Tezos address.
+        :rtype: str
+        """
 
         if not kwargs.get("address_prefix"):
             address_prefix: bytes = cls.address_prefixes[Tezos.DEFAULT_ADDRESS_PREFIX]

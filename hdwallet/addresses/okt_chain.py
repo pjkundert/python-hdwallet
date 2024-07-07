@@ -26,10 +26,30 @@ class OKTChainAddress(IAddress):
 
     @staticmethod
     def name() -> str:
+        """
+        Returns the name of the cryptocurrency, which is "OKT-Chain".
+
+        :return: The name of the cryptocurrency.
+        :rtype: str
+        """
+
         return "OKT-Chain"
 
     @classmethod
     def encode(cls, public_key: Union[bytes, str, IPublicKey], **kwargs: Any) -> str:
+        """
+        Encode a public key into an address using Bech32 encoding.
+
+        :param public_key: The public key to encode.
+        :type public_key: Union[bytes, str, IPublicKey]
+
+        :param kwargs: Additional keyword arguments.
+            - hrp: Human-readable part (optional).
+        :type kwargs: Any
+
+        :return: The encoded address.
+        :rtype: str
+        """
 
         return bech32_encode(
             cls.hrp, get_bytes(EthereumAddress.encode(

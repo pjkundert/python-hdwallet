@@ -32,10 +32,31 @@ class NeoAddress(IAddress):
 
     @staticmethod
     def name() -> str:
+        """
+        Returns the name of the cryptocurrency, which is "Neo".
+
+        :return: The name of the cryptocurrency.
+        :rtype: str
+        """
+
         return "Neo"
 
     @classmethod
     def encode(cls, public_key: Union[bytes, str, IPublicKey], **kwargs: Any) -> str:
+        """
+        Encode a public key into a cryptocurrency address using SLIP-10 NIST P-256 public key.
+
+        :param public_key: The public key to encode. Can be bytes, str, or IPublicKey.
+        :type public_key: Union[bytes, str, IPublicKey]
+
+        :param kwargs: Additional keyword arguments.
+            - address_version: Version of the address (optional).
+            - alphabet: Custom alphabet for encoding (optional).
+        :type kwargs: Any
+
+        :return: The encoded cryptocurrency address.
+        :rtype: str
+        """
 
         public_key: IPublicKey = validate_and_get_public_key(
             public_key=public_key, public_key_cls=SLIP10Nist256p1PublicKey
@@ -53,6 +74,20 @@ class NeoAddress(IAddress):
 
     @classmethod
     def decode(cls, address: str, **kwargs: Any) -> str:
+        """
+        Decode a cryptocurrency address into its public key using SLIP-10 NIST P-256 public key.
+
+        :param address: The address to decode.
+        :type address: str
+
+        :param kwargs: Additional keyword arguments.
+            - alphabet: Custom alphabet for decoding (optional).
+            - address_version: Version of the address (optional).
+        :type kwargs: Any
+
+        :return: The decoded public key.
+        :rtype: str
+        """
 
         address_decode: bytes = check_decode(
             address, alphabet=kwargs.get(

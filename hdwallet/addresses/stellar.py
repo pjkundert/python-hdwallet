@@ -33,14 +33,44 @@ class StellarAddress(IAddress):
 
     @staticmethod
     def name() -> str:
+        """
+        Return the name of the cryptocurrency, which is "Stellar".
+
+        :return: The name of the cryptocurrency.
+        :rtype: str
+        """
+
         return "Stellar"
 
     @staticmethod
     def compute_checksum(public_key: bytes) -> bytes:
+        """
+        Compute a checksum for the given public key using XMODEM CRC.
+
+        :param public_key: The public key bytes.
+        :type public_key: bytes
+
+        :return: The computed checksum.
+        :rtype: bytes
+        """
+
         return bytes_reverse(xmodem_crc(public_key))
 
     @classmethod
     def encode(cls, public_key: Union[bytes, str, IPublicKey], **kwargs: Any) -> str:
+        """
+        Encode a public key into a Stellar address.
+
+        :param public_key: The public key to encode.
+        :type public_key: Union[bytes, str, IPublicKey]
+
+        :param kwargs: Additional keyword arguments.
+            - address_type: Type of the Stellar address (optional).
+        :type kwargs: Any
+
+        :return: The encoded Stellar address.
+        :rtype: str
+        """
 
         if not kwargs.get("address_type"):
             address_type: int = cls.address_types[Stellar.DEFAULT_ADDRESS_TYPE]
@@ -63,6 +93,19 @@ class StellarAddress(IAddress):
 
     @classmethod
     def decode(cls, address: str, **kwargs: Any) -> str:
+        """
+        Decode a Stellar address back into its public key representation.
+
+        :param address: The Stellar address to decode.
+        :type address: str
+
+        :param kwargs: Additional keyword arguments.
+            - address_type: Type of the Stellar address (optional).
+        :type kwargs: Any
+
+        :return: The decoded public key as a string.
+        :rtype: str
+        """
 
         if not kwargs.get("address_type"):
             address_type: int = cls.address_types[Stellar.DEFAULT_ADDRESS_TYPE]
