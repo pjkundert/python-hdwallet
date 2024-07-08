@@ -5,9 +5,9 @@
 # Distributed under the MIT software license, see the accompanying
 # file COPYING or https://opensource.org/license/mit
 
-from hdwallet.cli.__main__ import cli_main
-
 import json
+
+from hdwallet.cli.__main__ import cli_main
 
 
 def test_cli_seed(data, cli_tester):
