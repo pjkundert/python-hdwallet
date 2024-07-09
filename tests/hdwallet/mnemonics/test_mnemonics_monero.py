@@ -47,7 +47,7 @@ def test_monero_mnemonics(data):
             assert len(mnemonic.split()) == __["words"]
             assert MoneroMnemonic(mnemonic=mnemonic).language().lower() == language
 
-            assert MoneroMnemonic.from_entropy(entropy=__["entropy"], language=language) == __["languages"][language]
+            assert MoneroMnemonic.from_entropy(entropy=__["entropy"], checksum=__["checksum"], language=language) == __["languages"][language]
             assert MoneroMnemonic.decode(mnemonic=__["languages"][language]) == __["entropy"]
 
             mnemonic = MoneroMnemonic(mnemonic=__["languages"][language])

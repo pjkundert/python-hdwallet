@@ -5,6 +5,8 @@
 # Distributed under the MIT software license, see the accompanying
 # file COPYING or https://opensource.org/license/mit
 
+from click.testing import CliRunner
+
 import os
 import json
 import pytest
@@ -12,12 +14,17 @@ import pytest
 @pytest.fixture(scope="session", name="data")
 def load_test_data():
     base_path = os.path.dirname(__file__)
-    jsons = os.listdir(os.path.join(base_path, f"../data/"))
+    jsons = os.listdir(os.path.join(base_path, f"data/json/"))
     data = {}
 
     for json_file in jsons:
-        file_path = os.path.join(base_path, f"../data/{json_file}")
+        file_path = os.path.join(base_path, f"data/json/{json_file}")
         with open(file_path, "r", encoding="utf-8") as values:
             test_data_name = json_file.split(".")[0]
             data[test_data_name] = json.load(values)
     return data
+
+
+@pytest.fixture(scope="module")
+def cli_tester():
+    return CliRunner()
