@@ -15,18 +15,6 @@ from hdwallet.cli.__main__ import cli_main
 from dump_rules import rules
 
 def unpack_dumps(): 
-    hds = [
-        "BIP32",
-        "BIP44",
-        "BIP49", 
-        "BIP84",
-        "BIP86", 
-        "BIP141",
-        # "Cardano",
-        #"Electrum-V1",
-        #"Electrum-V2",
-        # "Monero"
-    ] # Todo: Use rules.keys() when done
     all_data = []
 
     file_path = path.abspath(
@@ -37,7 +25,7 @@ def unpack_dumps():
     hdw_data = json.loads(values.read())
     values.close()
 
-    for hd in hds:
+    for hd in rules.keys():
         for key in hdw_data[hd].keys():
             if key == "derivation": 
                 continue

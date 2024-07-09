@@ -323,7 +323,7 @@ rules = {
                 }
             },
             "wif": {
-                "method": "wif",
+                "method": "master_wif",
                 "derivable": True,
                 "root-changes": {
                     "entropy": None,
@@ -334,7 +334,7 @@ rules = {
                     "seed": None
                 }
             },
-            "master-private-key": {
+            "private-key": {
                 "method": "master_private_key",
                 "derivable": True,
                 "root-changes": {
@@ -345,29 +345,44 @@ rules = {
                     "language": None,
                     "seed": None
                 }
+            }
+        },
+        "args": {
+            "public-key-type": "public_key_type",
+            "entropy-name": ("Electrum-V1",),
+            "mnemonic-name": ("Electrum-V1",),
+            "seed-name": ("Electrum-V1",),
+            "language": "language"
+        }
+    },
+    "Electrum-V2": {
+        "available-methods":{
+            "entropy": {
+                "method": "entropy",
+                "derivable": True,
             },
-            "master-public-key": {
-                "method": "master_public_key",
-                "derivable": False,
+            "mnemonic": {
+                "method": "mnemonic",
+                "derivable": True
+            },
+            "seed": {
+                "method": "seed",
+                "derivable": True,
                 "root-changes": {
                     "entropy": None,
                     "strength": None,
                     "mnemonic": None,
                     "passphrase": None,
-                    "language": None,
-                    "seed": None,
-                    "master_private_key": None,
-                    "master_wif": None,
-                    "wif_type": None
-                },
-                "derivation-changes": {
-                    "private_key": None,
-                    "wif": None
+                    "language": None
                 }
             }
         },
         "args": {
-            "public-key-type": "public_key_type",
+            "mnemonic-type": "mnemonic_type",
+            "mode": "mode",
+            "entropy-name": ("Electrum-V2",),
+            "mnemonic-name": ("Electrum-V2",),
+            "seed-name": ("Electrum-V2",),
             "language": "language"
         }
     },
@@ -381,12 +396,36 @@ rules = {
                 "method": "mnemonic",
                 "derivable": True
             },
-            "seed": {},
-            "spend-private-key": {},
-            "watch-only": {}
+            "seed": {
+                "method": "seed",
+                "derivable": True,
+                "root-changes": {
+                    "entropy": None,
+                    "strength": None,
+                    "mnemonic": None,
+                    "passphrase": None,
+                    "language": None
+                }
+            },
+            "spend-private-key": {
+                "method": "spend_private_key",
+                "derivable": True,
+                "root-changes": {
+                    "entropy": None,
+                    "strength": None,
+                    "mnemonic": None,
+                    "passphrase": None,
+                    "language": None,
+                    "seed": None
+                }
+            }
         },
         "args": {
             "language": "language",
+            "network": "network",
+            "entropy-name": ("Monero",),
+            "mnemonic-name": ("Monero",),
+            "seed-name": ("Monero",),
             "payment-id": ("ad17dc6e6793d178",)
         }
     }
