@@ -4,6 +4,7 @@
 
 .mixed-align-table td, .mixed-align-table th {
     text-align: center;
+    width: 20px;
 }
 
 .mixed-align-table td:first-child, .mixed-align-table th:first-child {

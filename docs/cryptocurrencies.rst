@@ -11,1049 +11,1260 @@ This library simplifies the process of generating a new HDWallet's for:
     All Cryptocurrencies testnet networks default paths are set to ``m/44'/1'/0'/0/0`` value.
 
 .. list-table::
-    :widths: 25 15 10 30 10
     :header-rows: 1
     :class: mixed-align-table
 
     * - Name
       - Symbols
-      - Coin Type
       - Networks
+      - Coin Type
+      - HD's
       - Is Verified?
     * - Adcoin
-
+      - ACC
+      - ``mainnet``
+      - 161
+      - ``BIP32``, ``BIP44``
+      - ❌
     * - Akash-Network
       - AKT
-      - 118
       - ``mainnet``
+      - 118
+      - ``BIP32``, ``BIP44``
       - ❌
     * - Algorand
       - ALGO
-      - 283
       - ``mainnet``
+      - 283
+      - ``BIP32``, ``BIP44``
       - ❌
     * - Anon
       - ANON
-      - 220
       - ``mainnet``
+      - 220
+      - ``BIP32``, ``BIP44``
       - ❌
     * - Aptos
       - APT
-      - 637
       - ``mainnet``
+      - 637
+      - ``BIP32``, ``BIP44``
       - ❌
     * - Arbitrum
       - ARB
-      - 60
       - ``mainnet``
+      - 60
+      - ``BIP32``, ``BIP44``
       - ❌
     * - Argoneum
       - AGM
-      - 421
       - ``mainnet``
+      - 421
+      - ``BIP32``, ``BIP44``
       - ❌
     * - Artax
       - XAX
-      - 219
       - ``mainnet``
+      - 219
+      - ``BIP32``, ``BIP44``
       - ❌
     * - Aryacoin
       - AYA
-      - 357
       - ``mainnet``
+      - 357
+      - ``BIP32``, ``BIP44``
       - ❌
     * - Asiacoin
       - AC
-      - 51
       - ``mainnet``
+      - 51
+      - ``BIP32``, ``BIP44``
       - ❌
     * - Auroracoin
       - AUR
-      - 85
       - ``mainnet``
+      - 85
+      - ``BIP32``, ``BIP44``
       - ❌
     * - Avalanche
       - AVAX
-      - 9000
       - ``mainnet``
+      - 9000
+      - ``BIP32``, ``BIP44``
       - ❌
     * - Avian
       - AVN
-      - 921
       - ``mainnet``
+      - 921
+      - ``BIP32``, ``BIP44``
       - ❌
     * - Axe
       - AXE
-      - 4242
       - ``mainnet``
+      - 4242
+      - ``BIP32``, ``BIP44``
       - ❌
     * - Axelar
       - AXL
-      - 118
       - ``mainnet``
+      - 118
+      - ``BIP32``, ``BIP44``
       - ❌
     * - Band-Protocol
       - BAND
-      - 494
       - ``mainnet``
+      - 494
+      - ``BIP32``, ``BIP44``
       - ❌
     * - Bata
       - BTA
-      - 89
       - ``mainnet``
+      - 89
+      - ``BIP32``, ``BIP44``
       - ❌
     * - Beetle-Coin
       - BEET
-      - 800
       - ``mainnet``
+      - 800
+      - ``BIP32``, ``BIP44``
       - ❌
     * - Bela-Coin
       - BELA
-      - 73
       - ``mainnet``
+      - 73
+      - ``BIP32``, ``BIP44``
       - ❌
     * - Binance
       - BNB
-      - 714
       - ``mainnet``
+      - 714
+      - ``BIP32``, ``BIP44``
       - ❌
     * - Bit-Cloud
       - BTDX
-      - 218
       - ``mainnet``
+      - 218
+      - ``BIP32``, ``BIP44``
       - ❌
     * - Bitcoin
       - BTC
-      - 0
       - ``mainnet``, ``testnet``, ``regtest``
+      - 0
+      - ``BIP32``, ``BIP44``, ``BIP49``, ``BIP84``, ``BIP86``, ``BIP141``, ``Electrum-V1``, ``Electrum-V2``
       - ❌
     * - Bitcoin-Atom
       - BCA
-      - 185
       - ``mainnet``
+      - 185
+      - ``BIP32``, ``BIP44``
       - ❌
     * - Bitcoin-Cash
       - BCH
-      - 145
       - ``mainnet``, ``testnet``, ``regtest``
+      - 145
+      - ``BIP32``, ``BIP44``
       - ❌
     * - Bitcoin-Cash-SLP
       - SLP
-      - 145
       - ``mainnet``, ``testnet``
+      - 145
+      - ``BIP32``, ``BIP44``
       - ❌
     * - Bitcoin-Gold
       - BTG
-      - 156
       - ``mainnet``
+      - 156
+      - ``BIP32``, ``BIP44``
       - ❌
     * - Bitcoin-Green
       - BITG
-      - 222
       - ``mainnet``
+      - 222
+      - ``BIP32``, ``BIP44``
       - ❌
     * - Bitcoin-Plus
       - XBC
-      - 65
       - ``mainnet``
+      - 65
+      - ``BIP32``, ``BIP44``
       - ❌
     * - Bitcoin-Private
       - BTCP
-      - 183
       - ``mainnet``, ``testnet``
+      - 183
+      - ``BIP32``, ``BIP44``
       - ❌
     * - Bitcoin-SV
       - BSV
-      - 236
       - ``mainnet``
+      - 236
+      - ``BIP32``, ``BIP44``
       - ❌
     * - BitcoinZ
       - BTCZ
-      - 177
       - ``mainnet``
+      - 177
+      - ``BIP32``, ``BIP44``
       - ❌
     * - Bitcore
       - BTX
-      - 160
       - ``mainnet``
+      - 160
+      - ``BIP32``, ``BIP44``
       - ❌
     * - Bit-Send
       - BSD
-      - 91
       - ``mainnet``
+      - 91
+      - ``BIP32``, ``BIP44``
       - ❌
     * - Blackcoin
       - BLK
-      - 10
       - ``mainnet``
+      - 10
+      - ``BIP32``, ``BIP44``
       - ❌
     * - Blocknode
       - BND
-      - 2941
       - ``mainnet``, ``testnet``
+      - 2941
+      - ``BIP32``, ``BIP44``
       - ❌
     * - Block-Stamp
       - BST
-      - 254
       - ``mainnet``
+      - 254
+      - ``BIP32``, ``BIP44``
       - ❌
     * - Bolivarcoin
       - BOLI
-      - 278
       - ``mainnet``
+      - 278
+      - ``BIP32``, ``BIP44``
       - ❌
     * - Brit-Coin
       - BRIT
-      - 70
       - ``mainnet``
+      - 70
+      - ``BIP32``, ``BIP44``
       - ❌
     * - Canada-eCoin
       - CDN
-      - 34
       - ``mainnet``
+      - 34
+      - ``BIP32``, ``BIP44``
       - ❌
     * - Cannacoin
       - CCN
-      - 19
       - ``mainnet``
+      - 19
+      - ``BIP32``, ``BIP44``
       - ❌
     * - Cardano
       - ADA
-      - 1815
       - ``mainnet``, ``testnet``
+      - 1815
+      - ``Cardano``
       - ❌
     * - Celo
       - CELO
-      - 52752
       - ``mainnet``
+      - 52752
+      - ``BIP32``, ``BIP44``
       - ❌
     * - Chihuahua
       - HUA
-      - 118
       - ``mainnet``
+      - 118
+      - ``BIP32``, ``BIP44``
       - ❌
     * - Clams
       - CLAM
-      - 23
       - ``mainnet``
+      - 23
+      - ``BIP32``, ``BIP44``
       - ❌
     * - Club-Coin
       - CLUB
-      - 79
       - ``mainnet``
+      - 79
+      - ``BIP32``, ``BIP44``
       - ❌
     * - Compcoin
       - CMP
-      - 71
       - ``mainnet``
+      - 71
+      - ``BIP32``, ``BIP44``
       - ❌
     * - Cosmos
       - ATOM
-      - 118
       - ``mainnet``
+      - 118
+      - ``BIP32``, ``BIP44``
       - ❌
     * - CPU-Chain
       - CPU
-      - 363
       - ``mainnet``
+      - 363
+      - ``BIP32``, ``BIP44``
       - ❌
     * - Crane-Pay
       - CRP
-      - 2304
       - ``mainnet``
+      - 2304
+      - ``BIP32``, ``BIP44``
       - ❌
     * - Crave
       - CRAVE
-      - 186
       - ``mainnet``
+      - 186
+      - ``BIP32``, ``BIP44``
       - ❌
     * - Dash
       - DASH
-      - 5
       - ``mainnet``, ``testnet``
+      - 5
+      - ``BIP32``, ``BIP44``
       - ❌
     * - DeepOnion
       - ONION
-      - 305
       - ``mainnet``
+      - 305
+      - ``BIP32``, ``BIP44``
       - ❌
     * - Defcoin
       - DFC
-      - 1337
       - ``mainnet``
+      - 1337
+      - ``BIP32``, ``BIP44``
       - ❌
     * - Denarius
       - DNR
-      - 116
       - ``mainnet``
+      - 116
+      - ``BIP32``, ``BIP44``
       - ❌
     * - Diamond
       - DMD
-      - 152
       - ``mainnet``
+      - 152
+      - ``BIP32``, ``BIP44``
       - ❌
     * - Digi-Byte
       - DGB
-      - 20
       - ``mainnet``
+      - 20
+      - ``BIP32``, ``BIP44``
       - ❌
     * - Digitalcoin
       - DGC
-      - 18
       - ``mainnet``
+      - 18
+      - ``BIP32``, ``BIP44``
       - ❌
     * - Divi
       - DIVI
-      - 301
       - ``mainnet``, ``testnet``
+      - 301
+      - ``BIP32``, ``BIP44``
       - ❌
     * - Dogecoin
       - DOGE
-      - 3
       - ``mainnet``, ``testnet``
+      - 3
+      - ``BIP32``, ``BIP44``
       - ❌
     * - eCash
       - XEC
-      - 145
       - ``mainnet``, ``testnet``
+      - 145
+      - ``BIP32``, ``BIP44``
       - ❌
     * - E-coin
       - ECN
-      - 115
       - ``mainnet``
+      - 115
+      - ``BIP32``, ``BIP44``
       - ❌
     * - EDR-Coin
       - EDRC
-      - 56
       - ``mainnet``
+      - 56
+      - ``BIP32``, ``BIP44``
       - ❌
     * - e-Gulden
       - EFL
-      - 78
       - ``mainnet``
+      - 78
+      - ``BIP32``, ``BIP44``
       - ❌
     * - Einsteinium
       - EMC2
-      - 41
       - ``mainnet``
+      - 41
+      - ``BIP32``, ``BIP44``
       - ❌
     * - Elastos
       - ELA
-      - 2305
       - ``mainnet``
+      - 2305
+      - ``BIP32``, ``BIP44``
       - ❌
     * - Energi
       - NRG
-      - 9797
       - ``mainnet``
+      - 9797
+      - ``BIP32``, ``BIP44``
       - ❌
     * - EOS
       - EOS
-      - 194
       - ``mainnet``
+      - 194
+      - ``BIP32``, ``BIP44``
       - ❌
     * - Ergo
       - ERG
-      - 429
       - ``mainnet``, ``testnet``
+      - 429
+      - ``BIP32``, ``BIP44``
       - ❌
     * - Ethereum
       - ETH
-      - 60
       - ``mainnet``
+      - 60
+      - ``BIP32``, ``BIP44``
       - ❌
     * - Europe-Coin
       - ERC
-      - 151
       - ``mainnet``
+      - 151
+      - ``BIP32``, ``BIP44``
       - ❌
     * - Evrmore
       - EVR
-      - 175
       - ``mainnet``, ``testnet``
+      - 175
+      - ``BIP32``, ``BIP44``
       - ❌
     * - Exclusive-Coin
       - EXCL
-      - 190
       - ``mainnet``
+      - 190
+      - ``BIP32``, ``BIP44``
       - ❌
     * - Fantom
       - FTM
-      - 60
       - ``mainnet``
+      - 60
+      - ``BIP32``, ``BIP44``
       - ❌
     * - Feathercoin
       - FTC
-      - 8
       - ``mainnet``
+      - 8
+      - ``BIP32``, ``BIP44``
       - ❌
     * - Fetch.ai
       - FET
-      - 118
       - ``mainnet``
+      - 118
+      - ``BIP32``, ``BIP44``
       - ❌
     * - Filecoin
       - FIL
-      - 461
       - ``mainnet``
+      - 461
+      - ``BIP32``, ``BIP44``
       - ❌
     * - Firo
       - FIRO
-      - 136
       - ``mainnet``
+      - 136
+      - ``BIP32``, ``BIP44``
       - ❌
     * - Firstcoin
       - FRST
-      - 167
       - ``mainnet``
+      - 167
+      - ``BIP32``, ``BIP44``
       - ❌
     * - FIX
       - FIX
-      - 336
       - ``mainnet``, ``testnet``
+      - 336
+      - ``BIP32``, ``BIP44``
       - ❌
     * - Flashcoin
       - FLASH
-      - 120
       - ``mainnet``
+      - 120
+      - ``BIP32``, ``BIP44``
       - ❌
     * - Flux
       - FLUX
-      - 19167
       - ``mainnet``
+      - 19167
+      - ``BIP32``, ``BIP44``
       - ❌
     * - Foxdcoin
       - FOXD
-      - 175
       - ``mainnet``, ``testnet``
+      - 175
+      - ``BIP32``, ``BIP44``
       - ❌
     * - Fuji-Coin
       - FJC
-      - 75
       - ``mainnet``
+      - 75
+      - ``BIP32``, ``BIP44``
       - ❌
     * - Game-Credits
       - GAME
-      - 101
       - ``mainnet``
+      - 101
+      - ``BIP32``, ``BIP44``
       - ❌
     * - GCR-Coin
       - GCR
-      - 49
       - ``mainnet``
+      - 49
+      - ``BIP32``, ``BIP44``
       - ❌
     * - Go-Byte
       - GBX
-      - 176
       - ``mainnet``
+      - 176
+      - ``BIP32``, ``BIP44``
       - ❌
     * - Gridcoin
       - GRC
-      - 84
       - ``mainnet``
+      - 84
+      - ``BIP32``, ``BIP44``
       - ❌
     * - Groestl-Coin
       - GRS
-      - 17
       - ``mainnet``, ``testnet``
+      - 17
+      - ``BIP32``, ``BIP44``
       - ❌
     * - Gulden
       - NLG
-      - 87
       - ``mainnet``
+      - 87
+      - ``BIP32``, ``BIP44``
       - ❌
     * - Harmony
       - ONE
-      - 1023
       - ``mainnet``
+      - 1023
+      - ``BIP32``, ``BIP44``
       - ❌
     * - Helleniccoin
       - HNC
-      - 168
       - ``mainnet``
+      - 168
+      - ``BIP32``, ``BIP44``
       - ❌
     * - Hempcoin
       - THC
-      - 113
       - ``mainnet``
+      - 113
+      - ``BIP32``, ``BIP44``
       - ❌
     * - Horizen
       - ZEN
-      - 121
       - ``mainnet``
+      - 121
+      - ``BIP32``, ``BIP44``
       - ❌
     * - Huobi-Token
       - HT
-      - 553
       - ``mainnet``
+      - 553
+      - ``BIP32``, ``BIP44``
       - ❌
     * - Hush
       - HUSH
-      - 197
       - ``mainnet``
+      - 197
+      - ``BIP32``, ``BIP44``
       - ❌
     * - Icon
       - ICX
-      - 74
       - ``mainnet``
+      - 74
+      - ``BIP32``, ``BIP44``
       - ❌
     * - Injective
       - INJ
-      - 60
       - ``mainnet``
+      - 60
+      - ``BIP32``, ``BIP44``
       - ❌
     * - InsaneCoin
       - INSN
-      - 68
       - ``mainnet``
+      - 68
+      - ``BIP32``, ``BIP44``
       - ❌
     * - Internet-Of-People
       - IOP
-      - 66
       - ``mainnet``
+      - 66
+      - ``BIP32``, ``BIP44``
       - ❌
     * - IRISnet
       - IRIS
-      - 566
       - ``mainnet``
+      - 566
+      - ``BIP32``, ``BIP44``
       - ❌
     * - IX-Coin
       - IXC
-      - 86
       - ``mainnet``
+      - 86
+      - ``BIP32``, ``BIP44``
       - ❌
     * - Jumbucks
       - JBS
-      - 26
       - ``mainnet``
+      - 26
+      - ``BIP32``, ``BIP44``
       - ❌
     * - Kava
       - KAVA
-      - 459
       - ``mainnet``
+      - 459
+      - ``BIP32``, ``BIP44``
       - ❌
     * - Kobocoin
       - KOBO
-      - 196
       - ``mainnet``
+      - 196
+      - ``BIP32``, ``BIP44``
       - ❌
     * - Komodo
       - KMD
-      - 141
       - ``mainnet``
+      - 141
+      - ``BIP32``, ``BIP44``
       - ❌
     * - Landcoin
       - LDCN
-      - 63
       - ``mainnet``
+      - 63
+      - ``BIP32``, ``BIP44``
       - ❌
     * - LBRY-Credits
       - LBC
-      - 140
       - ``mainnet``
+      - 140
+      - ``BIP32``, ``BIP44``
       - ❌
     * - Linx
       - LINX
-      - 114
       - ``mainnet``
+      - 114
+      - ``BIP32``, ``BIP44``
       - ❌
     * - Litecoin
       - LTC
-      - 2
       - ``mainnet``, ``testnet``
+      - 2
+      - ``BIP32``, ``BIP44``
       - ❌
     * - Litecoin-Cash
       - LCC
-      - 192
       - ``mainnet``
+      - 192
+      - ``BIP32``, ``BIP44``
       - ❌
     * - LitecoinZ
       - LTZ
-      - 221
       - ``mainnet``
+      - 221
+      - ``BIP32``, ``BIP44``
       - ❌
     * - Lkrcoin
       - LKR
-      - 557
       - ``mainnet``
+      - 557
+      - ``BIP32``, ``BIP44``
       - ❌
     * - Lynx
       - LYNX
-      - 191
       - ``mainnet``
+      - 191
+      - ``BIP32``, ``BIP44``
       - ❌
     * - Mazacoin
       - MZC
-      - 13
       - ``mainnet``
+      - 13
+      - ``BIP32``, ``BIP44``
       - ❌
     * - Megacoin
       - MEC
-      - 217
       - ``mainnet``
+      - 217
+      - ``BIP32``, ``BIP44``
       - ❌
     * - Metis
       - METIS
-      - 60
       - ``mainnet``
+      - 60
+      - ``BIP32``, ``BIP44``
       - ❌
     * - Minexcoin
       - MNX
-      - 182
       - ``mainnet``
+      - 182
+      - ``BIP32``, ``BIP44``
       - ❌
     * - Monacoin
       - MONA
-      - 22
       - ``mainnet``
+      - 22
+      - ``BIP32``, ``BIP44``
       - ❌
     * - Monero
       - XMR
-      - 128
       - ``mainnet``, ``stagenet``, ``testnet``
+      - 128
+      - ``Monero``
       - ❌
     * - Monk
       - MONK
-      - 214
       - ``mainnet``
+      - 214
+      - ``BIP32``, ``BIP44``
       - ❌
     * - MultiversX
       - EGLD
-      - 508
       - ``mainnet``
+      - 508
+      - ``BIP32``, ``BIP44``
       - ❌
     * - Myriadcoin
       - XMY
-      - 90
       - ``mainnet``
+      - 90
+      - ``BIP32``, ``BIP44``
       - ❌
     * - Namecoin
       - NMC
-      - 7
       - ``mainnet``
+      - 7
+      - ``BIP32``, ``BIP44``
       - ❌
     * - Nano
       - XNO
-      - 165
       - ``mainnet``
+      - 165
+      - ``BIP32``, ``BIP44``
       - ❌
     * - Navcoin
       - NAV
-      - 130
       - ``mainnet``
+      - 130
+      - ``BIP32``, ``BIP44``
       - ❌
     * - Near
       - NEAR
-      - 397
       - ``mainnet``
+      - 397
+      - ``BIP32``, ``BIP44``
       - ❌
     * - Neblio
       - NEBL
-      - 146
       - ``mainnet``
+      - 146
+      - ``BIP32``, ``BIP44``
       - ❌
     * - Neo
       - NEO
-      - 888
       - ``mainnet``
+      - 888
+      - ``BIP32``, ``BIP44``
       - ❌
     * - Neoscoin
       - NEOS
-      - 25
       - ``mainnet``
+      - 25
+      - ``BIP32``, ``BIP44``
       - ❌
     * - Neurocoin
       - NRO
-      - 110
       - ``mainnet``
+      - 110
+      - ``BIP32``, ``BIP44``
       - ❌
     * - New-York-Coin
       - NYC
-      - 179
       - ``mainnet``
+      - 179
+      - ``BIP32``, ``BIP44``
       - ❌
     * - Nine-Chronicles
       - NCG
-      - 567
       - ``mainnet``
+      - 567
+      - ``BIP32``, ``BIP44``
       - ❌
     * - NIX
       - NIX
-      - 400
       - ``mainnet``
+      - 400
+      - ``BIP32``, ``BIP44``
       - ❌
     * - Novacoin
       - NVC
-      - 50
       - ``mainnet``
+      - 50
+      - ``BIP32``, ``BIP44``
       - ❌
     * - NuBits
       - NBT
-      - 12
       - ``mainnet``
+      - 12
+      - ``BIP32``, ``BIP44``
       - ❌
     * - NuShares
       - NSR
-      - 11
       - ``mainnet``
+      - 11
+      - ``BIP32``, ``BIP44``
       - ❌
     * - OK-Cash
       - OK
-      - 69
       - ``mainnet``
+      - 69
+      - ``BIP32``, ``BIP44``
       - ❌
     * - OKT-Chain
       - OKT
-      - 996
       - ``mainnet``
+      - 996
+      - ``BIP32``, ``BIP44``
       - ❌
     * - Omni
       - OMNI
-      - 200
       - ``mainnet``, ``testnet``
+      - 200
+      - ``BIP32``, ``BIP44``
       - ❌
     * - Onix
       - ONX
-      - 174
       - ``mainnet``
+      - 174
+      - ``BIP32``, ``BIP44``
       - ❌
     * - Ontology
       - ONT
-      - 1024
       - ``mainnet``
+      - 1024
+      - ``BIP32``, ``BIP44``
       - ❌
     * - Optimism
       - OP
-      - 60
       - ``mainnet``
+      - 60
+      - ``BIP32``, ``BIP44``
       - ❌
     * - Osmosis
       - OSMO
-      - 118
       - ``mainnet``
+      - 118
+      - ``BIP32``, ``BIP44``
       - ❌
     * - Particl
       - PART
-      - 44
       - ``mainnet``
+      - 44
+      - ``BIP32``, ``BIP44``
       - ❌
     * - Peercoin
       - PPC
-      - 6
       - ``mainnet``
+      - 6
+      - ``BIP32``, ``BIP44``
       - ❌
     * - Pesobit
       - PSB
-      - 62
       - ``mainnet``
+      - 62
+      - ``BIP32``, ``BIP44``
       - ❌
     * - Phore
       - PHR
-      - 444
       - ``mainnet``
+      - 444
+      - ``BIP32``, ``BIP44``
       - ❌
     * - Pi-Network
       - PI
-      - 314159
       - ``mainnet``
+      - 314159
+      - ``BIP32``, ``BIP44``
       - ❌
     * - Pinkcoin
       - PINK
-      - 117
       - ``mainnet``
+      - 117
+      - ``BIP32``, ``BIP44``
       - ❌
     * - Pivx
       - PIVX
-      - 119
       - ``mainnet``, ``testnet``
+      - 119
+      - ``BIP32``, ``BIP44``
       - ❌
     * - Polygon
       - MATIC
-      - 60
       - ``mainnet``
+      - 60
+      - ``BIP32``, ``BIP44``
       - ❌
     * - PoSW-Coin
       - POSW
-      - 47
       - ``mainnet``
+      - 47
+      - ``BIP32``, ``BIP44``
       - ❌
     * - Potcoin
       - POT
-      - 81
       - ``mainnet``
+      - 81
+      - ``BIP32``, ``BIP44``
       - ❌
     * - Project-Coin
       - PRJ
-      - 533
       - ``mainnet``
+      - 533
+      - ``BIP32``, ``BIP44``
       - ❌
     * - Putincoin
       - PUT
-      - 122
       - ``mainnet``
+      - 122
+      - ``BIP32``, ``BIP44``
       - ❌
     * - Qtum
       - QTUM
-      - 2301
       - ``mainnet``, ``testnet``
+      - 2301
+      - ``BIP84``, ``BIP44``, ``BIP141``, ``BIP32``, ``BIP86``, ``BIP49``
       - ❌
     * - Rapids
       - RPD
-      - 320
       - ``mainnet``
+      - 320
+      - ``BIP32``, ``BIP44``
       - ❌
     * - Ravencoin
       - RVN
-      - 175
       - ``mainnet``, ``testnet``
+      - 175
+      - ``BIP32``, ``BIP44``
       - ❌
     * - Reddcoin
       - RDD
-      - 4
       - ``mainnet``
+      - 4
+      - ``BIP32``, ``BIP44``
       - ❌
     * - Ripple
       - XRP
-      - 144
       - ``mainnet``
+      - 144
+      - ``BIP32``, ``BIP44``
       - ❌
     * - Ritocoin
       - RITO
-      - 19169
       - ``mainnet``
+      - 19169
+      - ``BIP32``, ``BIP44``
       - ❌
     * - RSK
       - RBTC
-      - 137
       - ``mainnet``, ``testnet``
+      - 137
+      - ``BIP32``, ``BIP44``
       - ❌
     * - Rubycoin
       - RBY
-      - 16
       - ``mainnet``
+      - 16
+      - ``BIP32``, ``BIP44``
       - ❌
     * - Safecoin
       - SAFE
-      - 19165
       - ``mainnet``
+      - 19165
+      - ``BIP32``, ``BIP44``
       - ❌
     * - Saluscoin
       - SLS
-      - 572
       - ``mainnet``
+      - 572
+      - ``BIP32``, ``BIP44``
       - ❌
     * - Scribe
       - SCRIBE
-      - 545
       - ``mainnet``
+      - 545
+      - ``BIP32``, ``BIP44``
       - ❌
     * - Secret
       - SCRT
-      - 529
       - ``mainnet``
+      - 529
+      - ``BIP32``, ``BIP44``
       - ❌
     * - Shadow-Cash
       - SDC
-      - 35
       - ``mainnet``, ``testnet``
+      - 35
+      - ``BIP32``, ``BIP44``
       - ❌
     * - Shentu
       - CTK
-      - 118
       - ``mainnet``
+      - 118
+      - ``BIP32``, ``BIP44``
       - ❌
     * - Slimcoin
       - SLM
-      - 63
       - ``mainnet``, ``testnet``
+      - 63
+      - ``BIP32``, ``BIP44``
       - ❌
     * - Smileycoin
       - SMLY
-      - 59
       - ``mainnet``
+      - 59
+      - ``BIP32``, ``BIP44``
       - ❌
     * - Solana
       - SOL
-      - 501
       - ``mainnet``
+      - 501
+      - ``BIP32``, ``BIP44``
       - ❌
     * - Solarcoin
       - SLR
-      - 58
       - ``mainnet``
+      - 58
+      - ``BIP32``, ``BIP44``
       - ❌
     * - Stafi
       - FIS
-      - 907
       - ``mainnet``
+      - 907
+      - ``BIP32``, ``BIP44``
       - ❌
     * - Stash
       - STASH
-      - 49344
       - ``mainnet``, ``testnet``
+      - 49344
+      - ``BIP32``, ``BIP44``
       - ❌
     * - Stellar
       - XLM
-      - 148
       - ``mainnet``
+      - 148
+      - ``BIP32``, ``BIP44``
       - ❌
     * - Stratis
       - STRAT
-      - 105
       - ``mainnet``, ``testnet``
+      - 105
+      - ``BIP32``, ``BIP44``
       - ❌
     * - Sugarchain
       - SUGAR
-      - 408
       - ``mainnet``, ``testnet``
+      - 408
+      - ``BIP32``, ``BIP44``
       - ❌
     * - Sui
       - SUI
-      - 784
       - ``mainnet``
+      - 784
+      - ``BIP32``, ``BIP44``
       - ❌
     * - Syscoin
       - SYS
-      - 57
       - ``mainnet``
+      - 57
+      - ``BIP32``, ``BIP44``
       - ❌
     * - Terra
       - LUNA
-      - 330
       - ``mainnet``
+      - 330
+      - ``BIP32``, ``BIP44``
       - ❌
     * - Tezos
       - XTZ
-      - 1729
       - ``mainnet``
+      - 1729
+      - ``BIP32``, ``BIP44``
       - ❌
     * - Theta
       - THETA
-      - 500
       - ``mainnet``
+      - 500
+      - ``BIP32``, ``BIP44``
       - ❌
     * - Thought-AI
       - THT
-      - 502
       - ``mainnet``
+      - 502
+      - ``BIP32``, ``BIP44``
       - ❌
     * - TOA-Coin
       - TOA
-      - 159
       - ``mainnet``
+      - 159
+      - ``BIP32``, ``BIP44``
       - ❌
     * - Tron
       - TRX
-      - 195
       - ``mainnet``
+      - 195
+      - ``BIP32``, ``BIP44``
       - ❌
     * - TWINS
       - TWINS
-      - 970
       - ``mainnet``, ``testnet``
+      - 970
+      - ``BIP32``, ``BIP44``
       - ❌
     * - Ultimate-Secure-Cash
       - USC
-      - 112
       - ``mainnet``
+      - 112
+      - ``BIP32``, ``BIP44``
       - ❌
     * - Unobtanium
       - UNO
-      - 92
       - ``mainnet``
+      - 92
+      - ``BIP32``, ``BIP44``
       - ❌
     * - Vcash
       - VC
-      - 127
       - ``mainnet``
+      - 127
+      - ``BIP32``, ``BIP44``
       - ❌
     * - VeChain
       - VET
-      - 818
       - ``mainnet``
+      - 818
+      - ``BIP32``, ``BIP44``
       - ❌
     * - Verge
       - XVG
-      - 77
       - ``mainnet``
+      - 77
+      - ``BIP32``, ``BIP44``
       - ❌
     * - Vertcoin
       - VTC
-      - 28
       - ``mainnet``
+      - 28
+      - ``BIP32``, ``BIP44``
       - ❌
     * - Viacoin
       - VIA
-      - 14
       - ``mainnet``, ``testnet``
+      - 14
+      - ``BIP32``, ``BIP44``
       - ❌
     * - Vivo
       - VIVO
-      - 166
       - ``mainnet``
+      - 166
+      - ``BIP32``, ``BIP44``
       - ❌
     * - Voxels
       - VOX
-      - 129
       - ``mainnet``
+      - 129
+      - ``BIP32``, ``BIP44``
       - ❌
     * - Virtual-Cash
       - VASH
-      - 33
       - ``mainnet``
+      - 33
+      - ``BIP32``, ``BIP44``
       - ❌
     * - Wagerr
       - WGR
-      - 0
       - ``mainnet``
+      - 0
+      - ``BIP32``, ``BIP44``
       - ❌
     * - Whitecoin
       - XWC
-      - 559
       - ``mainnet``
+      - 559
+      - ``BIP32``, ``BIP44``
       - ❌
     * - Wincoin
       - WC
-      - 181
       - ``mainnet``
+      - 181
+      - ``BIP32``, ``BIP44``
       - ❌
     * - XinFin
       - XDC
-      - 550
       - ``mainnet``
+      - 550
+      - ``BIP32``, ``BIP44``
       - ❌
     * - XUEZ
       - XUEZ
-      - 225
       - ``mainnet``
+      - 225
+      - ``BIP32``, ``BIP44``
       - ❌
     * - Ycash
       - YEC
-      - 347
       - ``mainnet``
+      - 347
+      - ``BIP32``, ``BIP44``
       - ❌
     * - Zcash
       - ZEC
-      - 133
       - ``mainnet``, ``testnet``
+      - 133
+      - ``BIP32``, ``BIP44``
       - ❌
     * - ZClassic
       - ZCL
-      - 147
       - ``mainnet``
+      - 147
+      - ``BIP32``, ``BIP44``
       - ❌
     * - Zetacoin
       - ZET
-      - 719
       - ``mainnet``
+      - 719
+      - ``BIP32``, ``BIP44``
       - ❌
     * - Zilliqa
       - ZIL
-      - 313
       - ``mainnet``
+      - 313
+      - ``BIP32``, ``BIP44``
       - ❌
     * - ZooBC
       - ZBC
-      - 883
       - ``mainnet``
+      - 883
+      - ``BIP32``, ``BIP44``
       - ❌
