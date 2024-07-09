@@ -8,6 +8,9 @@ from ..ientropy import IEntropy
 
 
 class ELECTRUM_V1_ENTROPY_STRENGTHS:
+    """
+    Constants representing the entropy strengths for Electrum-V1.
+    """
 
     ONE_HUNDRED_TWENTY_EIGHT: int = 128
 
@@ -16,6 +19,9 @@ class ElectrumV1Entropy(IEntropy):
     """
     Relied on user input and simple entropy to generate a seed. It did not use a
     standardized mnemonic, leading to less secure key generation.
+
+    .. note::
+        This class inherits from the ``IEntropy`` class, thereby ensuring that all functions are accessible.
 
     Here are available Electrum-V1 entropy strengths:
 

@@ -17,8 +17,9 @@ from ..ientropy import IEntropy
 
 class ELECTRUM_V2_ENTROPY_STRENGTHS:
     """
-    Constants representing the entropy strengths for Electrum V2.
+    Constants representing the entropy strengths for Electrum-V2.
     """
+
     ONE_HUNDRED_THIRTY_TWO: int = 132
     TWO_HUNDRED_SIXTY_FOUR: int = 264
 
@@ -27,6 +28,9 @@ class ElectrumV2Entropy(IEntropy):
     """
     Improved security with a BIP32-compatible seed and unique wordlist for mnemonic
     generation, providing better entropy and hierarchical deterministic key derivation.
+
+    .. note::
+        This class inherits from the ``IEntropy`` class, thereby ensuring that all functions are accessible.
 
     Here are available Electrum-V2 entropy strengths:
 

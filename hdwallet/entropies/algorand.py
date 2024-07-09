@@ -21,6 +21,9 @@ class AlgorandEntropy(IEntropy):
     ensuring secure account creation with a unique checksum for
     address verification.
 
+    .. note::
+        This class inherits from the ``IEntropy`` class, thereby ensuring that all functions are accessible.
+
     Here are available Algorand entropy strengths:
 
     +-----------------------+-------+

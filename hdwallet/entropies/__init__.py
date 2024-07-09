@@ -26,6 +26,12 @@ from .ientropy import IEntropy
 
 
 class ENTROPIES:
+    """
+    A class that manages a dictionary of entropy classes.
+
+    This class provides methods to retrieve names and classes of various entropy implementations,
+    as well as methods to validate and access specific entropy classes by name.
+    """
 
     dictionary: Dict[str, Type[IEntropy]] = {
         AlgorandEntropy.name(): AlgorandEntropy,
@@ -37,24 +43,56 @@ class ENTROPIES:
 
     @classmethod
     def names(cls) -> List[str]:
+        """
+        Get the list of entropy class names.
+
+        :return: A list of entropy class names.
+        :rtype: List[str]
+        """
+
         return list(cls.dictionary.keys())
 
     @classmethod
     def classes(cls) -> List[Type[IEntropy]]:
+        """
+        Get the list of entropy classes.
+
+        :return: A list of entropy classes.
+        :rtype: List[Type[IEntropy]]
+        """
+
         return list(cls.dictionary.values())
 
     @classmethod
     def entropy(cls, name: str) -> Type[IEntropy]:
+        """
+        Retrieve an entropy class by its name.
+
+        :param name: The name of the entropy class.
+        :type name: str
+
+        :return: The entropy class corresponding to the given name.
+        :rtype: Type[IEntropy]
+        """
 
         if not cls.is_entropy(name=name):
             raise EntropyError(
                 "Invalid entropy name", expected=cls.names(), got=name
             )
-
         return cls.dictionary[name]
 
     @classmethod
     def is_entropy(cls, name: str) -> bool:
+        """
+        Check if a given name is a valid entropy name.
+
+        :param name: The name to check.
+        :type name: str
+
+        :return: True if the name is valid, False otherwise.
+        :rtype: bool
+        """
+
         return name in cls.names()
 
 

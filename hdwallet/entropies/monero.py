@@ -21,6 +21,9 @@ class MoneroEntropy(IEntropy):
     Uses high entropy to generate a 25-word mnemonic seed, with the last word acting
     as a checksum. This ensures secure generation of private spend and view keys.
 
+    .. note::
+        This class inherits from the ``IEntropy`` class, thereby ensuring that all functions are accessible.
+
     Here are available Monero entropy strengths:
 
     +--------------------------+-------+

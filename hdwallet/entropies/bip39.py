@@ -23,6 +23,9 @@ class BIP39Entropy(IEntropy):
     Converts entropy into a mnemonic phrase (12, 15, 18, 21, or 24 words). This phrase is used to
     derive a seed, which creates deterministic keys for various cryptocurrencies.
 
+    .. note::
+        This class inherits from the ``IEntropy`` class, thereby ensuring that all functions are accessible.
+
     Here are available BIP39 entropy strengths:
 
     +--------------------------+-------+
@@ -55,11 +58,6 @@ class BIP39Entropy(IEntropy):
 
         :return: The name of the entropy class.
         :rtype: str
-
-        >>> from hdwallet.entropies.bip39 import BIP39Entropy
-        >>> entropy: BIP39Entropy = BIP39Entropy(entropy="...")
-        >>> entropy.name()
-        "BIP39"
         """
 
         return "BIP39"
