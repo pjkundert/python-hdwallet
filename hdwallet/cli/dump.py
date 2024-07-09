@@ -59,6 +59,7 @@ def dump(**kwargs) -> None:
             hd=HDS.hd(name=kwargs.get("hd")),
             network=kwargs.get("network"),
             public_key_type=kwargs.get("public_key_type"),
+            language=kwargs.get("language"),
             passphrase=kwargs.get("passphrase"),
             cardano_type=kwargs.get("cardano_type"),
             address_type=kwargs.get("address_type"),
@@ -66,6 +67,7 @@ def dump(**kwargs) -> None:
             mode=kwargs.get("mode"),
             mnemonic_type=kwargs.get("mnemonic_type"),
             checksum=kwargs.get("checksum"),
+            payment_id=kwargs.get("payment_id"),
             semantic=semantic
         )
 
@@ -86,11 +88,19 @@ def dump(**kwargs) -> None:
                     f"Wrong mnemonic name, (expected={MNEMONICS.names()}, got='{kwargs.get('mnemonic_name')}')"
                 ), err=True)
                 sys.exit()
-            hdwallet.from_mnemonic(
-                mnemonic=MNEMONICS.mnemonic(name=kwargs.get("mnemonic_name")).__call__(
-                    mnemonic=kwargs.get("mnemonic")
+            if kwargs.get("mnemonic_name") == "Electrum-V2":
+                hdwallet.from_mnemonic(
+                    mnemonic=MNEMONICS.mnemonic(name=kwargs.get("mnemonic_name")).__call__(
+                        mnemonic=kwargs.get("mnemonic"),
+                        mnemonic_type=kwargs.get("mnemonic_type")
+                    )
                 )
-            )
+            else:
+                hdwallet.from_mnemonic(
+                    mnemonic=MNEMONICS.mnemonic(name=kwargs.get("mnemonic_name")).__call__(
+                        mnemonic=kwargs.get("mnemonic")
+                    )
+                )
         elif kwargs.get("seed"):
             if not SEEDS.is_seed(name=kwargs.get("seed_name")):
                 click.echo(click.style(
