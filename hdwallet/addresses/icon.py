@@ -26,10 +26,29 @@ class IconAddress(IAddress):
 
     @staticmethod
     def name() -> str:
+        """
+        Returns the name of the blockchain.
+
+        :return: The name of the blockchain.
+        :rtype: str
+        """
+
         return "Icon"
 
     @classmethod
     def encode(cls, public_key: Union[bytes, str, IPublicKey], **kwargs: Any) -> str:
+        """
+        Encodes the given public key into an Icon address.
+
+        :param public_key: The public key to be encoded.
+        :type public_key: Union[bytes, str, IPublicKey]
+
+        :param kwargs: Additional keyword arguments.
+        :type kwargs: Any
+
+        :return: The encoded Icon address.
+        :rtype: str
+        """
 
         public_key: IPublicKey = validate_and_get_public_key(
             public_key=public_key, public_key_cls=SLIP10Secp256k1PublicKey
@@ -42,6 +61,18 @@ class IconAddress(IAddress):
 
     @classmethod
     def decode(cls, address: str, **kwargs: Any) -> str:
+        """
+        Decodes the given Icon address into its corresponding public key hash.
+
+        :param address: The Icon address to be decoded.
+        :type address: str
+
+        :param kwargs: Additional keyword arguments.
+        :type kwargs: Any
+
+        :return: The decoded public key hash.
+        :rtype: str
+        """
 
         prefix_got: str = address[:len(cls.address_prefix)]
         if cls.address_prefix != prefix_got:

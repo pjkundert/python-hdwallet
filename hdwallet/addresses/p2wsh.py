@@ -30,10 +30,32 @@ class P2WSHAddress(P2WPKHAddress):
 
     @staticmethod
     def name() -> str:
+        """
+        Return the name of the address type, which is "P2WSH".
+
+        :return: The name of the address type.
+        :rtype: str
+        """
+
         return "P2WSH"
 
     @classmethod
     def encode(cls, public_key: Union[bytes, str, IPublicKey], **kwargs: Any) -> str:
+        """
+        Encode a public key into a P2TR address.
+
+        :param public_key: The public key to encode.
+        :type public_key: Union[bytes, str, IPublicKey]
+
+        :param kwargs: Additional keyword arguments.
+            - public_key_type: Type of the public key (compressed or uncompressed).
+            - hrp: Human-readable part (optional).
+            - version: Address version (optional).
+        :type kwargs: Any
+
+        :return: The encoded P2TR address.
+        :rtype: str
+        """
 
         public_key: IPublicKey = validate_and_get_public_key(
             public_key=public_key, public_key_cls=SLIP10Secp256k1PublicKey

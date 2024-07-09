@@ -36,16 +36,48 @@ class FilecoinAddress(IAddress):
 
     @staticmethod
     def name() -> str:
+        """
+        Returns the name of the blockchain.
+
+        :return: The name of the blockchain.
+        :rtype: str
+        """
+
         return "Filecoin"
 
     @classmethod
     def compute_checksum(cls, public_key_hash: bytes, address_type: int) -> bytes:
+        """
+        Computes the checksum for a given public key hash and address type.
+
+        :param public_key_hash: The public key hash.
+        :type public_key_hash: bytes
+
+        :param address_type: The address type.
+        :type address_type: int
+
+        :return: The computed checksum.
+        :rtype: bytes
+        """
+
         return blake2b_32(
             integer_to_bytes(address_type) + public_key_hash
         )
 
     @classmethod
     def encode(cls, public_key: Union[bytes, str, IPublicKey], **kwargs: Any) -> str:
+        """
+        Encodes the given public key into a Filecoin address.
+
+        :param public_key: The public key to be encoded.
+        :type public_key: Union[bytes, str, IPublicKey]
+
+        :param kwargs: Additional keyword arguments, including "address_type".
+        :type kwargs: Any
+
+        :return: The encoded Filecoin address.
+        :rtype: str
+        """
 
         public_key: IPublicKey = validate_and_get_public_key(
             public_key=public_key, public_key_cls=SLIP10Secp256k1PublicKey
@@ -75,6 +107,18 @@ class FilecoinAddress(IAddress):
 
     @classmethod
     def decode(cls, address: str, **kwargs: Any) -> str:
+        """
+        Decodes the given Filecoin address into its corresponding public key hash.
+
+        :param address: The Filecoin address to be decoded.
+        :type address: str
+
+        :param kwargs: Additional keyword arguments, including "address_type".
+        :type kwargs: Any
+
+        :return: The decoded public key hash.
+        :rtype: str
+        """
 
         prefix_got: str = address[:len(cls.address_prefix)]
         if cls.address_prefix != prefix_got:

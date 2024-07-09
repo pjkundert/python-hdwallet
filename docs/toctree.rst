@@ -19,3 +19,4 @@ HDWallet
     Derivations <derivations.rst>
     Elliptic Curve Cryptography (ECC) <ecc.rst>
     Hierarchical Deterministic (HD) <hds.rst>
+    Addresses <addresses.rst>

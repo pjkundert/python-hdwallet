@@ -26,10 +26,29 @@ class SuiAddress(IAddress):
 
     @staticmethod
     def name() -> str:
+        """
+        Return the name "Sui".
+
+        :return: The string "Sui".
+        :rtype: str
+        """
+
         return "Sui"
 
     @classmethod
     def encode(cls, public_key: Union[bytes, str, IPublicKey], **kwargs: Any) -> str:
+        """
+        Encode a public key into a string format using a specific hashing algorithm.
+
+        :param public_key: The public key to encode, can be bytes, string, or an IPublicKey object.
+        :type public_key: Union[bytes, str, IPublicKey]
+
+        :param kwargs: Additional keyword arguments.
+        :type kwargs: Any
+
+        :return: The encoded address as a string.
+        :rtype: str
+        """
 
         public_key: IPublicKey = validate_and_get_public_key(
             public_key=public_key, public_key_cls=SLIP10Ed25519PublicKey
@@ -40,6 +59,18 @@ class SuiAddress(IAddress):
 
     @classmethod
     def decode(cls, address: str, **kwargs: Any) -> str:
+        """
+        Decode an address string and validate its format.
+
+        :param address: The address string to decode.
+        :type address: str
+
+        :param kwargs: Additional keyword arguments.
+        :type kwargs: Any
+
+        :return: The decoded address string.
+        :rtype: str
+        """
 
         address_prefix_got: str = address[:len(cls.address_prefix)]
         if cls.address_prefix != address_prefix_got:

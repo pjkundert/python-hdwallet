@@ -30,10 +30,32 @@ class P2PKHAddress(IAddress):
 
     @staticmethod
     def name() -> str:
+        """
+        Return the name of the cryptocurrency, which is "P2PKH".
+
+        :return: The name of the cryptocurrency.
+        :rtype: str
+        """
+
         return "P2PKH"
 
     @classmethod
     def encode(cls, public_key: Union[bytes, str, IPublicKey], **kwargs: Any) -> str:
+        """
+        Encode a public key into an address using a specified address prefix and alphabet.
+
+        :param public_key: The public key to encode.
+        :type public_key: Union[bytes, str, IPublicKey]
+
+        :param kwargs: Additional keyword arguments.
+            - public_key_address_prefix: Address prefix for the public key (optional).
+            - public_key_type: Type of the public key (optional).
+            - alphabet: Custom alphabet for encoding (optional).
+        :type kwargs: Any
+
+        :return: The encoded address.
+        :rtype: str
+        """
 
         public_key_address_prefix: bytes = integer_to_bytes(
             kwargs.get("public_key_address_prefix", cls.public_key_address_prefix)
@@ -55,6 +77,20 @@ class P2PKHAddress(IAddress):
 
     @classmethod
     def decode(cls, address: str, **kwargs: Any) -> str:
+        """
+        Decode an address string into a public key hash using a specified address prefix and alphabet.
+
+        :param address: The address string to decode.
+        :type address: str
+
+        :param kwargs: Additional keyword arguments.
+            - public_key_address_prefix: Address prefix for the public key (optional).
+            - alphabet: Custom alphabet for decoding (optional).
+        :type kwargs: Any
+
+        :return: The decoded public key hash as a string.
+        :rtype: str
+        """
 
         public_key_address_prefix: bytes = integer_to_bytes(
             kwargs.get("public_key_address_prefix", cls.public_key_address_prefix)

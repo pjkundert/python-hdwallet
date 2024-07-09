@@ -25,10 +25,29 @@ class SolanaAddress(IAddress):
 
     @staticmethod
     def name() -> str:
+        """
+        Return the name of the cryptocurrency, which is "Solana".
+
+        :return: The name of the cryptocurrency.
+        :rtype: str
+        """
+
         return "Solana"
 
     @classmethod
     def encode(cls, public_key: Union[bytes, str, IPublicKey], **kwargs: Any) -> str:
+        """
+        Encode a public key into a Solana address.
+
+        :param public_key: The public key to encode. It can be a bytes object, a string, or an IPublicKey instance.
+        :type public_key: Union[bytes, str, IPublicKey]
+
+        :param kwargs: Additional keyword arguments.
+        :type kwargs: Any
+
+        :return: The encoded Solana address as a string.
+        :rtype: str
+        """
 
         public_key: IPublicKey = validate_and_get_public_key(
             public_key=public_key, public_key_cls=SLIP10Ed25519PublicKey
@@ -38,6 +57,18 @@ class SolanaAddress(IAddress):
 
     @classmethod
     def decode(cls, address: str, **kwargs: Any) -> str:
+        """
+        Decode a Solana address back into its corresponding public key.
+
+        :param address: The Solana address to decode.
+        :type address: str
+
+        :param kwargs: Additional keyword arguments.
+        :type kwargs: Any
+
+        :return: The decoded public key as a string.
+        :rtype: str
+        """
 
         public_key: bytes = decode(address)
 

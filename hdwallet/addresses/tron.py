@@ -31,10 +31,29 @@ class TronAddress(IAddress):
 
     @staticmethod
     def name() -> str:
+        """
+        Return the name associated with the Tron blockchain protocol.
+
+        :return: The name "Tron".
+        :rtype: str
+        """
+
         return "Tron"
 
     @classmethod
     def encode(cls, public_key: Union[bytes, str, IPublicKey], **kwargs: Any) -> str:
+        """
+        Encode a public key into a Tron blockchain address.
+
+        :param public_key: The public key to encode, which can be bytes, str, or IPublicKey.
+        :type public_key: Union[bytes, str, IPublicKey]
+
+        :param kwargs: Additional keyword arguments.
+        :type kwargs: Any
+
+        :return: Encoded Tron blockchain address.
+        :rtype: str
+        """
 
         public_key: IPublicKey = validate_and_get_public_key(
             public_key=public_key, public_key_cls=SLIP10Secp256k1PublicKey
@@ -52,6 +71,18 @@ class TronAddress(IAddress):
 
     @classmethod
     def decode(cls, address: str, **kwargs: Any) -> str:
+        """
+        Decode a Tron blockchain address back to its public key representation.
+
+        :param address: The Tron blockchain address to decode.
+        :type address: str
+
+        :param kwargs: Additional keyword arguments.
+        :type kwargs: Any
+
+        :return: Decoded public key.
+        :rtype: str
+        """
         
         address_decode: bytes = check_decode(
             address, alphabet=kwargs.get(

@@ -14,4 +14,11 @@ class RippleAddress(P2PKHAddress):
 
     @staticmethod
     def name() -> str:
+        """
+        Return the name of the cryptocurrency, which is "Ripple".
+
+        :return: The name of the cryptocurrency.
+        :rtype: str
+        """
+
         return "Ripple"

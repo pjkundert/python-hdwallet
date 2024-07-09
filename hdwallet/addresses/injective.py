@@ -28,10 +28,29 @@ class InjectiveAddress(IAddress):
 
     @staticmethod
     def name() -> str:
+        """
+        Returns the name of the cryptocurrency, which is "Injective".
+
+        :return: The name of the cryptocurrency.
+        :rtype: str
+        """
+
         return "Injective"
 
     @classmethod
     def encode(cls, public_key: Union[bytes, str, IPublicKey], **kwargs: Any) -> str:
+        """
+        Encodes a public key into an Injective address using Bech32 encoding.
+
+        :param public_key: The public key to encode.
+        :type public_key: Union[bytes, str, IPublicKey]
+
+        :param kwargs: Additional keyword arguments.
+        :type kwargs: Any
+
+        :return: The encoded Injective address.
+        :rtype: str
+        """
 
         public_key: IPublicKey = validate_and_get_public_key(
             public_key=public_key, public_key_cls=SLIP10Secp256k1PublicKey
@@ -43,6 +62,18 @@ class InjectiveAddress(IAddress):
 
     @classmethod
     def decode(cls, address: str, **kwargs: Any) -> str:
+        """
+        Decodes an Injective address from Bech32 encoding.
+
+        :param address: The Injective address to decode.
+        :type address: str
+
+        :param kwargs: Additional keyword arguments.
+        :type kwargs: Any
+
+        :return: The decoded public key.
+        :rtype: str
+        """
 
         hrp, address_decode = bech32_decode(
             kwargs.get("hrp", cls.hrp), address

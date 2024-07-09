@@ -27,10 +27,29 @@ class CosmosAddress(IAddress):
 
     @staticmethod
     def name() -> str:
+        """
+        Returns the name of the cryptocurrency or network.
+
+        :return: The name "Cosmos".
+        :rtype: str
+        """
+
         return "Cosmos"
 
     @classmethod
     def encode(cls, public_key: Union[bytes, str, IPublicKey], **kwargs: Any) -> str:
+        """
+        Encodes the given public key into a Bech32 Cosmos address.
+
+        :param public_key: The public key to be encoded.
+        :type public_key: Union[bytes, str, IPublicKey]
+
+        :param kwargs: Additional keyword arguments, including "hrp".
+        :type kwargs: Any
+
+        :return: The encoded Bech32 Cosmos address.
+        :rtype: str
+        """
 
         public_key: IPublicKey = validate_and_get_public_key(
             public_key=public_key, public_key_cls=SLIP10Secp256k1PublicKey
@@ -44,6 +63,18 @@ class CosmosAddress(IAddress):
 
     @classmethod
     def decode(cls, address: str, **kwargs: Any) -> str:
+        """
+        Decodes the given Bech32 Cosmos address into its corresponding public key hash.
+
+        :param address: The Bech32 Cosmos address to be decoded.
+        :type address: str
+
+        :param kwargs: Additional keyword arguments, including "hrp".
+        :type kwargs: Any
+
+        :return: The decoded public key hash.
+        :rtype: str
+        """
 
         hrp, address_decode = bech32_decode(
             kwargs.get("hrp", cls.hrp), address

@@ -14,4 +14,11 @@ class XinFinAddress(EthereumAddress):
 
     @staticmethod
     def name() -> str:
+        """
+        Return the name associated with the XinFin blockchain.
+
+        :return: The name "XinFin".
+        :rtype: str
+        """
+
         return "XinFin"

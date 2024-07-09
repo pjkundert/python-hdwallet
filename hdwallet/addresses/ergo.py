@@ -39,14 +39,43 @@ class ErgoAddress(IAddress):
 
     @staticmethod
     def name() -> str:
+        """
+        Returns the name of the cryptocurrency.
+
+        :return: The name of the cryptocurrency.
+        :rtype: str
+        """
+
         return "Ergo"
 
     @classmethod
     def compute_checksum(cls, public_key: bytes) -> bytes:
+        """
+        Computes the checksum for the given public key using the BLAKE2b-256 hash function.
+
+        :param public_key: The public key for which to compute the checksum.
+        :type public_key: bytes
+
+        :return: The computed checksum.
+        :rtype: bytes
+        """
+
         return blake2b_256(public_key)[:cls.checksum_length]
 
     @classmethod
     def encode(cls, public_key: Union[bytes, str, IPublicKey], **kwargs: Any) -> str:
+        """
+        Encodes the given public key into an Ergo address.
+
+        :param public_key: The public key to encode.
+        :type public_key: Union[bytes, str, IPublicKey]
+
+        :param kwargs: Additional keyword arguments, including "address_type" and "network_type".
+        :type kwargs: Any
+
+        :return: The encoded Ergo address.
+        :rtype: str
+        """
 
         if not kwargs.get("address_type"):
             address_type: str = cls.address_types[Ergo.DEFAULT_ADDRESS_TYPE]
@@ -82,6 +111,18 @@ class ErgoAddress(IAddress):
 
     @classmethod
     def decode(cls, address: str, **kwargs: Any) -> str:
+        """
+        Decodes the given Ergo address into its corresponding public key.
+
+        :param address: The Ergo address to decode.
+        :type address: str
+
+        :param kwargs: Additional keyword arguments, including "address_type" and "network_type".
+        :type kwargs: Any
+
+        :return: The decoded public key.
+        :rtype: str
+        """
 
         if not kwargs.get("address_type"):
             address_type: str = cls.address_types[Ergo.DEFAULT_ADDRESS_TYPE]
