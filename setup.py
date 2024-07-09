@@ -56,7 +56,8 @@ setup(
     extras_require=dict(
         cli=get_requirements(name="cli"),
         docs=get_requirements(name="docs"),
-        tests=get_requirements(name="tests")
+        tests=get_requirements(name="tests"),
+        desktop=get_requirements(name="desktop")
     ),
     classifiers=[
         "Development Status :: 5 - Production/Stable",
