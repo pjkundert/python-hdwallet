@@ -14,11 +14,11 @@ import pytest
 @pytest.fixture(scope="session", name="data")
 def load_test_data():
     base_path = os.path.dirname(__file__)
-    jsons = os.listdir(os.path.join(base_path, f"data/"))
+    jsons = os.listdir(os.path.join(base_path, f"data/json/"))
     data = {}
 
     for json_file in jsons:
-        file_path = os.path.join(base_path, f"data/{json_file}")
+        file_path = os.path.join(base_path, f"data/json/{json_file}")
         with open(file_path, "r", encoding="utf-8") as values:
             test_data_name = json_file.split(".")[0]
             data[test_data_name] = json.load(values)

@@ -19,7 +19,7 @@ def unpack_dumps():
 
     file_path = path.abspath(
         path.join(path.dirname(__file__), 
-        "../data/hdwallet.json")
+        "../data/json/hdwallet.json")
     )
     values = open(file_path, "r", encoding="utf-8")
     hdw_data = json.loads(values.read())

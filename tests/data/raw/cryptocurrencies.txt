@@ -1,0 +1,210 @@
+| Cryptocurrency       |  Symbol  |          Networks          |   Coin Type |
+|----------------------|----------|----------------------------|-------------|
+| Adcoin               |   ACC    |          mainnet           |         161 |
+| Akash-Network        |   AKT    |          mainnet           |         118 |
+| Algorand             |   ALGO   |          mainnet           |         283 |
+| Anon                 |   ANON   |          mainnet           |         220 |
+| Aptos                |   APT    |          mainnet           |         637 |
+| Arbitrum             |   ARB    |          mainnet           |          60 |
+| Argoneum             |   AGM    |          mainnet           |         421 |
+| Artax                |   XAX    |          mainnet           |         219 |
+| Aryacoin             |   AYA    |          mainnet           |         357 |
+| Asiacoin             |    AC    |          mainnet           |          51 |
+| Auroracoin           |   AUR    |          mainnet           |          85 |
+| Avalanche            |   AVAX   |          mainnet           |        9000 |
+| Avian                |   AVN    |          mainnet           |         921 |
+| Axe                  |   AXE    |          mainnet           |        4242 |
+| Axelar               |   AXL    |          mainnet           |         118 |
+| Band-Protocol        |   BAND   |          mainnet           |         494 |
+| Bata                 |   BTA    |          mainnet           |          89 |
+| Beetle-Coin          |   BEET   |          mainnet           |         800 |
+| Bela-Coin            |   BELA   |          mainnet           |          73 |
+| Binance              |   BNB    |          mainnet           |         714 |
+| Bit-Cloud            |   BTDX   |          mainnet           |         218 |
+| Bitcoin              |   BTC    | mainnet, testnet, regtest  |           0 |
+| Bitcoin-Atom         |   BCA    |          mainnet           |         185 |
+| Bitcoin-Cash         |   BCH    | mainnet, testnet, regtest  |         145 |
+| Bitcoin-Cash-SLP     |   SLP    |      mainnet, testnet      |         145 |
+| Bitcoin-Gold         |   BTG    |          mainnet           |         156 |
+| Bitcoin-Green        |   BITG   |          mainnet           |         222 |
+| Bitcoin-Plus         |   XBC    |          mainnet           |          65 |
+| Bitcoin-Private      |   BTCP   |      mainnet, testnet      |         183 |
+| Bitcoin-SV           |   BSV    |          mainnet           |         236 |
+| BitcoinZ             |   BTCZ   |          mainnet           |         177 |
+| Bitcore              |   BTX    |          mainnet           |         160 |
+| Bit-Send             |   BSD    |          mainnet           |          91 |
+| Blackcoin            |   BLK    |          mainnet           |          10 |
+| Blocknode            |   BND    |      mainnet, testnet      |        2941 |
+| Block-Stamp          |   BST    |          mainnet           |         254 |
+| Bolivarcoin          |   BOLI   |          mainnet           |         278 |
+| Brit-Coin            |   BRIT   |          mainnet           |          70 |
+| Canada-eCoin         |   CDN    |          mainnet           |          34 |
+| Cannacoin            |   CCN    |          mainnet           |          19 |
+| Cardano              |   ADA    |      mainnet, testnet      |        1815 |
+| Celo                 |   CELO   |          mainnet           |       52752 |
+| Chihuahua            |   HUA    |          mainnet           |         118 |
+| Clams                |   CLAM   |          mainnet           |          23 |
+| Club-Coin            |   CLUB   |          mainnet           |          79 |
+| Compcoin             |   CMP    |          mainnet           |          71 |
+| Cosmos               |   ATOM   |          mainnet           |         118 |
+| CPU-Chain            |   CPU    |          mainnet           |         363 |
+| Crane-Pay            |   CRP    |          mainnet           |        2304 |
+| Crave                |  CRAVE   |          mainnet           |         186 |
+| Dash                 |   DASH   |      mainnet, testnet      |           5 |
+| DeepOnion            |  ONION   |          mainnet           |         305 |
+| Defcoin              |   DFC    |          mainnet           |        1337 |
+| Denarius             |   DNR    |          mainnet           |         116 |
+| Diamond              |   DMD    |          mainnet           |         152 |
+| Digi-Byte            |   DGB    |          mainnet           |          20 |
+| Digitalcoin          |   DGC    |          mainnet           |          18 |
+| Divi                 |   DIVI   |      mainnet, testnet      |         301 |
+| Dogecoin             |   DOGE   |      mainnet, testnet      |           3 |
+| eCash                |   XEC    |      mainnet, testnet      |         145 |
+| E-coin               |   ECN    |          mainnet           |         115 |
+| EDR-Coin             |   EDRC   |          mainnet           |          56 |
+| e-Gulden             |   EFL    |          mainnet           |          78 |
+| Einsteinium          |   EMC2   |          mainnet           |          41 |
+| Elastos              |   ELA    |          mainnet           |        2305 |
+| Energi               |   NRG    |          mainnet           |        9797 |
+| EOS                  |   EOS    |          mainnet           |         194 |
+| Ergo                 |   ERG    |      mainnet, testnet      |         429 |
+| Ethereum             |   ETH    |          mainnet           |          60 |
+| Europe-Coin          |   ERC    |          mainnet           |         151 |
+| Evrmore              |   EVR    |      mainnet, testnet      |         175 |
+| Exclusive-Coin       |   EXCL   |          mainnet           |         190 |
+| Fantom               |   FTM    |          mainnet           |          60 |
+| Feathercoin          |   FTC    |          mainnet           |           8 |
+| Fetch.ai             |   FET    |          mainnet           |         118 |
+| Filecoin             |   FIL    |          mainnet           |         461 |
+| Firo                 |   FIRO   |          mainnet           |         136 |
+| Firstcoin            |   FRST   |          mainnet           |         167 |
+| FIX                  |   FIX    |      mainnet, testnet      |         336 |
+| Flashcoin            |  FLASH   |          mainnet           |         120 |
+| Flux                 |   FLUX   |          mainnet           |       19167 |
+| Foxdcoin             |   FOXD   |      mainnet, testnet      |         175 |
+| Fuji-Coin            |   FJC    |          mainnet           |          75 |
+| Game-Credits         |   GAME   |          mainnet           |         101 |
+| GCR-Coin             |   GCR    |          mainnet           |          49 |
+| Go-Byte              |   GBX    |          mainnet           |         176 |
+| Gridcoin             |   GRC    |          mainnet           |          84 |
+| Groestl-Coin         |   GRS    |      mainnet, testnet      |          17 |
+| Gulden               |   NLG    |          mainnet           |          87 |
+| Harmony              |   ONE    |          mainnet           |        1023 |
+| Helleniccoin         |   HNC    |          mainnet           |         168 |
+| Hempcoin             |   THC    |          mainnet           |         113 |
+| Horizen              |   ZEN    |          mainnet           |         121 |
+| Huobi-Token          |    HT    |          mainnet           |         553 |
+| Hush                 |   HUSH   |          mainnet           |         197 |
+| Icon                 |   ICX    |          mainnet           |          74 |
+| Injective            |   INJ    |          mainnet           |          60 |
+| InsaneCoin           |   INSN   |          mainnet           |          68 |
+| Internet-Of-People   |   IOP    |          mainnet           |          66 |
+| IRISnet              |   IRIS   |          mainnet           |         566 |
+| IX-Coin              |   IXC    |          mainnet           |          86 |
+| Jumbucks             |   JBS    |          mainnet           |          26 |
+| Kava                 |   KAVA   |          mainnet           |         459 |
+| Kobocoin             |   KOBO   |          mainnet           |         196 |
+| Komodo               |   KMD    |          mainnet           |         141 |
+| Landcoin             |   LDCN   |          mainnet           |          63 |
+| LBRY-Credits         |   LBC    |          mainnet           |         140 |
+| Linx                 |   LINX   |          mainnet           |         114 |
+| Litecoin             |   LTC    |      mainnet, testnet      |           2 |
+| Litecoin-Cash        |   LCC    |          mainnet           |         192 |
+| LitecoinZ            |   LTZ    |          mainnet           |         221 |
+| Lkrcoin              |   LKR    |          mainnet           |         557 |
+| Lynx                 |   LYNX   |          mainnet           |         191 |
+| Mazacoin             |   MZC    |          mainnet           |          13 |
+| Megacoin             |   MEC    |          mainnet           |         217 |
+| Metis                |  METIS   |          mainnet           |          60 |
+| Minexcoin            |   MNX    |          mainnet           |         182 |
+| Monacoin             |   MONA   |          mainnet           |          22 |
+| Monero               |   XMR    | mainnet, stagenet, testnet |         128 |
+| Monk                 |   MONK   |          mainnet           |         214 |
+| MultiversX           |   EGLD   |          mainnet           |         508 |
+| Myriadcoin           |   XMY    |          mainnet           |          90 |
+| Namecoin             |   NMC    |          mainnet           |           7 |
+| Nano                 |   XNO    |          mainnet           |         165 |
+| Navcoin              |   NAV    |          mainnet           |         130 |
+| Near                 |   NEAR   |          mainnet           |         397 |
+| Neblio               |   NEBL   |          mainnet           |         146 |
+| Neo                  |   NEO    |          mainnet           |         888 |
+| Neoscoin             |   NEOS   |          mainnet           |          25 |
+| Neurocoin            |   NRO    |          mainnet           |         110 |
+| New-York-Coin        |   NYC    |          mainnet           |         179 |
+| Nine-Chronicles      |   NCG    |          mainnet           |         567 |
+| NIX                  |   NIX    |          mainnet           |         400 |
+| Novacoin             |   NVC    |          mainnet           |          50 |
+| NuBits               |   NBT    |          mainnet           |          12 |
+| NuShares             |   NSR    |          mainnet           |          11 |
+| OK-Cash              |    OK    |          mainnet           |          69 |
+| OKT-Chain            |   OKT    |          mainnet           |         996 |
+| Omni                 |   OMNI   |      mainnet, testnet      |         200 |
+| Onix                 |   ONX    |          mainnet           |         174 |
+| Ontology             |   ONT    |          mainnet           |        1024 |
+| Optimism             |    OP    |          mainnet           |          60 |
+| Osmosis              |   OSMO   |          mainnet           |         118 |
+| Particl              |   PART   |          mainnet           |          44 |
+| Peercoin             |   PPC    |          mainnet           |           6 |
+| Pesobit              |   PSB    |          mainnet           |          62 |
+| Phore                |   PHR    |          mainnet           |         444 |
+| Pi-Network           |    PI    |          mainnet           |      314159 |
+| Pinkcoin             |   PINK   |          mainnet           |         117 |
+| Pivx                 |   PIVX   |      mainnet, testnet      |         119 |
+| Polygon              |  MATIC   |          mainnet           |          60 |
+| PoSW-Coin            |   POSW   |          mainnet           |          47 |
+| Potcoin              |   POT    |          mainnet           |          81 |
+| Project-Coin         |   PRJ    |          mainnet           |         533 |
+| Putincoin            |   PUT    |          mainnet           |         122 |
+| Qtum                 |   QTUM   |      mainnet, testnet      |        2301 |
+| Rapids               |   RPD    |          mainnet           |         320 |
+| Ravencoin            |   RVN    |      mainnet, testnet      |         175 |
+| Reddcoin             |   RDD    |          mainnet           |           4 |
+| Ripple               |   XRP    |          mainnet           |         144 |
+| Ritocoin             |   RITO   |          mainnet           |       19169 |
+| RSK                  |   RBTC   |      mainnet, testnet      |         137 |
+| Rubycoin             |   RBY    |          mainnet           |          16 |
+| Safecoin             |   SAFE   |          mainnet           |       19165 |
+| Saluscoin            |   SLS    |          mainnet           |         572 |
+| Scribe               |  SCRIBE  |          mainnet           |         545 |
+| Secret               |   SCRT   |          mainnet           |         529 |
+| Shadow-Cash          |   SDC    |      mainnet, testnet      |          35 |
+| Shentu               |   CTK    |          mainnet           |         118 |
+| Slimcoin             |   SLM    |      mainnet, testnet      |          63 |
+| Smileycoin           |   SMLY   |          mainnet           |          59 |
+| Solana               |   SOL    |          mainnet           |         501 |
+| Solarcoin            |   SLR    |          mainnet           |          58 |
+| Stafi                |   FIS    |          mainnet           |         907 |
+| Stash                |  STASH   |      mainnet, testnet      |       49344 |
+| Stellar              |   XLM    |          mainnet           |         148 |
+| Stratis              |  STRAT   |      mainnet, testnet      |         105 |
+| Sugarchain           |  SUGAR   |      mainnet, testnet      |         408 |
+| Sui                  |   SUI    |          mainnet           |         784 |
+| Syscoin              |   SYS    |          mainnet           |          57 |
+| Terra                |   LUNA   |          mainnet           |         330 |
+| Tezos                |   XTZ    |          mainnet           |        1729 |
+| Theta                |  THETA   |          mainnet           |         500 |
+| Thought-AI           |   THT    |          mainnet           |         502 |
+| TOA-Coin             |   TOA    |          mainnet           |         159 |
+| Tron                 |   TRX    |          mainnet           |         195 |
+| TWINS                |  TWINS   |      mainnet, testnet      |         970 |
+| Ultimate-Secure-Cash |   USC    |          mainnet           |         112 |
+| Unobtanium           |   UNO    |          mainnet           |          92 |
+| Vcash                |    VC    |          mainnet           |         127 |
+| VeChain              |   VET    |          mainnet           |         818 |
+| Verge                |   XVG    |          mainnet           |          77 |
+| Vertcoin             |   VTC    |          mainnet           |          28 |
+| Viacoin              |   VIA    |      mainnet, testnet      |          14 |
+| Vivo                 |   VIVO   |          mainnet           |         166 |
+| Voxels               |   VOX    |          mainnet           |         129 |
+| Virtual-Cash         |   VASH   |          mainnet           |          33 |
+| Wagerr               |   WGR    |          mainnet           |           0 |
+| Whitecoin            |   XWC    |          mainnet           |         559 |
+| Wincoin              |    WC    |          mainnet           |         181 |
+| XinFin               |   XDC    |          mainnet           |         550 |
+| XUEZ                 |   XUEZ   |          mainnet           |         225 |
+| Ycash                |   YEC    |          mainnet           |         347 |
+| Zcash                |   ZEC    |      mainnet, testnet      |         133 |
+| ZClassic             |   ZCL    |          mainnet           |         147 |
+| Zetacoin             |   ZET    |          mainnet           |         719 |
+| Zilliqa              |   ZIL    |          mainnet           |         313 |
+| ZooBC                |   ZBC    |          mainnet           |         883 |
