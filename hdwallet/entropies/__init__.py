@@ -31,6 +31,22 @@ class ENTROPIES:
 
     This class provides methods to retrieve names and classes of various entropy implementations,
     as well as methods to validate and access specific entropy classes by name.
+
+    Here are available ENTROPY names:
+
+    +--------------+-------------------------------------------------------------+
+    | Name         | Class                                                       |
+    +==============+=============================================================+
+    | Algorand     |  <class 'hdwallet.entropies.algorand.AlgorandEntropy'>      |
+    +--------------+-------------------------------------------------------------+
+    | BIP39        |  <class 'hdwallet.entropies.bip93.BIP39Entropy'>            |
+    +--------------+-------------------------------------------------------------+
+    | Electrum-V1  |  <class 'hdwallet.entropies.electrum.v1.ElectrumV1Entropy'> |
+    +--------------+-------------------------------------------------------------+
+    | Electrum-V2  | <class 'hdwallet.entropies.electrum.v2.ElectrumV2Entropy'>  |
+    +--------------+-------------------------------------------------------------+
+    | Monero       | <class 'hdwallet.entropies.monero.MoneroEntropy'>           |
+    +--------------+-------------------------------------------------------------+
     """
 
     dictionary: Dict[str, Type[IEntropy]] = {

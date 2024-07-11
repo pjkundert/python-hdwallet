@@ -37,7 +37,7 @@ Addresses
     :members:
     :inherited-members:
 
-.. autoclass:: hdwallet.addresses.filecoinn.FilecoinAddress
+.. autoclass:: hdwallet.addresses.filecoin.FilecoinAddress
     :members:
     :inherited-members:
 
@@ -53,7 +53,7 @@ Addresses
     :members:
     :inherited-members:
 
-.. autoclass:: hdwallet.addresses.multiversx.MoneroAddress
+.. autoclass:: hdwallet.addresses.monero.MoneroAddress
     :members:
     :inherited-members:
 
@@ -93,7 +93,7 @@ Addresses
     :members:
     :inherited-members:
 
-.. autoclass:: hdwallet.addresses.p2wsh_inp2sh.P2WSHInP2SHAddress
+.. autoclass:: hdwallet.addresses.p2wsh_in_p2sh.P2WSHInP2SHAddress
     :members:
     :inherited-members:
 
