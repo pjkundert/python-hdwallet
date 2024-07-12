@@ -24,7 +24,7 @@ class AlgorandEntropy(IEntropy):
     .. note::
         This class inherits from the ``IEntropy`` class, thereby ensuring that all functions are accessible.
 
-    Here are available Algorand entropy strengths:
+    Here are available ``ALGORAND_ENTROPY_STRENGTHS``:
 
     +-----------------------+-------+
     | Name                  | Value |
@@ -44,11 +44,6 @@ class AlgorandEntropy(IEntropy):
 
         :return: The name of the entropy class.
         :rtype: str
-
-        >>> from hdwallet.entropies.algorand import AlgorandEntropy
-        >>> entropy: AlgorandEntropy = AlgorandEntropy(entropy="...")
-        >>> entropy.name()
-        "Algorand"
         """
 
         return "Algorand"

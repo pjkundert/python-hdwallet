@@ -24,7 +24,7 @@ class MoneroEntropy(IEntropy):
     .. note::
         This class inherits from the ``IEntropy`` class, thereby ensuring that all functions are accessible.
 
-    Here are available Monero entropy strengths:
+    Here are available ``MONERO_ENTROPY_STRENGTHS``:
 
     +--------------------------+-------+
     | Name                     | Value |
@@ -47,11 +47,6 @@ class MoneroEntropy(IEntropy):
 
         :return: The name of the entropy class.
         :rtype: str
-
-        >>> from hdwallet.entropies.monero import MoneroEntropy
-        >>> entropy: MoneroEntropy = MoneroEntropy(entropy="...")
-        >>> entropy.name()
-        "Monero"
         """
 
         return "Monero"

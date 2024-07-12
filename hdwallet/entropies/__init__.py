@@ -32,7 +32,7 @@ class ENTROPIES:
     This class provides methods to retrieve names and classes of various entropy implementations,
     as well as methods to validate and access specific entropy classes by name.
 
-    Here are available ENTROPY names:
+    Here are available entropy names and classes:
 
     +--------------+-------------------------------------------------------------+
     | Name         | Class                                                       |

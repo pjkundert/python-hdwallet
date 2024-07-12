@@ -26,7 +26,7 @@ class BIP39Entropy(IEntropy):
     .. note::
         This class inherits from the ``IEntropy`` class, thereby ensuring that all functions are accessible.
 
-    Here are available BIP39 entropy strengths:
+    Here are available ``BIP39_ENTROPY_STRENGTHS``:
 
     +--------------------------+-------+
     | Name                     | Value |

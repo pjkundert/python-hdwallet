@@ -23,7 +23,7 @@ class ElectrumV1Entropy(IEntropy):
     .. note::
         This class inherits from the ``IEntropy`` class, thereby ensuring that all functions are accessible.
 
-    Here are available Electrum-V1 entropy strengths:
+    Here are available ``ELECTRUM_V1_ENTROPY_STRENGTHS``:
 
     +--------------------------+-------+
     | Name                     | Value |
