@@ -26,6 +26,28 @@ from .imnemonic import IMnemonic
 
 
 class MNEMONICS:
+    """
+    A class that manages a dictionary of mnemonic classes.
+
+    This class provides methods to retrieve names and classes of various mnemonic implementations,
+    as well as methods to validate and access specific mnemonic classes by name.
+
+    Here are available mnemonic names and classes:
+
+    +--------------+------------------------------------------------------------------------+
+    | Name         | Class                                                                  |
+    +==============+========================================================================+
+    | Algorand     |  <class 'hdwallet.mnemonics.algorand.mnemonic.AlgorandMnemonic'>       |
+    +--------------+------------------------------------------------------------------------+
+    | BIP39        |  <class 'hdwallet.mnemonics.bip39.mnemonic.BIP39Mnemonic'>             |
+    +--------------+------------------------------------------------------------------------+
+    | Electrum-V1  |  <class 'hdwallet.mnemonics.electrum.v1.mnemonic.ElectrumV1Mnemonic'>  |
+    +--------------+------------------------------------------------------------------------+
+    | Electrum-V2  |  <class 'hdwallet.mnemonics.electrum.v2.mnemonic.ElectrumV2Mnemonic'>  |
+    +--------------+------------------------------------------------------------------------+
+    | Monero       |  <class 'hdwallet.mnemonics.monero.mnemonic.MoneroMnemonic'>           |
+    +--------------+------------------------------------------------------------------------+
+    """
 
     dictionary: Dict[str, Type[IMnemonic]] = {
         AlgorandMnemonic.name(): AlgorandMnemonic,
@@ -37,14 +59,37 @@ class MNEMONICS:
 
     @classmethod
     def names(cls) -> List[str]:
+        """
+        Get the list of mnemonic class names.
+
+        :return: A list of mnemonic class names.
+        :rtype: List[str]
+        """
+
         return list(cls.dictionary.keys())
 
     @classmethod
     def classes(cls) -> List[Type[IMnemonic]]:
+        """
+        Get the list of mnemonic classes.
+
+        :return: A list of mnemonic classes.
+        :rtype: List[Type[IMnemonic]]
+        """
+
         return list(cls.dictionary.values())
 
     @classmethod
     def mnemonic(cls, name: str) -> Type[IMnemonic]:
+        """
+        Retrieve an mnemonic class by its name.
+
+        :param name: The name of the mnemonic class.
+        :type name: str
+
+        :return: The mnemonic class corresponding to the given name.
+        :rtype: Type[IMnemonic]
+        """
 
         if not cls.is_mnemonic(name=name):
             raise MnemonicError(
@@ -55,6 +100,16 @@ class MNEMONICS:
 
     @classmethod
     def is_mnemonic(cls, name) -> bool:
+        """
+        Check if a given name is a valid mnemonic name.
+
+        :param name: The name to check.
+        :type name: str
+
+        :return: True if the name is valid, False otherwise.
+        :rtype: bool
+        """
+
         return name in cls.names()
 
 

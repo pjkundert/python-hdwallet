@@ -44,7 +44,7 @@ class AlgorandMnemonic(IMnemonic):
     Used to generate and manage mnemonics specifically for the Algorand blockchain,
     ensuring secure key derivation and backup.
 
-    Here are available Algorand mnemonic words:
+    Here are available ``ALGORAND_MNEMONIC_WORDS``:
 
     +-----------------------+----------------------+
     | Name                  | Value                |
@@ -52,7 +52,7 @@ class AlgorandMnemonic(IMnemonic):
     | TWENTY_FIVE           | 25                   |
     +-----------------------+----------------------+
 
-    Here are available Algorand mnemonic languages:
+    Here are available ``ALGORAND_MNEMONIC_LANGUAGES``:
 
     +-----------------------+----------------------+
     | Name                  | Value                |
@@ -82,11 +82,6 @@ class AlgorandMnemonic(IMnemonic):
 
         :return: The name of the mnemonic class.
         :rtype: str
-
-        >>> from hdwallet.mnemonics.algorand import AlgorandMnemonic
-        >>> mnemonic: AlgorandMnemonic = AlgorandMnemonic(mnemonic="...")
-        >>> mnemonic.name()
-        "..."
         """
 
         return "Algorand"
@@ -103,10 +98,6 @@ class AlgorandMnemonic(IMnemonic):
 
         :return: The generated mnemonic phrase.
         :rtype: str
-
-        >>> from hdwallet.mnemonics.algorand import AlgorandMnemonic
-        >>> AlgorandMnemonic.from_words(words=..., language="...")
-        "..."
         """
 
         if words not in cls.words_list:
@@ -126,13 +117,9 @@ class AlgorandMnemonic(IMnemonic):
         :param language: The language for which to generate the mnemonic phrase.
         :type language: str
 
-
         :return: The generated mnemonic phrase.
         :rtype: str
 
-        >>> from hdwallet.mnemonics.algorand import AlgorandMnemonic
-        >>> AlgorandMnemonic.from_entropy(entropy="...", language="...")
-        "..."
         """
         if isinstance(entropy, str) or isinstance(entropy, bytes):
             return cls.encode(entropy=entropy, language=language)
@@ -157,10 +144,6 @@ class AlgorandMnemonic(IMnemonic):
 
         :return: The generated mnemonic phrase.
         :rtype: str
-
-        >>> from hdwallet.mnemonics.algorand import AlgorandMnemonic
-        >>> AlgorandMnemonic.encode(entropy="...", language="...")
-        "..."
         """
 
         entropy: bytes = get_bytes(entropy)
@@ -190,10 +173,6 @@ class AlgorandMnemonic(IMnemonic):
 
         :return: The decoded entropy data.
         :rtype: str
-
-        >>> from hdwallet.mnemonics.algorand import AlgorandMnemonic
-        >>> AlgorandMnemonic.decode(mnemonic="...")
-        "..."
         """
 
         words: list = cls.normalize(mnemonic)
@@ -229,10 +208,6 @@ class AlgorandMnemonic(IMnemonic):
 
         :return: A list of words from the mnemonic.
         :rtype: List[str]
-
-        >>> from hdwallet.mnemonics.algorand import AlgorandMnemonic
-        >>> AlgorandMnemonic.normalize(mnemonic="...")
-        "..."
         """
 
         mnemonic: list = mnemonic.split() if isinstance(mnemonic, str) else mnemonic

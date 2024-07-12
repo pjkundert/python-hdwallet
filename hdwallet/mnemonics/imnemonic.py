@@ -60,11 +60,6 @@ class IMnemonic(ABC):
 
         :return: The mnemonic as a single string joined by spaces.
         :rtype: str
-
-        >>> from {module_path[-1]} import {class_name}
-        >>> mnemonic: {class_name} = {class_name}(mnemonic="...")
-        >>> mnemonic.mnemonic()
-        "..."
         """
 
         return " ".join(self._mnemonic)
@@ -75,11 +70,6 @@ class IMnemonic(ABC):
 
         :return: The formatted language string where each part is capitalized.
         :rtype: str
-
-        >>> from {module_path[-1]} import {class_name}
-        >>> mnemonic: {class_name} = {class_name}(mnemonic="...")
-        >>> mnemonic.language()
-        "..."
         """
         language: str = ""
         for index, _ in enumerate(self._language.split("-")):
@@ -90,10 +80,6 @@ class IMnemonic(ABC):
         """
         :return: The words.
         :rtype: int
-
-        >>> from {module_path[-1]} import {class_name}
-        >>> mnemonic: {class_name} = {class_name}(mnemonic="...")
-        >>> mnemonic.words()
         """
 
         return self._words
@@ -132,10 +118,6 @@ class IMnemonic(ABC):
 
         :return: A list of words for the specified language.
         :rtype: List[str]
-
-        >>> from {module_path[-1]} import {class_name}
-        >>> {class_name}.get_words_list_by_language(language="...", wordlist_path="...")
-        "..."
         """
 
         wordlist_path = cls.wordlist_path if wordlist_path is None else wordlist_path
@@ -159,10 +141,6 @@ class IMnemonic(ABC):
 
         :return: A tuple containing the word list and the language name if found. Raises a ValueError if not found.
         :rtype: Union[str, Tuple[List[str], str]]
-
-        >>> from {module_path[-1]} import {class_name}
-        >>> {class_name}.find_language(mnemonic="...")
-        "..."
         """
 
         for language in cls.languages:
@@ -196,10 +174,6 @@ class IMnemonic(ABC):
 
         :return: True if the strength is valid, False otherwise.
         :rtype: bool
-
-        >>> from {module_path[-1]} import {class_name}
-        >>> {class_name}.is_valid(mnemonic=...)
-        ...
         """
 
         try:
@@ -218,10 +192,6 @@ class IMnemonic(ABC):
 
         :return: True if the strength is valid, False otherwise.
         :rtype: bool
-
-        >>> from {module_path[-1]} import {class_name}
-        >>> {class_name}.is_valid_language(language="...")
-        ...
         """
 
         return language in cls.languages
@@ -236,10 +206,6 @@ class IMnemonic(ABC):
 
         :return: True if the strength is valid, False otherwise.
         :rtype: bool
-
-        >>> from {module_path[-1]} import {class_name}
-        >>> {class_name}.is_valid_words(words=...)
-        ...
         """
 
         return words in cls.words_list
@@ -254,10 +220,6 @@ class IMnemonic(ABC):
 
         :return: A list of words from the mnemonic.
         :rtype: List[str]
-
-        >>> from {module_path[-1]} import {class_name}
-        >>> {class_name}.normalize(mnemonic="...")
-        "..."
         """
 
         return mnemonic.split() if isinstance(mnemonic, str) else mnemonic

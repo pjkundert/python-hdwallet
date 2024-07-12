@@ -58,7 +58,7 @@ class BIP39Mnemonic(IMnemonic):
     Implements the BIP39 standard, allowing the creation of mnemonic phrases for
     generating deterministic keys, widely used across various cryptocurrencies.
 
-    Here are available BIP39 mnemonic words:
+    Here are available ``BIP39_MNEMONIC_WORDS``:
 
     +-----------------------+----------------------+
     | Name                  | Value                |
@@ -74,7 +74,7 @@ class BIP39Mnemonic(IMnemonic):
     | TWENTY_FOUR           | 24                   |
     +-----------------------+----------------------+
 
-    Here are available BIP39 mnemonic languages:
+    Here are available ``BIP39_MNEMONIC_LANGUAGES``:
 
     +-----------------------+----------------------+
     | Name                  | Value                |
@@ -157,11 +157,6 @@ class BIP39Mnemonic(IMnemonic):
 
         :return: The name of the entropy class.
         :rtype: str
-
-        >>> from hdwallet.mnemonics.bip39 import BIP39Mnemonic
-        >>> mnemonic: BIP39Mnemonic = BIP39Mnemonic(mnemonic="...")
-        >>> mnemonic.name()
-        "..."
         """
         return "BIP39"
 
@@ -179,10 +174,6 @@ class BIP39Mnemonic(IMnemonic):
 
         :return: The generated mnemonic phrase.
         :rtype: str
-
-        >>> from hdwallet.mnemonics.bip39 import BIP39Mnemonic
-        >>> BIP39Mnemonic.from_words(words=..., language="...")
-        "..."
         """
         if words not in cls.words_list:
             raise MnemonicError("Invalid mnemonic words number", expected=cls.words_list, got=words)
@@ -203,10 +194,6 @@ class BIP39Mnemonic(IMnemonic):
 
         :return: The generated mnemonic phrase.
         :rtype: str
-
-        >>> from hdwallet.mnemonics.bip39 import BIP39Mnemonic
-        >>> BIP39Mnemonic.from_entropy(entropy="...", language="...")
-        "..."
         """
         if isinstance(entropy, str) or isinstance(entropy, bytes):
             return cls.encode(entropy=entropy, language=language)
@@ -230,10 +217,6 @@ class BIP39Mnemonic(IMnemonic):
 
         :return: The encoded mnemonic phrase.
         :rtype: str
-
-        >>> from hdwallet.mnemonics.bip39 import BIP39Mnemonic
-        >>> BIP39Mnemonic.encode(entropy="...", language="...")
-        "..."
         """
 
         entropy: bytes = get_bytes(entropy)
@@ -281,10 +264,6 @@ class BIP39Mnemonic(IMnemonic):
 
         :return: The decoded entropy as a string.
         :rtype: str
-
-        >>> from hdwallet.mnemonics.bip39 import BIP39Mnemonic
-        >>> BIP39Mnemonic.decode(mnemonic="...", checksum=...)
-        "..."
         """
 
         words: list = cls.normalize(mnemonic)
@@ -360,10 +339,6 @@ class BIP39Mnemonic(IMnemonic):
 
         :return: True if the mnemonic phrase is valid, False otherwise.
         :rtype: bool
-
-        >>> from hdwallet.mnemonics.bip39 import BIP39Mnemonic
-        >>> BIP39Mnemonic.is_valid(mnemonic="...")
-        ...
         """
 
         try:
@@ -384,10 +359,6 @@ class BIP39Mnemonic(IMnemonic):
 
         :return: A list of words from the mnemonic.
         :rtype: List[str]
-
-        >>> from hdwallet.mnemonics.bip39 import BIP39Mnemonic
-        >>> BIP39Mnemonic.normalize(mnemonic="...")
-        "..."
         """
 
         mnemonic: list = mnemonic.split() if isinstance(mnemonic, str) else mnemonic

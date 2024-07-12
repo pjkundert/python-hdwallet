@@ -62,7 +62,7 @@ class ElectrumV2Mnemonic(IMnemonic):
     of Electrum's mnemonic system, offering enhanced features for secure seed
     generation.
 
-    Here are available Electrum-V2 mnemonic words:
+    Here are available ``ELECTRUM_V2_MNEMONIC_LANGUAGES``:
 
     +-----------------------+----------------------+
     | Name                  | Value                |
@@ -72,7 +72,7 @@ class ElectrumV2Mnemonic(IMnemonic):
     | TWENTY_FOUR           | 24                   |
     +-----------------------+----------------------+
 
-    Here are available Electrum-V2 mnemonic languages:
+    Here are available ``ELECTRUM_V2_MNEMONIC_LANGUAGES``:
 
     +-----------------------+----------------------+
     | Name                  | Value                |
@@ -86,7 +86,7 @@ class ElectrumV2Mnemonic(IMnemonic):
     | SPANISH               | spanish              |
     +-----------------------+----------------------+
 
-    Here are available Electrum-V2 mnemonic types:
+    Here are available ``ELECTRUM_V2_MNEMONIC_TYPES``:
 
     +-----------------------+----------------------+
     | Name                  | Value                |
@@ -136,11 +136,6 @@ class ElectrumV2Mnemonic(IMnemonic):
 
         :return: The name of the entropy class.
         :rtype: str
-
-        >>> from hdwallet.mnemonics.electrum.v2 import ElectrumV2Mnemonic
-        >>> mnemonic: ElectrumV2Mnemonic = ElectrumV2Mnemonic(mnemonic="...")
-        >>> mnemonic.name()
-        "..."
         """
         return "Electrum-V2"
 
@@ -171,9 +166,6 @@ class ElectrumV2Mnemonic(IMnemonic):
         :return: The generated mnemonic phrase.
         :rtype: str
 
-        >>> from hdwallet.mnemonics.electrum.v2 import ElectrumV2Mnemonic
-        >>> ElectrumV2Mnemonic.from_words(words=..., language="...", mnemonic_type="...", max_attempts=...)
-        "..."
         """
 
         if words not in cls.words_list:
@@ -215,10 +207,6 @@ class ElectrumV2Mnemonic(IMnemonic):
 
         :return: The generated mnemonic phrase.
         :rtype: str
-
-        >>> from hdwallet.mnemonics.electrum.v2 import ElectrumV2Mnemonic
-        >>> ElectrumV2Mnemonic.from_entropy(entropy="...", language="...", mnemonic_type="...", max_attempts=...)
-        "..."
         """
 
         if isinstance(entropy, str) or isinstance(entropy, bytes):
@@ -308,10 +296,6 @@ class ElectrumV2Mnemonic(IMnemonic):
 
         :return: The generated mnemonic phrase.
         :rtype: str
-
-        >>> from hdwallet.mnemonics.electrum.v2 import ElectrumV2Mnemonic
-        >>> ElectrumV2Mnemonic.encode(words=..., language="...", mnemonic_type="...")
-        "..."
         """
 
         entropy: int = bytes_to_integer(get_bytes(entropy))
@@ -353,10 +337,6 @@ class ElectrumV2Mnemonic(IMnemonic):
 
         :return: The decoded entropy as a string.
         :rtype: str
-
-        >>> from hdwallet.mnemonics.electrum.v2 import ElectrumV2Mnemonic
-        >>> ElectrumV2Mnemonic.decode(mnemonic="...", mnemonic_type="...")
-        "..."
         """
 
         words: list = cls.normalize(mnemonic)
@@ -408,10 +388,6 @@ class ElectrumV2Mnemonic(IMnemonic):
 
         :return: True if the mnemonic is valid according to the specified type, False otherwise.
         :rtype: bool
-
-        >>> from hdwallet.mnemonics.electrum.v2 import ElectrumV2Mnemonic
-        >>> ElectrumV2Mnemonic.is_valid(mnemonic="...", mnemonic_type="...")
-        ...
         """
 
         if BIP39Mnemonic.is_valid(
@@ -438,10 +414,6 @@ class ElectrumV2Mnemonic(IMnemonic):
 
         :return: True if the mnemonic matches the specified type, False otherwise.
         :rtype: bool
-
-        >>> from hdwallet.mnemonics.electrum.v2 import ElectrumV2Mnemonic
-        >>> ElectrumV2Mnemonic.from_words(mnemonic="...", mnemonic_type="...")
-        ...
         """
         return bytes_to_string(hmac_sha512(
             b"Seed version", " ".join(cls.normalize(mnemonic))
@@ -455,11 +427,6 @@ class ElectrumV2Mnemonic(IMnemonic):
 
         :return: The type of the mnemonic.
         :rtype: str
-
-        >>> from hdwallet.mnemonics.electrum.v2 import ElectrumV2Mnemonic
-        >>> mnemonic: ElectrumV2Mnemonic = ElectrumV2Mnemonic(mnemonic="...", mnemonic_type="...")
-        >>> mnemonic.mnemonic_type()
-        "..."
         """
 
         return self._mnemonic_type
@@ -474,10 +441,6 @@ class ElectrumV2Mnemonic(IMnemonic):
 
         :return: A list of words from the mnemonic.
         :rtype: List[str]
-
-        >>> from hdwallet.mnemonics.electrum.v2 import ElectrumV2Mnemonic
-        >>> ElectrumV2Mnemonic.normalize(mnemonic="...")
-        "..."
         """
 
         mnemonic: list = mnemonic.split() if isinstance(mnemonic, str) else mnemonic
