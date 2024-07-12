@@ -20,6 +20,15 @@ from .iseed import ISeed
 
 
 class BIP39Seed(ISeed):
+    """
+    This class generates a root extended private key from a given seed using the
+    BIP39 standard. The BIP39 standard defines a method for generating mnemonic
+    phrases and converting them into a binary seed used for hierarchical
+    deterministic wallets.
+
+    .. note::
+        This class inherits from the ``ISeed`` class, thereby ensuring that all functions are accessible.
+    """
 
     seed_salt_modifier: str = "mnemonic"
     seed_pbkdf2_rounds: int = 2048
@@ -31,11 +40,6 @@ class BIP39Seed(ISeed):
 
         :return: The name of the seeds class.
         :rtype: str
-
-        >>> from hdwallet.seeds.bip39 import BIP39Seed
-        >>> seed: BIP39Seed = BIP39Seed(seed="...")
-        >>> seed.name()
-        "BIP39"
         """
 
         return "BIP39"
@@ -53,10 +57,6 @@ class BIP39Seed(ISeed):
 
         :return: The decoded seed as a string.
         :rtype: str
-
-        >>> from hdwallet.seeds.bip39 import BIP39Seed
-        >>> BIP39Seed.from_mnemonic(mnemonic="...", passphrase="...")
-        "..."
         """
 
         mnemonic = (

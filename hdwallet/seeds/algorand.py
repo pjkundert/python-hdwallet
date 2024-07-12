@@ -14,6 +14,15 @@ from .iseed import ISeed
 
 
 class AlgorandSeed(ISeed):
+    """
+    This class generates a root extended private key from a given seed using the
+    Algorand standard. The Algorand standard defines a method for generating mnemonic
+    phrases and converting them into a binary seed used for hierarchical
+    deterministic wallets.
+
+    .. note::
+        This class inherits from the ``ISeed`` class, thereby ensuring that all functions are accessible.
+    """
 
     @classmethod
     def name(cls) -> str:
@@ -22,12 +31,8 @@ class AlgorandSeed(ISeed):
 
         :return: The name of the seeds class.
         :rtype: str
-
-        >>> from hdwallet.seeds.algorand import AlgorandSeed
-        >>> seed: AlgorandSeed = AlgorandSeed(seed="...")
-        >>> seed.name()
-        "Algorand"
         """
+
         return "Algorand"
 
     @classmethod
@@ -40,10 +45,6 @@ class AlgorandSeed(ISeed):
 
         :return: The decoded entropy as a string.
         :rtype: str
-
-        >>> from hdwallet.seeds.algorand import AlgorandSeed
-        >>> AlgorandSeed.from_mnemonic(mnemonic="...")
-        "..."
         """
 
         mnemonic = (

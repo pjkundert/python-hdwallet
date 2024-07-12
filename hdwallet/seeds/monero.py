@@ -14,6 +14,15 @@ from .iseed import ISeed
 
 
 class MoneroSeed(ISeed):
+    """
+    This class generates a root extended private key from a given seed using the
+    Monero standard. The Monero standard defines a method for generating mnemonic
+    phrases and converting them into a binary seed used for hierarchical
+    deterministic wallets.
+
+    .. note::
+        This class inherits from the ``ISeed`` class, thereby ensuring that all functions are accessible.
+    """
 
     @classmethod
     def name(cls) -> str:
@@ -22,11 +31,6 @@ class MoneroSeed(ISeed):
 
         :return: The name of the seeds class.
         :rtype: str
-
-        >>> from hdwallet.seeds.monero import MoneroSeed
-        >>> seed: MoneroSeed = MoneroSeed(seed="...")
-        >>> seed.name()
-        "Monero"
         """
 
         return "Monero"
@@ -41,10 +45,6 @@ class MoneroSeed(ISeed):
 
         :return: The decoded entropy as a string.
         :rtype: str
-
-        >>> from hdwallet.seeds.monero import MoneroSeed
-        >>> MoneroSeed.from_mnemonic(mnemonic="...")
-        "..."
         """
         mnemonic = (
             mnemonic.mnemonic() if isinstance(mnemonic, IMnemonic) else mnemonic

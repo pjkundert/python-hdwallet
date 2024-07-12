@@ -20,6 +20,30 @@ from .monero import MoneroSeed
 
 
 class SEEDS:
+    """
+    A class that manages a dictionary of seeds classes.
+
+    This class provides methods to retrieve names and classes of various seeds implementations,
+    as well as methods to validate and access specific seeds classes by name.
+
+    Here are available SEED names:
+
+    +--------------+------------------------------------------------------+
+    | Name         | Class                                                |
+    +==============+======================================================+
+    | Algorand     |  <class 'hdwallet.seeds.algorand.AlgorandSeed'>      |
+    +--------------+------------------------------------------------------+
+    | BIP39        |  <class 'hdwallet.seeds.bip93.BIP39Seed'>            |
+    +--------------+------------------------------------------------------+
+    | Cardano      | <class 'hdwallet.seeds.cardano.CardanoSeed'>         |
+    +--------------+------------------------------------------------------+
+    | Electrum-V1  |  <class 'hdwallet.seeds.electrum.v1.ElectrumV1Seed'> |
+    +--------------+------------------------------------------------------+
+    | Electrum-V2  | <class 'hdwallet.seeds.electrum.v2.ElectrumV2Seed'>  |
+    +--------------+------------------------------------------------------+
+    | Monero       | <class 'hdwallet.seeds.monero.MoneroSeed'>           |
+    +--------------+------------------------------------------------------+
+    """
 
     dictionary: Dict[str, Type[ISeed]] = {
         AlgorandSeed.name(): AlgorandSeed,
@@ -32,14 +56,37 @@ class SEEDS:
 
     @classmethod
     def names(cls) -> List[str]:
+        """
+        Get the list of seed class names.
+
+        :return: A list of seed class names.
+        :rtype: List[str]
+        """
+
         return list(cls.dictionary.keys())
 
     @classmethod
     def classes(cls) -> List[Type[ISeed]]:
+        """
+        Get the list of seed classes.
+
+        :return: A list of seed classes.
+        :rtype: List[Type[ISeed]]
+        """
+
         return list(cls.dictionary.values())
 
     @classmethod
     def seed(cls, name: str) -> Type[ISeed]:
+        """
+        Retrieve an seed class by its name.
+
+        :param name: The name of the seed class.
+        :type name: str
+
+        :return: The seed class corresponding to the given name.
+        :rtype: Type[ISeed]
+        """
 
         if not cls.is_seed(name=name):
             raise SeedError(
@@ -50,6 +97,16 @@ class SEEDS:
 
     @classmethod
     def is_seed(cls, name) -> bool:
+        """
+        Check if a given name is a valid seed name.
+
+        :param name: The name to check.
+        :type name: str
+
+        :return: True if the name is valid, False otherwise.
+        :rtype: bool
+        """
+
         return name in cls.names()
 
 

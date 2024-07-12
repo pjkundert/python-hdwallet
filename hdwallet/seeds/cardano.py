@@ -27,6 +27,15 @@ from . import (
 
 
 class CardanoSeed(ISeed):
+    """
+    This class generates a root extended private key from a given seed using the
+    cardano standard. The cardano standard defines a method for generating mnemonic
+    phrases and converting them into a binary seed used for hierarchical
+    deterministic wallets.
+
+    .. note::
+        This class inherits from the ``ISeed`` class, thereby ensuring that all functions are accessible.
+    """
 
     _cardano_type: str
 
@@ -65,11 +74,6 @@ class CardanoSeed(ISeed):
 
         :return: The name of the seeds class.
         :rtype: str
-
-        >>> from hdwallet.seeds.cardano import CardanoSeed
-        >>> seed: CardanoSeed = CardanoSeed(seed="...")
-        >>> seed.name()
-        "Cardano"
         """
 
         return "Cardano"
@@ -80,11 +84,6 @@ class CardanoSeed(ISeed):
 
         :return: The Cardano type as a string.
         :rtype: str
-
-        >>> from hdwallet.seeds.cardano import CardanoSeed
-        >>> seed: CardanoSeed = CardanoSeed(seed="...")
-        >>> seed.cardano_type()
-        "..."
         """
 
         return self._cardano_type
@@ -113,10 +112,6 @@ class CardanoSeed(ISeed):
 
         :return: The generated Cardano wallet seed as a string.
         :rtype: str
-
-        >>> from hdwallet.seeds.cardano import CardanoSeed
-        >>> CardanoSeed.from_mnemonic(mnemonic="...", passphrase="...", cardano_type="...")
-        "..."
         """
 
         if cardano_type == Cardano.TYPES.BYRON_ICARUS:
@@ -147,10 +142,6 @@ class CardanoSeed(ISeed):
 
         :return: The derived Byron Icarus seed as a string.
         :rtype: str
-
-        >>> from hdwallet.seeds.cardano import CardanoSeed
-        >>> CardanoSeed.generate_byron_icarus(mnemonic="...")
-        "..."
         """
 
         mnemonic = (
@@ -176,10 +167,6 @@ class CardanoSeed(ISeed):
 
         :return: The derived Byron Ledger seed as a string.
         :rtype: str
-
-        >>> from hdwallet.seeds.cardano import CardanoSeed
-        >>> CardanoSeed.generate_byron_ledger(mnemonic="...", passphrase="...")
-        "..."
         """
 
         mnemonic = (
@@ -199,10 +186,6 @@ class CardanoSeed(ISeed):
 
         :return: The derived Byron Legacy seed as a string.
         :rtype: str
-
-        >>> from hdwallet.seeds.cardano import CardanoSeed
-        >>> CardanoSeed.generate_byron_legacy(mnemonic="...")
-        "..."
         """
 
         mnemonic = (
@@ -227,10 +210,6 @@ class CardanoSeed(ISeed):
 
         :return: The derived Shelley Icarus seed as a string.
         :rtype: str
-
-        >>> from hdwallet.seeds.cardano import CardanoSeed
-        >>> CardanoSeed.generate_shelley_icarus(mnemonic="...")
-        "..."
         """
 
         return cls.generate_byron_icarus(
@@ -249,10 +228,6 @@ class CardanoSeed(ISeed):
 
         :return: The derived Shelley ledger seed as a string.
         :rtype: str
-
-        >>> from hdwallet.seeds.cardano import CardanoSeed
-        >>> CardanoSeed.generate_shelley_ledger(mnemonic="...", passphrase="...")
-        "..."
         """
 
         return cls.generate_byron_ledger(

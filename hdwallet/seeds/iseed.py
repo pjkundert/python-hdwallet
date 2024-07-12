@@ -45,11 +45,6 @@ class ISeed(ABC):
 
         :return: The seed as a string.
         :rtype: str
-
-        >>> from {module_path} import {class_name}
-        >>> seed: {class_name} = {class_name}(seed="...")
-        >>> seed.seed()
-        "..."
         """
 
         return self._seed

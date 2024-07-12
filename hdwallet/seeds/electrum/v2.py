@@ -20,6 +20,15 @@ from ..iseed import ISeed
 
 
 class ElectrumV2Seed(ISeed):
+    """
+    This class generates a root extended private key from a given seed using the
+    Electrum-V2 standard. The Electrum-V2 standard defines a method for generating mnemonic
+    phrases and converting them into a binary seed used for hierarchical
+    deterministic wallets.
+
+    .. note::
+        This class inherits from the ``ISeed`` class, thereby ensuring that all functions are accessible.
+    """
 
     seed_salt_modifier: str = "electrum"
     seed_pbkdf2_rounds: int = 2048
@@ -31,11 +40,6 @@ class ElectrumV2Seed(ISeed):
 
         :return: The name of the seeds class.
         :rtype: str
-
-        >>> from hdwallet.seeds.electrum.v2 import ElectrumV2Seed
-        >>> seed: ElectrumV2Seed = ElectrumV2Seed(seed="...")
-        >>> seed.name()
-        "Electrum-V2"
         """
 
         return "Electrum-V2"
@@ -59,10 +63,6 @@ class ElectrumV2Seed(ISeed):
 
         :return: The derived seed as a string.
         :rtype: str
-
-        >>> from hdwallet.seeds.electrum.v2 import ElectrumV2Seed
-        >>> ElectrumV2Seed.from_mnemonic(mnemonic="...", passphrase="...", mnemonic_type="...")
-        "..."
         """
 
         mnemonic = (
