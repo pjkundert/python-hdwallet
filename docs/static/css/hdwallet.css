@@ -2,6 +2,11 @@
     color: #2980B9;
 }
 
+table.docutils {
+    margin-left: 5px;
+    margin-right: auto;
+}
+
 .mixed-align-table td, .mixed-align-table th {
     text-align: center;
     width: 20px;
