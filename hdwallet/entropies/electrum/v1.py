@@ -43,11 +43,6 @@ class ElectrumV1Entropy(IEntropy):
 
         :return: The name of the entropy class.
         :rtype: str
-
-        >>> from hdwallet.entropies.electrum.v1 import ElectrumV1Entropy
-        >>> entropy: ElectrumV1Entropy = ElectrumV1Entropy(entropy="...")
-        >>> entropy.name()
-        "Electrum-V1"
         """
 
         return "Electrum-V1"
