@@ -41,7 +41,6 @@ class SolanaAddress(IAddress):
 
         :param public_key: The public key to encode. It can be a bytes object, a string, or an IPublicKey instance.
         :type public_key: Union[bytes, str, IPublicKey]
-
         :param kwargs: Additional keyword arguments.
         :type kwargs: Any
 

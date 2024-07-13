@@ -42,7 +42,6 @@ class ZilliqaAddress(IAddress):
 
         :param public_key: The public key to encode, which can be bytes, str, or an IPublicKey object.
         :type public_key: Union[bytes, str, IPublicKey]
-
         :param kwargs: Additional keyword arguments:
             - hrp (str, optional): Human-readable part for the Bech32 encoding. Defaults to cls.hrp.
 
@@ -66,7 +65,6 @@ class ZilliqaAddress(IAddress):
 
         :param address: The Zilliqa address to decode.
         :type address: str
-
         :param kwargs: Additional keyword arguments:
             - hrp (str, optional): Human-readable part for the Bech32 encoding. Defaults to cls.hrp.
 

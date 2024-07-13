@@ -42,7 +42,6 @@ class SuiAddress(IAddress):
 
         :param public_key: The public key to encode, can be bytes, string, or an IPublicKey object.
         :type public_key: Union[bytes, str, IPublicKey]
-
         :param kwargs: Additional keyword arguments.
         :type kwargs: Any
 
@@ -64,7 +63,6 @@ class SuiAddress(IAddress):
 
         :param address: The address string to decode.
         :type address: str
-
         :param kwargs: Additional keyword arguments.
         :type kwargs: Any
 

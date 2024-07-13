@@ -50,16 +50,6 @@ class ErgoAddress(IAddress):
 
     @classmethod
     def compute_checksum(cls, public_key: bytes) -> bytes:
-        """
-        Computes the checksum for the given public key using the BLAKE2b-256 hash function.
-
-        :param public_key: The public key for which to compute the checksum.
-        :type public_key: bytes
-
-        :return: The computed checksum.
-        :rtype: bytes
-        """
-
         return blake2b_256(public_key)[:cls.checksum_length]
 
     @classmethod
@@ -69,7 +59,6 @@ class ErgoAddress(IAddress):
 
         :param public_key: The public key to encode.
         :type public_key: Union[bytes, str, IPublicKey]
-
         :param kwargs: Additional keyword arguments, including "address_type" and "network_type".
         :type kwargs: Any
 
@@ -116,7 +105,6 @@ class ErgoAddress(IAddress):
 
         :param address: The Ergo address to decode.
         :type address: str
-
         :param kwargs: Additional keyword arguments, including "address_type" and "network_type".
         :type kwargs: Any
 

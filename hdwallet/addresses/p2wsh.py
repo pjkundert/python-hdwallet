@@ -46,7 +46,6 @@ class P2WSHAddress(P2WPKHAddress):
 
         :param public_key: The public key to encode.
         :type public_key: Union[bytes, str, IPublicKey]
-
         :param kwargs: Additional keyword arguments.
             - public_key_type: Type of the public key (compressed or uncompressed).
             - hrp: Human-readable part (optional).

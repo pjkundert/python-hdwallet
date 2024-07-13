@@ -42,7 +42,6 @@ class IconAddress(IAddress):
 
         :param public_key: The public key to be encoded.
         :type public_key: Union[bytes, str, IPublicKey]
-
         :param kwargs: Additional keyword arguments.
         :type kwargs: Any
 
@@ -66,7 +65,6 @@ class IconAddress(IAddress):
 
         :param address: The Icon address to be decoded.
         :type address: str
-
         :param kwargs: Additional keyword arguments.
         :type kwargs: Any
 

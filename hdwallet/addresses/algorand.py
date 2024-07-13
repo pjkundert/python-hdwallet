@@ -38,16 +38,6 @@ class AlgorandAddress(IAddress):
 
     @staticmethod
     def compute_checksum(public_key: bytes) -> bytes:
-        """
-        Computes the checksum for a given public key using SHA-512/256 hash.
-
-        :param public_key: The public key for which the checksum is to be computed.
-        :type public_key: bytes
-
-        :return: The last 4 bytes of the SHA-512/256 hash of the public key.
-        :rtype: bytes
-        """
-
         return sha512_256(public_key)[-1 * 4:]
 
     @classmethod
@@ -57,7 +47,6 @@ class AlgorandAddress(IAddress):
 
         :param public_key: The public key to be encoded. It can be in bytes, string, or IPublicKey format.
         :type public_key: Union[bytes, str, IPublicKey]
-
         :param kwargs: Additional keyword arguments.
 
         :return: The encoded public key string with a checksum.
@@ -78,7 +67,6 @@ class AlgorandAddress(IAddress):
 
         :param address: The encoded address string.
         :type address: str
-
         :param kwargs: Additional keyword arguments.
 
         :return: The decoded public key as a string.

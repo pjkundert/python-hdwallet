@@ -47,7 +47,6 @@ class P2TRAddress(IAddress):
 
         :param tag: The tag used for hashing, either as bytes or a string.
         :type tag: Union[bytes, str]
-
         :param data_bytes: The data bytes to be hashed.
         :type data_bytes: bytes
 
@@ -120,7 +119,6 @@ class P2TRAddress(IAddress):
 
         :param public_key: The public key to be encoded.
         :type public_key: Union[bytes, str, IPublicKey]
-
         :param kwargs: Additional keyword arguments.
             - hrp: Human-readable part (optional).
             - witness_version: SegWit witness version (optional).
@@ -146,7 +144,6 @@ class P2TRAddress(IAddress):
 
         :param address: The SegWit address to decode.
         :type address: str
-
         :param kwargs: Additional keyword arguments.
             - hrp: Human-readable part (optional).
         :type kwargs: Any

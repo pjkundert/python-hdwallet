@@ -37,7 +37,6 @@ class NearAddress(IAddress):
 
         :param public_key: The public key to encode.
         :type public_key: Union[bytes, str, IPublicKey]
-
         :param kwargs: Additional keyword arguments.
         :type kwargs: Any
 
@@ -57,7 +56,6 @@ class NearAddress(IAddress):
 
         :param address: The address string to decode.
         :type address: str
-
         :param kwargs: Additional keyword arguments.
         :type kwargs: Any
 

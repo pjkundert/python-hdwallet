@@ -34,16 +34,6 @@ class EthereumAddress(IAddress):
 
     @staticmethod
     def checksum_encode(address: str) -> str:
-        """
-        Encodes an Ethereum address with checksum validation.
-
-        :param address: The Ethereum address to be checksummed.
-        :type address: str
-
-        :return: The checksummed Ethereum address.
-        :rtype: str
-        """
-
         output: str = ""
         address_hash: str = bytes_to_string(
             kekkak256(address.lower())
@@ -62,7 +52,6 @@ class EthereumAddress(IAddress):
 
         :param public_key: The public key to be encoded.
         :type public_key: Union[bytes, str, IPublicKey]
-
         :param kwargs: Additional keyword arguments, including "skip_checksum_encode".
         :type kwargs: Any
 
@@ -87,7 +76,6 @@ class EthereumAddress(IAddress):
 
         :param address: The Cosmos address to be decoded.
         :type address: str
-
         :param kwargs: Additional keyword arguments, including "skip_checksum_encode".
         :type kwargs: Any
 

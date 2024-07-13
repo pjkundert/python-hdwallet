@@ -47,7 +47,6 @@ class TronAddress(IAddress):
 
         :param public_key: The public key to encode, which can be bytes, str, or IPublicKey.
         :type public_key: Union[bytes, str, IPublicKey]
-
         :param kwargs: Additional keyword arguments.
         :type kwargs: Any
 
@@ -76,7 +75,6 @@ class TronAddress(IAddress):
 
         :param address: The Tron blockchain address to decode.
         :type address: str
-
         :param kwargs: Additional keyword arguments.
         :type kwargs: Any
 

@@ -42,7 +42,6 @@ class P2WPKHInP2SHAddress(P2SHAddress):
 
         :param public_key: The public key to encode.
         :type public_key: Union[bytes, str, IPublicKey]
-
         :param kwargs: Additional keyword arguments.
             - script_address_prefix: Script address prefix (optional).
             - public_key_type: Type of public key compression (optional).

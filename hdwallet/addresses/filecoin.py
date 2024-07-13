@@ -47,19 +47,6 @@ class FilecoinAddress(IAddress):
 
     @classmethod
     def compute_checksum(cls, public_key_hash: bytes, address_type: int) -> bytes:
-        """
-        Computes the checksum for a given public key hash and address type.
-
-        :param public_key_hash: The public key hash.
-        :type public_key_hash: bytes
-
-        :param address_type: The address type.
-        :type address_type: int
-
-        :return: The computed checksum.
-        :rtype: bytes
-        """
-
         return blake2b_32(
             integer_to_bytes(address_type) + public_key_hash
         )
@@ -71,7 +58,6 @@ class FilecoinAddress(IAddress):
 
         :param public_key: The public key to be encoded.
         :type public_key: Union[bytes, str, IPublicKey]
-
         :param kwargs: Additional keyword arguments, including "address_type".
         :type kwargs: Any
 
@@ -112,7 +98,6 @@ class FilecoinAddress(IAddress):
 
         :param address: The Filecoin address to be decoded.
         :type address: str
-
         :param kwargs: Additional keyword arguments, including "address_type".
         :type kwargs: Any
 

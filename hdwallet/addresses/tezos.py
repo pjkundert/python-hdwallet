@@ -47,7 +47,6 @@ class TezosAddress(IAddress):
 
         :param public_key: The public key to encode.
         :type public_key: Union[bytes, str, IPublicKey]
-
         :param kwargs: Additional keyword arguments.
             - address_prefix: Address prefix (optional).
         :type kwargs: Any
@@ -83,7 +82,6 @@ class TezosAddress(IAddress):
 
         :param address: The Tezos address to decode.
         :type address: str
-
         :param kwargs: Additional keyword arguments.
             - address_prefix: Address prefix (optional).
         :type kwargs: Any

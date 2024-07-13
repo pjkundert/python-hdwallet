@@ -46,7 +46,6 @@ class P2SHAddress(IAddress):
 
         :param public_key: The public key to encode. Can be bytes, str, or IPublicKey.
         :type public_key: Union[bytes, str, IPublicKey]
-
         :param kwargs: Additional keyword arguments.
             - script_address_prefix: Prefix for the script address (optional).
             - public_key_type: Type of the public key (optional).
@@ -85,7 +84,6 @@ class P2SHAddress(IAddress):
 
         :param address: The P2SH address to decode.
         :type address: str
-
         :param kwargs: Additional keyword arguments.
             - script_address_prefix: Prefix for the script address (optional).
             - alphabet: Custom alphabet for decoding (optional).

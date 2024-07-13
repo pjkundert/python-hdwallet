@@ -42,7 +42,6 @@ class AptosAddress(IAddress):
 
         :param public_key: The public key to encode. Can be of type bytes, str, or IPublicKey.
         :type public_key: Union[bytes, str, IPublicKey]
-
         :param kwargs: Additional arguments.
 
         :return: The encoded Aptos address.
@@ -63,7 +62,6 @@ class AptosAddress(IAddress):
 
         :param address: The Aptos address to decode.
         :type address: str
-
         :param kwargs: Additional arguments.
 
         :return: The decoded address in its raw form.

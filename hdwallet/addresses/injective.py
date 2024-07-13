@@ -44,7 +44,6 @@ class InjectiveAddress(IAddress):
 
         :param public_key: The public key to encode.
         :type public_key: Union[bytes, str, IPublicKey]
-
         :param kwargs: Additional keyword arguments.
         :type kwargs: Any
 
@@ -67,7 +66,6 @@ class InjectiveAddress(IAddress):
 
         :param address: The Injective address to decode.
         :type address: str
-
         :param kwargs: Additional keyword arguments.
         :type kwargs: Any
 
