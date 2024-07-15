@@ -56,11 +56,6 @@ class BIP44HD(BIP32HD):
 
         :return: The name of the bip class.
         :rtype: str
-
-        >>> from {module_path} import {class_name}
-        >>> bip44: {class_name} = {class_name}(bip="...")
-        >>> bip44.name()
-        "BIP44"
         """
         return "BIP44"
 
@@ -70,10 +65,6 @@ class BIP44HD(BIP32HD):
 
         :return: Updated BIP44HD object.
         :rtype: BIP44HD
-
-        >>> from {module_path} import {class_name}
-        >>> {class_name}.__update__()
-        "..."
         """
 
         self.from_derivation(derivation=self._derivation)
@@ -88,10 +79,6 @@ class BIP44HD(BIP32HD):
 
         :return: Updated BIP44HD object.
         :rtype: BIP44HD
-
-        >>> from {module_path} import {class_name}
-        >>> {class_name}.from_coin_type(coin_type=...)
-        "..."
         """
 
         self._derivation.from_coin_type(coin_type=coin_type)
@@ -107,10 +94,6 @@ class BIP44HD(BIP32HD):
 
         :return: Updated BIP44HD object.
         :rtype: BIP44HD
-
-        >>> from {module_path} import {class_name}
-        >>> {class_name}.from_account(account=...)
-        "..."
         """
 
         self._derivation.from_account(account=account)
@@ -126,10 +109,6 @@ class BIP44HD(BIP32HD):
 
         :return: Updated BIP44HD object.
         :rtype: BIP44HD
-
-        >>> from {module_path} import {class_name}
-        >>> {class_name}.from_change(change="...")
-        "..."
         """
 
         self._derivation.from_change(change=change)
@@ -145,10 +124,6 @@ class BIP44HD(BIP32HD):
 
         :return: Updated BIP44HD object.
         :rtype: BIP44HD
-
-        >>> from {module_path} import {class_name}
-        >>> {class_name}.from_address(address=...)
-        "..."
         """
 
         self._derivation.from_address(address=address)
@@ -164,10 +139,6 @@ class BIP44HD(BIP32HD):
 
         :return: Updated BIP44HD object.
         :rtype: BIP44HD
-
-        >>> from {module_path} import {class_name}
-        >>> {class_name}.from_derivation(derivation="...")
-        "..."
         """
 
         if not isinstance(derivation, BIP44Derivation):
@@ -189,15 +160,10 @@ class BIP44HD(BIP32HD):
 
         :param public_key_address_prefix: Public key address prefix value for Bitcoin network.
         :type public_key_address_prefix: int
-
         :param kwargs: Additional keyword arguments for encoding.
 
         :return: Bitcoin address encoded in P2PKH format.
         :rtype: str
-
-        >>> from {module_path} import {class_name}
-        >>> {class_name}.address(public_key_address_prefix=...)
-        "..."
         """
 
         return P2PKHAddress.encode(
