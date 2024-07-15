@@ -67,3 +67,8 @@ Example: https://github.com/chainxlab/python-hdwallet/blob/master/clients/electr
     :members:
 
 Example: https://github.com/chainxlab/python-hdwallet/tree/master/clients/electrum/v2
+
+.. autoclass:: hdwallet.hds.monero.MoneroHD
+    :members:
+
+Example: https://github.com/chainxlab/python-hdwallet/blob/master/clients/monero.py
