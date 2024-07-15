@@ -65,15 +65,6 @@ class MoneroAddress:
 
     @classmethod
     def compute_checksum(cls, public_key: bytes) -> bytes:
-        """
-        Computes the checksum for the given public key using keccak256.
-
-        :param public_key: The public key bytes.
-        :type public_key: bytes
-
-        :return: The computed checksum.
-        :rtype: bytes
-        """
         return kekkak256(public_key)[:cls.checksum_length]
 
     @classmethod
@@ -90,16 +81,12 @@ class MoneroAddress:
 
         :param spend_public_key: The spend public key.
         :type spend_public_key: Union[bytes, str, IPublicKey]
-
         :param view_public_key: The view public key.
         :type view_public_key: Union[bytes, str, IPublicKey]
-
         :param network: The network (default is "mainnet").
         :type network: str
-
         :param address_type: The address type (default is Monero.ADDRESS_TYPES.STANDARD).
         :type address_type: str
-
         :param payment_id: Optional payment ID bytes.
         :type payment_id: Optional[bytes]
 
@@ -141,13 +128,10 @@ class MoneroAddress:
 
         :param address: The Monero address to decode.
         :type address: str
-
         :param network: The network (default is "mainnet").
         :type network: str
-
         :param address_type: The address type (default is Monero.ADDRESS_TYPES.STANDARD).
         :type address_type: str
-
         :param payment_id: Optional payment ID bytes.
         :type payment_id: Optional[bytes]
 

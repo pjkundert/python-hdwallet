@@ -41,7 +41,6 @@ class AvalancheAddress(IAddress):
 
         :param public_key: The public key to be encoded.
         :type public_key: Union[bytes, str, IPublicKey]
-
         :param kwargs: Additional keyword arguments, including "address_type".
         :type kwargs: Any
 
@@ -71,7 +70,6 @@ class AvalancheAddress(IAddress):
 
         :param address: The Avalanche address to be decoded.
         :type address: str
-
         :param kwargs: Additional keyword arguments, including "address_type".
         :type kwargs: Any
 

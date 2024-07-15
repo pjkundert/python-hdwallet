@@ -48,7 +48,6 @@ class NeoAddress(IAddress):
 
         :param public_key: The public key to encode. Can be bytes, str, or IPublicKey.
         :type public_key: Union[bytes, str, IPublicKey]
-
         :param kwargs: Additional keyword arguments.
             - address_version: Version of the address (optional).
             - alphabet: Custom alphabet for encoding (optional).
@@ -79,7 +78,6 @@ class NeoAddress(IAddress):
 
         :param address: The address to decode.
         :type address: str
-
         :param kwargs: Additional keyword arguments.
             - alphabet: Custom alphabet for decoding (optional).
             - address_version: Version of the address (optional).

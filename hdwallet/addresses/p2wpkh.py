@@ -45,7 +45,6 @@ class P2WPKHAddress(IAddress):
 
         :param public_key: The public key to encode.
         :type public_key: Union[bytes, str, IPublicKey]
-
         :param kwargs: Additional keyword arguments.
             - hrp: Human-readable part (optional).
             - public_key_type: Type of the public key (optional).
@@ -77,7 +76,6 @@ class P2WPKHAddress(IAddress):
 
         :param address: The SegWit address to decode.
         :type address: str
-
         :param kwargs: Additional keyword arguments.
             - hrp: Human-readable part (optional).
         :type kwargs: Any

@@ -71,23 +71,24 @@ class CardanoAddress(IAddress):
 
     @classmethod
     def encode(
-        cls, public_key: Union[bytes, str, IPublicKey], encode_type: str = Cardano.ADDRESS_TYPES.PAYMENT, **kwargs: Any
+        cls, public_key: Union[bytes, str, IPublicKey], **kwargs: Any
     ):
         """
         Encodes the given public key into a Cardano address based on the specified encoding type.
 
         :param public_key: The public key to encode. Can be bytes, string, or an object implementing IPublicKey.
         :type public_key: Union[bytes, str, IPublicKey]
-
         :param encode_type: The type of Cardano address encoding to use (default: Cardano.ADDRESS_TYPES.PAYMENT).
         :type encode_type: str
-
         :param kwargs: Additional keyword arguments specific to each encoding type.
         :type kwargs: Any
 
         :return: The encoded Cardano address as a string.
         :rtype: str
         """
+
+        encode_type: str = kwargs.get("encode_type", Cardano.ADDRESS_TYPES.PAYMENT)
+
         if encode_type == Cardano.TYPES.BYRON_LEGACY:
             return cls.encode_byron_legacy(
                 public_key=public_key,
@@ -127,23 +128,24 @@ class CardanoAddress(IAddress):
 
     @classmethod
     def decode(
-        cls, address: str, decode_type: str = Cardano.ADDRESS_TYPES.PAYMENT, **kwargs: Any
+        cls, address: str, **kwargs: Any
     ) -> str:
         """
         Decodes the given Cardano address into its corresponding public key based on the specified decoding type.
 
         :param address: The Cardano address to decode.
         :type address: str
-
         :param decode_type: The type of Cardano address decoding to use (default: Cardano.ADDRESS_TYPES.PAYMENT).
         :type decode_type: str
-
         :param kwargs: Additional keyword arguments specific to each decoding type.
         :type kwargs: Any
 
         :return: The decoded public key as a string.
         :rtype: str
         """
+
+        decode_type: str = kwargs.get("decode_type", Cardano.ADDRESS_TYPES.PAYMENT)
+
         if decode_type in [
             Cardano.TYPES.BYRON_LEGACY, Cardano.TYPES.BYRON_ICARUS
         ]:
@@ -183,13 +185,10 @@ class CardanoAddress(IAddress):
 
         :param public_key: The public key to encode.
         :type public_key: IPublicKey
-
         :param chain_code: The chain code associated with the address.
         :type chain_code: Union[bytes, str]
-
         :param address_attributes: Additional attributes to include in the address encoding.
         :type address_attributes: dict
-
         :param address_type: The type of Byron address to generate (default: Cardano.ADDRESS_TYPES.PUBLIC_KEY).
         :type address_type: str
 
@@ -233,10 +232,8 @@ class CardanoAddress(IAddress):
 
         :param public_key: The public key to encode.
         :type public_key: Union[bytes, str, IPublicKey]
-
         :param chain_code: The chain code associated with the address.
         :type chain_code: Union[bytes, str]
-
         :param address_type: The type of Byron address to generate (default: Cardano.ADDRESS_TYPES.PUBLIC_KEY).
         :type address_type: str
 
@@ -280,16 +277,12 @@ class CardanoAddress(IAddress):
 
         :param public_key: The public key to encode.
         :type public_key: Union[bytes, str, IPublicKey]
-
         :param path: The hierarchical deterministic (HD) path for address derivation.
         :type path: str
-
         :param path_key: The HD path key used for encryption.
         :type path_key: Union[bytes, str]
-
         :param chain_code: The chain code associated with the address.
         :type chain_code: Union[bytes, str]
-
         :param address_type: The type of Byron address to generate (default: Cardano.ADDRESS_TYPES.PUBLIC_KEY).
         :type address_type: str
 

@@ -38,16 +38,6 @@ class EOSAddress(IAddress):
 
     @classmethod
     def compute_checksum(cls, pub_key_bytes: bytes) -> bytes:
-        """
-        Computes the checksum for the given public key bytes.
-
-        :param pub_key_bytes: The public key bytes to compute the checksum for.
-        :type pub_key_bytes: bytes
-
-        :return: The computed checksum.
-        :rtype: bytes
-        """
-
         return ripemd160(pub_key_bytes)[:cls.checksum_length]
 
     @classmethod
@@ -57,7 +47,6 @@ class EOSAddress(IAddress):
 
         :param public_key: The public key to encode.
         :type public_key: Union[bytes, str, IPublicKey]
-
         :param kwargs: Additional keyword arguments.
         :type kwargs: Any
 
@@ -81,7 +70,6 @@ class EOSAddress(IAddress):
 
         :param address: The EOS address to decode.
         :type address: str
-
         :param kwargs: Additional keyword arguments.
         :type kwargs: Any
 

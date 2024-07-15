@@ -46,7 +46,6 @@ class P2PKHAddress(IAddress):
 
         :param public_key: The public key to encode.
         :type public_key: Union[bytes, str, IPublicKey]
-
         :param kwargs: Additional keyword arguments.
             - public_key_address_prefix: Address prefix for the public key (optional).
             - public_key_type: Type of the public key (optional).
@@ -82,7 +81,6 @@ class P2PKHAddress(IAddress):
 
         :param address: The address string to decode.
         :type address: str
-
         :param kwargs: Additional keyword arguments.
             - public_key_address_prefix: Address prefix for the public key (optional).
             - alphabet: Custom alphabet for decoding (optional).

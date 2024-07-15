@@ -42,7 +42,6 @@ class OKTChainAddress(IAddress):
 
         :param public_key: The public key to encode.
         :type public_key: Union[bytes, str, IPublicKey]
-
         :param kwargs: Additional keyword arguments.
             - hrp: Human-readable part (optional).
         :type kwargs: Any

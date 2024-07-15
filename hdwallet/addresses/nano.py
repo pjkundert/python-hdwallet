@@ -42,16 +42,6 @@ class NanoAddress(IAddress):
 
     @classmethod
     def compute_checksum(cls, public_key: bytes) -> bytes:
-        """
-        Compute the checksum for a given public key using Blake2b-40.
-
-        :param public_key: The public key bytes.
-        :type public_key: bytes
-
-        :return: The computed checksum.
-        :rtype: bytes
-        """
-
         return bytes_reverse(blake2b_40(public_key))
 
     @classmethod
@@ -61,7 +51,6 @@ class NanoAddress(IAddress):
 
         :param public_key: The public key to encode.
         :type public_key: Union[bytes, str, IPublicKey]
-
         :param kwargs: Additional keyword arguments.
         :type kwargs: Any
 
@@ -87,7 +76,6 @@ class NanoAddress(IAddress):
 
         :param address: The address string to decode.
         :type address: str
-
         :param kwargs: Additional keyword arguments.
         :type kwargs: Any
 

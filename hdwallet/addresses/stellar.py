@@ -44,16 +44,6 @@ class StellarAddress(IAddress):
 
     @staticmethod
     def compute_checksum(public_key: bytes) -> bytes:
-        """
-        Compute a checksum for the given public key using XMODEM CRC.
-
-        :param public_key: The public key bytes.
-        :type public_key: bytes
-
-        :return: The computed checksum.
-        :rtype: bytes
-        """
-
         return bytes_reverse(xmodem_crc(public_key))
 
     @classmethod

@@ -41,7 +41,6 @@ class MultiversXAddress(IAddress):
 
         :param public_key: The public key to encode, can be bytes, str, or IPublicKey.
         :type public_key: Union[bytes, str, IPublicKey]
-
         :param kwargs: Additional keyword arguments.
             - hrp: Human-readable part (optional).
         :type kwargs: Any
@@ -64,7 +63,6 @@ class MultiversXAddress(IAddress):
 
         :param address: The address string to decode.
         :type address: str
-
         :param kwargs: Additional keyword arguments.
             - hrp: Human-readable part (optional).
         :type kwargs: Any

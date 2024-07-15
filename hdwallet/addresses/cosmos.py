@@ -43,7 +43,6 @@ class CosmosAddress(IAddress):
 
         :param public_key: The public key to be encoded.
         :type public_key: Union[bytes, str, IPublicKey]
-
         :param kwargs: Additional keyword arguments, including "hrp".
         :type kwargs: Any
 
@@ -68,7 +67,6 @@ class CosmosAddress(IAddress):
 
         :param address: The Bech32 Cosmos address to be decoded.
         :type address: str
-
         :param kwargs: Additional keyword arguments, including "hrp".
         :type kwargs: Any
 
