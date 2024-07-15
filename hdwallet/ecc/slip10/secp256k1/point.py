@@ -43,11 +43,6 @@ class SLIP10Secp256k1PointCoincurve(IPoint):
 
         :return: The name of the algorithm.
         :rtype: str
-
-        >>> from hdwallet.ecc.slip10.secp256k1.point import SLIP10Secp256k1PointCoincurve
-        >>> ecc:  = SLIP10Secp256k1PointCoincurve(point=...)
-        >>> ecc.name()
-        "SLIP10-Secp256k1"
         """
 
         return "SLIP10-Secp256k1"
@@ -61,12 +56,9 @@ class SLIP10Secp256k1PointCoincurve(IPoint):
         :type cls: Type
         :param point_bytes: The bytes representing the point.
         :type point_bytes: bytes
+
         :return: A point object created from the provided bytes.
         :rtype: IPoint
-
-        >>> from hdwallet.ecc.slip10.secp256k1.point import SLIP10Secp256k1PointCoincurve
-        >>> SLIP10Secp256k1PointCoincurve.from_bytes(point_bytes=...)
-        "..."
         """
 
         if len(point_bytes) == SLIP10_SECP256K1_CONST.PUBLIC_KEY_UNCOMPRESSED_BYTE_LENGTH - 1:
@@ -86,12 +78,9 @@ class SLIP10Secp256k1PointCoincurve(IPoint):
         :type x: int
         :param y: The y-coordinate of the point.
         :type y: int
+
         :return: A point object representing the coordinates (x, y).
         :rtype: IPoint
-
-        >>> from hdwallet.ecc.slip10.secp256k1.point import SLIP10Secp256k1PointCoincurve
-        >>> SLIP10Secp256k1PointCoincurve.from_coordinates(x=..., y=...)
-        "..."
         """
 
         try:
@@ -105,10 +94,6 @@ class SLIP10Secp256k1PointCoincurve(IPoint):
 
         :return: The underlying public key object.
         :rtype: Any
-
-        >>> from hdwallet.ecc.slip10.secp256k1.point import SLIP10Secp256k1PointCoincurve
-        >>> SLIP10Secp256k1PointCoincurve.underlying_object()
-        "..."
         """
 
         return self.public_key
@@ -119,10 +104,6 @@ class SLIP10Secp256k1PointCoincurve(IPoint):
 
         :return: The x of the point.
         :rtype: int
-
-        >>> from hdwallet.ecc.slip10.secp256k1.point import SLIP10Secp256k1PointCoincurve
-        >>> SLIP10Secp256k1PointCoincurve.x()
-        ...
         """
 
         return self.public_key.point()[0]
@@ -133,10 +114,6 @@ class SLIP10Secp256k1PointCoincurve(IPoint):
 
         :return: The y of the point.
         :rtype: int
-
-        >>> from hdwallet.ecc.slip10.secp256k1.point import SLIP10Secp256k1PointCoincurve
-        >>> SLIP10Secp256k1PointCoincurve.y()
-        ...
         """
 
         return self.public_key.point()[1]
@@ -147,10 +124,6 @@ class SLIP10Secp256k1PointCoincurve(IPoint):
 
         :return: The raw bytes of the public key.
         :rtype: bytes
-
-        >>> from hdwallet.ecc.slip10.secp256k1.point import SLIP10Secp256k1PointCoincurve
-        >>> SLIP10Secp256k1PointCoincurve.raw()
-        ...
         """
 
         return self.raw_decoded()
@@ -161,10 +134,6 @@ class SLIP10Secp256k1PointCoincurve(IPoint):
 
         :return: The encoded raw bytes of the public key.
         :rtype: bytes
-
-        >>> from hdwallet.ecc.slip10.secp256k1.point import SLIP10Secp256k1PointCoincurve
-        >>> SLIP10Secp256k1PointCoincurve.raw_encoded()
-        ...
         """
 
         return self.public_key.format(True)
@@ -175,10 +144,6 @@ class SLIP10Secp256k1PointCoincurve(IPoint):
 
         :return: The decoded raw bytes of the public key.
         :rtype: bytes
-
-        >>> from hdwallet.ecc.slip10.secp256k1.point import SLIP10Secp256k1PointCoincurve
-        >>> SLIP10Secp256k1PointCoincurve.raw_decoded()
-        ...
         """
 
         return self.public_key.format(False)[1:]
@@ -192,10 +157,6 @@ class SLIP10Secp256k1PointCoincurve(IPoint):
 
         :return: A new instance of the class with the resulting point after addition.
         :rtype: IPoint
-
-        >>> from hdwallet.ecc.slip10.secp256k1.point import SLIP10Secp256k1PointCoincurve
-        >>> SLIP10Secp256k1PointCoincurve.__add__(point=...)
-        "..."
         """
 
         return self.__class__(self.public_key.combine([point.underlying_object()]))
@@ -210,10 +171,6 @@ class SLIP10Secp256k1PointCoincurve(IPoint):
 
         :return: A new instance of the class with the resulting point after addition.
         :rtype: IPoint
-
-        >>> from hdwallet.ecc.slip10.secp256k1.point import SLIP10Secp256k1PointCoincurve
-        >>> SLIP10Secp256k1PointCoincurve.__radd__(point=...)
-        "..."
         """
 
         return self + point
@@ -227,10 +184,6 @@ class SLIP10Secp256k1PointCoincurve(IPoint):
 
         :return: A new instance of the class with the resulting point after multiplication.
         :rtype: IPoint
-
-        >>> from hdwallet.ecc.slip10.secp256k1.point import SLIP10Secp256k1PointCoincurve
-        >>> SLIP10Secp256k1PointCoincurve.__mul__(scalar=...)
-        "..."
         """
 
         bytes_num = None or ((scalar.bit_length() if scalar > 0 else 1) + 7) // 8
@@ -246,9 +199,6 @@ class SLIP10Secp256k1PointCoincurve(IPoint):
         :return: Resulting point after scalar multiplication.
         :rtype: IPoint
 
-        >>> from hdwallet.ecc.slip10.secp256k1.point import SLIP10Secp256k1PointCoincurve
-        >>> SLIP10Secp256k1PointCoincurve.__rmul__(scalar=...)
-        "..."
         """
 
         return self * scalar
@@ -275,11 +225,6 @@ class SLIP10Secp256k1PointECDSA(IPoint):
 
         :return: The name of the ecc class.
         :rtype: str
-
-        >>> from hdwallet.ecc.slip10.secp256k1.point import SLIP10Secp256k1PointECDSA
-        >>> ecc:  = SLIP10Secp256k1PointECDSA(point=...)
-        >>> ecc.name()
-        "SLIP10-Secp256k1"
         """
 
         return "SLIP10-Secp256k1"
@@ -294,10 +239,6 @@ class SLIP10Secp256k1PointECDSA(IPoint):
 
         :return: An instance of IPoint representing the decoded point.
         :rtype: IPoint
-
-        >>> from hdwallet.ecc.slip10.secp256k1.point import SLIP10Secp256k1PointECDSA
-        >>> SLIP10Secp256k1PointECDSA.from_bytes(point_bytes=...)
-        "..."
         """
 
         try:
@@ -321,16 +262,11 @@ class SLIP10Secp256k1PointECDSA(IPoint):
 
         :param x: The x of the point.
         :type x: int
-
         :param y: The y of the point.
         :type y: int
 
         :return: An instance of IPoint representing the point with the given coordinates.
         :rtype: IPoint
-
-        >>> from hdwallet.ecc.slip10.secp256k1.point import SLIP10Secp256k1PointECDSA
-        >>> SLIP10Secp256k1PointECDSA.from_coordinates(x=..., y=...)
-        "..."
         """
 
         return cls(
@@ -345,10 +281,6 @@ class SLIP10Secp256k1PointECDSA(IPoint):
 
         :return: The underlying point object.
         :rtype: Any
-
-        >>> from hdwallet.ecc.slip10.secp256k1.point import SLIP10Secp256k1PointECDSA
-        >>> SLIP10Secp256k1PointECDSA.underlying_object()
-        "..."
         """
 
         return self.point
@@ -359,10 +291,6 @@ class SLIP10Secp256k1PointECDSA(IPoint):
 
         :return: The x of the point.
         :rtype: int
-
-        >>> from hdwallet.ecc.slip10.secp256k1.point import SLIP10Secp256k1PointECDSA
-        >>> SLIP10Secp256k1PointECDSA.x()
-        ...
         """
 
         return self.point.x()
@@ -373,10 +301,6 @@ class SLIP10Secp256k1PointECDSA(IPoint):
 
         :return: The y of the point.
         :rtype: int
-
-        >>> from hdwallet.ecc.slip10.secp256k1.point import SLIP10Secp256k1PointECDSA
-        >>> SLIP10Secp256k1PointECDSA.y()
-        ...
         """
 
         return self.point.y()
@@ -387,10 +311,6 @@ class SLIP10Secp256k1PointECDSA(IPoint):
 
         :return: The raw bytes representation of the point.
         :rtype: bytes
-
-        >>> from hdwallet.ecc.slip10.secp256k1.point import SLIP10Secp256k1PointECDSA
-        >>> SLIP10Secp256k1PointECDSA.raw()
-        ...
         """
 
         return self.raw_decoded()
@@ -401,10 +321,6 @@ class SLIP10Secp256k1PointECDSA(IPoint):
 
         :return: The raw encoded bytes of the point.
         :rtype: bytes
-
-        >>> from hdwallet.ecc.slip10.secp256k1.point import SLIP10Secp256k1PointECDSA
-        >>> SLIP10Secp256k1PointECDSA.raw_encoded()
-        ...
         """
 
         try:
@@ -419,10 +335,6 @@ class SLIP10Secp256k1PointECDSA(IPoint):
 
         :return: The raw bytes of the point.
         :rtype: bytes
-
-        >>> from hdwallet.ecc.slip10.secp256k1.point import SLIP10Secp256k1PointECDSA
-        >>> SLIP10Secp256k1PointECDSA.raw_decoded()
-        ...
         """
 
         try:
@@ -442,10 +354,6 @@ class SLIP10Secp256k1PointECDSA(IPoint):
 
         :return: A new instance of the class representing the result of the addition.
         :rtype: IPoint
-
-        >>> from hdwallet.ecc.slip10.secp256k1.point import SLIP10Secp256k1PointECDSA
-        >>> SLIP10Secp256k1PointECDSA.__add__(point=...)
-        "..."
         """
 
         return self.__class__(self.point + point.underlying_object())
@@ -459,10 +367,6 @@ class SLIP10Secp256k1PointECDSA(IPoint):
 
         :return: A new instance of the class representing the result of the addition.
         :rtype: IPoint
-
-        >>> from hdwallet.ecc.slip10.secp256k1.point import SLIP10Secp256k1PointECDSA
-        >>> SLIP10Secp256k1PointECDSA.__radd__(point=...)
-        "..."
         """
 
         return self + point
@@ -476,10 +380,6 @@ class SLIP10Secp256k1PointECDSA(IPoint):
 
         :return: A new instance of the class representing the result of scalar multiplication.
         :rtype: IPoint
-
-        >>> from hdwallet.ecc.slip10.secp256k1.point import SLIP10Secp256k1PointECDSA
-        >>> SLIP10Secp256k1PointECDSA.__mul__(scalar=...)
-        "..."
         """
 
         return self.__class__(self.point * scalar)
@@ -493,10 +393,6 @@ class SLIP10Secp256k1PointECDSA(IPoint):
 
         :return: The result of scalar multiplication.
         :rtype: IPoint
-
-        >>> from hdwallet.ecc.slip10.secp256k1.point import SLIP10Secp256k1PointECDSA
-        >>> SLIP10Secp256k1PointECDSA.__rmul__(scalar=...)
-        "..."
         """
 
         return self * scalar

@@ -16,11 +16,6 @@ class SLIP10Ed25519Blake2bPoint(SLIP10Ed25519Point):
 
         :return: The name of the ecc class.
         :rtype: str
-
-        >>> from hdwallet.ecc.slip10.ed25519.blake2b.point import SLIP10Ed25519Blake2bPoint
-        >>> ecc:  = SLIP10Ed25519Blake2bPoint(point=...)
-        >>> ecc.name()
-        "SLIP10-Ed25519-Blake2b"
         """
 
         return "SLIP10-Ed25519-Blake2b"

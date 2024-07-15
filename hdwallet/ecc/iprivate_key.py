@@ -53,10 +53,6 @@ class IPrivateKey(ABC):
 
         :return: True if the point is valid, False otherwise.
         :rtype: bool
-
-        >>> from {module_path} import {class_name}
-        >>> {class_name}.is_valid_bytes(private_key=...)
-        ...
         """
 
         try:

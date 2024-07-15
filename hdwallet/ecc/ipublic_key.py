@@ -67,10 +67,6 @@ class IPublicKey(ABC):
 
         :return: True if the byte array represents a valid public key, False otherwise.
         :rtype: bool
-
-        >>> from {module_path} import {class_name}
-        >>> {class_name}.is_valid_bytes(public_key=...)
-        ...
         """
 
         try:
@@ -89,10 +85,6 @@ class IPublicKey(ABC):
 
         :return: True if the point is valid, False otherwise.
         :rtype: bool
-
-        >>> from {module_path} import {class_name}
-        >>> {class_name}.is_valid_point(point=...)
-        ...
         """
 
         try:
