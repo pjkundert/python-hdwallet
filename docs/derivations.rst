@@ -164,33 +164,31 @@ True
 .. autoclass:: hdwallet.derivations.cip1852.CIP1852Derivation
     :members:
 
->>> from hdwallet.derivations.cip1852 import CIP1852Derivation
+>>> from hdwallet.derivations.cip1852 import CIP1852Derivation, ROLES
 >>> CIP1852Derivation.name()
 'CIP1852'
 >>> cip1852_derivation: CIP1852Derivation = CIP1852Derivation()
 >>> cip1852_derivation.path()
 "m/1852'/1815'/0'/0/0"
->>> cip1852_derivation.from_coin_type(coin_type=11)
-<hdwallet.derivations.cip1852.CIP1852Derivation object at 0x0000021BDB207EE0>
 >>> cip1852_derivation.from_account(account=1)
-<hdwallet.derivations.cip1852.CIP1852Derivation object at 0x0000021BDB207EE0>
->>>
+<hdwallet.derivations.cip1852.CIP1852Derivation object at 0x000002601E4E4D00>
+>>> cip1852_derivation.from_role(role="external-chain")
+<hdwallet.derivations.cip1852.CIP1852Derivation object at 0x000002601E4E4D00>
 >>> cip1852_derivation.from_address(address=10)
-<hdwallet.derivations.cip1852.CIP1852Derivation object at 0x0000021BDB207EE0>
->>> cip1852_derivation.from_coin_type(coin_type=11)
-<hdwallet.derivations.cip1852.CIP1852Derivation object at 0x0000021BDB207EE0>
+<hdwallet.derivations.cip1852.CIP1852Derivation object at 0x000002601E4E4D00>
 >>> cip1852_derivation.path()
-"m/1852'/11'/1'/0/10"
+"m/1852'/1815'/1'/0/10"
 >>> cip1852_derivation.indexes()
-[2147485500, 2147483659, 2147483649, 0, 10]
->>> cip1852_derivation: CIP1852Derivation = CIP1852Derivation(coin_type=11, account=1, role=0, address=10)
+[2147485500, 2147485463, 2147483649, 0, 10]
+>>> cip1852_derivation: CIP1852Derivation = CIP1852Derivation(account=1, role=ROLES.EXTERNAL_CHAIN, address=10)
 >>> cip1852_derivation.purpose()
 1852
 >>> cip1852_derivation.coin_type()
-11
+1815
 >>> cip1852_derivation.account()
 1
->>>
+>>> cip1852_derivation.role()
+'external-chain'
 >>> cip1852_derivation.address()
 10
 
@@ -212,7 +210,6 @@ True
 .. autoclass:: hdwallet.derivations.electrum.ElectrumDerivation
     :members:
 
->>> from hdwallet.derivations import CHANGES
 >>> from hdwallet.derivations.electrum import ElectrumDerivation
 >>> ElectrumDerivation.name()
 'Electrum'
