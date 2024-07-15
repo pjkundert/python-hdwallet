@@ -31,7 +31,6 @@ class BIP49HD(BIP44HD):
 
         :param ecc: Elliptic curve cryptography implementation.
         :type ecc: Type[IEllipticCurveCryptography]
-
         :param public_key_type: Type of public key to use (default: COMPRESSED).
         :type public_key_type: str
 
@@ -54,11 +53,6 @@ class BIP49HD(BIP44HD):
 
         :return: The name of the bip class.
         :rtype: str
-
-        >>> from hdwallet.hds.bip49 import BIP49HD
-        >>> bip49: BIP49HD = BIP49HD(bip="...")
-        >>> bip49.name()
-        "BIP49"
         """
         return "BIP49"
 
@@ -71,10 +65,6 @@ class BIP49HD(BIP44HD):
 
         :return: The updated BIP49HD instance.
         :rtype: BIP49HD
-
-        >>> from hdwallet.hds.bip49 import BIP49HD
-        >>> BIP49HD.from_derivation(derivation="...")
-        "..."
         """
 
         if not isinstance(derivation, BIP49Derivation):
@@ -96,16 +86,11 @@ class BIP49HD(BIP44HD):
 
         :param version: The version bytes or integer for the xprivate key.
         :type version: Union[bytes, int]
-
         :param encoded: Whether to encode the xprivate key or return it in raw form, defaults to True.
         :type encoded: bool
 
         :return: The root extended private key (xprivate key) if available, otherwise None.
         :rtype: Optional[str]
-
-        >>> from hdwallet.hds.bip49 import BIP49HD
-        >>> BIP49HD.root_xprivate_key(version=..., encoded=...)
-        "..."
         """
 
         return super(BIP44HD, self).root_xprivate_key(version=version, encoded=encoded)
@@ -118,16 +103,11 @@ class BIP49HD(BIP44HD):
 
         :param version: The version bytes or integer for the xpublic key.
         :type version: Union[bytes, int]
-
         :param encoded: Whether to encode the xpublic key or return it in raw form, defaults to True.
         :type encoded: bool
 
         :return: The root extended public key (xpublic key) if available, otherwise None.
         :rtype: Optional[str]
-
-        >>> from hdwallet.hds.bip49 import BIP49HD
-        >>> BIP49HD.root_xpublic_key(version=..., encoded=...)
-        "..."
         """
 
         return super(BIP44HD, self).root_xpublic_key(version=version, encoded=encoded)
@@ -140,16 +120,11 @@ class BIP49HD(BIP44HD):
 
             :param version: The version bytes or integer for the xprivate key.
             :type version: Union[bytes, int]
-
             :param encoded: Whether to encode the xprivate key or return it in raw form, defaults to True.
             :type encoded: bool
 
             :return: The extended private key (xprivate key) if available, otherwise None.
             :rtype: Optional[str]
-
-            >>> from hdwallet.hds.bip49 import BIP49HD
-            >>> BIP49HD.xprivate_key(version=..., encoded=...)
-            "..."
             """
 
         return super(BIP44HD, self).xprivate_key(version=version, encoded=encoded)
@@ -162,16 +137,11 @@ class BIP49HD(BIP44HD):
 
         :param version: The version bytes or integer for the xpublic key.
         :type version: Union[bytes, int]
-
         :param encoded: Whether to encode the xpublic key or return it in raw form, defaults to True.
         :type encoded: bool
 
         :return: The extended public key (xpublic key) if available, otherwise None.
         :rtype: Optional[str]
-
-        >>> from hdwallet.hds.bip49 import BIP49HD
-        >>> BIP49HD.xpublic_key(version=..., encoded=...)
-        "..."
         """
 
         return super(BIP44HD, self).xpublic_key(version=version, encoded=encoded)
@@ -187,10 +157,6 @@ class BIP49HD(BIP44HD):
 
         :return: The P2WPKH-in-P2SH encoded address.
         :rtype: str
-
-        >>> from hdwallet.hds.bip49 import BIP49HD
-        >>> BIP49HD.address(script_address_prefix=...)
-        "..."
         """
 
         return P2WPKHInP2SHAddress.encode(

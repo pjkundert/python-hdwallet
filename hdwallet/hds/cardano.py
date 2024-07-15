@@ -66,11 +66,6 @@ class CardanoHD(BIP32HD):
 
         :return: The name of the cardano class.
         :rtype: str
-
-        >>> from hdwallet.hds.cardano import CardanoHD
-        >>> cardano: CardanoHD = CardanoHD(cardano=...)
-        >>> cardano.name()
-        "Cardano"
         """
         return "Cardano"
 
@@ -80,16 +75,11 @@ class CardanoHD(BIP32HD):
 
         :param seed: Seed to derive keys from. Can be either a string or an instance of ISeed.
         :type seed: Union[str, ISeed]
-
         :param passphrase: Optional passphrase for key derivation (default is None).
         :type passphrase: Optional[str]
 
         :return: This CardanoHD instance with derived keys set.
         :rtype: CardanoHD
-
-        >>> from hdwallet.hds.cardano import CardanoHD
-        >>> CardanoHD.from_seed(seed=..., passphrase="...")
-        "..."
         """
 
         self._seed = get_bytes(
@@ -227,10 +217,6 @@ class CardanoHD(BIP32HD):
 
         :return: This CardanoHD instance initialized with the provided private key.
         :rtype: CardanoHD
-
-        >>> from hdwallet.hds.cardano import CardanoHD
-        >>> CardanoHD.from_private_key(private_key="...")
-        "..."
         """
 
         if self._cardano_type in [
@@ -251,10 +237,6 @@ class CardanoHD(BIP32HD):
 
         :return: This CardanoHD instance initialized with the provided public key.
         :rtype: CardanoHD
-
-        >>> from hdwallet.hds.cardano import CardanoHD
-        >>> CardanoHD.from_public_key(public_key="...")
-        "..."
         """
 
         if self._cardano_type in [
@@ -274,10 +256,6 @@ class CardanoHD(BIP32HD):
 
         :return: A new CardanoHD instance derived at the specified index.
         :rtype: CardanoHD or None
-
-        >>> from hdwallet.hds.cardano import CardanoHD
-        >>> CardanoHD.drive(index=...)
-        "..."
         """
 
         hmac_half_length: int = hashlib.sha512().digest_size // 2
@@ -417,10 +395,6 @@ class CardanoHD(BIP32HD):
 
         :return: The derived path key as a hexadecimal string.
         :rtype: str or None
-
-        >>> from hdwallet.hds.cardano import CardanoHD
-        >>> CardanoHD.path_key()
-        "..."
         """
 
         if self._cardano_type == Cardano.TYPES.BYRON_LEGACY:
@@ -438,10 +412,6 @@ class CardanoHD(BIP32HD):
 
         :return: Generated Cardano address as a string.
         :rtype: str
-
-        >>> from hdwallet.hds.cardano import CardanoHD
-        >>> CardanoHD.address()
-        "..."
         """
 
         if self._cardano_type == Cardano.TYPES.BYRON_LEGACY:

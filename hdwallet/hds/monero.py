@@ -80,11 +80,6 @@ class MoneroHD(IHD):
 
         :return: The name of the monero class.
         :rtype: str
-
-        >>> from hdwallet.hds.monero import MoneroHD
-        >>> monero: MoneroHD = MoneroHD(monero=...)
-        >>> monero.name()
-        "Monero"
         """
         return "Monero"
 
@@ -94,10 +89,6 @@ class MoneroHD(IHD):
 
         :return: Updated MoneroHD instance.
         :rtype: MoneroHD
-
-        >>> from hdwallet.hds.monero import MoneroHD
-        >>> MoneroHD.__update__()
-        "..."
         """
 
         self.from_derivation(derivation=self._derivation)
@@ -109,15 +100,10 @@ class MoneroHD(IHD):
 
         :param seed: Seed value to initialize the HD wallet.
         :type seed: Union[bytes, str, ISeed]
-
         :param kwargs: Additional keyword arguments for customization.
 
         :return: Initialized MoneroHD instance.
         :rtype: MoneroHD
-
-        >>> from hdwallet.hds.monero import MoneroHD
-        >>> MoneroHD.from_seed(seed=...)
-        "..."
         """
 
         self._seed = get_bytes(
@@ -139,10 +125,6 @@ class MoneroHD(IHD):
 
         :return: Initialized MoneroHD instance.
         :rtype: MoneroHD
-
-        >>> from hdwallet.hds.monero import MoneroHD
-        >>> MoneroHD.from_private_key(private_key=...)
-        "..."
         """
 
         self._private_key = (
@@ -161,10 +143,6 @@ class MoneroHD(IHD):
 
         :return: Initialized MoneroHD instance.
         :rtype: MoneroHD
-
-        >>> from hdwallet.hds.monero import MoneroHD
-        >>> MoneroHD.from_derivation(derivation="...")
-        "..."
         """
 
         if not isinstance(derivation, MoneroDerivation):
@@ -184,10 +162,6 @@ class MoneroHD(IHD):
 
         :return: Updated MoneroHD instance with the new derivation.
         :rtype: MoneroHD
-
-        >>> from hdwallet.hds.monero import MoneroHD
-        >>> MoneroHD.update_derivation(derivation="...")
-        "..."
         """
         return self.from_derivation(derivation=derivation)
 
@@ -197,10 +171,6 @@ class MoneroHD(IHD):
 
         :return: Updated MoneroHD instance with cleaned derivation.
         :rtype: MoneroHD
-
-        >>> from hdwallet.hds.monero import MoneroHD
-        >>> MoneroHD.clean_derivation()
-        "..."
         """
         self._derivation.clean()
         self.__update__()
@@ -215,10 +185,6 @@ class MoneroHD(IHD):
 
         :return: Updated MoneroHD instance initialized from the spend private key.
         :rtype: MoneroHD
-
-        >>> from hdwallet.hds.monero import MoneroHD
-        >>> MoneroHD.from_spend_private_key(spend_private_key=...)
-        "..."
         """
 
         if isinstance(spend_private_key, (bytes, str)):
@@ -240,16 +206,11 @@ class MoneroHD(IHD):
 
         :param view_private_key: View private key or seed to initialize from.
         :type view_private_key: Union[bytes, str, IPrivateKey]
-
         :param spend_public_key: Spend public key to initialize from.
         :type spend_public_key: Union[bytes, str, IPublicKey]
 
         :return: Updated MoneroHD instance initialized from the watch-only keys.
         :rtype: MoneroHD
-
-        >>> from hdwallet.hds.monero import MoneroHD
-        >>> MoneroHD.from_watch_only(view_private_key=..., spend_public_key=...)
-        "..."
         """
 
         if isinstance(view_private_key, (bytes, str)):
@@ -269,16 +230,11 @@ class MoneroHD(IHD):
 
         :param minor_index: Minor index for sub-address derivation.
         :type minor_index: int
-
         :param major_index: Major index for sub-address derivation.
         :type major_index: int
 
         :return: Tuple containing the derived sub-address spend and view public keys.
         :rtype: Tuple[IPublicKey, IPublicKey]
-
-        >>> from hdwallet.hds.monero import MoneroHD
-        >>> MoneroHD.drive(minor_index=..., major_index=...)
-        ...
         """
 
         maximum_index: int = 2 ** 32 - 1
@@ -326,10 +282,6 @@ class MoneroHD(IHD):
 
         :return: Seed used in this instance, or None if not set.
         :rtype: Optional[str]
-
-        >>> from hdwallet.hds.monero import MoneroHD
-        >>> MoneroHD.seed()
-        "..."
         """
         return bytes_to_string(self._seed) if self._seed else None
 
@@ -339,10 +291,6 @@ class MoneroHD(IHD):
 
         :return: Private key used in this instance, or None if not set.
         :rtype: Optional[str]
-
-        >>> from hdwallet.hds.monero import MoneroHD
-        >>> MoneroHD.private_key()
-        "..."
         """
 
         return bytes_to_string(self._private_key) if self._private_key else None
@@ -353,10 +301,6 @@ class MoneroHD(IHD):
 
         :return: Spend private key used in this instance, or None if not set.
         :rtype: Optional[str]
-
-        >>> from hdwallet.hds.monero import MoneroHD
-        >>> MoneroHD.spend_private_key()
-        "..."
         """
         return bytes_to_string(self._spend_private_key.raw()) if self._spend_private_key else None
 
@@ -366,10 +310,6 @@ class MoneroHD(IHD):
 
         :return: View private key used in this instance.
         :rtype: str
-
-        >>> from hdwallet.hds.monero import MoneroHD
-        >>> MoneroHD.view_private_key()
-        "..."
         """
 
         return bytes_to_string(
@@ -382,10 +322,6 @@ class MoneroHD(IHD):
 
         :return: Spend public key used in this instance.
         :rtype: str
-
-        >>> from hdwallet.hds.monero import MoneroHD
-        >>> MoneroHD.spend_public_key()
-        "..."
         """
 
         return bytes_to_string(self._spend_public_key.raw_compressed())
@@ -396,10 +332,6 @@ class MoneroHD(IHD):
 
         :return: View public key used in this instance.
         :rtype: str
-
-        >>> from hdwallet.hds.monero import MoneroHD
-        >>> MoneroHD.view_public_key()
-        "..."
         """
 
         return bytes_to_string(self._view_public_key.raw_compressed())
@@ -419,10 +351,6 @@ class MoneroHD(IHD):
 
         :return: Primary Monero address.
         :rtype: str
-
-        >>> from hdwallet.hds.monero import MoneroHD
-        >>> MoneroHD.integrated_address(payment_id=...)
-        "..."
         """
 
         return MoneroAddress.encode(
@@ -445,10 +373,6 @@ class MoneroHD(IHD):
 
         :return: Generated sub-address.
         :rtype: str
-
-        >>> from hdwallet.hds.monero import MoneroHD
-        >>> MoneroHD.sub_address(minor=..., major=...)
-        "..."
         """
 
         if minor is None and major is None:
@@ -481,10 +405,6 @@ class MoneroHD(IHD):
         :param kwargs: Additional keyword arguments depending on the address type:
 
         :return: str - Generated Monero address.
-
-        >>> from hdwallet.hds.monero import MoneroHD
-        >>> MoneroHD.address(address_type="...")
-        "..."
         """
 
         if address_type == Monero.ADDRESS_TYPES.STANDARD:
