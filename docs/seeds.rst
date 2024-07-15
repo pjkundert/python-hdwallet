@@ -4,12 +4,6 @@
 Seeds
 =====
 
-Seeds in blockchain and cryptography provide essential randomness for generating
-secure cryptographic keys, making them difficult to guess or reproduce. They enable
-the creation of multiple keys and addresses from a single source, enhancing security
-and account management.
-
-
 .. autoclass:: hdwallet.seeds.SEEDS
     :members:
 
@@ -56,7 +50,7 @@ True
 >>> bip39_seed.name()
 'BIP39'
 >>> bip39_seed.seed()
-'ea3cf47a345148120cad973dc4ecf06459b627e6b022f6b3c09785804221168c'
+'b43f7e1a19a71f3fab6f7a125e3c1c11789c1144a91c480928f1bdf48e083e623db7ff6abf865696388899cd49d7299601bba77afd95d1c0bfe897284aaadda2'
 
 
 .. autoclass:: hdwallet.seeds.cardano.CardanoSeed
@@ -80,18 +74,6 @@ True
 '1d9eb3c129f55ca568f20ff85df8ac7c'
 >>> cardano_seed.generate_shelley_ledger(mnemonic="возраст чушь целевой клоун колено кисть против заснуть шоколад хулиган готовый шумно")
 '638a38b69826d3f43539061739363c45b1bc8831c2c0c6f94e2e66e1e3d56de9fdfa86d53615b3c98df4f12de384c3b392e156689d66a2d51759d66422b17117'
-
-.. autoclass:: hdwallet.seeds.monero.MoneroSeed
-    :members:
-
->>> from hdwallet.seeds.monero import MoneroSeed
->>> MoneroSeed.from_mnemonic(mnemonic="签 箱 些 芽 企 靠 除 森 页 摇 降 咱")
-'14910059f5fa36208f3f431447a7037e'
->>>monero_seed: MoneroSeed = MoneroSeed(seed="14910059f5fa36208f3f431447a7037e")
->>> monero_seed.name()
-'Monero'
->>> monero_seed.seed()
-'14910059f5fa36208f3f431447a7037e'
 
 .. autoclass:: hdwallet.seeds.electrum.v1.ElectrumV1Seed
     :members:
@@ -117,3 +99,14 @@ True
 >>> electrumv2_seed.seed()
 'a15b1990667046d688eb0fed7fd8789487c0b919dff86778bf31b5abb83a5d8471bcc9d4a1d2f97eef84ab334bbb30804b4001f73ae7b02353c1e2040f758bb5'
 
+.. autoclass:: hdwallet.seeds.monero.MoneroSeed
+    :members:
+
+>>> from hdwallet.seeds.monero import MoneroSeed
+>>> MoneroSeed.from_mnemonic(mnemonic="签 箱 些 芽 企 靠 除 森 页 摇 降 咱")
+'14910059f5fa36208f3f431447a7037e'
+>>>monero_seed: MoneroSeed = MoneroSeed(seed="14910059f5fa36208f3f431447a7037e")
+>>> monero_seed.name()
+'Monero'
+>>> monero_seed.seed()
+'14910059f5fa36208f3f431447a7037e'

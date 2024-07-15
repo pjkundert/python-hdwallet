@@ -4,10 +4,6 @@
 Entropies
 =========
 
-A measure of randomness or unpredictability in a system.
-It is essential for generating secure cryptographic keys, ensuring
-they are difficult to guess or reproduce by attackers.
-
 .. autoclass:: hdwallet.entropies.ENTROPIES
     :members:
 

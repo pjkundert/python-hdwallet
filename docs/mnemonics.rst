@@ -1,12 +1,8 @@
 :orphan:
 
 =========
-Mnemonic
+Mnemonics
 =========
-
-A mnemonic's randomness or unpredictability is crucial for creating secure
-cryptographic phrases, resisting unauthorized guessing or replication
-attempts by attackers.
 
 .. autoclass:: hdwallet.mnemonics.MNEMONICS
     :members:
