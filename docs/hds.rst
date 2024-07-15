@@ -26,26 +26,44 @@ True
 .. autoclass:: hdwallet.hds.bip32.BIP32HD
     :members:
 
+Example: https://github.com/chainxlab/python-hdwallet/blob/master/clients/bip32.py
+
 .. autoclass:: hdwallet.hds.bip44.BIP44HD
     :members:
+
+Example: https://github.com/chainxlab/python-hdwallet/blob/master/clients/bip44.py
 
 .. autoclass:: hdwallet.hds.bip49.BIP49HD
     :members:
 
+Example: https://github.com/chainxlab/python-hdwallet/blob/master/clients/bip49.py
+
 .. autoclass:: hdwallet.hds.bip84.BIP84HD
     :members:
+
+Example: https://github.com/chainxlab/python-hdwallet/blob/master/clients/bip84.py
 
 .. autoclass:: hdwallet.hds.bip86.BIP86HD
     :members:
 
+Example: https://github.com/chainxlab/python-hdwallet/blob/master/clients/bip86.py
+
 .. autoclass:: hdwallet.hds.bip141.BIP141HD
     :members:
+
+Example: https://github.com/chainxlab/python-hdwallet/blob/master/clients/bip141.py
 
 .. autoclass:: hdwallet.hds.cardano.CardanoHD
     :members:
 
+Example: https://github.com/chainxlab/python-hdwallet/tree/master/clients/cardano
+
 .. autoclass:: hdwallet.hds.electrum.v1.ElectrumV1HD
     :members:
 
+Example: https://github.com/chainxlab/python-hdwallet/blob/master/clients/electrum/v1.py
+
 .. autoclass:: hdwallet.hds.electrum.v2.ElectrumV2HD
     :members:
+
+Example: https://github.com/chainxlab/python-hdwallet/tree/master/clients/electrum/v2
