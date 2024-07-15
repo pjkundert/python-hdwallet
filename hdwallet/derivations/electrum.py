@@ -15,6 +15,13 @@ from .iderivation import IDerivation
 
 
 class ElectrumDerivation(IDerivation):
+    """
+    This class implements the Electrum standard for hierarchical deterministic wallets.
+    Electrum defines a specific path structure for deriving keys from a master seed.
+
+    .. note::
+        This class inherits from the ``IDerivation`` class, thereby ensuring that all functions are accessible.
+    """
 
     _change: Union[Tuple[int, bool], Tuple[int, int, bool]]
     _address: Union[Tuple[int, bool], Tuple[int, int, bool]]
@@ -52,11 +59,6 @@ class ElectrumDerivation(IDerivation):
 
         :return: The name of the derivation class.
         :rtype: str
-
-        >>> from hdwallet.derivations.custom import CustomDerivation
-        >>> derivation: CustomDerivation = CustomDerivation(electrum="...")
-        >>> derivation.name()
-        "Electrum"
         """
 
         return "Electrum"
@@ -70,10 +72,6 @@ class ElectrumDerivation(IDerivation):
 
         :return: The instance of ElectrumDerivation with the updated change index.
         :rtype: ElectrumDerivation
-
-        >>> from hdwallet.derivations.electrum import ElectrumDerivation
-        >>> ElectrumDerivation.from_change(change="...")
-        "..."
         """
 
         self._change = normalize_index(index=change, hardened=False)
@@ -92,10 +90,6 @@ class ElectrumDerivation(IDerivation):
 
         :return: The instance of ElectrumDerivation with the updated address index.
         :rtype: ElectrumDerivation
-
-        >>> from hdwallet.derivations.electrum import ElectrumDerivation
-        >>> ElectrumDerivation.from_address(address="...")
-        "..."
         """
 
         self._address = normalize_index(index=address, hardened=False)
@@ -111,10 +105,6 @@ class ElectrumDerivation(IDerivation):
 
         :return: The instance of ElectrumDerivation after resetting to default state.
         :rtype: ElectrumDerivation
-
-        >>> from hdwallet.derivations.electrum import ElectrumDerivation
-        >>> ElectrumDerivation.clean()
-        ...
         """
 
         self._change = normalize_index(index=0, hardened=False)
@@ -131,10 +121,6 @@ class ElectrumDerivation(IDerivation):
 
         :return: The change index.
         :rtype: int
-
-        >>> from hdwallet.derivations.electrum import ElectrumDerivation
-        >>> ElectrumDerivation.change()
-        ...
         """
 
         return (
@@ -147,11 +133,8 @@ class ElectrumDerivation(IDerivation):
 
         :return: The address index.
         :rtype: int
-
-        >>> from hdwallet.derivations.electrum import ElectrumDerivation
-        >>> ElectrumDerivation.major()
-        ...
         """
+
         return (
             self._address[1] if len(self._address) == 3 else self._address[0]
         )

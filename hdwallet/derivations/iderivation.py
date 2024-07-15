@@ -12,6 +12,9 @@ from ..utils import normalize_derivation
 
 
 class IDerivation:
+    """
+    Interface class for Derivation.
+    """
 
     _path: str = "m/"
     _indexes: List[int] = []
@@ -25,7 +28,6 @@ class IDerivation:
 
         :param path: Optional derivation path string.
         :type path: Optional[str]
-
         :param indexes: Optional list of derivation indexes.
         :type indexes: Optional[List[int]]
 
@@ -43,20 +45,29 @@ class IDerivation:
 
         :return: The derivation path as a string.
         :rtype: str
-
-        >>> from {module_path} import {class_name}
-        >>> derivation: {class_name} = {class_name}(derivation="...")
-        >>> derivation.__str__()
-        "..."
         """
 
         return self._path
 
     @classmethod
     def name(cls) -> str:
+        """
+        Get the name of the derivation class.
+
+        :return: The name of the derivation class.
+        :rtype: str
+        """
+
         pass
 
     def clean(self) -> "IDerivation":
+        """
+        Reset the object's attributes to their initial states or defaults.
+
+        :return: The updated `IDerivation` object itself after cleaning.
+        :rtype: IDerivation
+        """
+
         pass
 
     def path(self) -> str:
@@ -65,11 +76,6 @@ class IDerivation:
 
         :return: The derivation as a string.
         :rtype: str
-
-        >>> from {module_path} import {class_name}
-        >>> derivation: {class_name} = {class_name}(derivation="...")
-        >>> derivation.path()
-        "..."
         """
 
         return self._path
@@ -80,11 +86,6 @@ class IDerivation:
 
         :return: A list of integer indexes used in the derivation path.
         :rtype: List[int]
-
-        >>> from {module_path} import {class_name}
-        >>> derivation: {class_name} = {class_name}(derivation="...")
-        >>> derivation.indexes()
-        ...
         """
 
         return self._indexes
@@ -95,11 +96,6 @@ class IDerivation:
 
         :return: A list of tuples where each tuple contains an index and a boolean indicating whether the index is hardened.
         :rtype: List[Tuple[int, bool]]
-
-        >>> from {module_path} import {class_name}
-        >>> derivation: {class_name} = {class_name}(derivation="...")
-        >>> derivation.derivations()
-        ...
         """
 
         return self._derivations
@@ -110,34 +106,110 @@ class IDerivation:
 
         :return: The number of derivation levels in the path.
         :rtype: int
-
-        >>> from {module_path} import {class_name}
-        >>> {class_name}.depth(derivation="...")
-        ...
         """
 
         return len(self._derivations)
 
     def purpose(self) -> int:
+        """
+        Retrieve the purpose value from the object's `_purpose` attribute.
+
+        This method returns the first element of the `_purpose` attribute,
+        which is assumed to be a list or similar iterable containing integers.
+
+        :return: The purpose value stored as the first element of `_purpose`.
+        :rtype: int
+        """
+
         pass
 
     def coin_type(self) -> int:
+        """
+        Retrieve the coin type value from the object's `_coin_type` attribute.
+
+        This method returns the value of the `_coin_type` attribute,
+        which is expected to be an integer representing the type of coin.
+
+        :return: The coin type value stored in `_coin_type`.
+        :rtype: int
+        """
+
         pass
 
     def account(self) -> int:
+        """
+        Retrieve the account value from the object's `_account` attribute.
+
+        This method returns the value of the `_account` attribute,
+        which is expected to be an integer representing the account identifier.
+
+        :return: The account value stored in `_account`.
+        :rtype: int
+        """
+
         pass
 
     def change(self) -> Union[int, str]:
+        """
+        Retrieve the change value from the object's `_change` attribute.
+
+        This method returns the value of the `_change` attribute,
+        which can be an integer or a string, representing the change status or type.
+
+        :return: The change value stored in `_change`.
+        :rtype: Union[int, str]
+        """
+
         pass
 
     def role(self) -> str:
+        """
+        Retrieve the role value from the object's `_role` attribute.
+
+        This method returns the value of the `_role` attribute,
+        which is expected to be a string representing the role of the object.
+
+        :return: The role value stored in `_role`.
+        :rtype: str
+        """
+
         pass
 
     def address(self) -> int:
+        """
+        Retrieve the address value from the object's `_address` attribute.
+
+        This method returns the value of the `_address` attribute,
+        which is expected to be an integer representing the address.
+
+        :return: The address value stored in `_address`.
+        :rtype: int
+        """
+
         pass
 
     def minor(self) -> int:
+        """
+        Retrieve the minor version value from the object's `_minor` attribute.
+
+        This method returns the value of the `_minor` attribute,
+        which is expected to be an integer representing the minor version number.
+
+        :return: The minor version value stored in `_minor`.
+        :rtype: int
+        """
+
         pass
 
     def major(self) -> int:
+        """
+        Retrieve the major version value from the object's `_major` attribute.
+
+        This method returns the value of the `_major` attribute,
+        which is expected to be an integer representing the major version number.
+
+        :return: The major version value stored in `_major`.
+        :rtype: int
+        """
+
         pass

@@ -10,6 +10,13 @@ from .bip44 import BIP44Derivation
 
 
 class BIP84Derivation(BIP44Derivation):  # https://github.com/bitcoin/bips/blob/master/bip-0084.mediawiki
+    """
+    This class implements the BIP84 standard for hierarchical deterministic wallets.
+    BIP84 defines a specific path structure for deriving keys from a master seed.
+
+    .. note::
+        This class inherits from the ``BIP44Derivation`` class, thereby ensuring that all functions are accessible.
+    """
 
     _purpose: Tuple[int, bool] = (84, True)
 
@@ -20,11 +27,6 @@ class BIP84Derivation(BIP44Derivation):  # https://github.com/bitcoin/bips/blob/
 
         :return: The name of the derivation class.
         :rtype: str
-
-        >>> from hdwallet.derivations.bip84 import BIP84Derivation
-        >>> derivation: BIP84Derivation = BIP84Derivation(bip84="...")
-        >>> derivation.name()
-        "BIP84"
         """
 
         return "BIP84"
