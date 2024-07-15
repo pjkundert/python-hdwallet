@@ -1,8 +1,8 @@
 :orphan:
 
-====
-HD's
-====
+===================================
+Hierarchical Deterministic's (HD's)
+===================================
 
 .. autoclass:: hdwallet.hds.HDS
     :members:
