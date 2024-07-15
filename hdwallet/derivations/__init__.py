@@ -25,6 +25,34 @@ from .iderivation import IDerivation
 
 
 class DERIVATIONS:
+    """
+    A class that manages a dictionary of derivation classes.
+
+    This class provides methods to retrieve names and classes of various derivation implementations,
+    as well as methods to validate and access specific derivation classes by name.
+
+    Here are available entropy names and classes:
+
+    +--------------+-------------------------------------------------------------+
+    | Name         | Class                                                       |
+    +==============+=============================================================+
+    | BIP44        | <class 'hdwallet.derivation.bip44.BIP44Derivation'>         |
+    +--------------+-------------------------------------------------------------+
+    | BIP49        | <class 'hdwallet.derivation.bip49.BIP49Derivation'>         |
+    +--------------+-------------------------------------------------------------+
+    | BIP84        | <class 'hdwallet.derivation.electrum.bip84.BIP84Derivation'>|
+    +--------------+-------------------------------------------------------------+
+    | BIP86        | <class 'hdwallet.derivation.electrum.bip86.BIP86Derivation'>|
+    +--------------+-------------------------------------------------------------+
+    | CIP1852      | <class 'hdwallet.derivation.cip1852.CIP1852Derivation'>     |
+    +--------------+-------------------------------------------------------------+
+    | Custom       | <class 'hdwallet.derivation.custom.CustomDerivation'>       |
+    +--------------+-------------------------------------------------------------+
+    | Electrum     | <class 'hdwallet.derivation.electrum.ElectrumDerivation'>   |
+    +--------------+-------------------------------------------------------------+
+    | Monero       | <class 'hdwallet.derivation.monero.MoneroDerivation'>       |
+    +--------------+-------------------------------------------------------------+
+    """
 
     dictionary: Dict[str, Type[IDerivation]] = {
         BIP44Derivation.name(): BIP44Derivation,
@@ -39,14 +67,37 @@ class DERIVATIONS:
 
     @classmethod
     def names(cls) -> List[str]:
+        """
+        Get the list of derivation class names.
+
+        :return: A list of derivation class names.
+        :rtype: List[str]
+        """
+
         return list(cls.dictionary.keys())
 
     @classmethod
     def classes(cls) -> List[Type[IDerivation]]:
+        """
+        Get the list of derivation classes.
+
+        :return: A list of derivation classes.
+        :rtype: List[Type[IDerivation]]
+        """
+
         return list(cls.dictionary.values())
 
     @classmethod
     def derivation(cls, name: str) -> Type[IDerivation]:
+        """
+        Retrieve an derivation class by its name.
+
+        :param name: The name of the derivation class.
+        :type name: str
+
+        :return: The derivation class corresponding to the given name.
+        :rtype: Type[IDerivation]
+        """
 
         if not cls.is_derivation(name=name):
             raise DerivationError(
@@ -57,6 +108,16 @@ class DERIVATIONS:
 
     @classmethod
     def is_derivation(cls, name: str) -> bool:
+        """
+        Check if a given name is a valid derivation name.
+
+        :param name: The name to check.
+        :type name: str
+
+        :return: True if the name is valid, False otherwise.
+        :rtype: bool
+        """
+
         return name in cls.names()
 
 

@@ -10,6 +10,13 @@ from .bip44 import BIP44Derivation
 
 
 class BIP49Derivation(BIP44Derivation):  # https://github.com/bitcoin/bips/blob/master/bip-0049.mediawiki
+    """
+    This class implements the BIP49 standard for hierarchical deterministic wallets.
+    BIP49 defines a specific path structure for deriving keys from a master seed.
+
+    .. note::
+        This class inherits from the ``BIP44Derivation`` class, thereby ensuring that all functions are accessible.
+    """
 
     _purpose: Tuple[int, bool] = (49, True)
 
@@ -20,11 +27,6 @@ class BIP49Derivation(BIP44Derivation):  # https://github.com/bitcoin/bips/blob/
 
         :return: The name of the derivation class.
         :rtype: str
-
-        >>> from hdwallet.derivations.bip49 import BIP49Derivation
-        >>> derivation: BIP49Derivation = BIP49Derivation(bip49="...")
-        >>> derivation.name()
-        "BIP49"
         """
 
         return "BIP49"

@@ -15,6 +15,13 @@ from .iderivation import IDerivation
 
 
 class MoneroDerivation(IDerivation):
+    """
+    This class implements the Monero standard for hierarchical deterministic wallets.
+    Monero defines a specific path structure for deriving keys from a master seed.
+
+    .. note::
+        This class inherits from the ``IDerivation`` class, thereby ensuring that all functions are accessible.
+    """
 
     _minor: Union[Tuple[int, bool], Tuple[int, int, bool]]
     _major: Union[Tuple[int, bool], Tuple[int, int, bool]]
@@ -50,11 +57,6 @@ class MoneroDerivation(IDerivation):
 
         :return: The name of the derivation class.
         :rtype: str
-
-        >>> from hdwallet.derivations.monero import MoneroDerivation
-        >>> derivation: MoneroDerivation = MoneroDerivation(monero="...")
-        >>> derivation.name()
-        "Monero"
         """
 
         return "Monero"
@@ -68,12 +70,9 @@ class MoneroDerivation(IDerivation):
 
         :param minor: The minor index to set. Can be a string, integer, or tuple of integers.
         :type minor: Union[str, int, Tuple[int, int]]
+
         :return: The instance of MoneroDerivation with the updated minor index.
         :rtype: MoneroDerivation
-
-        >>> from hdwallet.derivations.monero import MoneroDerivation
-        >>> MoneroDerivation.from_minor(minor="...")
-        "..."
         """
 
         self._minor = normalize_index(index=minor, hardened=False)
@@ -92,12 +91,9 @@ class MoneroDerivation(IDerivation):
 
         :param major: The major index to set. Can be a string, integer, or tuple of integers.
         :type major: Union[str, int, Tuple[int, int]]
+
         :return: The instance of MoneroDerivation with the updated major index.
         :rtype: MoneroDerivation
-
-        >>> from hdwallet.derivations.monero import MoneroDerivation
-        >>> MoneroDerivation.from_major(major="...")
-        "..."
         """
 
         self._major = normalize_index(index=major, hardened=False)
@@ -116,10 +112,6 @@ class MoneroDerivation(IDerivation):
 
         :return: The instance of MoneroDerivation with the reset derivation path.
         :rtype: MoneroDerivation
-
-        >>> from hdwallet.derivations.monero import MoneroDerivation
-        >>> MoneroDerivation.clean()
-        "..."
         """
 
         self._minor = normalize_index(index=1, hardened=False)
@@ -136,10 +128,6 @@ class MoneroDerivation(IDerivation):
 
         :return: The minor index.
         :rtype: int
-
-        >>> from hdwallet.derivations.monero import MoneroDerivation
-        >>> MoneroDerivation.minor()
-        ...
         """
 
         return (
@@ -152,10 +140,6 @@ class MoneroDerivation(IDerivation):
 
         :return: The major index.
         :rtype: int
-
-        >>> from hdwallet.derivations.monero import MoneroDerivation
-        >>> MoneroDerivation.major()
-        ...
         """
 
         return (

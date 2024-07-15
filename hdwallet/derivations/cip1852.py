@@ -24,6 +24,12 @@ class ROLES:
 
 class CIP1852Derivation(IDerivation):  # https://github.com/cardano-foundation/CIPs/blob/master/CIP-1852/README.md
     """
+    This class implements the CIP1852 standard for hierarchical deterministic wallets.
+    CIP1852 defines a specific path structure for deriving keys from a master seed.
+
+    .. note::
+        This class inherits from the ``IDerivation`` class, thereby ensuring that all functions are accessible.
+
     +-----------------------+------------------+
     | Name                  | Value            |
     +=======================+==================+
@@ -56,14 +62,11 @@ class CIP1852Derivation(IDerivation):  # https://github.com/cardano-foundation/C
 
         :param coin_type: The index for the coin type derivation. Default is 1815.
         :type coin_type: Union[str, int]
-
         :param account: The account index for the derivation path. Default is 0.
         :type account: Union[str, int, Tuple[int, int]]
-
         :param role: The role index for the derivation path. Default is "external-chain".
                      Must be one of the keys in `self.roles` or 0, 1, 2.
         :type role: Union[str, int]
-
         :param address: The address index for the derivation path. Default is 0.
         :type address: Union[str, int, Tuple[int, int]]
         """
@@ -96,11 +99,6 @@ class CIP1852Derivation(IDerivation):  # https://github.com/cardano-foundation/C
 
         :return: The name of the derivation class.
         :rtype: str
-
-        >>> from hdwallet.derivations.cip1852 import CIP1852Derivation
-        >>> derivation: CIP1852Derivation = CIP1852Derivation(CIP1852="...")
-        >>> derivation.name()
-        "CIP1852"
         """
 
         return "CIP1852"
@@ -114,10 +112,6 @@ class CIP1852Derivation(IDerivation):  # https://github.com/cardano-foundation/C
 
         :return: The updated instance with the new derivation path based on the coin type index.
         :rtype: CIP1852Derivation
-
-        >>> from hdwallet.derivations.cip1852 import CIP1852Derivation
-        >>> CIP1852Derivation.from_coin_type(coin_type=...)
-        "..."
         """
         self._coin_type = normalize_index(index=coin_type, hardened=True)
         self._path, self._indexes, self._derivations = normalize_derivation(path=(
@@ -138,10 +132,6 @@ class CIP1852Derivation(IDerivation):  # https://github.com/cardano-foundation/C
 
         :return: The updated instance with the new derivation path based on the account index.
         :rtype: CIP1852Derivation
-
-        >>> from hdwallet.derivations.cip1852 import CIP1852Derivation
-        >>> CIP1852Derivation.from_account(account=...)
-        "..."
         """
 
         self._account = normalize_index(index=account, hardened=True)
@@ -163,10 +153,6 @@ class CIP1852Derivation(IDerivation):  # https://github.com/cardano-foundation/C
 
         :return: The updated instance with the new derivation path based on the role index.
         :rtype: CIP1852Derivation
-
-        >>> from hdwallet.derivations.cip1852 import CIP1852Derivation
-        >>> CIP1852Derivation.from_role(role=...)
-        "..."
         """
 
         if role not in [*self.roles.keys(), 0, "0", 1, "1", 2, "2"]:
@@ -194,10 +180,6 @@ class CIP1852Derivation(IDerivation):  # https://github.com/cardano-foundation/C
 
         :return: The updated instance with the new derivation path based on the address index.
         :rtype: CIP1852Derivation
-
-        >>> from hdwallet.derivations.cip1852 import CIP1852Derivation
-        >>> CIP1852Derivation.from_address(address=...)
-        "..."
         """
 
         self._address = normalize_index(index=address, hardened=False)
@@ -216,10 +198,6 @@ class CIP1852Derivation(IDerivation):  # https://github.com/cardano-foundation/C
 
         :return: The updated instance with a clean derivation path.
         :rtype: CIP1852Derivation
-
-        >>> from hdwallet.derivations.cip1852 import CIP1852Derivation
-        >>> CIP1852Derivation.clean()
-        "..."
         """
 
         self._account = normalize_index(index=0, hardened=True)
@@ -240,10 +218,6 @@ class CIP1852Derivation(IDerivation):  # https://github.com/cardano-foundation/C
 
         :return: The purpose value as an integer.
         :rtype: int
-
-        >>> from hdwallet.derivations.cip1852 import CIP1852Derivation
-        >>> CIP1852Derivation.purpose()
-        ...
         """
 
         return self._purpose[0]
@@ -254,10 +228,6 @@ class CIP1852Derivation(IDerivation):  # https://github.com/cardano-foundation/C
 
         :return: The coin type integer.
         :rtype: int
-
-        >>> from hdwallet.derivations.cip1852 import CIP1852Derivation
-        >>> CIP1852Derivation.coin_type()
-        ...
         """
 
         return self._coin_type[0]
@@ -268,10 +238,6 @@ class CIP1852Derivation(IDerivation):  # https://github.com/cardano-foundation/C
 
         :return: The account integer.
         :rtype: int
-
-        >>> from hdwallet.derivations.cip1852 import CIP1852Derivation
-        >>> CIP1852Derivation.account()
-        ...
         """
 
         return (
@@ -284,10 +250,6 @@ class CIP1852Derivation(IDerivation):  # https://github.com/cardano-foundation/C
 
         :return: The role string.
         :rtype: str
-
-        >>> from hdwallet.derivations.cip1852 import CIP1852Derivation
-        >>> CIP1852Derivation.role()
-        "..."
         """
 
         _role: Optional[str] = None
@@ -303,10 +265,6 @@ class CIP1852Derivation(IDerivation):  # https://github.com/cardano-foundation/C
 
         :return: The address index.
         :rtype: int
-
-        >>> from hdwallet.derivations.cip1852 import CIP1852Derivation
-        >>> CIP1852Derivation.address()
-        ...
         """
 
         return (

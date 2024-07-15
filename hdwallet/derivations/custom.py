@@ -14,6 +14,13 @@ from .iderivation import IDerivation
 
 
 class CustomDerivation(IDerivation):
+    """
+    This class implements the Custom standard for hierarchical deterministic wallets.
+    Custom defines a specific path structure for deriving keys from a master seed.
+
+    .. note::
+        This class inherits from the ``IDerivation`` class, thereby ensuring that all functions are accessible.
+    """
 
     def __init__(
         self, path: Optional[str] = None, indexes: Optional[List[int]] = None
@@ -39,11 +46,6 @@ class CustomDerivation(IDerivation):
 
         :return: The name of the derivation class.
         :rtype: str
-
-        >>> from hdwallet.derivations.custom import CustomDerivation
-        >>> derivation: CustomDerivation = CustomDerivation(custom="...")
-        >>> derivation.name()
-        "Custom"
         """
 
         return "Custom"
@@ -58,10 +60,6 @@ class CustomDerivation(IDerivation):
 
         :return: The instance of CustomDerivation after setting the derivation path and indexes list.
         :rtype: CustomDerivation
-
-        >>> from hdwallet.derivations.custom import CustomDerivation
-        >>> CustomDerivation.from_index(path="...")
-        "..."
         """
 
         if not isinstance(path, str):
@@ -83,10 +81,6 @@ class CustomDerivation(IDerivation):
 
         :return: The instance of CustomDerivation after setting the derivation path and indexes list.
         :rtype: CustomDerivation
-
-        >>> from hdwallet.derivations.custom import CustomDerivation
-        >>> CustomDerivation.from_indexes(index=...)
-        "..."
         """
 
         if not isinstance(indexes, list):
@@ -101,16 +95,11 @@ class CustomDerivation(IDerivation):
 
         :param index: The index to append to the derivation path and indexes list.
         :type index: int
-
         :param hardened: Indicates if the index is hardened (True) or not (False), defaults to False.
         :type hardened: bool
 
         :return: The instance of CustomDerivation after appending the index.
         :rtype: CustomDerivation
-
-        >>> from hdwallet.derivations.custom import CustomDerivation
-        >>> CustomDerivation.from_index(index=..., hardened=...)
-        "..."
         """
 
         if not isinstance(index, int):
@@ -130,10 +119,6 @@ class CustomDerivation(IDerivation):
 
         :return: The instance of CustomDerivation after cleaning.
         :rtype: CustomDerivation
-
-        >>> from hdwallet.derivations.custom import CustomDerivation
-        >>> CustomDerivation.clean()
-        "..."
         """
 
         self._path, self._indexes, self._derivations = normalize_derivation(
