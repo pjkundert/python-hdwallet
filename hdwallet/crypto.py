@@ -54,6 +54,7 @@ def hmac_sha512(key: Union[bytes, str], data: Union[bytes, str]) -> bytes:
     :return: The resulting HMAC-SHA512 hash as bytes.
     :rtype: bytes
     """
+
     if hasattr(hmac, "digest"):
         return hmac.digest(
             encode(key), encode(data), "sha512"
