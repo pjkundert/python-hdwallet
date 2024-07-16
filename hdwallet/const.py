@@ -39,6 +39,19 @@ class NestedNamespace(SimpleNamespace):
 
 
 class SLIP10_ED25519_CONST:
+    """
+    ``SLIP10-ED25519`` Constants.
+    
+    +-------------------------+-----------+--------------+
+    | Name                    | Type      | Value        |
+    +=========================+===========+==============+
+    | PRIVATE_KEY_BYTE_LENGTH | ``int``   | 32           |
+    +-------------------------+-----------+--------------+
+    | PUBLIC_KEY_PREFIX       | ``bytes`` | ``0x00``     |
+    +-------------------------+-----------+--------------+
+    | PUBLIC_KEY_BYTE_LENGTH  | ``int``   | 32           |
+    +-------------------------+-----------+--------------+
+    """
 
     PRIVATE_KEY_BYTE_LENGTH: int = 32
     PUBLIC_KEY_PREFIX: bytes = b"\x00"
@@ -46,11 +59,43 @@ class SLIP10_ED25519_CONST:
 
 
 class KHOLAW_ED25519_CONST(SLIP10_ED25519_CONST):
+    """
+    ``KHOLAW-ED25519`` Constants.
+    
+    +-------------------------+-----------+--------------+
+    | Name                    | Type      | Value        |
+    +=========================+===========+==============+
+    | PRIVATE_KEY_BYTE_LENGTH | ``int``   | 64           |
+    +-------------------------+-----------+--------------+
+    | PUBLIC_KEY_PREFIX       | ``bytes`` | ``0x00``     |
+    +-------------------------+-----------+--------------+
+    | PUBLIC_KEY_BYTE_LENGTH  | ``int``   | 32           |
+    +-------------------------+-----------+--------------+
+    """
 
     PRIVATE_KEY_BYTE_LENGTH: int = 64
 
 
 class SLIP10_SECP256K1_CONST:
+    """
+    ``SLIP10-SECP256K1`` Constants.
+    
+    +-------------------------------------+-----------------------------------+-------------+
+    | Name                                | Type                              | Value       |
+    +=====================================+===================================+=============+
+    | USE                                 | ``Literal['coincurve', 'ecdsa']`` | 'coincurve' |
+    +-------------------------------------+-----------------------------------+-------------+
+    | POINT_COORDINATE_BYTE_LENGTH        | ``int``                           | 32          |
+    +-------------------------------------+-----------------------------------+-------------+
+    | PRIVATE_KEY_BYTE_LENGTH             | ``int``                           | 32          |
+    +-------------------------------------+-----------------------------------+-------------+
+    | PUBLIC_KEY_PREFIX                   | ``bytes``                         | ``0x04``    |
+    +-------------------------------------+-----------------------------------+-------------+
+    | PUBLIC_KEY_COMPRESSED_BYTE_LENGTH   | ``int``                           | 33          |
+    +-------------------------------------+-----------------------------------+-------------+
+    | PUBLIC_KEY_UNCOMPRESSED_BYTE_LENGTH | ``int``                           | 65          |
+    +-------------------------------------+-----------------------------------+-------------+
+    """
 
     USE: Literal["coincurve", "ecdsa"] = "coincurve"
     POINT_COORDINATE_BYTE_LENGTH: int = 32
@@ -166,36 +211,90 @@ class XPublicKeyVersions(ExtendedKeyVersions):
 
 
 class PUBLIC_KEY_TYPES:
+    """
+    ``PUBLIC_KEY_TYPES`` Constants.
+
+    +----------------+-----------+-----------------+
+    | Name           | Type      | Value           |
+    +================+===========+=================+
+    | COMPRESSED     | ``str``   | 'uncompressed'  |
+    +----------------+-----------+-----------------+
+    | UNCOMPRESSED   | ``str``   | 'compressed'    |
+    +----------------+-----------+-----------------+
+    """
 
     UNCOMPRESSED: str = "uncompressed"
     COMPRESSED: str = "compressed"
 
     @classmethod
     def get_types(cls) -> List[str]:
+        """
+        Get a list of all public key types.
+
+        :return: List of public key types.
+        :rtype: List[str]
+        """
+
         return [
             cls.UNCOMPRESSED, cls.COMPRESSED
         ]
 
 
 class WIF_TYPES:
+    """
+    ``WIF_TYPES`` Constants.
+
+    +----------------+-----------+------------------+
+    | Name           | Type      | Value            |
+    +================+===========+==================+
+    | WIF            | ``str``   | 'wif'            |
+    +----------------+-----------+------------------+
+    | WIF_COMPRESSED | ``str``   | 'wif-compressed' |
+    +----------------+-----------+------------------+
+    """
 
     WIF: str = "wif"
     WIF_COMPRESSED: str = "wif-compressed"
 
     @classmethod
     def get_types(cls) -> List[str]:
+        """
+        Get a list of all WIF types.
+
+        :return: List of WIF types.
+        :rtype: List[str]
+        """
+
         return [
             cls.WIF, cls.WIF_COMPRESSED
         ]
 
 
 class ELECTRUM_V2_MODES:
+    """
+    ``PUBLIC_KEY_TYPES`` Constants.
+
+    +----------------+-----------+-----------------+
+    | Name           | Type      | Value           |
+    +================+===========+=================+
+    | STANDARD       | ``str``   | 'standard'      |
+    +----------------+-----------+-----------------+
+    | SEGWIT         | ``str``   | 'segwit'        |
+    +----------------+-----------+-----------------+
+    """
 
     STANDARD: str = "standard"
     SEGWIT: str = "segwit"
 
     @classmethod
     def get_modes(cls) -> List[str]:
+        """
+        Get a list of all Electrum V2 modes.
+
+        :return: List of Electrum V2 modes.
+        :rtype: List[str]
+        """
+
         return [
             cls.STANDARD, cls.SEGWIT
         ]
