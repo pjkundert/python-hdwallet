@@ -46,6 +46,11 @@ from .addresses import (
 
 
 class HDWallet:
+    """
+    The HDWallet class represents a hierarchical deterministic wallet object designed for managing
+    various cryptocurrencies. It encapsulates functionality related to cryptocurrency handling,
+    including mnemonic generation, seed generation, address generation, and network configuration.
+    """
 
     _cryptocurrency: ICryptocurrency
     _network: INetwork
