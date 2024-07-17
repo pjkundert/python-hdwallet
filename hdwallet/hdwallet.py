@@ -82,6 +82,19 @@ class HDWallet:
         address: Optional[Union[str, Type[IAddress]]] = None,
         **kwargs
     ) -> None:
+        """
+        Initialize the cryptocurrency handler.
+
+        :param cryptocurrency: The cryptocurrency class to be used.
+        :type cryptocurrency: Type[ICryptocurrency]
+        :param hd: The hierarchical deterministic wallet class to be used. Defaults to None.
+        :type hd: Optional[Type[IHD]]
+        :param network: The network to be used. Defaults to "mainnet".
+        :type network: Union[str, Type[INetwork]]
+        :param address: The address type to be used. Defaults to None.
+        :type address: Optional[Union[str, Type[IAddress]]]
+        :param kwargs: Additional keyword arguments.
+        """
 
         if not issubclass(cryptocurrency, ICryptocurrency):
             raise Error(
@@ -225,6 +238,15 @@ class HDWallet:
             self._hd = hd(network=self._network.__name__.lower())
 
     def from_entropy(self, entropy: IEntropy) -> "HDWallet":
+        """
+        Initialize the HDWallet from entropy.
+
+        :param entropy: The entropy source to generate the mnemonic.
+        :type entropy: IEntropy
+
+        :return: The initialized HDWallet instance.
+        :rtype: HDWallet
+        """
 
         if entropy.name() not in self._cryptocurrency.ENTROPIES.get_entropies():
             raise Error(f"Invalid entropy class for {self._cryptocurrency.NAME} cryptocurrency")
@@ -260,6 +282,15 @@ class HDWallet:
         )
 
     def from_mnemonic(self, mnemonic: IMnemonic) -> "HDWallet":
+        """
+        Initialize the HDWallet from a mnemonic.
+
+        :param mnemonic: The mnemonic instance to generate the seed.
+        :type mnemonic: IMnemonic
+
+        :return: The initialized HDWallet instance.
+        :rtype: HDWallet
+        """
 
         if mnemonic.name() not in self._cryptocurrency.MNEMONICS.get_mnemonics():
             raise Error(f"Invalid mnemonic class for {self._cryptocurrency.NAME} cryptocurrency")
@@ -317,6 +348,15 @@ class HDWallet:
         )
 
     def from_seed(self, seed: ISeed) -> "HDWallet":
+        """
+        Initialize the HDWallet from a seed.
+
+        :param seed: The seed instance to initialize the HD wallet.
+        :type seed: ISeed
+
+        :return: The initialized HDWallet instance.
+        :rtype: HDWallet
+        """
 
         if seed.name() not in self._cryptocurrency.SEEDS.get_seeds():
             raise Error(f"Invalid seed class for {self._cryptocurrency.NAME} cryptocurrency")
@@ -328,6 +368,19 @@ class HDWallet:
         return self
 
     def from_xprivate_key(self, xprivate_key: str, encoded: bool = True, strict: bool = False) -> "HDWallet":
+        """
+        Initialize the HDWallet from an extended private key.
+
+        :param xprivate_key: The extended private key to initialize the HD wallet.
+        :type xprivate_key: str
+        :param encoded: Flag indicating if the key is encoded. Default is True.
+        :type encoded: bool
+        :param strict: Flag indicating if strict mode should be used. Default is False.
+        :type strict: bool
+
+        :return: The initialized HDWallet instance.
+        :rtype: HDWallet
+        """
 
         if self._hd.name() in ["Electrum-V1", "Monero"]:
             raise Error(f"Conversion from xprivate key is not implemented for the {self._hd.name()} HD type")
@@ -346,6 +399,19 @@ class HDWallet:
         return self
 
     def from_xpublic_key(self, xpublic_key: str, encoded: bool = True, strict: bool = False) -> "HDWallet":
+        """
+        Initialize the HDWallet from an extended public key.
+
+        :param xpublic_key: The extended public key to initialize the HD wallet.
+        :type xpublic_key: str
+        :param encoded: Flag indicating if the key is encoded. Default is True.
+        :type encoded: bool
+        :param strict: Flag indicating if strict mode should be used. Default is False.
+        :type strict: bool
+
+        :return: The initialized HDWallet instance.
+        :rtype: HDWallet
+        """
 
         if self._hd.name() in ["Electrum-V1", "Monero"]:
             raise Error(
@@ -370,25 +436,72 @@ class HDWallet:
         return self
 
     def from_derivation(self, derivation: IDerivation) -> "HDWallet":
+        """
+        Initialize the HDWallet from a derivation object.
+
+        :param derivation: The derivation object to initialize the HD wallet.
+        :type derivation: IDerivation
+
+        :return: The initialized HDWallet instance.
+        :rtype: HDWallet
+        """
+
         self._hd.from_derivation(derivation=derivation)
         self._derivation = derivation
         return self
 
     def update_derivation(self, derivation: IDerivation) -> "HDWallet":
+        """
+        Update the derivation path of the HDWallet.
+
+        :param derivation: The new derivation object to update the HD wallet.
+        :type derivation: IDerivation
+
+        :return: The updated HDWallet instance.
+        :rtype: HDWallet
+        """
+
         self._hd.update_derivation(derivation=derivation)
         self._derivation = derivation
         return self
 
     def clean_derivation(self) -> "HDWallet":
+        """
+        Clean the current derivation path of the HDWallet.
+
+        :return: The HDWallet instance with the cleaned derivation.
+        :rtype: HDWallet
+        """
+
         self._hd.clean_derivation()
         self._derivation.clean()
         return self
 
     def from_private_key(self, private_key: str) -> "HDWallet":
+        """
+        Initialize the HDWallet from a private key.
+
+        :param private_key: The private key to initialize the HD wallet.
+        :type private_key: str
+
+        :return: The initialized HDWallet instance.
+        :rtype: HDWallet
+        """
+
         self._hd.from_private_key(private_key=private_key)
         return self
 
     def from_wif(self, wif: str) -> "HDWallet":
+        """
+        Initialize the HDWallet from a Wallet Import Format (WIF) key.
+
+        :param wif: The WIF key to initialize the HD wallet.
+        :type wif: str
+
+        :return: The initialized HDWallet instance.
+        :rtype: HDWallet
+        """
+
         if self._hd.name() in ["Cardano", "Monero"]:
             raise Error(f"Wallet Important Format (WIF) is not supported by {self._hd.name()} HD wallet's")
 
@@ -396,6 +509,16 @@ class HDWallet:
         return self
 
     def from_public_key(self, public_key: str) -> "HDWallet":
+        """
+        Initialize the HDWallet from a public key.
+
+        :param public_key: The public key to initialize the HD wallet.
+        :type public_key: str
+
+        :return: The initialized HDWallet instance.
+        :rtype: HDWallet
+        """
+
         if self._hd.name() in ["Monero"]:
             raise Error(f"From public key is not implemented for the {self._hd.name()} HD type")
         self._hd.from_public_key(public_key=public_key)
@@ -404,6 +527,16 @@ class HDWallet:
     def from_spend_private_key(
         self, spend_private_key: Union[bytes, str, IPrivateKey]
     ) -> "HDWallet":
+        """
+        Initialize the Monero HDWallet from a spend private key.
+
+        :param spend_private_key: The spend private key to initialize the HD wallet.
+        :type spend_private_key: Union[bytes, str, IPrivateKey]
+
+        :return: The initialized Monero HDWallet instance.
+        :rtype: HDWallet
+        """
+
         if self._hd.name() != "Monero":
             raise Error("From spend private key only supported by Monero HD ")
         self._hd.from_spend_private_key(spend_private_key=spend_private_key)
@@ -414,6 +547,18 @@ class HDWallet:
         view_private_key: Union[bytes, str, IPrivateKey],
         spend_public_key: Union[bytes, str, IPublicKey]
     ) -> "HDWallet":
+        """
+        Initialize the Monero HDWallet in watch-only mode using a view private key and a spend public key.
+
+        :param view_private_key: The view private key for watch-only mode.
+        :type view_private_key: Union[bytes, str, IPrivateKey]
+        :param spend_public_key: The spend public key for watch-only mode.
+        :type spend_public_key: Union[bytes, str, IPublicKey]
+
+        :return: The initialized Monero HDWallet instance.
+        :rtype: HDWallet
+        """
+
         if self._hd.name() != "Monero":
             raise Error("From spend watch only supported by Monero HD wallet")
         self._hd.from_watch_only(
@@ -422,58 +567,176 @@ class HDWallet:
         return self
 
     def cryptocurrency(self) -> str:
+        """
+        Get the name of the cryptocurrency associated with this HDWallet.
+
+        :return: The name of the cryptocurrency.
+        :rtype: str
+        """
+
         return self._cryptocurrency.NAME
 
     def symbol(self) -> str:
+        """
+        Get the symbol of the cryptocurrency associated with this HDWallet.
+
+        :return: The symbol of the cryptocurrency.
+        :rtype: str
+        """
+
         return self._cryptocurrency.SYMBOL
 
     def coin_type(self) -> int:
+        """
+        Get the coin type of the cryptocurrency associated with this HDWallet.
+
+        :return: The coin type of the cryptocurrency.
+        :rtype: int
+        """
+
         return self._cryptocurrency.COIN_TYPE
 
     def network(self) -> str:
+        """
+        Get the name of the network associated with this HDWallet.
+
+        :return: The name of the network.
+        :rtype: str
+        """
+
         return self._network.__name__.lower()
 
     def entropy(self) -> Optional[str]:
+        """
+        Get the entropy value associated with this HDWallet.
+
+        :return: The entropy value if available, otherwise None.
+        :rtype: Optional[str]
+        """
+
         return self._entropy.entropy() if self._entropy else None
 
     def strength(self) -> Optional[str]:
+        """
+        Get the strength associated with the entropy of this HDWallet.
+
+        :return: The strength if available, otherwise None.
+        :rtype: Optional[str]
+        """
+
         return self._entropy.strength() if self._entropy else None
 
     def mnemonic(self) -> Optional[str]:
+        """
+        Get the mnemonic associated with this HDWallet.
+
+        :return: The mnemonic if available, otherwise None.
+        :rtype: Optional[str]
+        """
+
         return self._mnemonic.mnemonic() if self._mnemonic else None
 
     def mnemonic_type(self) -> Optional[str]:
+        """
+        Get the mnemonic type associated with this HDWallet.
+
+        :return: The mnemonic type if available, otherwise None.
+        :rtype: Optional[str]
+        """
+
         return self._mnemonic_type if self._mnemonic_type else None
 
     def language(self) -> Optional[str]:
+        """
+        Get the language associated with the mnemonic of this HDWallet.
+
+        :return: The language if available, otherwise None.
+        :rtype: Optional[str]
+        """
+
         return self._mnemonic.language() if self._mnemonic else None
 
     def words(self) -> Optional[int]:
+        """
+        Get the number of words in the mnemonic of this HDWallet.
+
+        :return: The number of words if available, otherwise None.
+        :rtype: Optional[int]
+        """
+
         return self._mnemonic.words() if self._mnemonic else None
 
     def passphrase(self) -> Optional[str]:
+        """
+        Get the passphrase associated with this HDWallet.
+
+        :return: The passphrase if available, otherwise None.
+        :rtype: Optional[str]
+        """
+
         return self._passphrase if self._passphrase else None
 
     def seed(self) -> Optional[str]:
+        """
+        Get the seed associated with this HDWallet.
+
+        :return: The seed if available, otherwise None.
+        :rtype: Optional[str]
+        """
+
         return self._hd.seed()
 
     def ecc(self) -> str:
+        """
+        Get the elliptic curve cryptography (ECC) name associated with this HDWallet.
+
+        :return: The ECC name.
+        :rtype: str
+        """
+
         return self._cryptocurrency.ECC.NAME
 
     def hd(self) -> str:
+        """
+        Get the name of the HD type associated with this HDWallet.
+
+        :return: The name of the HD type.
+        :rtype: str
+        """
+
         return self._hd.name()
 
     def semantic(self) -> Optional[str]:
+        """
+        Get the semantic associated with the HD type of this HDWallet.
+
+        :return: The semantic if available, otherwise None.
+        :rtype: Optional[str]
+        """
+
         if self._hd.name() == "BIP141":
             return self._hd.semantic()
         return None
 
     def cardano_type(self) -> Optional[str]:
+        """
+        Get the Cardano type associated with this HDWallet.
+
+        :return: The Cardano type if available and applicable, otherwise None.
+        :rtype: Optional[str]
+        """
+
         if self._hd.name() == "Cardano":
             return self._cardano_type
         return None
 
     def mode(self) -> str:
+        """
+        Get the mode associated with the HD type of this HDWallet.
+
+        :return: The mode.
+        :rtype: str
+        """
 
         if self._hd.name() not in ["Electrum-V2"]:
             raise Error(f"Get mode is only for {self._hd.name()} HD type")
@@ -481,9 +744,27 @@ class HDWallet:
         return self._hd.mode()
 
     def path_key(self) -> Optional[str]:
+        """
+        Get the path key associated with the HD wallet.
+
+        :return: The path key if available, otherwise None.
+        :rtype: Optional[str]
+        """
+
         return self._hd.path_key()
 
     def root_xprivate_key(self, semantic: Optional[str] = None, encoded: bool = True) -> Optional[str]:
+        """
+        Get the root extended private key (xpriv) associated with the HD wallet.
+
+        :param semantic: Optional semantic to use for deriving the key.
+        :type semantic: Optional[str]
+        :param encoded: Flag indicating whether the key should be encoded.
+        :type encoded: bool
+
+        :return: The root xpriv key if available, otherwise None.
+        :rtype: Optional[str]
+        """
 
         if semantic is None:
             semantic = self._semantic
@@ -496,6 +777,17 @@ class HDWallet:
         )
 
     def root_xpublic_key(self, semantic: Optional[str] = None, encoded: bool = True) -> Optional[str]:
+        """
+        Get the root extended public key (xpub) associated with the HD wallet.
+
+        :param semantic: Optional semantic to use for deriving the key.
+        :type semantic: Optional[str]
+        :param encoded: Flag indicating whether the key should be encoded.
+        :type encoded: bool
+
+        :return: The root xpub key if available, otherwise None.
+        :rtype: Optional[str]
+        """
 
         if semantic is None:
             semantic = self._semantic
@@ -508,17 +800,58 @@ class HDWallet:
         )
 
     def master_xprivate_key(self, semantic: Optional[str] = None, encoded: bool = True) -> Optional[str]:
+        """
+        Get the master extended private key (xpriv) associated with the HD wallet.
+
+        :param semantic: Optional semantic to use for deriving the key.
+        :type semantic: Optional[str]
+        :param encoded: Flag indicating whether the key should be encoded.
+        :type encoded: bool
+
+        :return: The master xpriv key if available, otherwise None.
+        :rtype: Optional[str]
+        """
+
         return self.root_xprivate_key(semantic=semantic, encoded=encoded)
 
     def master_xpublic_key(self, semantic: Optional[str] = None, encoded: bool = True) -> Optional[str]:
+        """
+        Get the master extended public key (xpub) associated with the HD wallet.
+
+        :param semantic: Optional semantic to use for deriving the key.
+        :type semantic: Optional[str]
+        :param encoded: Flag indicating whether the key should be encoded.
+        :type encoded: bool
+
+        :return: The master xpub key if available, otherwise None.
+        :rtype: Optional[str]
+        """
+
         return self.root_xpublic_key(semantic=semantic, encoded=encoded)
 
     def root_private_key(self) -> Optional[str]:
+        """
+        Get the root private key associated with the HD wallet.
+
+        :return: The root private key if available, otherwise None.
+        :rtype: Optional[str]
+        """
+
         if self._hd.name() in ["Electrum-V1", "Electrum-V2"]:
             return self._hd.master_private_key()
         return self._hd.root_private_key()
 
     def root_wif(self, wif_type: Optional[str] = None) -> Optional[str]:
+        """
+        Get the root Wallet Import Format (WIF) associated with the HD wallet.
+
+        :param wif_type: Optional WIF type.
+        :type wif_type: Optional[str]
+
+        :return: The root WIF if available, otherwise None.
+        :rtype: Optional[str]
+        """
+
         if self._hd.name() not in ["Cardano"]:
             if self._hd.name() in ["Electrum-V1", "Electrum-V2"]:
                 return self._hd.master_wif(wif_type=wif_type)
@@ -526,19 +859,53 @@ class HDWallet:
         return None
 
     def root_chain_code(self) -> Optional[str]:
+        """
+        Get the root chain code associated with the HD wallet.
+
+        :return: The root chain code if available, otherwise None.
+        :rtype: Optional[str]
+        """
+
         return self._hd.root_chain_code()
 
     def root_public_key(self, public_key_type: Optional[str] = None) -> Optional[str]:
+        """
+        Get the root public key associated with the HD wallet.
+
+        :param public_key_type: Optional public key type.
+        :type public_key_type: Optional[str]
+
+        :return: The root public key if available, otherwise None.
+        :rtype: Optional[str]
+        """
+
         if self._hd.name() in ["Electrum-V1", "Electrum-V2"]:
             return self._hd.master_public_key(public_key_type=public_key_type)
         return self._hd.root_public_key(public_key_type=public_key_type)
 
     def master_private_key(self) -> Optional[str]:
+        """
+        Get the master private key associated with the HD wallet.
+
+        :return: The master private key if available, otherwise None.
+        :rtype: Optional[str]
+        """
+
         if self._hd.name() in ["Electrum-V1", "Electrum-V2"]:
             return self._hd.master_private_key()
         return self._hd.root_private_key()
 
     def master_wif(self, wif_type: Optional[str] = None) -> Optional[str]:
+        """
+        Get the master Wallet Import Format (WIF) associated with the HD wallet.
+
+        :param wif_type: Optional WIF type.
+        :type wif_type: Optional[str]
+
+        :return: The master WIF if available, otherwise None.
+        :rtype: Optional[str]
+        """
+
         if self._hd.name() not in ["Cardano"]:
             if self._hd.name() in ["Electrum-V1", "Electrum-V2"]:
                 return self._hd.master_wif(wif_type=wif_type)
@@ -546,14 +913,42 @@ class HDWallet:
         return None
 
     def master_chain_code(self) -> Optional[str]:
+        """
+        Get the master chain code associated with the HD wallet.
+
+        :return: The master chain code if available, otherwise None.
+        :rtype: Optional[str]
+        """
+
         return self._hd.root_chain_code()
 
     def master_public_key(self, public_key_type: Optional[str] = None) -> Optional[str]:
+        """
+        Get the master public key associated with the HD wallet.
+
+        :param public_key_type: Optional public key type.
+        :type public_key_type: Optional[str]
+
+        :return: The master public key if available, otherwise None.
+        :rtype: Optional[str]
+        """
+
         if self._hd.name() in ["Electrum-V1", "Electrum-V2"]:
             return self._hd.master_public_key(public_key_type=public_key_type)
         return self._hd.root_public_key(public_key_type=public_key_type)
 
     def xprivate_key(self, semantic: Optional[str] = None, encoded: bool = True) -> Optional[str]:
+        """
+        Get the extended private key (xpriv) associated with the HD wallet.
+
+        :param semantic: Optional semantic to use for deriving the key.
+        :type semantic: Optional[str]
+        :param encoded: Flag indicating whether the key should be encoded.
+        :type encoded: bool
+
+        :return: The xpriv key if available, otherwise None.
+        :rtype: Optional[str]
+        """
 
         if semantic is None:
             semantic = self._semantic
@@ -566,6 +961,17 @@ class HDWallet:
         )
 
     def xpublic_key(self, semantic: Optional[str] = None, encoded: bool = True) -> Optional[str]:
+        """
+        Get the extended public key (xpub) associated with the HD wallet.
+
+        :param semantic: Optional semantic to use for deriving the key.
+        :type semantic: Optional[str]
+        :param encoded: Flag indicating whether the key should be encoded.
+        :type encoded: bool
+
+        :return: The xpub key if available, otherwise None.
+        :rtype: Optional[str]
+        """
 
         if semantic is None:
             semantic = self._semantic
@@ -578,92 +984,277 @@ class HDWallet:
         )
 
     def private_key(self) -> Optional[str]:
+        """
+        Get the private key associated with the HD wallet.
+
+        :return: The private key if available, otherwise None.
+        :rtype: Optional[str]
+        """
+
         return self._hd.private_key()
 
     def spend_private_key(self) -> str:
+        """
+        Get the spend private key associated with the Monero HD wallet.
+
+        :return: The spend private key.
+        :rtype: str
+        """
+
         if self._hd.name() != "Monero":
             raise Error("Spend private key only supported by Monero HD wallet")
         return self._hd.spend_private_key()
 
     def view_private_key(self) -> str:
+        """
+        Get the view private key associated with the Monero HD wallet.
+
+        :return: The view private key.
+        :rtype: str
+        """
+
         if self._hd.name() != "Monero":
             raise Error("View private key only supported by Monero HD wallet")
         return self._hd.view_private_key()
 
     def wif(self, wif_type: Optional[str] = None) -> Optional[str]:
+        """
+        Get the Wallet Import Format (WIF) associated with the HD wallet.
+
+        :param wif_type: Optional WIF type.
+        :type wif_type: Optional[str]
+
+        :return: The WIF if available, otherwise None.
+        :rtype: Optional[str]
+        """
+
         if self._hd.name() not in ["Cardano"]:
             return self._hd.wif(wif_type=wif_type)
         return None
 
     def wif_type(self) -> Optional[str]:
+        """
+        Get the WIF type associated with the HD wallet.
+
+        :return: The WIF type if available, otherwise None.
+        :rtype: Optional[str]
+        """
+
         return self._hd.wif_type() if self.wif() else None
 
     def chain_code(self) -> Optional[str]:
+        """
+        Get the chain code associated with the HD wallet.
+
+        :return: The chain code if available, otherwise None.
+        :rtype: Optional[str]
+        """
+
         return self._hd.chain_code()
 
     def public_key(self, public_key_type: Optional[str] = None) -> str:
+        """
+        Get the public key associated with the HD wallet.
+
+        :param public_key_type: Optional public key type.
+        :type public_key_type: Optional[str]
+
+        :return: The public key.
+        :rtype: str
+        """
+
         return self._hd.public_key(public_key_type=public_key_type)
 
     def public_key_type(self) -> str:
+        """
+        Get the public key type associated with the HD wallet.
+
+        :return: The public key type.
+        :rtype: str
+        """
+
         return self._hd.public_key_type()
 
     def uncompressed(self) -> str:
+        """
+        Get the uncompressed public key associated with the HD wallet.
+
+        :return: The uncompressed public key.
+        :rtype: str
+        """
+
         return self._hd.uncompressed()
 
     def compressed(self) -> str:
+        """
+        Get the compressed public key associated with the HD wallet.
+
+        :return: The compressed public key.
+        :rtype: str
+        """
+
         return self._hd.compressed()
 
     def spend_public_key(self) -> str:
+        """
+        Get the spend public key associated with the Monero HD wallet.
+
+        :return: The spend public key.
+        :rtype: str
+        """
+
         if self._hd.name() != "Monero":
             raise Error("Spend public key only supported by Monero HD wallet")
         return self._hd.spend_public_key()
 
     def view_public_key(self) -> str:
+        """
+        Get the view public key associated with the Monero HD wallet.
+
+        :return: The view public key.
+        :rtype: str
+        """
+
         if self._hd.name() != "Monero":
             raise Error("view public key only supported by Monero HD wallet")
         return self._hd.view_public_key()
 
     def hash(self) -> str:
+        """
+        Get the hash associated with the HD wallet.
+
+        :return: The hash.
+        :rtype: str
+        """
+
         return self._hd.hash()
 
     def depth(self) -> int:
+        """
+        Get the depth associated with the HD wallet.
+
+        :return: The depth.
+        :rtype: int
+        """
+
         return self._hd.depth()
 
     def fingerprint(self) -> str:
+        """
+        Get the fingerprint associated with the HD wallet.
+
+        :return: The fingerprint.
+        :rtype: str
+        """
+
         return self._hd.fingerprint()
 
     def parent_fingerprint(self) -> str:
+        """
+        Get the parent fingerprint associated with the HD wallet.
+
+        :return: The parent fingerprint.
+        :rtype: str
+        """
+
         return self._hd.parent_fingerprint()
 
     def path(self) -> str:
+        """
+        Get the path associated with the HD wallet.
+
+        :return: The path.
+        :rtype: str
+        """
+
         return self._hd.path()
 
     def index(self) -> int:
+        """
+        Get the index associated with the HD wallet.
+
+        :return: The index.
+        :rtype: int
+        """
+
         return self._hd.index()
 
     def indexes(self) -> List[int]:
+        """
+        Get the indexes associated with the HD wallet.
+
+        :return: The indexes.
+        :rtype: List[int]
+        """
+
         return self._hd.indexes()
 
     def strict(self) -> Optional[bool]:
+        """
+        Get the strict flag associated with the HD wallet.
+
+        :return: The strict flag if applicable, otherwise None.
+        :rtype: Optional[bool]
+        """
+
         if self._hd.name() not in ["Electrum-V1", "Monero"]:
             return self._hd.strict()
         return None
 
     def primary_address(self) -> Optional[str]:
+        """
+        Get the primary address associated with the Monero HD wallet.
+
+        :return: The primary address if applicable, otherwise None.
+        :rtype: Optional[str]
+        """
+
         if self._hd.name() == "Monero":
             return self._hd.primary_address()
 
     def integrated_address(self, payment_id: Union[bytes, str]) -> Optional[str]:
+        """
+        Get the integrated address associated with the Monero HD wallet.
+
+        :param payment_id: The payment ID.
+        :type payment_id: Union[bytes, str]
+
+        :return: The integrated address if applicable, otherwise None.
+        :rtype: Optional[str]
+        """
+
         if self._hd.name() == "Monero":
             return self._hd.integrated_address(payment_id=payment_id)
 
     def sub_address(self, minor: Optional[int] = None, major: Optional[int] = None) -> Optional[str]:
+        """
+        Get the sub address associated with the Monero HD wallet.
+
+        :param minor: Optional minor index.
+        :type minor: Optional[int]
+        :param major: Optional major index.
+        :type major: Optional[int]
+
+        :return: The sub address if applicable, otherwise None.
+        :rtype: Optional[str]
+        """
+
         if self._hd.name() == "Monero":
             return self._hd.sub_address(
                 minor=minor, major=major
             )
 
     def address(self, address: Optional[Union[str, Type[IAddress]]] = None, **kwargs) -> str:
+        """
+        Get the address associated with the HD wallet.
+
+        :param address: Optional address name or type.
+        :type address: Optional[Union[str, Type[IAddress]]]
+        :param kwargs: Additional keyword arguments for address generation.
+
+        :return: The generated address.
+        :rtype: str
+        """
 
         if address is None:
             address = self._address.name()
@@ -733,6 +1324,15 @@ class HDWallet:
             )
 
     def dump(self, exclude: Optional[set] = None) -> dict:
+        """
+        Dump the state of the HD wallet and related information into a dictionary.
+
+        :param exclude: Optional set of keys to exclude from the dump.
+        :type exclude: Optional[set]
+
+        :return: The dictionary containing the dumped information.
+        :rtype: dict
+        """
 
         if exclude is None:
             exclude = { }
@@ -974,6 +1574,16 @@ class HDWallet:
         return exclude_keys(_root, exclude)
 
     def dumps(self, exclude: Optional[set] = None) -> Optional[Union[dict, List[dict]]]:
+        """
+        Dump the state of multiple derivations of the HD wallet and related information into dictionaries.
+
+        :param exclude: Optional set of keys to exclude from the dump.
+        :type exclude: Optional[set]
+
+        :return: Either a single dictionary or a list of dictionaries containing the dumped information,
+                 depending on the number of derivations.
+        :rtype: Optional[Union[dict, List[dict]]]
+        """
 
         if exclude is None:
             exclude = { }
