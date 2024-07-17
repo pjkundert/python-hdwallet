@@ -20,3 +20,4 @@ HDWallet
     Elliptic Curve Cryptography (ECC) <ecc.rst>
     Hierarchical Deterministic (HD) <hds.rst>
     Addresses <addresses.rst>
+    Crypto <crypto.rst>
