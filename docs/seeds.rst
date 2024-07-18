@@ -77,6 +77,7 @@ True
 
 .. autoclass:: hdwallet.seeds.electrum.v1.ElectrumV1Seed
     :members:
+
 >>>from hdwallet.seeds.electrum.v1 import ElectrumV1Seed
 >>>ElectrumV1Seed.from_mnemonic(mnemonic="stretch sister juice brother youth egg salt join lesson cover grin journey")
 '98cc82dcea53272eb75f244a38b93b0e182ef4c7c0ca012b6b4622c970f5842b'
