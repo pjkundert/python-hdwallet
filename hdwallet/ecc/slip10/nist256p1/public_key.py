@@ -39,11 +39,6 @@ class SLIP10Nist256p1PublicKey(IPublicKey):
 
         :return: The name of the ecc class.
         :rtype: str
-
-        >>> from hdwallet.ecc.slip10.nist256p1.public_key import SLIP10Nist256p1PublicKey
-        >>> ecc:  = SLIP10Nist256p1PublicKey(public_key=...)
-        >>> ecc.name()
-        "SLIP10-Nist256p1"
         """
 
         return "SLIP10-Nist256p1"
@@ -58,10 +53,6 @@ class SLIP10Nist256p1PublicKey(IPublicKey):
 
         :return: An instance of IPublicKey.
         :rtype: IPublicKey
-
-        >>> from hdwallet.ecc.slip10.nist256p1.public_key import SLIP10Nist256p1PublicKey
-        >>> SLIP10Nist256p1PublicKey.from_bytes(public_key=...)
-        "..."
         """
 
         try:
@@ -83,10 +74,6 @@ class SLIP10Nist256p1PublicKey(IPublicKey):
 
         :return: An instance of IPublicKey.
         :rtype: IPublicKey
-
-        >>> from hdwallet.ecc.slip10.nist256p1.public_key import SLIP10Nist256p1PublicKey
-        >>> SLIP10Nist256p1PublicKey.from_point(point=...)
-        "..."
         """
 
         try:
@@ -108,10 +95,6 @@ class SLIP10Nist256p1PublicKey(IPublicKey):
 
         :return: The length of the compressed public key.
         :rtype: int
-
-        >>> from hdwallet.ecc.slip10.nist256p1.public_key import SLIP10Nist256p1PublicKey
-        >>> SLIP10Nist256p1PublicKey.compressed_length()
-        ...
         """
 
         return SLIP10_SECP256K1_CONST.PUBLIC_KEY_COMPRESSED_BYTE_LENGTH
@@ -123,10 +106,6 @@ class SLIP10Nist256p1PublicKey(IPublicKey):
 
         :return: The length of the uncompressed public key.
         :rtype: int
-
-        >>> from hdwallet.ecc.slip10.nist256p1.public_key import SLIP10Nist256p1PublicKey
-        >>> SLIP10Nist256p1PublicKey.uncompressed_length()
-        ...
         """
 
         return SLIP10_SECP256K1_CONST.PUBLIC_KEY_UNCOMPRESSED_BYTE_LENGTH
@@ -137,10 +116,6 @@ class SLIP10Nist256p1PublicKey(IPublicKey):
 
         :return: The underlying object representing the public key.
         :rtype: Any
-
-        >>> from hdwallet.ecc.slip10.nist256p1.public_key import SLIP10Nist256p1PublicKey
-        >>> SLIP10Nist256p1PublicKey.underlying_object()
-        "..."
         """
 
         return self.verify_key
@@ -151,10 +126,6 @@ class SLIP10Nist256p1PublicKey(IPublicKey):
 
         :return: The compressed raw bytes of the public key.
         :rtype: bytes
-
-        >>> from hdwallet.ecc.slip10.nist256p1.public_key import SLIP10Nist256p1PublicKey
-        >>> SLIP10Nist256p1PublicKey.raw_compressed()
-        ...
         """
 
         return self.verify_key.to_string("compressed")
@@ -165,10 +136,6 @@ class SLIP10Nist256p1PublicKey(IPublicKey):
 
         :return: The uncompressed raw bytes of the public key.
         :rtype: bytes
-
-        >>> from hdwallet.ecc.slip10.nist256p1.public_key import SLIP10Nist256p1PublicKey
-        >>> SLIP10Nist256p1PublicKey.raw_uncompressed()
-        ...
         """
 
         return self.verify_key.to_string("uncompressed")
@@ -179,10 +146,6 @@ class SLIP10Nist256p1PublicKey(IPublicKey):
 
         :return: The elliptic curve point.
         :rtype: IPoint
-
-        >>> from hdwallet.ecc.slip10.nist256p1.public_key import SLIP10Nist256p1PublicKey
-        >>> SLIP10Nist256p1PublicKey.point()
-        "..."
         """
 
         return SLIP10Nist256p1Point(self.verify_key.pubkey.point)

@@ -36,11 +36,6 @@ class SLIP10Ed25519PrivateKey(IPrivateKey):
 
         :return: The name of the ecc class.
         :rtype: str
-
-        >>> from hdwallet.ecc.slip10.ed25519.private_key import SLIP10Ed25519PrivateKey
-        >>> ecc:  = SLIP10Ed25519PrivateKey(private_key=...)
-        >>> ecc.name()
-        "SLIP10-Ed25519"
         """
 
         return "SLIP10-Ed25519"
@@ -52,12 +47,9 @@ class SLIP10Ed25519PrivateKey(IPrivateKey):
 
         :param private_key: The byte representation of the private key.
         :type private_key: bytes
+
         :return: An instance of the class initialized with the provided private key.
         :rtype: IPrivateKey
-
-        >>> from hdwallet.ecc.slip10.ed25519.private_key import SLIP10Ed25519PrivateKey
-        >>> SLIP10Ed25519PrivateKey.from_bytes(private_key=...)
-        "..."
         """
 
         try:
@@ -72,10 +64,6 @@ class SLIP10Ed25519PrivateKey(IPrivateKey):
 
         :return: The length of the private key in bytes.
         :rtype: int
-
-        >>> from hdwallet.ecc.slip10.ed25519.private_key import SLIP10Ed25519PrivateKey
-        >>> SLIP10Ed25519PrivateKey.length()
-        ...
         """
 
         return SLIP10_ED25519_CONST.PRIVATE_KEY_BYTE_LENGTH
@@ -86,10 +74,6 @@ class SLIP10Ed25519PrivateKey(IPrivateKey):
 
         :return: The underlying signing key object.
         :rtype: Any
-
-        >>> from hdwallet.ecc.slip10.ed25519.private_key import SLIP10Ed25519PrivateKey
-        >>> SLIP10Ed25519PrivateKey.underlying_object()
-        "..."
         """
 
         return self.signing_key
@@ -100,10 +84,6 @@ class SLIP10Ed25519PrivateKey(IPrivateKey):
 
         :return: Raw bytes of the signing key.
         :rtype: bytes
-
-        >>> from hdwallet.ecc.slip10.ed25519.private_key import SLIP10Ed25519PrivateKey
-        >>> SLIP10Ed25519PrivateKey.raw()
-        ...
         """
 
         return bytes(self.signing_key)
@@ -114,10 +94,6 @@ class SLIP10Ed25519PrivateKey(IPrivateKey):
 
         :return: The public key corresponding to the signing key.
         :rtype: IPublicKey
-
-        >>> from hdwallet.ecc.slip10.ed25519.private_key import SLIP10Ed25519PrivateKey
-        >>> SLIP10Ed25519PrivateKey.public_key()
-        "..."
         """
 
         return SLIP10Ed25519PublicKey(self.signing_key.verify_key)

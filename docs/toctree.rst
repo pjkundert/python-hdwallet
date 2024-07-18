@@ -21,3 +21,6 @@ HDWallet
     Hierarchical Deterministic's (HD's) <hds.rst>
     Addresses <addresses.rst>
     HDWallet <hdwallet.rst>
+    Consts <const.rst>
+    Crypto <crypto.rst>
+    Utils <utils.rst>
