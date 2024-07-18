@@ -25,11 +25,6 @@ class SLIP10Ed25519MoneroPrivateKey(SLIP10Ed25519PrivateKey):
 
         :return: The name of the ecc class.
         :rtype: str
-
-        >>> from hdwallet.ecc.slip10.ed25519.monero.private_key import SLIP10Ed25519MoneroPrivateKey
-        >>> ecc:  = SLIP10Ed25519MoneroPrivateKey(private_key=...)
-        >>> ecc.name()
-        "SLIP10-Ed25519-Monero"
         """
 
         return "SLIP10-Ed25519-Monero"
@@ -44,10 +39,6 @@ class SLIP10Ed25519MoneroPrivateKey(SLIP10Ed25519PrivateKey):
 
         :return: An instance of IPrivateKey created from the provided byte sequence.
         :rtype: IPrivateKey
-
-        >>> from hdwallet.ecc.slip10.ed25519.monero.private_key import SLIP10Ed25519MoneroPrivateKey
-        >>> SLIP10Ed25519MoneroPrivateKey.from_bytes(private_key=...)
-        "..."
         """
 
         if not scalar_is_valid(private_key):
@@ -60,10 +51,6 @@ class SLIP10Ed25519MoneroPrivateKey(SLIP10Ed25519PrivateKey):
 
         :return: The public key derived from the private key.
         :rtype: IPublicKey
-
-        >>> from hdwallet.ecc.slip10.ed25519.monero.private_key import SLIP10Ed25519MoneroPrivateKey
-        >>> SLIP10Ed25519MoneroPrivateKey.point()
-        "..."
         """
 
         return SLIP10Ed25519MoneroPublicKey(

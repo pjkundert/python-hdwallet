@@ -82,11 +82,6 @@ class ElectrumV2HD(IHD):
 
         :return: The name of the v2 class.
         :rtype: str
-
-        >>> from hdwallet.hds.electrum.v2 import ElectrumV2HD
-        >>> v2: ElectrumV2HD = ElectrumV2HD(v1="...")
-        >>> v2.name()
-        "Electrum-V2"
         """
 
         return "Electrum-V2"
@@ -97,10 +92,6 @@ class ElectrumV2HD(IHD):
 
         :return: Updated instance of ElectrumV2HD.
         :rtype: ElectrumV2HD
-
-        >>> from hdwallet.hds.electrum.v2 import ElectrumV2HD
-        >>> ElectrumV2HD.__update__()
-        "..."
         """
 
         self.from_derivation(derivation=self._derivation)
@@ -112,15 +103,10 @@ class ElectrumV2HD(IHD):
 
         :param seed: The seed to derive keys from, can be bytes, str, or an ISeed object.
         :type seed: Union[bytes, str, ISeed]
-
         :param kwargs: Additional keyword arguments.
 
         :return: Updated instance of ElectrumV2HD.
         :rtype: ElectrumV2HD
-
-        >>> from hdwallet.hds.electrum.v2 import ElectrumV2HD
-        >>> ElectrumV2HD.from_seed(seed=...)
-        "..."
         """
 
         self._bip32_hd.from_seed(seed=seed)
@@ -136,10 +122,6 @@ class ElectrumV2HD(IHD):
 
         :return: Updated instance of ElectrumV2HD.
         :rtype: ElectrumV2HD
-
-        >>> from hdwallet.hds.electrum.v2 import ElectrumV2HD
-        >>> ElectrumV2HD.from_derivation(derivation="...")
-        "..."
         """
 
         if not isinstance(derivation, ElectrumDerivation):
@@ -163,10 +145,6 @@ class ElectrumV2HD(IHD):
 
         :return: Updated instance of ElectrumV2HD.
         :rtype: ElectrumV2HD
-
-        >>> from hdwallet.hds.electrum.v2 import ElectrumV2HD
-        >>> ElectrumV2HD.update_derivation(derivation="...")
-        "..."
         """
 
         return self.from_derivation(derivation=derivation)
@@ -177,10 +155,6 @@ class ElectrumV2HD(IHD):
 
         :return: Updated instance of ElectrumV2HD.
         :rtype: ElectrumV2HD
-
-        >>> from hdwallet.hds.electrum.v2 import ElectrumV2HD
-        >>> ElectrumV2HD.clean_derivation()
-        "..."
         """
 
         self._derivation.clean()
@@ -193,16 +167,11 @@ class ElectrumV2HD(IHD):
 
         :param change_index: The change index.
         :type change_index: int
-
         :param address_index: The address index.
         :type address_index: int
 
         :return: Updated instance of ElectrumV2HD.
         :rtype: ElectrumV2HD
-
-        >>> from hdwallet.hds.electrum.v2 import ElectrumV2HD
-        >>> ElectrumV2HD.drive(change_index=..., address_index=...)
-        "..."
         """
 
         custom_derivation: CustomDerivation = CustomDerivation()
@@ -219,10 +188,6 @@ class ElectrumV2HD(IHD):
 
         :return: The mode of the instance.
         :rtype: str
-
-        >>> from hdwallet.hds.electrum.v2 import ElectrumV2HD
-        >>> ElectrumV2HD.mode()
-        "..."
         """
 
         return self._mode
@@ -233,10 +198,6 @@ class ElectrumV2HD(IHD):
 
         :return: The seed used.
         :rtype: str
-
-        >>> from hdwallet.hds.electrum.v2 import ElectrumV2HD
-        >>> ElectrumV2HD.seed()
-        "..."
         """
         return self._bip32_hd.seed()
 
@@ -246,10 +207,6 @@ class ElectrumV2HD(IHD):
 
         :return: The master private key as a string, or None if not available.
         :rtype: Optional[str]
-
-        >>> from hdwallet.hds.electrum.v2 import ElectrumV2HD
-        >>> ElectrumV2HD.master_private_key()
-        "..."
         """
 
         return self._bip32_hd.root_private_key()
@@ -263,10 +220,6 @@ class ElectrumV2HD(IHD):
 
         :return: The master WIF for the specified type, or None if the master private key is not available.
         :rtype: Optional[str]
-
-        >>> from hdwallet.hds.electrum.v2 import ElectrumV2HD
-        >>> ElectrumV2HD.master_wif(wif_type="...")
-        "..."
         """
 
         if wif_type:
@@ -291,10 +244,6 @@ class ElectrumV2HD(IHD):
 
         :return: The master public key in the specified format.
         :rtype: str
-
-        >>> from hdwallet.hds.electrum.v2 import ElectrumV2HD
-        >>> ElectrumV2HD.master_public_key(public_key_type="...")
-        "..."
         """
 
         _public_key_type: str = (
@@ -310,10 +259,6 @@ class ElectrumV2HD(IHD):
 
         :return: The current private key as a string if available, otherwise None.
         :rtype: Optional[str]
-
-        >>> from hdwallet.hds.electrum.v2 import ElectrumV2HD
-        >>> ElectrumV2HD.private_key()
-        "..."
         """
         return self._bip32_hd.private_key()
 
@@ -326,10 +271,6 @@ class ElectrumV2HD(IHD):
 
         :return: The WIF representation of the current private key if available, otherwise None.
         :rtype: Optional[str]
-
-        >>> from hdwallet.hds.electrum.v2 import ElectrumV2HD
-        >>> ElectrumV2HD.wif(wif_type="...")
-        "..."
         """
 
         if wif_type:
@@ -351,10 +292,6 @@ class ElectrumV2HD(IHD):
 
         :return: The current WIF type.
         :rtype: str
-
-        >>> from hdwallet.hds.electrum.v2 import ElectrumV2HD
-        >>> ElectrumV2HD.wif_type()
-        "..."
         """
         return self._wif_type
 
@@ -368,10 +305,6 @@ class ElectrumV2HD(IHD):
 
         :return: The public key in the specified format.
         :rtype: str
-
-        >>> from hdwallet.hds.electrum.v2 import ElectrumV2HD
-        >>> ElectrumV2HD.public_key(public_key_type="...")
-        "..."
         """
         _public_key_type: str = (
             public_key_type if public_key_type in PUBLIC_KEY_TYPES.get_types() else self._public_key_type
@@ -386,10 +319,6 @@ class ElectrumV2HD(IHD):
 
         :return: The current public key type.
         :rtype: str
-
-        >>> from hdwallet.hds.electrum.v2 import ElectrumV2HD
-        >>> ElectrumV2HD.public_key_type()
-        "..."
         """
 
         return self._public_key_type
@@ -400,10 +329,6 @@ class ElectrumV2HD(IHD):
 
         :return: Uncompressed master public key.
         :rtype: str
-
-        >>> from hdwallet.hds.electrum.v2 import ElectrumV2HD
-        >>> ElectrumV2HD.uncompressed()
-        "..."
         """
 
         return self._bip32_hd.uncompressed()
@@ -414,10 +339,6 @@ class ElectrumV2HD(IHD):
 
         :return: Compressed master public key.
         :rtype: str
-
-        >>> from hdwallet.hds.electrum.v2 import ElectrumV2HD
-        >>> ElectrumV2HD.compressed()
-        "..."
         """
 
         return self._bip32_hd.compressed()
@@ -433,19 +354,13 @@ class ElectrumV2HD(IHD):
 
         :param public_key_address_prefix: Public key address prefix for P2PKH addresses default: mainnet.
         :type public_key_address_prefix: int
-
         :param hrp: Human-readable part for SegWit addresses default: mainnet.
         :type hrp: str
-
         :param witness_version: Witness version for SegWit addresses default: P2WPKH.
         :type witness_version: str
 
         :return: Generated address based on the current mode.
         :rtype: str
-
-        >>> from hdwallet.hds.electrum.v2 import ElectrumV2HD
-        >>> ElectrumV2HD.address(public_key_address_prefix=..., hrp="...", witness_version="...")
-        "..."
         """
 
         if self._mode == ELECTRUM_V2_MODES.STANDARD:

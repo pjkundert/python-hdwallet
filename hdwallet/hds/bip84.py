@@ -31,7 +31,6 @@ class BIP84HD(BIP44HD):
 
         :param ecc: The elliptic curve cryptography implementation.
         :type ecc: Type[IEllipticCurveCryptography]
-
         :param public_key_type: The type of public key (compressed or uncompressed), defaults to compressed.
         :type public_key_type: str
 
@@ -55,11 +54,6 @@ class BIP84HD(BIP44HD):
 
         :return: The name of the bip class.
         :rtype: str
-
-        >>> from hdwallet.hds.bip84 import BIP84HD
-        >>> bip84: BIP84HD = BIP84HD(bip="...")
-        >>> bip84.name()
-        "BIP84"
         """
         return "BIP84"
 
@@ -72,10 +66,6 @@ class BIP84HD(BIP44HD):
 
         :return: The updated BIP84HD instance.
         :rtype: BIP84HD
-
-        >>> from hdwallet.hds.bip84 import BIP84HD
-        >>> BIP84HD.from_derivation(derivation="...")
-        "..."
         """
 
         if not isinstance(derivation, BIP84Derivation):
@@ -97,16 +87,11 @@ class BIP84HD(BIP44HD):
 
         :param version: The version of the xprv key, either as bytes or an integer. Defaults to P2WPKH xprv version.
         :type version: Union[bytes, int]
-
         :param encoded: Whether the key should be encoded or not. Defaults to True.
         :type encoded: bool
 
         :return: The root extended private key as a string, or None if the key cannot be generated.
         :rtype: Optional[str]
-
-        >>> from hdwallet.hds.bip84 import BIP84HD
-        >>> BIP84HD.root_xprivate_key(version=..., encoded=...)
-        "..."
         """
 
         return super(BIP44HD, self).root_xprivate_key(version=version, encoded=encoded)
@@ -119,16 +104,11 @@ class BIP84HD(BIP44HD):
 
         :param version: The version of the xpub key, either as bytes or an integer. Defaults to P2WPKH xpub version.
         :type version: Union[bytes, int]
-
         :param encoded: Whether the key should be encoded or not. Defaults to True.
         :type encoded: bool
 
         :return: The root extended public key as a string, or None if the key cannot be generated.
         :rtype: Optional[str]
-
-        >>> from hdwallet.hds.bip84 import BIP84HD
-        >>> BIP84HD.root_xpublic_key(version=..., encoded=...)
-        "..."
         """
 
         return super(BIP44HD, self).root_xpublic_key(version=version, encoded=encoded)
@@ -141,16 +121,11 @@ class BIP84HD(BIP44HD):
 
         :param version: The version of the xprv key, either as bytes or an integer. Defaults to P2WPKH xprv version.
         :type version: Union[bytes, int]
-
         :param encoded: Whether the key should be encoded or not. Defaults to True.
         :type encoded: bool
 
         :return: The extended private key as a string, or None if the key cannot be generated.
         :rtype: Optional[str]
-
-        >>> from hdwallet.hds.bip84 import BIP84HD
-        >>> BIP84HD.xprivate_key(version=..., encoded=...)
-        "..."
         """
 
         return super(BIP44HD, self).xprivate_key(version=version, encoded=encoded)
@@ -163,16 +138,11 @@ class BIP84HD(BIP44HD):
 
         :param version: The version of the xpub key, either as bytes or an integer. Defaults to P2WPKH xpub version.
         :type version: Union[bytes, int]
-
         :param encoded: Whether the key should be encoded or not. Defaults to True.
         :type encoded: bool
 
         :return: The extended public key as a string, or None if the key cannot be generated.
         :rtype: Optional[str]
-
-        >>> from hdwallet.hds.bip84 import BIP84HD
-        >>> BIP84HD.xprivate_key(version=..., encoded=...)
-        "..."
         """
 
         return super(BIP44HD, self).xpublic_key(version=version, encoded=encoded)
@@ -188,18 +158,12 @@ class BIP84HD(BIP44HD):
 
         :param hrp: The Human-readable Part (HRP) for the address. Defaults to Bitcoin's mainnet HRP.
         :type hrp: str
-
         :param witness_version: The witness version for the address. Defaults to P2WPKH witness version.
         :type witness_version: int
-
         :param kwargs: Additional keyword arguments, not used in this method.
 
         :return: The generated native SegWit (P2WPKH) address.
         :rtype: str
-
-        >>> from hdwallet.hds.bip84 import BIP84HD
-        >>> BIP84HD.address(hrp="...", witness_version=...)
-        "..."
         """
 
         return P2WPKHAddress.encode(

@@ -52,11 +52,6 @@ class BIP86HD(BIP44HD):
 
         :return: The name of the bip class.
         :rtype: str
-
-        >>> from hdwallet.hds.bip86 import BIP86HD
-        >>> bip86: BIP86HD = BIP86HD(bip="...")
-        >>> bip86.name()
-        "BIP86"
         """
         return "BIP86"
 
@@ -69,10 +64,6 @@ class BIP86HD(BIP44HD):
 
         :return: The updated BIP86HD instance.
         :rtype: BIP86HD
-
-        >>> from hdwallet.hds.bip86 import BIP86HD
-        >>> BIP86HD.from_derivation(derivation="...")
-        "..."
         """
 
         if not isinstance(derivation, BIP86Derivation):
@@ -94,16 +85,11 @@ class BIP86HD(BIP44HD):
 
         :param version: The version bytes or integer for the extended private key.
         :type version: Union[bytes, int]
-
         :param encoded: Flag indicating whether the key should be encoded (default is True).
         :type encoded: bool
 
         :return: The root extended private key (xprv) as a string, or None if not available.
         :rtype: Optional[str]
-
-        >>> from hdwallet.hds.bip86 import BIP86HD
-        >>> BIP86HD.root_xprivate_key(version=..., encoded=...)
-        "..."
         """
         return super(BIP44HD, self).root_xprivate_key(version=version, encoded=encoded)
 
@@ -115,16 +101,11 @@ class BIP86HD(BIP44HD):
 
         :param version: The version bytes or integer for the root extended public key.
         :type version: Union[bytes, int]
-
         :param encoded: Flag indicating whether the key should be encoded (default is True).
         :type encoded: bool
 
         :return: The root extended public key (xpub) as a string, or None if not available.
         :rtype: Optional[str]
-
-        >>> from hdwallet.hds.bip86 import BIP86HD
-        >>> BIP86HD.root_xpublic_key(version=..., encoded=...)
-        "..."
         """
 
         return super(BIP44HD, self).root_xpublic_key(version=version, encoded=encoded)
@@ -137,16 +118,11 @@ class BIP86HD(BIP44HD):
 
         :param version: The version bytes or integer for the extended private key.
         :type version: Union[bytes, int]
-
         :param encoded: Flag indicating whether the key should be encoded (default is True).
         :type encoded: bool
 
         :return: The extended private key (xprv) as a string, or None if not available.
         :rtype: Optional[str]
-
-        >>> from hdwallet.hds.bip86 import BIP86HD
-        >>> BIP86HD.xprivate_key(version=..., encoded=...)
-        "..."
         """
 
         return super(BIP44HD, self).xprivate_key(version=version, encoded=encoded)
@@ -159,16 +135,11 @@ class BIP86HD(BIP44HD):
 
         :param version: The version bytes or integer for the extended public key.
         :type version: Union[bytes, int]
-
         :param encoded: Flag indicating whether the key should be encoded (default is True).
         :type encoded: bool
 
         :return: The extended public key (xpub) as a string, or None if not available.
         :rtype: Optional[str]
-
-        >>> from hdwallet.hds.bip86 import BIP86HD
-        >>> BIP86HD.xpublic_key(version=..., encoded=...)
-        "..."
         """
 
         return super(BIP44HD, self).xpublic_key(version=version, encoded=encoded)
@@ -185,15 +156,10 @@ class BIP86HD(BIP44HD):
 
         :param witness_version: Witness version for SegWit address encoding (default is Bitcoin.NETWORKS.MAINNET.WITNESS_VERSIONS.P2TR).
         :type witness_version: int
-
         :param kwargs: Additional keyword arguments passed to the address encoding function.
 
         :return: The encoded SegWit (P2TR) address as a string.
         :rtype: str
-
-        >>> from hdwallet.hds.bip86 import BIP86HD
-        >>> BIP86HD.address(hrp="...", witness_version=...)
-        "..."
         """
 
         return P2TRAddress.encode(

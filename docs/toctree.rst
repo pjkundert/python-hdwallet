@@ -17,7 +17,10 @@ HDWallet
     Mnemonics <mnemonics.rst>
     Seeds <seeds.rst>
     Derivations <derivations.rst>
-    Elliptic Curve Cryptography (ECC) <ecc.rst>
-    Hierarchical Deterministic (HD) <hds.rst>
+    Elliptic Curve Cryptographys (ECCs) <ecc.rst>
+    Hierarchical Deterministic's (HD's) <hds.rst>
     Addresses <addresses.rst>
     Crypto <crypto.rst>
+    Utils <utils.rst>
+    Consts <const.rst>
+    

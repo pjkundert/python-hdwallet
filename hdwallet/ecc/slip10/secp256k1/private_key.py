@@ -38,11 +38,6 @@ class SLIP10Secp256k1PrivateKeyCoincurve(IPrivateKey):
 
         :return: The name of the ecc class.
         :rtype: str
-
-        >>> from hdwallet.ecc.slip10.secp256k1.private_key import SLIP10Secp256k1PrivateKeyCoincurve
-        >>> ecc:  = SLIP10Secp256k1PrivateKeyCoincurve(private_key=...)
-        >>> ecc.name()
-        "SLIP10-Secp256k1"
         """
 
         return "SLIP10-Secp256k1"
@@ -57,10 +52,6 @@ class SLIP10Secp256k1PrivateKeyCoincurve(IPrivateKey):
 
         :return: An instance implementing the IPrivateKey interface.
         :rtype: IPrivateKey
-
-        >>> from hdwallet.ecc.slip10.secp256k1.private_key import SLIP10Secp256k1PrivateKeyCoincurve
-        >>> SLIP10Secp256k1PrivateKeyCoincurve.from_bytes(private_key=...)
-        "..."
         """
 
         if len(private_key) != cls.length():
@@ -78,10 +69,6 @@ class SLIP10Secp256k1PrivateKeyCoincurve(IPrivateKey):
 
         :return: The length of the private key in bytes.
         :rtype: int
-
-        >>> from hdwallet.ecc.slip10.secp256k1.private_key import SLIP10Secp256k1PrivateKeyCoincurve
-        >>> SLIP10Secp256k1PrivateKeyCoincurve.length()
-        ...
         """
 
         return SLIP10_SECP256K1_CONST.PRIVATE_KEY_BYTE_LENGTH
@@ -92,10 +79,6 @@ class SLIP10Secp256k1PrivateKeyCoincurve(IPrivateKey):
 
         :return: The underlying signing key object.
         :rtype: Any
-
-        >>> from hdwallet.ecc.slip10.secp256k1.private_key import SLIP10Secp256k1PrivateKeyCoincurve
-        >>> SLIP10Secp256k1PrivateKeyCoincurve.underlying_object()
-        "..."
         """
 
         return self.signing_key
@@ -106,10 +89,6 @@ class SLIP10Secp256k1PrivateKeyCoincurve(IPrivateKey):
 
         :return: The raw secret bytes of the signing key.
         :rtype: bytes
-
-        >>> from hdwallet.ecc.slip10.secp256k1.private_key import SLIP10Secp256k1PrivateKeyCoincurve
-        >>> SLIP10Secp256k1PrivateKeyCoincurve.raw()
-        ...
         """
 
         return self.signing_key.secret
@@ -120,10 +99,6 @@ class SLIP10Secp256k1PrivateKeyCoincurve(IPrivateKey):
 
         :return: The public key object.
         :rtype: IPublicKey
-
-        >>> from hdwallet.ecc.slip10.secp256k1.private_key import SLIP10Secp256k1PrivateKeyCoincurve
-        >>> SLIP10Secp256k1PrivateKeyCoincurve.public_key()
-        "..."
         """
 
         return SLIP10Secp256k1PublicKeyCoincurve(self.signing_key.public_key)
@@ -150,11 +125,6 @@ class SLIP10Secp256k1PrivateKeyECDSA(IPrivateKey):
 
         :return: The name of the algorithm.
         :rtype: str
-
-        >>> from hdwallet.ecc.slip10.secp256k1.private_key import SLIP10Secp256k1PrivateKeyECDSA
-        >>> ecc:  = SLIP10Secp256k1PrivateKeyECDSA(private_key=...)
-        >>> ecc.name()
-        "SLIP10-Secp256k1"
         """
 
         return "SLIP10-Secp256k1"
@@ -169,10 +139,6 @@ class SLIP10Secp256k1PrivateKeyECDSA(IPrivateKey):
 
         :return: An instance of IPrivateKey corresponding to the given bytes.
         :rtype: IPrivateKey
-
-        >>> from hdwallet.ecc.slip10.secp256k1.private_key import SLIP10Secp256k1PrivateKeyECDSA
-        >>> SLIP10Secp256k1PrivateKeyECDSA.from_bytes(key_bytes=...)
-        "..."
         """
 
         try:
@@ -192,9 +158,6 @@ class SLIP10Secp256k1PrivateKeyECDSA(IPrivateKey):
         :return: Length of the private key in bytes.
         :rtype: int
 
-        >>> from hdwallet.ecc.slip10.secp256k1.private_key import SLIP10Secp256k1PrivateKeyECDSA
-        >>> SLIP10Secp256k1PrivateKeyECDSA.length()
-        ...
         """
 
         return SLIP10_SECP256K1_CONST.PRIVATE_KEY_BYTE_LENGTH
@@ -205,10 +168,6 @@ class SLIP10Secp256k1PrivateKeyECDSA(IPrivateKey):
 
         :return: The underlying signing key object.
         :rtype: Any
-
-        >>> from hdwallet.ecc.slip10.secp256k1.private_key import SLIP10Secp256k1PrivateKeyECDSA
-        >>> SLIP10Secp256k1PrivateKeyECDSA.underlying_object()
-        "..."
         """
 
         return self.signing_key
@@ -219,10 +178,6 @@ class SLIP10Secp256k1PrivateKeyECDSA(IPrivateKey):
 
         :return: The raw bytes of the private key.
         :rtype: bytes
-
-        >>> from hdwallet.ecc.slip10.secp256k1.private_key import SLIP10Secp256k1PrivateKeyECDSA
-        >>> SLIP10Secp256k1PrivateKeyECDSA.raw()
-        ...
         """
 
         return self.signing_key.to_string()
@@ -233,10 +188,6 @@ class SLIP10Secp256k1PrivateKeyECDSA(IPrivateKey):
 
         :return: The public key object.
         :rtype: IPublicKey
-
-        >>> from hdwallet.ecc.slip10.secp256k1.private_key import SLIP10Secp256k1PrivateKeyECDSA
-        >>> SLIP10Secp256k1PrivateKeyECDSA.public_key()
-        "..."
         """
 
         return SLIP10Secp256k1PublicKeyECDSA(self.signing_key.get_verifying_key())
