@@ -24,6 +24,39 @@ from .ihd import IHD
 
 
 class HDS:
+    """
+    A class that manages a dictionary of hd classes.
+
+    This class provides methods to retrieve names and classes of various hd implementations,
+    as well as methods to validate and access specific hd classes by name.
+
+    Here are available hd names and classes:
+
+    +--------------+--------------------------------------------------+
+    | Name         | Class                                            |
+    +==============+==================================================+
+    | BIP32        | <class 'hdwallet.hds.bip32.BIP32HD'>             |
+    +--------------+--------------------------------------------------+
+    | BIP44        | <class 'hdwallet.hds.bip44.BIP44HD'>             |
+    +--------------+--------------------------------------------------+
+    | BIP49        | <class 'hdwallet.hds.bip49.BIP49HD'>             |
+    +--------------+--------------------------------------------------+
+    | BIP84        | <class 'hdwallet.hds.bip84.BIP84HD'>             |
+    +--------------+--------------------------------------------------+
+    | BIP86        | <class 'hdwallet.hds.bip86.BIP86HD'>             |
+    +--------------+--------------------------------------------------+
+    | BIP141       | <class 'hdwallet.hds.bip141.BIP141HD'>           |
+    +--------------+--------------------------------------------------+
+    | Cardano      | <class 'hdwallet.hds.cardano.CardanoHD'>         |
+    +--------------+--------------------------------------------------+
+    | Electrum-V1  | <class 'hdwallet.hds.electrum.v1.ElectrumV1HD'>  |
+    +--------------+--------------------------------------------------+
+    | Electrum-V2  | <class 'hdwallet.hds.electrum.v2.ElectrumV2HD'>  |
+    +--------------+--------------------------------------------------+
+    | Monero       | <class 'hdwallet.hds.monero.MoneroHD'>           |
+    +--------------+--------------------------------------------------+
+
+    """
 
     dictionary: Dict[str, Type[IHD]] = {
         BIP32HD.name(): BIP32HD,

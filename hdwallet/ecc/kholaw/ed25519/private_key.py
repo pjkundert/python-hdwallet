@@ -27,7 +27,6 @@ class KholawEd25519PrivateKey(IPrivateKey):
 
         :param private_key: The private key to be used. Must be an instance of `SLIP10Ed25519PrivateKey`.
         :type private_key: IPrivateKey
-
         :param extended_key: The extended key associated with the private key.
                             Must be of length specified by `SLIP10Ed25519PrivateKey.length()`.
         :type extended_key: bytes
@@ -48,11 +47,6 @@ class KholawEd25519PrivateKey(IPrivateKey):
 
         :return: The name of the ecc class.
         :rtype: str
-
-        >>> from hdwallet.ecc.kholaw.ed25519.private_key import KholawEd25519PrivateKey
-        >>> ecc:  = KholawEd25519PrivateKey(private_key=...)
-        >>> ecc.name()
-        "Kholaw-Ed25519"
         """
 
         return "Kholaw-Ed25519"
@@ -64,12 +58,9 @@ class KholawEd25519PrivateKey(IPrivateKey):
 
         :param private_key: The byte sequence representing the private key.
         :type private_key: bytes
+
         :return: An instance of the private key.
         :rtype: IPrivateKey
-
-        >>> from hdwallet.ecc.kholaw.ed25519.private_key import KholawEd25519PrivateKey
-        >>> KholawEd25519PrivateKey(private_key=...)
-        "..."
         """
 
         return cls(
@@ -89,10 +80,6 @@ class KholawEd25519PrivateKey(IPrivateKey):
 
         :return: The length of the private key in bytes.
         :rtype: int
-
-        >>> from hdwallet.ecc.kholaw.ed25519.private_key import KholawEd25519PrivateKey
-        >>> KholawEd25519PrivateKey.length()
-        ...
         """
 
         return KHOLAW_ED25519_CONST.PRIVATE_KEY_BYTE_LENGTH
@@ -103,10 +90,6 @@ class KholawEd25519PrivateKey(IPrivateKey):
 
         :return: The underlying object of the signing key.
         :rtype: Any
-
-        >>> from hdwallet.ecc.kholaw.ed25519.private_key import KholawEd25519PrivateKey
-        >>> KholawEd25519PrivateKey.underlying_object()
-        "..."
         """
 
         return self.signing_key.underlying_object()
@@ -117,10 +100,6 @@ class KholawEd25519PrivateKey(IPrivateKey):
 
         :return: The raw byte sequence of the signing key and extended key.
         :rtype: bytes
-
-        >>> from hdwallet.ecc.kholaw.ed25519.private_key import KholawEd25519PrivateKey
-        >>> KholawEd25519PrivateKey.raw()
-        ...
         """
 
         return self.signing_key.raw() + self.extended_key
@@ -131,10 +110,6 @@ class KholawEd25519PrivateKey(IPrivateKey):
 
         :return: The generated public key.
         :rtype: IPublicKey
-
-        >>> from hdwallet.ecc.kholaw.ed25519.private_key import KholawEd25519PrivateKey
-        >>> KholawEd25519PrivateKey.public_key)
-        "..."
         """
 
         return KholawEd25519PublicKey(VerifyKey(

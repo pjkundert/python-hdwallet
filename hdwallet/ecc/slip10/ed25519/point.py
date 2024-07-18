@@ -53,11 +53,6 @@ class SLIP10Ed25519Point(IPoint):
 
         :return: The name of the ecc class.
         :rtype: str
-
-        >>> from hdwallet.ecc.slip10.ed25519.point import SLIP10Ed25519Point
-        >>> ecc:  = SLIP10Ed25519Point(point=...)
-        >>> ecc.name()
-        "SLIP10-Ed25519"
         """
 
         return "SLIP10-Ed25519"
@@ -69,12 +64,9 @@ class SLIP10Ed25519Point(IPoint):
 
         :param point: The byte representation of the point.
         :type point: bytes
+
         :return: An instance of the Ed25519 point.
         :rtype: IPoint
-
-        >>> from hdwallet.ecc.slip10.ed25519.point import SLIP10Ed25519Point
-        >>> SLIP10Ed25519Point.from_bytes(point=...)
-        "..."
         """
 
         if not point_is_on_curve(point):
@@ -92,14 +84,12 @@ class SLIP10Ed25519Point(IPoint):
 
         :param x: The x-coordinate of the point.
         :type x: int
+
         :param y: The y-coordinate of the point.
         :type y: int
+
         :return: An instance of the Ed25519 point.
         :rtype: IPoint
-
-        >>> from hdwallet.ecc.slip10.ed25519.point import SLIP10Ed25519Point
-        >>> SLIP10Ed25519Point.from_coordinates(x=..., y=...)
-        "..."
         """
 
         return cls.from_bytes(
@@ -112,10 +102,6 @@ class SLIP10Ed25519Point(IPoint):
 
         :return: The underlying object representing the Ed25519 Monero point.
         :rtype: Any
-
-        >>> from hdwallet.ecc.slip10.ed25519.point import SLIP10Ed25519Point
-        >>> SLIP10Ed25519Point.underlying_object()
-        "..."
         """
 
         return self.point
@@ -126,10 +112,6 @@ class SLIP10Ed25519Point(IPoint):
 
         :return: The x-coordinate of the Ed25519 Monero public key point.
         :rtype: int
-
-        >>> from hdwallet.ecc.slip10.ed25519.point import SLIP10Ed25519Point
-        >>> SLIP10Ed25519Point.x()
-        ...
         """
 
         if self._x is None:
@@ -142,10 +124,6 @@ class SLIP10Ed25519Point(IPoint):
 
         :return: The y-coordinate of the Ed25519 point.
         :rtype: int
-
-        >>> from hdwallet.ecc.slip10.ed25519.point import SLIP10Ed25519Point
-        >>> SLIP10Ed25519Point.y()
-        ...
         """
 
         if self._y is None:
@@ -158,10 +136,6 @@ class SLIP10Ed25519Point(IPoint):
 
         :return: Raw bytes of the signing key.
         :rtype: bytes
-
-        >>> from hdwallet.ecc.slip10.ed25519.point import SLIP10Ed25519Point
-        >>> SLIP10Ed25519Point.raw()
-        ...
         """
 
         return self.raw_decoded()
@@ -172,10 +146,6 @@ class SLIP10Ed25519Point(IPoint):
 
         :return: The raw encoded point as bytes.
         :rtype: bytes
-
-        >>> from hdwallet.ecc.slip10.ed25519.point import SLIP10Ed25519Point
-        >>> SLIP10Ed25519Point.raw_encoded()
-        ...
         """
 
         return self.point
@@ -186,10 +156,6 @@ class SLIP10Ed25519Point(IPoint):
 
         :return: The raw decoded bytes of the point coordinates.
         :rtype: bytes
-
-        >>> from hdwallet.ecc.slip10.ed25519.point import SLIP10Ed25519Point
-        >>> SLIP10Ed25519Point.raw_decoded()
-        ...
         """
 
         return int_encode(self.x()) + int_encode(self.y())
@@ -203,10 +169,6 @@ class SLIP10Ed25519Point(IPoint):
 
         :return: The resulting point after addition.
         :rtype: IPoint
-
-        >>> from hdwallet.ecc.slip10.ed25519.point import SLIP10Ed25519Point
-        >>> SLIP10Ed25519Point.__add__(point="...")
-        "..."
         """
 
         return self.__class__(
@@ -222,10 +184,6 @@ class SLIP10Ed25519Point(IPoint):
 
         :return: The resulting point after addition.
         :rtype: IPoint
-
-        >>> from hdwallet.ecc.slip10.ed25519.point import SLIP10Ed25519Point
-        >>> SLIP10Ed25519Point.__radd__(point="...")
-        "..."
         """
 
         return self + point
@@ -239,10 +197,6 @@ class SLIP10Ed25519Point(IPoint):
 
         :return: The resulting point after scalar multiplication.
         :rtype: IPoint
-
-        >>> from hdwallet.ecc.slip10.ed25519.point import SLIP10Ed25519Point
-        >>> SLIP10Ed25519Point.__mul__(scalar=...)
-        "..."
         """
 
         if self.is_generator:
@@ -262,10 +216,6 @@ class SLIP10Ed25519Point(IPoint):
 
         :return: The resulting point after scalar multiplication.
         :rtype: IPoint
-
-        >>> from hdwallet.ecc.slip10.ed25519.point import SLIP10Ed25519Point
-        >>> SLIP10Ed25519Point.__rmul__(scalar=...)
-        "..."
         """
 
         return self * scalar

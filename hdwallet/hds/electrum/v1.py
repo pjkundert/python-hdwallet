@@ -77,11 +77,6 @@ class ElectrumV1HD(IHD):
 
         :return: The name of the v1 class.
         :rtype: str
-
-        >>> from hdwallet.hds.electrum.v1 import ElectrumV1HD
-        >>> v1: ElectrumV1HD = ElectrumV1HD(v1="...")
-        >>> v1.name()
-        "Electrum-V1"
         """
         return "Electrum-V1"
 
@@ -91,10 +86,6 @@ class ElectrumV1HD(IHD):
 
         :return: Updated instance of ElectrumV1HD.
         :rtype: ElectrumV1HD
-
-        >>> from hdwallet.hds.electrum.v1 import ElectrumV1HD
-        >>> ElectrumV1HD.__update__()
-        "..."
         """
 
         self.from_derivation(derivation=self._derivation)
@@ -106,15 +97,10 @@ class ElectrumV1HD(IHD):
 
         :param seed: The seed to initialize from.
         :type seed: Union[bytes, str, ISeed]
-
         :param kwargs: Additional keyword arguments.
 
         :return: Updated instance of ElectrumV1HD.
         :rtype: ElectrumV1HD
-
-        >>> from hdwallet.hds.electrum.v1 import ElectrumV1HD
-        >>> ElectrumV1HD.from_seed(seed=...)
-        "..."
         """
 
         self._seed = get_bytes(
@@ -132,10 +118,6 @@ class ElectrumV1HD(IHD):
 
         :return: Updated instance of ElectrumV1HD.
         :rtype: ElectrumV1HD
-
-        >>> from hdwallet.hds.electrum.v1 import ElectrumV1HD
-        >>> ElectrumV1HD.from_private_key(private_key=...)
-        "..."
         """
 
         if not isinstance(private_key, SLIP10Secp256k1PrivateKey):
@@ -158,10 +140,6 @@ class ElectrumV1HD(IHD):
 
         :return: Updated instance of ElectrumV1HD.
         :rtype: ElectrumV1HD
-
-        >>> from hdwallet.hds.electrum.v1 import ElectrumV1HD
-        >>> ElectrumV1HD.from_wif(wif="...")
-        "..."
         """
         return self.from_private_key(
             private_key=wif_to_private_key(wif=wif)
@@ -176,10 +154,6 @@ class ElectrumV1HD(IHD):
 
         :return: Updated instance of ElectrumV1HD.
         :rtype: ElectrumV1HD
-
-        >>> from hdwallet.hds.electrum.v1 import ElectrumV1HD
-        >>> ElectrumV1HD.from_public_key(public_key=...)
-        "..."
         """
 
         if not isinstance(public_key, SLIP10Secp256k1PublicKey):
@@ -199,10 +173,6 @@ class ElectrumV1HD(IHD):
 
         :return: Updated instance of ElectrumV1HD.
         :rtype: ElectrumV1HD
-
-        >>> from hdwallet.hds.electrum.v1 import ElectrumV1HD
-        >>> ElectrumV1HD.from_derivation(derivation=...)
-        "..."
         """
 
         if not isinstance(derivation, ElectrumDerivation):
@@ -226,10 +196,6 @@ class ElectrumV1HD(IHD):
 
         :return: Updated instance of ElectrumV1HD.
         :rtype: ElectrumV1HD
-
-        >>> from hdwallet.hds.electrum.v1 import ElectrumV1HD
-        >>> ElectrumV1HD.update_derivation(derivation=...)
-        "..."
         """
 
         return self.from_derivation(derivation=derivation)
@@ -240,10 +206,6 @@ class ElectrumV1HD(IHD):
 
         :return: Updated instance of ElectrumV1HD.
         :rtype: ElectrumV1HD
-
-        >>> from hdwallet.hds.electrum.v1 import ElectrumV1HD
-        >>> ElectrumV1HD.clean_derivation()
-        "..."
         """
 
         self._derivation.clean()
@@ -256,16 +218,11 @@ class ElectrumV1HD(IHD):
 
         :param change_index: Index for change (0 or 1).
         :type change_index: int
-
         :param address_index: Index for address derivation.
         :type address_index: int
 
         :return: Updated instance of ElectrumV1HD.
         :rtype: ElectrumV1HD
-
-        >>> from hdwallet.hds.electrum.v1 import ElectrumV1HD
-        >>> ElectrumV1HD.drive(change_index=..., address_index=...)
-        "..."
         """
 
         sequence: bytes = double_sha256(
@@ -292,10 +249,6 @@ class ElectrumV1HD(IHD):
 
         :return: Seed as a string if available, otherwise None.
         :rtype: Optional[str]
-
-        >>> from hdwallet.hds.electrum.v1 import ElectrumV1HD
-        >>> ElectrumV1HD.seed()
-        "..."
         """
 
         return bytes_to_string(self._seed) if self._seed else None
@@ -306,10 +259,6 @@ class ElectrumV1HD(IHD):
 
         :return: Master private key as a string if available, otherwise None.
         :rtype: Optional[str]
-
-        >>> from hdwallet.hds.electrum.v1 import ElectrumV1HD
-        >>> ElectrumV1HD.master_private_key()
-        "..."
         """
         return bytes_to_string(self._master_private_key.raw()) if self._master_private_key else None
 
@@ -323,10 +272,6 @@ class ElectrumV1HD(IHD):
 
         :return: Master private key in WIF format as a string if available, otherwise None.
         :rtype: Optional[str]
-
-        >>> from hdwallet.hds.electrum.v1 import ElectrumV1HD
-        >>> ElectrumV1HD.master_wif(wif_type="...")
-        "..."
         """
 
         if wif_type:
@@ -352,10 +297,6 @@ class ElectrumV1HD(IHD):
 
         :return: Master public key as a string.
         :rtype: str
-
-        >>> from hdwallet.hds.electrum.v1 import ElectrumV1HD
-        >>> ElectrumV1HD.master_public_key(public_key_type="...")
-        "..."
         """
         _public_key_type: str = (
             public_key_type if public_key_type in PUBLIC_KEY_TYPES.get_types() else self._public_key_type
@@ -374,10 +315,6 @@ class ElectrumV1HD(IHD):
 
         :return: Private key as a string if available, otherwise None.
         :rtype: Optional[str]
-
-        >>> from hdwallet.hds.electrum.v1 import ElectrumV1HD
-        >>> ElectrumV1HD.private_key()
-        "..."
         """
 
         if not self._private_key:
@@ -393,10 +330,6 @@ class ElectrumV1HD(IHD):
 
         :return: WIF representation of the private key if available, otherwise None.
         :rtype: Optional[str]
-
-        >>> from hdwallet.hds.electrum.v1 import ElectrumV1HD
-        >>> ElectrumV1HD.wif(wif_type="...")
-        "..."
         """
 
         if not self._private_key:
@@ -421,10 +354,6 @@ class ElectrumV1HD(IHD):
 
         :return: The current WIF type.
         :rtype: str
-
-        >>> from hdwallet.hds.electrum.v1 import ElectrumV1HD
-        >>> ElectrumV1HD.wif_type()
-        "..."
         """
 
         return self._wif_type
@@ -439,10 +368,6 @@ class ElectrumV1HD(IHD):
 
         :return: The public key string.
         :rtype: str
-
-        >>> from hdwallet.hds.electrum.v1 import ElectrumV1HD
-        >>> ElectrumV1HD.public_key(public_key_type="...")
-        "..."
         """
 
         if public_key_type:
@@ -465,10 +390,6 @@ class ElectrumV1HD(IHD):
 
         :return: The current public key type.
         :rtype: str
-
-        >>> from hdwallet.hds.electrum.v1 import ElectrumV1HD
-        >>> ElectrumV1HD.public_key_type()
-        "..."
         """
 
         return self._public_key_type
@@ -479,10 +400,6 @@ class ElectrumV1HD(IHD):
 
         :return: The uncompressed public key as a string.
         :rtype: str
-
-        >>> from hdwallet.hds.electrum.v1 import ElectrumV1HD
-        >>> ElectrumV1HD.uncompressed()
-        "..."
         """
 
         return bytes_to_string(self._public_key.raw_uncompressed())
@@ -493,10 +410,6 @@ class ElectrumV1HD(IHD):
 
         :return: The compressed public key as a string.
         :rtype: str
-
-        >>> from hdwallet.hds.electrum.v1 import ElectrumV1HD
-        >>> ElectrumV1HD.compressed()
-        "..."
         """
 
         return bytes_to_string(self._public_key.raw_compressed())
@@ -512,10 +425,6 @@ class ElectrumV1HD(IHD):
 
         :return: The generated Bitcoin address.
         :rtype: str
-
-        >>> from hdwallet.hds.electrum.v1 import ElectrumV1HD
-        >>> ElectrumV1HD.address(public_key_address_prefix=...)
-        "..."
         """
 
         return P2PKHAddress.encode(
