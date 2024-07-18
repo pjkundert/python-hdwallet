@@ -16,11 +16,6 @@ class KholawEd25519Point(SLIP10Ed25519Point):
 
         :return: The name of the ecc class.
         :rtype: str
-
-        >>> from hdwallet.ecc.kholaw.ed25519.point import KholawEd25519Point
-        >>> ecc:  = KholawEd25519Point(point=...)
-        >>> ecc.name()
-        "Kholaw-Ed25519"
         """
 
         return "Kholaw-Ed25519"

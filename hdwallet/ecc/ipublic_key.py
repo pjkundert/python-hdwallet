@@ -19,43 +19,94 @@ class IPublicKey(ABC):
     @staticmethod
     @abstractmethod
     def name() -> str:
-        pass
+        """
+        Get the name of the ecc class.
+
+        :return: The name of the ecc class.
+        :rtype: str
+        """
 
     @classmethod
     @abstractmethod
     def from_bytes(cls, public_key: bytes) -> "IPublicKey":
-        pass
+        """
+        Create an IPublicKey instance from a byte representation.
+
+        :param public_key: The byte sequence representing the public key.
+        :type public_key: bytes
+
+        :return: A new IPublicKey instance initialized from the byte representation.
+        :rtype: IPublicKey
+        """
 
     @classmethod
     @abstractmethod
     def from_point(cls, point: IPoint) -> "IPublicKey":
-        pass
+        """
+        Create an IPublicKey instance from an IPoint.
+
+        :param point: The IPoint instance to create the IPublicKey from.
+        :type point: IPoint
+
+        :return: An IPublicKey instance created from the given IPoint.
+        :rtype: IPublicKey
+        """
 
     @abstractmethod
     def raw_compressed(self) -> bytes:
-        pass
+        """
+        Get the compressed raw byte representation of the object.
+
+        :return: The compressed raw byte representation of the object.
+        :rtype: bytes
+        """
 
     @abstractmethod
     def raw_uncompressed(self) -> bytes:
-        pass
+        """
+        Get the uncompressed raw byte representation of the object.
+
+        :return: The uncompressed raw byte representation of the object.
+        :rtype: bytes
+        """
 
     @abstractmethod
     def point(self) -> IPoint:
-        pass
+        """
+        Get the point representation of this object.
+
+        :return: The IPoint representation of this object.
+        :rtype: IPoint
+        """
 
     @abstractmethod
     def underlying_object(self) -> Any:
-        pass
+        """
+        Retrieve the underlying object represented by this instance.
+
+        :return: The underlying object represented by this instance.
+        :rtype: Any
+        """
 
     @staticmethod
     @abstractmethod
     def compressed_length() -> int:
-        pass
+        """
+        Get the compressed length of the object's data.
+
+        :return: The length of the compressed data representation.
+        :rtype: int
+        """
 
     @staticmethod
     @abstractmethod
     def uncompressed_length() -> int:
-        pass
+        """
+        Get the uncompressed length of the object's data.
+
+        :return: The length of the uncompressed data representation.
+        :rtype: int
+        """
 
     @classmethod
     def is_valid_bytes(cls, public_key: bytes) -> bool:
@@ -67,10 +118,6 @@ class IPublicKey(ABC):
 
         :return: True if the byte array represents a valid public key, False otherwise.
         :rtype: bool
-
-        >>> from {module_path} import {class_name}
-        >>> {class_name}.is_valid_bytes(public_key=...)
-        ...
         """
 
         try:
@@ -89,10 +136,6 @@ class IPublicKey(ABC):
 
         :return: True if the point is valid, False otherwise.
         :rtype: bool
-
-        >>> from {module_path} import {class_name}
-        >>> {class_name}.is_valid_point(point=...)
-        ...
         """
 
         try:

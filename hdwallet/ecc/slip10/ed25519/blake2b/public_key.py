@@ -40,11 +40,6 @@ class SLIP10Ed25519Blake2bPublicKey(IPublicKey):
 
         :return: The name of the ecc class.
         :rtype: str
-
-        >>> from hdwallet.ecc.slip10.ed25519.blake2b.public_key import SLIP10Ed25519Blake2bPublicKey
-        >>> ecc:  = SLIP10Ed25519Blake2bPublicKey(public_key=...)
-        >>> ecc.name()
-        "SLIP10-Ed25519-Blake2b"
         """
 
         return "SLIP10-Ed25519-Blake2b"
@@ -59,10 +54,6 @@ class SLIP10Ed25519Blake2bPublicKey(IPublicKey):
 
         :return: An instance of IPublicKey.
         :rtype: IPublicKey
-
-        >>> from hdwallet.ecc.slip10.ed25519.blake2b.public_key import SLIP10Ed25519Blake2bPublicKey
-        >>> SLIP10Ed25519Blake2bPublicKey.from_bytes(public_key=...)
-        "..."
         """
 
         if (len(public_key) == SLIP10_ED25519_CONST.PUBLIC_KEY_BYTE_LENGTH + len(SLIP10_ED25519_CONST.PUBLIC_KEY_PREFIX)
@@ -86,10 +77,6 @@ class SLIP10Ed25519Blake2bPublicKey(IPublicKey):
 
         :return: An instance of IPublicKey.
         :rtype: IPublicKey
-
-        >>> from hdwallet.ecc.slip10.ed25519.blake2b.public_key import SLIP10Ed25519Blake2bPublicKey
-        >>> SLIP10Ed25519Blake2bPublicKey.from_point(point="...")
-        "..."
         """
 
         return cls.from_bytes(point.raw_encoded())
@@ -101,10 +88,6 @@ class SLIP10Ed25519Blake2bPublicKey(IPublicKey):
 
         :return: The compressed length of the public key.
         :rtype: int
-
-        >>> from hdwallet.ecc.slip10.ed25519.blake2b.public_key import SLIP10Ed25519Blake2bPublicKey
-        >>> SLIP10Ed25519Blake2bPublicKey.compressed_length()
-        ...
         """
 
         return SLIP10_ED25519_CONST.PUBLIC_KEY_BYTE_LENGTH + len(SLIP10_ED25519_CONST.PUBLIC_KEY_PREFIX)
@@ -126,10 +109,6 @@ class SLIP10Ed25519Blake2bPublicKey(IPublicKey):
 
         :return: The underlying object representing the public key.
         :rtype: Any
-
-        >>> from hdwallet.ecc.slip10.ed25519.blake2b.public_key import SLIP10Ed25519Blake2bPublicKey
-        >>> SLIP10Ed25519Blake2bPublicKey.underlying_object()
-        "..."
         """
 
         return self.verify_key
@@ -143,10 +122,6 @@ class SLIP10Ed25519Blake2bPublicKey(IPublicKey):
 
         :return: The raw compressed bytes of the public key.
         :rtype: bytes
-
-        >>> from hdwallet.ecc.slip10.ed25519.blake2b.public_key import SLIP10Ed25519Blake2bPublicKey
-        >>> SLIP10Ed25519Blake2bPublicKey.raw_compressed()
-        ...
         """
 
         return SLIP10_ED25519_CONST.PUBLIC_KEY_PREFIX + self.verify_key.to_bytes()
@@ -157,10 +132,6 @@ class SLIP10Ed25519Blake2bPublicKey(IPublicKey):
 
         :return: The raw uncompressed bytes of the public key.
         :rtype: bytes
-
-        >>> from hdwallet.ecc.slip10.ed25519.blake2b.public_key import SLIP10Ed25519Blake2bPublicKey
-        >>> SLIP10Ed25519Blake2bPublicKey.raw_uncompressed()
-        ...
         """
 
         return self.raw_compressed()
@@ -171,10 +142,6 @@ class SLIP10Ed25519Blake2bPublicKey(IPublicKey):
 
         :return: The point corresponding to the public key.
         :rtype: IPoint
-
-        >>> from hdwallet.ecc.slip10.ed25519.blake2b.public_key import SLIP10Ed25519Blake2bPublicKey
-        >>> SLIP10Ed25519Blake2bPublicKey.point()
-        "..."
         """
 
         return SLIP10Ed25519Blake2bPoint(self.verify_key.to_bytes())

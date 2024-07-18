@@ -26,6 +26,29 @@ from .iecc import (
 
 
 class ECCS:
+    """
+    A class that manages a dictionary of ecc classes.
+
+    This class provides methods to retrieve names and classes of various entropy implementations,
+    as well as methods to validate and access specific ecc classes by name.
+
+    Here are available ecc names and classes:
+    +--------------------------+--------------------------------------------------------------------------+
+    | Name                     | Class                                                                    |
+    +==========================+==========================================================================+
+    | KholawEd25519ECC         | <class 'hdwallet.ecc.kholaw.ed25519.KholawEd25519ECC'>                   |
+    +--------------------------+--------------------------------------------------------------------------+
+    | SLIP10Ed25519ECC         |  <class 'hdwallet.ecc.slip10.ed25519.SLIP10Ed25519ECC'>                  |
+    +--------------------------+--------------------------------------------------------------------------+
+    | SLIP10Ed25519Blake2bECC  |  <class 'hdwallet.ecc.slip10.ed25519.blake2b.SLIP10Ed25519Blake2bECC'>   |
+    +--------------------------+--------------------------------------------------------------------------+
+    | SLIP10Ed25519MoneroECC   | <class 'hdwallet.ecc.slip10.ed25519.monero.SLIP10Ed25519MoneroECC'>      |
+    +--------------------------+--------------------------------------------------------------------------+
+    | SLIP10Nist256p1ECC       | <class 'hdwallet.ecc.slip10.nist256p1.SLIP10Nist256p1ECC'>               |
+    +--------------------------+--------------------------------------------------------------------------+
+    | SLIP10Secp256k1ECC       | <class 'hdwallet.ecc.slip10.secp256k1.SLIP10Secp256k1ECCCoincurve'>      |
+    +--------------------------+--------------------------------------------------------------------------+
+    """
 
     dictionary: Dict[str, Type[IEllipticCurveCryptography]] = {
         KholawEd25519ECC.NAME: KholawEd25519ECC,
@@ -38,14 +61,37 @@ class ECCS:
 
     @classmethod
     def names(cls) -> List[str]:
+        """
+        Get the names from the class's dictionary.
+
+        :return: A list of names stored as keys in the `dictionary`.
+        :rtype: List[str]
+        """
+
         return list(cls.dictionary.keys())
 
     @classmethod
     def classes(cls) -> List[Type[IEllipticCurveCryptography]]:
+        """
+        Get the list of elliptic curve cryptography (ECC) classes from the class's dictionary.
+
+        :return: A list of ECC classes stored as values in the `dictionary`.
+        :rtype: List[Type[IEllipticCurveCryptography]]
+        """
+
         return list(cls.dictionary.values())
 
     @classmethod
     def ecc(cls, name: str) -> Type[IEllipticCurveCryptography]:
+        """
+        Retrieve an elliptic curve cryptography (ECC) class by name.
+
+        :param name: The name of the ECC class to retrieve.
+        :type name: str
+
+        :return: The ECC class corresponding to the given name.
+        :rtype: Type[IEllipticCurveCryptography]
+        """
 
         if not cls.is_ecc(name=name):
             raise ECCError(
@@ -56,12 +102,33 @@ class ECCS:
 
     @classmethod
     def is_ecc(cls, name: str) -> bool:
+        """
+        Check if the given name is a valid ECC class name.
+
+        :param name: The name to check.
+        :type name: str
+
+        :return: True if the name is a valid ECC class name, False otherwise.
+        :rtype: bool
+        """
+
         return name in cls.names()
 
 
 def validate_and_get_public_key(
     public_key: Union[bytes, str, IPublicKey], public_key_cls: Type[IPublicKey]
 ) -> IPublicKey:
+    """
+    Validate and convert the input to an IPublicKey instance.
+
+    :param public_key: The public key to validate and convert. It can be of type bytes, str, or IPublicKey.
+    :type public_key: Union[bytes, str, IPublicKey]
+    :param public_key_cls: The class to use for creating an IPublicKey instance from bytes.
+    :type public_key_cls: Type[IPublicKey]
+
+    :return: A valid IPublicKey instance.
+    :rtype: IPublicKey
+    """
     if isinstance(public_key, bytes):
         public_key: IPublicKey = public_key_cls.from_bytes(public_key)
     elif isinstance(public_key, str):

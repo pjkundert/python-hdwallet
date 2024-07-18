@@ -38,11 +38,6 @@ class SLIP10Ed25519PublicKey(IPublicKey):
 
         :return: The name of the ecc class.
         :rtype: str
-
-        >>> from hdwallet.ecc.slip10.ed25519.public_key import SLIP10Ed25519PublicKey
-        >>> ecc:  = SLIP10Ed25519PublicKey(public_key=...)
-        >>> ecc.name()
-        "SLIP10-Ed25519"
         """
 
         return "SLIP10-Ed25519"
@@ -58,10 +53,6 @@ class SLIP10Ed25519PublicKey(IPublicKey):
         :type public_key: bytes
         :return: An instance of IPublicKey.
         :rtype: IPublicKey
-
-        >>> from hdwallet.ecc.slip10.ed25519.public_key import SLIP10Ed25519PublicKey
-        >>> SLIP10Ed25519PublicKey.from_bytes(public_key=...)
-        "..."
         """
 
         if (len(public_key) == SLIP10_ED25519_CONST.PUBLIC_KEY_BYTE_LENGTH + len(SLIP10_ED25519_CONST.PUBLIC_KEY_PREFIX)
@@ -83,10 +74,6 @@ class SLIP10Ed25519PublicKey(IPublicKey):
 
         :return: The length of the compressed public key in bytes.
         :rtype: int
-
-        >>> from hdwallet.ecc.slip10.ed25519.public_key import SLIP10Ed25519PublicKey
-        >>> SLIP10Ed25519PublicKey.from_point(point="...")
-        "..."
         """
 
         return cls.from_bytes(point.raw_encoded())
@@ -98,10 +85,6 @@ class SLIP10Ed25519PublicKey(IPublicKey):
 
         :return: The total length of the compressed public key.
         :rtype: int
-
-        >>> from hdwallet.ecc.slip10.ed25519.public_key import SLIP10Ed25519PublicKey
-        >>> SLIP10Ed25519PublicKey.compressed_length()
-        ...
         """
 
         return SLIP10_ED25519_CONST.PUBLIC_KEY_BYTE_LENGTH + len(SLIP10_ED25519_CONST.PUBLIC_KEY_PREFIX)
@@ -113,10 +96,6 @@ class SLIP10Ed25519PublicKey(IPublicKey):
 
         :return: The underlying object of the public key.
         :rtype: Any
-
-        >>> from hdwallet.ecc.slip10.ed25519.public_key import SLIP10Ed25519PublicKey
-        >>> SLIP10Ed25519PublicKey.uncompressed_length()
-        ...
         """
 
         return SLIP10Ed25519PublicKey.compressed_length()
@@ -127,10 +106,6 @@ class SLIP10Ed25519PublicKey(IPublicKey):
 
         :return: The underlying verify key object.
         :rtype: Any
-
-        >>> from hdwallet.ecc.slip10.ed25519.public_key import SLIP10Ed25519PublicKey
-        >>> SLIP10Ed25519PublicKey.underlying_object()
-        "..."
         """
 
         return self.verify_key
@@ -141,10 +116,6 @@ class SLIP10Ed25519PublicKey(IPublicKey):
 
         :return: Compressed raw bytes of the public key.
         :rtype: bytes
-
-        >>> from hdwallet.ecc.slip10.ed25519.public_key import SLIP10Ed25519PublicKey
-        >>> SLIP10Ed25519PublicKey.raw_compressed()
-        ...
         """
 
         return SLIP10_ED25519_CONST.PUBLIC_KEY_PREFIX + bytes(self.verify_key)
@@ -155,10 +126,6 @@ class SLIP10Ed25519PublicKey(IPublicKey):
 
         :return: Uncompressed raw bytes of the public key.
         :rtype: bytes
-
-        >>> from hdwallet.ecc.slip10.ed25519.public_key import SLIP10Ed25519PublicKey
-        >>> SLIP10Ed25519PublicKey.raw_uncompressed()
-        ...
         """
 
         return self.raw_compressed()
@@ -169,10 +136,6 @@ class SLIP10Ed25519PublicKey(IPublicKey):
 
         :return: An instance of IPoint representing the public key point.
         :rtype: IPoint
-
-        >>> from hdwallet.ecc.slip10.ed25519.public_key import SLIP10Ed25519PublicKey
-        >>> SLIP10Ed25519PublicKey.point()
-        "..."
         """
 
         return SLIP10Ed25519Point(bytes(self.verify_key))

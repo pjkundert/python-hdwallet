@@ -39,11 +39,6 @@ class SLIP10Nist256p1Point(IPoint):
 
         :return: The name of the ecc class.
         :rtype: str
-
-        >>> from hdwallet.ecc.slip10.nist256p1.point import SLIP10Nist256p1Point
-        >>> ecc:  = SLIP10Nist256p1Point(point=...)
-        >>> ecc.name()
-        "SLIP10-Nist256p1"
         """
 
         return "SLIP10-Nist256p1"
@@ -58,10 +53,6 @@ class SLIP10Nist256p1Point(IPoint):
 
         :return: An instance of SLIP10Nist256p1Point representing the decoded point.
         :rtype: SLIP10Nist256p1Point
-
-        >>> from hdwallet.ecc.slip10.nist256p1.point import SLIP10Nist256p1Point
-        >>> SLIP10Nist256p1Point.from_bytes(point=...)
-        "..."
         """
 
         try:
@@ -91,10 +82,6 @@ class SLIP10Nist256p1Point(IPoint):
 
         :return: An instance of SLIP10Nist256p1Point representing the specified coordinates.
         :rtype: SLIP10Nist256p1Point
-
-        >>> from hdwallet.ecc.slip10.nist256p1.point import SLIP10Nist256p1Point
-        >>> SLIP10Nist256p1Point.from_coordinates(x=..., y=...)
-        "..."
         """
 
         return cls(
@@ -112,10 +99,6 @@ class SLIP10Nist256p1Point(IPoint):
 
         :return: The underlying elliptic curve point object.
         :rtype: Any
-
-        >>> from hdwallet.ecc.slip10.nist256p1.point import SLIP10Nist256p1Point
-        >>> SLIP10Nist256p1Point.underlying_object()
-        "..."
         """
 
         return self.point
@@ -126,10 +109,6 @@ class SLIP10Nist256p1Point(IPoint):
 
         :return: The x-coordinate of the elliptic curve point.
         :rtype: int
-
-        >>> from hdwallet.ecc.slip10.nist256p1.point import SLIP10Nist256p1Point
-        >>> SLIP10Nist256p1Point.x()
-        ...
         """
 
         return self.point.x()
@@ -140,10 +119,6 @@ class SLIP10Nist256p1Point(IPoint):
 
         :return: The y-coordinate of the elliptic curve point.
         :rtype: int
-
-        >>> from hdwallet.ecc.slip10.nist256p1.point import SLIP10Nist256p1Point
-        >>> SLIP10Nist256p1Point.y()
-        ...
         """
 
         return self.point.y()
@@ -154,10 +129,6 @@ class SLIP10Nist256p1Point(IPoint):
 
         :return: Raw bytes representation of the elliptic curve point.
         :rtype: bytes
-
-        >>> from hdwallet.ecc.slip10.nist256p1.point import SLIP10Nist256p1Point
-        >>> SLIP10Nist256p1Point.raw()
-        ...
         """
 
         return self.raw_decoded()
@@ -168,10 +139,6 @@ class SLIP10Nist256p1Point(IPoint):
 
         :return: Encoded bytes representation of the elliptic curve point.
         :rtype: bytes
-
-        >>> from hdwallet.ecc.slip10.nist256p1.point import SLIP10Nist256p1Point
-        >>> SLIP10Nist256p1Point.raw_encoded()
-        ...
         """
 
         try:
@@ -190,10 +157,6 @@ class SLIP10Nist256p1Point(IPoint):
 
         :return: Decoded bytes representation of the elliptic curve point.
         :rtype: bytes
-
-        >>> from hdwallet.ecc.slip10.nist256p1.point import SLIP10Nist256p1Point
-        >>> SLIP10Nist256p1Point.raw_decoded()
-        ...
         """
 
         try:
@@ -214,10 +177,6 @@ class SLIP10Nist256p1Point(IPoint):
         :return: A new instance of the same class representing the resulting
                  point after addition.
         :rtype: IPoint
-
-        >>> from hdwallet.ecc.slip10.nist256p1.point import SLIP10Nist256p1Point
-        >>> SLIP10Nist256p1Point.__add__(point="...")
-        "..."
         """
 
         return self.__class__(self.point + point.underlying_object())
@@ -232,10 +191,6 @@ class SLIP10Nist256p1Point(IPoint):
         :return: A new instance of the same class representing the resulting
                  point after addition.
         :rtype: IPoint
-
-        >>> from hdwallet.ecc.slip10.nist256p1.point import SLIP10Nist256p1Point
-        >>> SLIP10Nist256p1Point.__radd__(point="...")
-        "..."
         """
 
         return self + point
@@ -250,10 +205,6 @@ class SLIP10Nist256p1Point(IPoint):
         :return: A new instance of the same class representing the resulting
                  point after scalar multiplication.
         :rtype: IPoint
-
-        >>> from hdwallet.ecc.slip10.nist256p1.point import SLIP10Nist256p1Point
-        >>> SLIP10Nist256p1Point.__mul__(scalar=...)
-        "..."
         """
 
         return self.__class__(self.point * scalar)
@@ -267,10 +218,6 @@ class SLIP10Nist256p1Point(IPoint):
 
         :return: The resulting point after scalar multiplication.
         :rtype: IPoint
-
-        >>> from hdwallet.ecc.slip10.nist256p1.point import SLIP10Nist256p1Point
-        >>> SLIP10Nist256p1Point.__rmul__(scalar=...)
-        "..."
         """
 
         return self * scalar

@@ -19,29 +19,62 @@ class IPrivateKey(ABC):
     @staticmethod
     @abstractmethod
     def name() -> str:
-        pass
+        """
+        Get the name of the ecc class.
+
+        :return: The name of the ecc class.
+        :rtype: str
+        """
 
     @classmethod
     @abstractmethod
     def from_bytes(cls, private_key: bytes) -> "IPrivateKey":
-        pass
+        """
+        Create an IPrivateKey instance from a byte representation.
+
+        :param private_key: The byte sequence representing the private key.
+        :type private_key: bytes
+
+        :return: A new IPrivateKey instance initialized from the byte representation.
+        :rtype: IPrivateKey
+        """
 
     @abstractmethod
     def raw(self) -> bytes:
-        pass
+        """
+        Get the raw byte representation of the object.
+
+        :return: The raw byte representation of the object.
+        :rtype: bytes
+        """
 
     @abstractmethod
     def public_key(self) -> IPublicKey:
-        pass
+        """
+        Get the public key represented by this object.
+
+        :return: The IPublicKey representation of the public key.
+        :rtype: IPublicKey
+        """
 
     @abstractmethod
     def underlying_object(self) -> Any:
-        pass
+        """
+        Retrieve the underlying object represented by this instance.
+
+        :return: The underlying object represented by this instance.
+        :rtype: Any
+        """
 
     @staticmethod
     @abstractmethod
     def length() -> int:
-        pass
+        """
+        Get the length of the object.
+
+        :return: The length of the object.
+        :rtype: int
+        """
 
     @classmethod
     def is_valid_bytes(cls, private_key: bytes) -> bool:
@@ -53,10 +86,6 @@ class IPrivateKey(ABC):
 
         :return: True if the point is valid, False otherwise.
         :rtype: bool
-
-        >>> from {module_path} import {class_name}
-        >>> {class_name}.is_valid_bytes(private_key=...)
-        ...
         """
 
         try:
