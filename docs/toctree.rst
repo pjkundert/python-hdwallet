@@ -20,4 +20,5 @@ HDWallet
     Elliptic Curve Cryptographys (ECCs) <ecc.rst>
     Hierarchical Deterministic's (HD's) <hds.rst>
     Addresses <addresses.rst>
+    Utils <utils.rst>
     Consts <const.rst>
