@@ -15,7 +15,7 @@ import sys
 import datetime
 
 from hdwallet.info import (
-    __version__, __author__
+    __versions__, __author__
 )
 
 sys.path.insert(0, os.path.abspath(".."))
@@ -28,7 +28,7 @@ copyright = f"2020-{datetime.datetime.now().year}, {__author__}"
 author = __author__
 
 # The full version, including alpha/beta/rc tags
-release = __version__
+release = __versions__["hdwallet"]
 
 # The master toctree document.
 master_doc = "toctree"

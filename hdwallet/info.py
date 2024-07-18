@@ -7,7 +7,10 @@
 from typing import List
 
 __name__: str = "hdwallet"
-__version__: str = "v3.0.0a8"
+__versions__: dict = {
+    __name__: "v3.0.0a9",
+    "desktop": "v0.1.0b1"
+}
 __license__: str = "MIT"
 __author__: str = "Meheret Tesfaye Batu"
 __email__: str = "meherett.batu@gmail.com"

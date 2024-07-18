@@ -6,7 +6,7 @@
 
 from .info import (
     __name__,
-    __version__,
+    __versions__,
     __license__,
     __author__,
     __email__,
@@ -21,7 +21,7 @@ from .hdwallet import HDWallet
 
 __all__: list = [
     "__name__",
-    "__version__",
+    "__versions__",
     "__license__",
     "__author__",
     "__email__",
