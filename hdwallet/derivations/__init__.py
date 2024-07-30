@@ -36,21 +36,21 @@ class DERIVATIONS:
     +--------------+-------------------------------------------------------------+
     | Name         | Class                                                       |
     +==============+=============================================================+
-    | BIP44        | <class 'hdwallet.derivation.bip44.BIP44Derivation'>         |
+    | BIP44        | :class:`hdwallet.derivations.bip44.BIP44Derivation`         |
     +--------------+-------------------------------------------------------------+
-    | BIP49        | <class 'hdwallet.derivation.bip49.BIP49Derivation'>         |
+    | BIP49        | :class:`hdwallet.derivations.bip49.BIP49Derivation`         |
     +--------------+-------------------------------------------------------------+
-    | BIP84        | <class 'hdwallet.derivation.electrum.bip84.BIP84Derivation'>|
+    | BIP84        | :class:`hdwallet.derivations.bip84.BIP84Derivation`         |
     +--------------+-------------------------------------------------------------+
-    | BIP86        | <class 'hdwallet.derivation.electrum.bip86.BIP86Derivation'>|
+    | BIP86        | :class:`hdwallet.derivations.bip86.BIP86Derivation`         |
     +--------------+-------------------------------------------------------------+
-    | CIP1852      | <class 'hdwallet.derivation.cip1852.CIP1852Derivation'>     |
+    | CIP1852      | :class:`hdwallet.derivations.cip1852.CIP1852Derivation`     |
     +--------------+-------------------------------------------------------------+
-    | Custom       | <class 'hdwallet.derivation.custom.CustomDerivation'>       |
+    | Custom       | :class:`hdwallet.derivations.custom.CustomDerivation`       |
     +--------------+-------------------------------------------------------------+
-    | Electrum     | <class 'hdwallet.derivation.electrum.ElectrumDerivation'>   |
+    | Electrum     | :class:`hdwallet.derivations.electrum.ElectrumDerivation`   |
     +--------------+-------------------------------------------------------------+
-    | Monero       | <class 'hdwallet.derivation.monero.MoneroDerivation'>       |
+    | Monero       | :class:`hdwallet.derivations.monero.MoneroDerivation`       |
     +--------------+-------------------------------------------------------------+
     """
 

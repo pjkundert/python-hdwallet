@@ -37,15 +37,15 @@ class MNEMONICS:
     +--------------+------------------------------------------------------------------------+
     | Name         | Class                                                                  |
     +==============+========================================================================+
-    | Algorand     |  <class 'hdwallet.mnemonics.algorand.mnemonic.AlgorandMnemonic'>       |
+    | Algorand     |  :class:`hdwallet.mnemonics.algorand.mnemonic.AlgorandMnemonic`        |
     +--------------+------------------------------------------------------------------------+
-    | BIP39        |  <class 'hdwallet.mnemonics.bip39.mnemonic.BIP39Mnemonic'>             |
+    | BIP39        |  :class:`hdwallet.mnemonics.bip39.mnemonic.BIP39Mnemonic`              |
     +--------------+------------------------------------------------------------------------+
-    | Electrum-V1  |  <class 'hdwallet.mnemonics.electrum.v1.mnemonic.ElectrumV1Mnemonic'>  |
+    | Electrum-V1  |  :class:`hdwallet.mnemonics.electrum.v1.mnemonic.ElectrumV1Mnemonic`   |
     +--------------+------------------------------------------------------------------------+
-    | Electrum-V2  |  <class 'hdwallet.mnemonics.electrum.v2.mnemonic.ElectrumV2Mnemonic'>  |
+    | Electrum-V2  |  :class:`hdwallet.mnemonics.electrum.v2.mnemonic.ElectrumV2Mnemonic`   |
     +--------------+------------------------------------------------------------------------+
-    | Monero       |  <class 'hdwallet.mnemonics.monero.mnemonic.MoneroMnemonic'>           |
+    | Monero       |  :class:`hdwallet.mnemonics.monero.mnemonic.MoneroMnemonic`            |
     +--------------+------------------------------------------------------------------------+
     """
 

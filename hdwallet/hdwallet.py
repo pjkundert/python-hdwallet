@@ -261,9 +261,9 @@ class HDWallet:
         +----------------+-----------------------------------------------------------------------------------------------+
         | Cardano        | https://github.com/chainxlab/python-hdwallet/blob/master/examples/cardano/from_entropy.py     |
         +----------------+-----------------------------------------------------------------------------------------------+
-        | Electrum V1    | https://github.com/chainxlab/python-hdwallet/blob/master/examples/electrum/v1/from_entropy.py |
+        | Electrum-V1    | https://github.com/chainxlab/python-hdwallet/blob/master/examples/electrum/v1/from_entropy.py |
         +----------------+-----------------------------------------------------------------------------------------------+
-        | Electrum V2    | https://github.com/chainxlab/python-hdwallet/blob/master/examples/electrum/v2/from_entropy.py |
+        | Electrum-V2    | https://github.com/chainxlab/python-hdwallet/blob/master/examples/electrum/v2/from_entropy.py |
         +----------------+-----------------------------------------------------------------------------------------------+
         | Monero         | https://github.com/chainxlab/python-hdwallet/blob/master/examples/monero/from_entropy.py      |
         +----------------+-----------------------------------------------------------------------------------------------+
@@ -321,9 +321,9 @@ class HDWallet:
         +----------------+-----------------------------------------------------------------------------------------------+
         | Cardano        | https://github.com/chainxlab/python-hdwallet/blob/master/examples/cardano/from_mnemonic.py    |
         +----------------+-----------------------------------------------------------------------------------------------+
-        | Electrum V1    | https://github.com/chainxlab/python-hdwallet/blob/master/examples/electrum/v1/from_mnemonic.py|
+        | Electrum-V1    | https://github.com/chainxlab/python-hdwallet/blob/master/examples/electrum/v1/from_mnemonic.py|
         +----------------+-----------------------------------------------------------------------------------------------+
-        | Electrum V2    | https://github.com/chainxlab/python-hdwallet/blob/master/examples/electrum/v2/from_mnemonic.py|
+        | Electrum-V2    | https://github.com/chainxlab/python-hdwallet/blob/master/examples/electrum/v2/from_mnemonic.py|
         +----------------+-----------------------------------------------------------------------------------------------+
         | Monero         | https://github.com/chainxlab/python-hdwallet/blob/master/examples/monero/from_mnemonic.py     |
         +----------------+-----------------------------------------------------------------------------------------------+
@@ -403,9 +403,9 @@ class HDWallet:
         +----------------+-----------------------------------------------------------------------------------------------+
         | Cardano        | https://github.com/chainxlab/python-hdwallet/blob/master/examples/cardano/from_seed.py        |
         +----------------+-----------------------------------------------------------------------------------------------+
-        | Electrum V1    | https://github.com/chainxlab/python-hdwallet/blob/master/examples/electrum/v1/from_seed.py    |
+        | Electrum-V1    | https://github.com/chainxlab/python-hdwallet/blob/master/examples/electrum/v1/from_seed.py    |
         +----------------+-----------------------------------------------------------------------------------------------+
-        | Electrum V2    | https://github.com/chainxlab/python-hdwallet/blob/master/examples/electrum/v2/from_seed.py    |
+        | Electrum-V2    | https://github.com/chainxlab/python-hdwallet/blob/master/examples/electrum/v2/from_seed.py    |
         +----------------+-----------------------------------------------------------------------------------------------+
         | Monero         | https://github.com/chainxlab/python-hdwallet/blob/master/examples/monero/from_seed.py         |
         +----------------+-----------------------------------------------------------------------------------------------+
@@ -569,7 +569,7 @@ class HDWallet:
         +----------------+---------------------------------------------------------------------------------------------------+
         | Cardano        | https://github.com/chainxlab/python-hdwallet/blob/master/examples/cardano/from_private_key.py     |
         +----------------+---------------------------------------------------------------------------------------------------+
-        | Electrum V1    | https://github.com/chainxlab/python-hdwallet/blob/master/examples/electrum/v1/from_private_key.py |
+        | Electrum-V1    | https://github.com/chainxlab/python-hdwallet/blob/master/examples/electrum/v1/from_private_key.py |
         +----------------+---------------------------------------------------------------------------------------------------+
         | Monero         | https://github.com/chainxlab/python-hdwallet/blob/master/examples/monero/from_private_key.py      |
         +----------------+---------------------------------------------------------------------------------------------------+
@@ -595,7 +595,7 @@ class HDWallet:
         +================+===========================================================================================+
         | BIP's          | https://github.com/chainxlab/python-hdwallet/blob/master/examples/BIPs/from_wif.py        |
         +----------------+-------------------------------------------------------------------------------------------+
-        | Electrum V1    | https://github.com/chainxlab/python-hdwallet/blob/master/examples/electrum/v1/from_wif.py |
+        | Electrum-V1    | https://github.com/chainxlab/python-hdwallet/blob/master/examples/electrum/v1/from_wif.py |
         +----------------+-------------------------------------------------------------------------------------------+
         """
 
@@ -624,7 +624,7 @@ class HDWallet:
         +----------------+---------------------------------------------------------------------------------------------------+
         | Cardano        | https://github.com/chainxlab/python-hdwallet/blob/master/examples/cardano/from_public_key.py      |
         +----------------+---------------------------------------------------------------------------------------------------+
-        | Electrum V1    | https://github.com/chainxlab/python-hdwallet/blob/master/examples/electrum/v1/from_public_key.py  |
+        | Electrum-V1    | https://github.com/chainxlab/python-hdwallet/blob/master/examples/electrum/v1/from_public_key.py  |
         +----------------+---------------------------------------------------------------------------------------------------+
         """
 

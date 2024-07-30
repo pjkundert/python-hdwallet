@@ -31,17 +31,17 @@ class SEEDS:
     +--------------+------------------------------------------------------+
     | Name         | Class                                                |
     +==============+======================================================+
-    | Algorand     |  <class 'hdwallet.seeds.algorand.AlgorandSeed'>      |
+    | Algorand     |  :class:`hdwallet.seeds.algorand.AlgorandSeed`       |
     +--------------+------------------------------------------------------+
-    | BIP39        |  <class 'hdwallet.seeds.bip93.BIP39Seed'>            |
+    | BIP39        |  :class:`hdwallet.seeds.bip39.BIP39Seed`             |
     +--------------+------------------------------------------------------+
-    | Cardano      | <class 'hdwallet.seeds.cardano.CardanoSeed'>         |
+    | Cardano      |  :class:`hdwallet.seeds.cardano.CardanoSeed`         |
     +--------------+------------------------------------------------------+
-    | Electrum-V1  |  <class 'hdwallet.seeds.electrum.v1.ElectrumV1Seed'> |
+    | Electrum-V1  |  :class:`hdwallet.seeds.electrum.v1.ElectrumV1Seed`  |
     +--------------+------------------------------------------------------+
-    | Electrum-V2  | <class 'hdwallet.seeds.electrum.v2.ElectrumV2Seed'>  |
+    | Electrum-V2  |  :class:`hdwallet.seeds.electrum.v2.ElectrumV2Seed`  |
     +--------------+------------------------------------------------------+
-    | Monero       | <class 'hdwallet.seeds.monero.MoneroSeed'>           |
+    | Monero       |  :class:`hdwallet.seeds.monero.MoneroSeed`           |
     +--------------+------------------------------------------------------+
     """
 

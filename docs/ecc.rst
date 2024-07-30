@@ -1,8 +1,8 @@
 :orphan:
 
-=================================
-Elliptic Curve Cryptography (ECC)
-=================================
+============================
+Elliptic Curve Cryptographys
+============================
 
 
 .. autoclass:: hdwallet.ecc.kholaw.ed25519.point.KholawEd25519Point

@@ -37,15 +37,15 @@ class ENTROPIES:
     +--------------+-------------------------------------------------------------+
     | Name         | Class                                                       |
     +==============+=============================================================+
-    | Algorand     |  <class 'hdwallet.entropies.algorand.AlgorandEntropy'>      |
+    | Algorand     |  :class:`hdwallet.entropies.algorand.AlgorandEntropy`       |
     +--------------+-------------------------------------------------------------+
-    | BIP39        |  <class 'hdwallet.entropies.bip93.BIP39Entropy'>            |
+    | BIP39        |  :class:`hdwallet.entropies.bip39.BIP39Entropy`             |
     +--------------+-------------------------------------------------------------+
-    | Electrum-V1  |  <class 'hdwallet.entropies.electrum.v1.ElectrumV1Entropy'> |
+    | Electrum-V1  |  :class:`hdwallet.entropies.electrum.v1.ElectrumV1Entropy`  |
     +--------------+-------------------------------------------------------------+
-    | Electrum-V2  | <class 'hdwallet.entropies.electrum.v2.ElectrumV2Entropy'>  |
+    | Electrum-V2  | :class:`hdwallet.entropies.electrum.v2.ElectrumV2Entropy`   |
     +--------------+-------------------------------------------------------------+
-    | Monero       | <class 'hdwallet.entropies.monero.MoneroEntropy'>           |
+    | Monero       | :class:`hdwallet.entropies.monero.MoneroEntropy`            |
     +--------------+-------------------------------------------------------------+
     """
 

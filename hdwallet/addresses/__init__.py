@@ -57,71 +57,71 @@ class ADDRESSES:
     +-----------------+------------------------------------------------------------------+
     | Name            | Class                                                            |
     +=================+==================================================================+
-    | Algorand        | <class 'hdwallet.addresses.algorand.AlgorandAddress'>            |
+    | Algorand        | :class:`hdwallet.addresses.algorand.AlgorandAddress`             |
     +-----------------+------------------------------------------------------------------+
-    | Aptos           | <class 'hdwallet.addresses.aptos.AptosAddress'>                  |
+    | Aptos           | :class:`hdwallet.addresses.aptos.AptosAddress`                   |
     +-----------------+------------------------------------------------------------------+
-    | Avalanche       | <class 'hdwallet.addresses.avalanche.AvalancheAddress'>          |
+    | Avalanche       | :class:`hdwallet.addresses.avalanche.AvalancheAddress`           |
     +-----------------+------------------------------------------------------------------+
-    | Cardano         | <class 'hdwallet.addresses.cardano.CardanoAddress'>              |
+    | Cardano         | :class:`hdwallet.addresses.cardano.CardanoAddress`               |
     +-----------------+------------------------------------------------------------------+
-    | Cosmos          | <class 'hdwallet.addresses.cosmos.CosmosAddress'>                |
+    | Cosmos          | :class:`hdwallet.addresses.cosmos.CosmosAddress`                 |
     +-----------------+------------------------------------------------------------------+
-    | EOS             | <class 'hdwallet.addresses.eos.EOSAddress'>                      |
+    | EOS             | :class:`hdwallet.addresses.eos.EOSAddress`                       |
     +-----------------+------------------------------------------------------------------+
-    | Ergo            | <class 'hdwallet.addresses.ergo.ErgoAddress'>                    |
+    | Ergo            | :class:`hdwallet.addresses.ergo.ErgoAddress`                     |
     +-----------------+------------------------------------------------------------------+
-    | Ethereum        | <class 'hdwallet.addresses.ethereum.EthereumAddress'>            |
+    | Ethereum        | :class:`hdwallet.addresses.ethereum.EthereumAddress`             |
     +-----------------+------------------------------------------------------------------+
-    | Filecoin        | <class 'hdwallet.addresses.filecoin.FilecoinAddress'>            |
+    | Filecoin        | :class:`hdwallet.addresses.filecoin.FilecoinAddress`             |
     +-----------------+------------------------------------------------------------------+
-    | Harmony         | <class 'hdwallet.addresses.harmony.HarmonyAddress'>              |
+    | Harmony         | :class:`hdwallet.addresses.harmony.HarmonyAddress`               |
     +-----------------+------------------------------------------------------------------+
-    | Icon            | <class 'hdwallet.addresses.icon.IconAddress'>                    |
+    | Icon            | :class:`hdwallet.addresses.icon.IconAddress`                     |
     +-----------------+------------------------------------------------------------------+
-    | Injective       | <class 'hdwallet.addresses.injective.InjectiveAddress'>          |
+    | Injective       | :class:`hdwallet.addresses.injective.InjectiveAddress`           |
     +-----------------+------------------------------------------------------------------+
-    | Monero          | <class 'hdwallet.addresses.monero.MoneroAddress'>                |
+    | Monero          | :class:`hdwallet.addresses.monero.MoneroAddress`                 |
     +-----------------+------------------------------------------------------------------+
-    | MultiversX      | <class 'hdwallet.addresses.multiversx.MultiversXAddress'>        |
+    | MultiversX      | :class:`hdwallet.addresses.multiversx.MultiversXAddress`         |
     +-----------------+------------------------------------------------------------------+
-    | Nano            | <class 'hdwallet.addresses.nano.NanoAddress'>                    |
+    | Nano            | :class:`hdwallet.addresses.nano.NanoAddress`                     |
     +-----------------+------------------------------------------------------------------+
-    | Near            | <class 'hdwallet.addresses.near.NearAddress'>                    |
+    | Near            | :class:`hdwallet.addresses.near.NearAddress`                     |
     +-----------------+------------------------------------------------------------------+
-    | Neo             | <class 'hdwallet.addresses.neo.NeoAddress'>                      |
+    | Neo             | :class:`hdwallet.addresses.neo.NeoAddress`                       |
     +-----------------+------------------------------------------------------------------+
-    | OKT-Chain       | <class 'hdwallet.addresses.okt_chain.OKTChainAddress'>           |
+    | OKT-Chain       | :class:`hdwallet.addresses.okt_chain.OKTChainAddress`            |
     +-----------------+------------------------------------------------------------------+
-    | P2PKH           | <class 'hdwallet.addresses.p2pkh.P2PKHAddress'>                  |
+    | P2PKH           | :class:`hdwallet.addresses.p2pkh.P2PKHAddress`                   |
     +-----------------+------------------------------------------------------------------+
-    | P2SH            | <class 'hdwallet.addresses.p2sh.P2SHAddress'>                    |
+    | P2SH            | :class:`hdwallet.addresses.p2sh.P2SHAddress`                     |
     +-----------------+------------------------------------------------------------------+
-    | P2TR            | <class 'hdwallet.addresses.p2tr.P2TRAddress'>                    |
+    | P2TR            | :class:`hdwallet.addresses.p2tr.P2TRAddress`                     |
     +-----------------+------------------------------------------------------------------+
-    | P2WPKH          | <class 'hdwallet.addresses.p2wpkh.P2WPKHAddress'>                |
+    | P2WPKH          | :class:`hdwallet.addresses.p2wpkh.P2WPKHAddress`                 |
     +-----------------+------------------------------------------------------------------+
-    | P2WPKH-In-P2SH  | <class 'hdwallet.addresses.p2wpkh_in_p2sh.P2WPKHInP2SHAddress'>  |
+    | P2WPKH-In-P2SH  | :class:`hdwallet.addresses.p2wpkh_in_p2sh.P2WPKHInP2SHAddress`   |
     +-----------------+------------------------------------------------------------------+
-    | P2WSH           | <class 'hdwallet.addresses.p2wsh.P2WSHAddress'>                  |
+    | P2WSH           | :class:`hdwallet.addresses.p2wsh.P2WSHAddress`                   |
     +-----------------+------------------------------------------------------------------+
-    | P2WSH-In-P2SH   | <class 'hdwallet.addresses.p2wsh_in_p2sh.P2WSHInP2SHAddress'>    |
+    | P2WSH-In-P2SH   | :class:`hdwallet.addresses.p2wsh_in_p2sh.P2WSHInP2SHAddress`     |
     +-----------------+------------------------------------------------------------------+
-    | Ripple          | <class 'hdwallet.addresses.ripple.RippleAddress'>                |
+    | Ripple          | :class:`hdwallet.addresses.ripple.RippleAddress`                 |
     +-----------------+------------------------------------------------------------------+
-    | Solana          | <class 'hdwallet.addresses.solana.SolanaAddress'>                |
+    | Solana          | :class:`hdwallet.addresses.solana.SolanaAddress`                 |
     +-----------------+------------------------------------------------------------------+
-    | Stellar         | <class 'hdwallet.addresses.stellar.StellarAddress'>              |
+    | Stellar         | :class:`hdwallet.addresses.stellar.StellarAddress`               |
     +-----------------+------------------------------------------------------------------+
-    | Sui             | <class 'hdwallet.addresses.sui.SuiAddress'>                      |
+    | Sui             | :class:`hdwallet.addresses.sui.SuiAddress`                       |
     +-----------------+------------------------------------------------------------------+
-    | Tezos           | <class 'hdwallet.addresses.tezos.TezosAddress'>                  |
+    | Tezos           | :class:`hdwallet.addresses.tezos.TezosAddress`                   |
     +-----------------+------------------------------------------------------------------+
-    | Tron            | <class 'hdwallet.addresses.tron.TronAddress'>                    |
+    | Tron            | :class:`hdwallet.addresses.tron.TronAddress`                     |
     +-----------------+------------------------------------------------------------------+
-    | XinFin          | <class 'hdwallet.addresses.xinfin.XinFinAddress'>                |
+    | XinFin          | :class:`hdwallet.addresses.xinfin.XinFinAddress`                 |
     +-----------------+------------------------------------------------------------------+
-    | Zilliqa         | <class 'hdwallet.addresses.zilliqa.ZilliqaAddress'>              |
+    | Zilliqa         | :class:`hdwallet.addresses.zilliqa.ZilliqaAddress`               |
     +-----------------+------------------------------------------------------------------+
 
     """

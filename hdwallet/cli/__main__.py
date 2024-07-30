@@ -13,7 +13,7 @@ from ..mnemonics import ELECTRUM_V2_MNEMONIC_TYPES
 from ..const import (
     PUBLIC_KEY_TYPES, ELECTRUM_V2_MODES
 )
-from .. import __version__
+from .. import __versions__
 from .generate.entropy import generate_entropy
 from .generate.mnemonic import generate_mnemonic
 from .generate.seed import generate_seed
