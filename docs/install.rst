@@ -24,12 +24,14 @@ After you have installed, type ``hdwallet`` to verify that it worked:
     Usage: hdwallet [OPTIONS] COMMAND [ARGS]...
 
     Options:
-      -v, --version  Show HDWallet version and exit.
+      -v, --version  Show HDWallet version and exit
       -h, --help     Show this message and exit.
 
     Commands:
-      generate (g)  Select Generate for HDWallet.
-      list (l)      Select List for HDWallet information.
+      dump (d)      Select Dump hdwallet keys
+      dumps (ds)    Select Dumps hdwallet keys
+      generate (g)  Select Generate for HDWallet
+      list (l)      Select List for HDWallet information
 
 
 If you want to run the latest version of the code, you can install from git:

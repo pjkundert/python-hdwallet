@@ -252,3 +252,25 @@ True
 >>> monero_derivation.major()
 2
 
+.. autoclass:: hdwallet.derivations.hdw.HDWDerivation
+    :members:
+
+>>> from hdwallet.derivations.hdw import HDWDerivation
+>>> HDWDerivation.name()
+'HDW'
+>>> hdw_derivation: HDWDerivation = HDWDerivation()
+>>> hdw_derivation.from_account(11)
+<hdwallet.derivations.hdw.HDWDerivation object at 0x000002060AFB2130>
+>>> hdw_derivation.from_address(2)
+<hdwallet.derivations.hdw.HDWDerivation object at 0x000002060AFB2130>
+>>> hdw_derivation: HDWDerivation = HDWDerivation(ecc='SLIP10-Ed25519-Monero')
+>>> hdw_derivation.path()
+"m/0'/5/0"
+>>> hdw_derivation.indexes()
+[2147483648, 5, 0]
+>>> hdw_derivation.account()
+0
+>>> hdw_derivation.ecc()
+'SLIP10-Ed25519-Monero'
+>>> hdw_derivation.address()
+0

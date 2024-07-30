@@ -13,9 +13,11 @@ from ..mnemonics import ELECTRUM_V2_MNEMONIC_TYPES
 from ..const import (
     PUBLIC_KEY_TYPES, ELECTRUM_V2_MODES
 )
+
 from .. import (
     __versions__, __name__
 )
+
 from .generate.entropy import generate_entropy
 from .generate.mnemonic import generate_mnemonic
 from .generate.seed import generate_seed
@@ -200,6 +202,9 @@ def cli_seed(**kwargs) -> None:
     "-ch", "--change", type=str, default="0", help="Set Change index for derivation", show_default=True
 )
 @click.option(
+    "-ec", "--ecc", type=str, default="0", help="Set ECC index for HDW derivation", show_default=True
+)
+@click.option(
     "-ro", "--role", type=str, default="0", help="Set Role index for CIP1852 derivation", show_default=True
 )
 @click.option(
@@ -325,6 +330,9 @@ def cli_dump(**kwargs) -> None:  # cli_dumps(max_content_width=120)
 )
 @click.option(
     "-ch", "--change", type=str, default="0", help="Set Change index for derivation", show_default=True
+)
+@click.option(
+    "-ec", "--ecc", type=str, default="0", help="Set ECC index for HDW derivation", show_default=True
 )
 @click.option(
     "-ro", "--role", type=str, default="0", help="Set Role index for CIP1852 derivation", show_default=True

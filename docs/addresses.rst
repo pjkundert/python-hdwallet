@@ -223,6 +223,20 @@ True
 >>> MoneroAddress.decode(address=address)
 ('628247d3de93857cdd360fee4aef9a67ecfebedfe8eaec9cf6be35eacc895ca7', '1bc7b28fdaec0ec300c8c2759b1bf01f5300bb8465f736c55d64c5d87ec5e311')
 
+.. autoclass:: hdwallet.addresses.multiversx.MultiversXAddress
+    :members:
+
+>>> from hdwallet.addresses.multiversx import MultiversXAddress
+>>> MultiversXAddress.name()
+'MultiversX'
+>>> address: str = MultiversXAddress.encode(
+...     public_key="00d14696583ee9144878635b557d515a502b04366818dfe7765737746b4f57978d"
+... )
+>>> address
+'erd169rfvkp7ay2ys7rrtd2h65262q4sgdngrr07wajhxa6xkn6hj7xsdet995'
+>>> MultiversXAddress.decode(address=address)
+'d14696583ee9144878635b557d515a502b04366818dfe7765737746b4f57978d'
+
 .. autoclass:: hdwallet.addresses.nano.NanoAddress
     :members:
 
@@ -294,6 +308,20 @@ True
 '3DpehQMAa7jQHoVRnzoKz2w6Pr68Lctxgr'
 >>> P2SHAddress.decode(address=address)
 '85131e393e442cda8939042ef5709c8a18ddbae6'
+
+.. autoclass:: hdwallet.addresses.p2tr.P2TRAddress
+    :members:
+
+>>> from hdwallet.addresses.p2tr import P2TRAddress
+>>> P2TRAddress.name()
+'P2TR'
+>>> address: str = P2TRAddress.encode(
+...     public_key="0374a436044b4904bbd7a074b098d65fad39fc5b66f28da8440f10dbcf86568429"
+... )
+>>> address
+'bc1pa73duht4ulz02gdn97t6eu0rcunsnmtqylxxr4ds22hxu8clcj4qt8e9h5'
+>>> P2TRAddress.decode(address=address)
+'efa2de5d75e7c4f521b32f97acf1e3c72709ed6027cc61d5b052ae6e1f1fc4aa'
 
 .. autoclass:: hdwallet.addresses.p2wpkh.P2WPKHAddress
     :members:

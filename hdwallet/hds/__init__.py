@@ -35,25 +35,25 @@ class HDS:
     +--------------+--------------------------------------------------+
     | Name         | Class                                            |
     +==============+==================================================+
-    | BIP32        | <class 'hdwallet.hds.bip32.BIP32HD'>             |
+    | BIP32        | :class:`hdwallet.hds.bip32.BIP32HD`              |
     +--------------+--------------------------------------------------+
-    | BIP44        | <class 'hdwallet.hds.bip44.BIP44HD'>             |
+    | BIP44        | :class:`hdwallet.hds.bip44.BIP44HD`              |
     +--------------+--------------------------------------------------+
-    | BIP49        | <class 'hdwallet.hds.bip49.BIP49HD'>             |
+    | BIP49        | :class:`hdwallet.hds.bip49.BIP49HD`              |
     +--------------+--------------------------------------------------+
-    | BIP84        | <class 'hdwallet.hds.bip84.BIP84HD'>             |
+    | BIP84        | :class:`hdwallet.hds.bip84.BIP84HD`              |
     +--------------+--------------------------------------------------+
-    | BIP86        | <class 'hdwallet.hds.bip86.BIP86HD'>             |
+    | BIP86        | :class:`hdwallet.hds.bip86.BIP86HD`              |
     +--------------+--------------------------------------------------+
-    | BIP141       | <class 'hdwallet.hds.bip141.BIP141HD'>           |
+    | BIP141       | :class:`hdwallet.hds.bip141.BIP141HD`            |
     +--------------+--------------------------------------------------+
-    | Cardano      | <class 'hdwallet.hds.cardano.CardanoHD'>         |
+    | Cardano      | :class:`hdwallet.hds.cardano.CardanoHD`          |
     +--------------+--------------------------------------------------+
-    | Electrum-V1  | <class 'hdwallet.hds.electrum.v1.ElectrumV1HD'>  |
+    | Electrum-V1  | :class:`hdwallet.hds.electrum.v1.ElectrumV1HD`   |
     +--------------+--------------------------------------------------+
-    | Electrum-V2  | <class 'hdwallet.hds.electrum.v2.ElectrumV2HD'>  |
+    | Electrum-V2  | :class:`hdwallet.hds.electrum.v2.ElectrumV2HD`   |
     +--------------+--------------------------------------------------+
-    | Monero       | <class 'hdwallet.hds.monero.MoneroHD'>           |
+    | Monero       | :class:`hdwallet.hds.monero.MoneroHD`            |
     +--------------+--------------------------------------------------+
 
     """
