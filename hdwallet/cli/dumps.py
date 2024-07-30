@@ -206,6 +206,14 @@ def dumps(**kwargs) -> None:
                         major=kwargs.get("major")
                     )
                 )
+            elif kwargs.get("derivation") == "HDW":
+                hdwallet.from_derivation(
+                    derivation=DERIVATIONS.derivation(name=kwargs.get("derivation")).__call__(
+                        account=kwargs.get("account"),
+                        ecc=kwargs.get("ecc"),
+                        address=kwargs.get("address")
+                    )
+                )
 
         if kwargs.get("format") == "csv":
 
