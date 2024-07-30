@@ -70,9 +70,11 @@ class BIP44Derivation(IDerivation):  # https://github.com/bitcoin/bips/blob/mast
         """
         super(BIP44Derivation, self).__init__()
 
-        if change not in [*self.changes.keys(), 0, "0", 1, "1"]:
+        excepted_change = [*self.changes.keys(), *self.changes.values(), *map(str, self.changes.values())]
+
+        if change not in excepted_change:
             raise DerivationError(
-                f"Bad {self.name()} change index", expected=[*self.changes.keys(), 0, "0", 1, "1"], got=change
+                f"Bad {self.name()} change index", expected=excepted_change, got=change
             )
 
         self._coin_type = normalize_index(index=coin_type, hardened=True)

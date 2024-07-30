@@ -73,9 +73,11 @@ class CIP1852Derivation(IDerivation):  # https://github.com/cardano-foundation/C
 
         super(CIP1852Derivation, self).__init__()
 
-        if role not in [*self.roles.keys(), 0, "0", 1, "1", 2, "2"]:
+        excepted_role = [*self.roles.keys(), *self.roles.values(), *map(str, self.roles.values())]
+
+        if role not in excepted_role:
             raise DerivationError(
-                f"Bad {self.name()} role index", expected=[*self.roles.keys(), 0, "0", 1, "1", 2, "2"], got=role
+                f"Bad {self.name()} role index", expected=excepted_role, got=role
             )
 
         self._coin_type = normalize_index(index=coin_type, hardened=True)

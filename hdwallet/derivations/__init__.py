@@ -21,6 +21,7 @@ from .cip1852 import (
 from .custom import CustomDerivation
 from .electrum import ElectrumDerivation
 from .monero import MoneroDerivation
+from .hdw import HDWDerivation
 from .iderivation import IDerivation
 
 
@@ -52,6 +53,8 @@ class DERIVATIONS:
     +--------------+-------------------------------------------------------------+
     | Monero       | :class:`hdwallet.derivations.monero.MoneroDerivation`       |
     +--------------+-------------------------------------------------------------+
+    | HDW          | :class:`hdwallet.derivations.hdw.HDWDerivation`             |
+    +--------------+-------------------------------------------------------------+
     """
 
     dictionary: Dict[str, Type[IDerivation]] = {
@@ -62,7 +65,8 @@ class DERIVATIONS:
         CIP1852Derivation.name(): CIP1852Derivation,
         CustomDerivation.name(): CustomDerivation,
         ElectrumDerivation.name(): ElectrumDerivation,
-        MoneroDerivation.name(): MoneroDerivation
+        MoneroDerivation.name(): MoneroDerivation,
+        HDWDerivation.name(): HDWDerivation
     }
 
     @classmethod
