@@ -1753,6 +1753,14 @@ class HDWallet:
                             minor=current_derivation[0][0],
                             major=current_derivation[1][0]
                         )
+                    elif self._derivation.name() == "HDW":
+                        _derivation: IDerivation = DERIVATIONS.derivation(
+                            name=self._derivation.name()
+                        ).__call__(
+                            account=current_derivation[0][0],
+                            ecc=current_derivation[1][0],
+                            address=current_derivation[2][0]
+                        )
                     else:
                         _derivation: IDerivation = DERIVATIONS.derivation(
                             name=self._derivation.name()
