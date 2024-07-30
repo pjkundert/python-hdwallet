@@ -13,7 +13,11 @@ from ..mnemonics import ELECTRUM_V2_MNEMONIC_TYPES
 from ..const import (
     PUBLIC_KEY_TYPES, ELECTRUM_V2_MODES
 )
-from .. import __versions__
+
+from .. import (
+    __versions__, __name__
+)
+
 from .generate.entropy import generate_entropy
 from .generate.mnemonic import generate_mnemonic
 from .generate.seed import generate_seed
@@ -29,7 +33,7 @@ def current_version(
 ) -> None:
     if not value or context.resilient_parsing:
         return
-    click.echo(__version__)
+    click.echo(__versions__[__name__])
     context.exit()
 
 
