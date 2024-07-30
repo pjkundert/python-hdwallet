@@ -127,5 +127,20 @@
             "major": 1,
             "path": "m/0/1"
         }
+    },
+    "HDW": {
+        "default": {
+            "name": "HDW",
+            "account": 0,
+            "ecc": "SLIP10-Secp256k1",
+            "address": 0,
+            "path": "m/0'/0/0"
+        },
+        "from": {
+            "account": 1,
+            "ecc": "SLIP10-Ed25519-Monero",
+            "address": 5,
+            "path": "m/1'/5/5"
+        }
     }
 }

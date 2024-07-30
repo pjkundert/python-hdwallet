@@ -198,6 +198,9 @@ def cli_seed(**kwargs) -> None:
     "-ch", "--change", type=str, default="0", help="Set Change index for derivation", show_default=True
 )
 @click.option(
+    "-ec", "--ecc", type=str, default="0", help="Set ECC index for HDW derivation", show_default=True
+)
+@click.option(
     "-ro", "--role", type=str, default="0", help="Set Role index for CIP1852 derivation", show_default=True
 )
 @click.option(
@@ -323,6 +326,9 @@ def cli_dump(**kwargs) -> None:  # cli_dumps(max_content_width=120)
 )
 @click.option(
     "-ch", "--change", type=str, default="0", help="Set Change index for derivation", show_default=True
+)
+@click.option(
+    "-ec", "--ecc", type=str, default="0", help="Set ECC index for HDW derivation", show_default=True
 )
 @click.option(
     "-ro", "--role", type=str, default="0", help="Set Role index for CIP1852 derivation", show_default=True
