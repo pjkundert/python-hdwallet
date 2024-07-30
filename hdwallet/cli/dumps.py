@@ -277,6 +277,14 @@ def dumps(**kwargs) -> None:
                                 minor=current_derivation[0][0],
                                 major=current_derivation[1][0]
                             )
+                        elif derivation_name == "HDW":
+                            _derivation: IDerivation = DERIVATIONS.derivation(
+                                name=kwargs.get("derivation")
+                            ).__call__(
+                                account=current_derivation[0][0],
+                                ecc=current_derivation[1][0],
+                                address=current_derivation[2][0]
+                            )
                         else:
                             _derivation: IDerivation = DERIVATIONS.derivation(
                                 name=kwargs.get("derivation")
