@@ -7,6 +7,7 @@
 from typing import (
     Type, List, Tuple
 )
+from bip38 import BIP38
 
 import json
 import click
@@ -26,6 +27,7 @@ from ..cryptocurrencies import (
     ICryptocurrency, get_cryptocurrency
 )
 from ..hdwallet import HDWallet
+from . import BIP38_CRYPTOCURRENCIES
 
 
 def dumps(**kwargs) -> None:
@@ -136,8 +138,17 @@ def dumps(**kwargs) -> None:
                 private_key=kwargs.get("private_key")
             )
         elif kwargs.get("wif"):
+            _wif = kwargs.get("wif")
+
+            if kwargs.get("is_bip38"):
+
+                bip38: BIP38 = BIP38(
+                  cryptocurrency=BIP38_CRYPTOCURRENCIES[cryptocurrency.NAME], network=kwargs.get("network")
+                )
+                _wif = bip38.decrypt(encrypted_wif=_wif, passphrase=kwargs.get("passphrase"))
+
             hdwallet.from_wif(
-                wif=kwargs.get("wif")
+                wif=_wif
             )
         elif kwargs.get("public_key"):
             hdwallet.from_public_key(

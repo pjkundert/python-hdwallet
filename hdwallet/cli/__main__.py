@@ -267,6 +267,9 @@ def cli_seed(**kwargs) -> None:
 @click.option(
     "-ex", "--exclude", type=str, default="", help="Set Exclude keys from dumped", show_default=True
 )
+@click.option(
+    "-ib", "--is-bip38", type=bool, default=False, help="Is Encrypted Wallet Important Format", show_default=True
+)
 def cli_dump(**kwargs) -> None:  # cli_dumps(max_content_width=120)
     return dump(**kwargs)
 
@@ -408,6 +411,9 @@ def cli_dump(**kwargs) -> None:  # cli_dumps(max_content_width=120)
 )
 @click.option(
     "-de", "--delimiter", type=str, default=" ", help="Set Delimiter for CSV", show_default=True
+)
+@click.option(
+    "-ib", "--is-bip38", type=bool, default=False, help="Is Encrypted Wallet Important Format", show_default=True
 )
 def cli_dumps(**kwargs) -> None:  # cli_dumps(max_content_width=120)
     return dumps(**kwargs)
