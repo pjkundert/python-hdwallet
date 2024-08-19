@@ -41,6 +41,7 @@ class Firstcoin(ICryptocurrency):
     })
     ECC = SLIP10Secp256k1ECC
     COIN_TYPE = 167
+    SUPPORT_BIP38 = True
     NETWORKS = Networks({
         "MAINNET": Mainnet
     })

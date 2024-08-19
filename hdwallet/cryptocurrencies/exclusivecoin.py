@@ -41,6 +41,7 @@ class ExclusiveCoin(ICryptocurrency):
     })
     ECC = SLIP10Secp256k1ECC
     COIN_TYPE = 190
+    SUPPORT_BIP38 = True
     NETWORKS = Networks({
         "MAINNET": Mainnet
     })

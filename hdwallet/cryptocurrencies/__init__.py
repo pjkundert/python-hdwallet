@@ -132,7 +132,7 @@ from .monacoin import Monacoin
 from .monero import Monero
 from .monk import Monk
 from .multiversx import MultiversX
-from .myriadcion import Myriadcoin
+from .myriadcoin import Myriadcoin
 from .namecoin import Namecoin
 from .nano import Nano
 from .navcoin import Navcoin

@@ -59,6 +59,7 @@ class Stash(ICryptocurrency):
     })
     ECC = SLIP10Secp256k1ECC
     COIN_TYPE = 49344
+    SUPPORT_BIP38 = True
     NETWORKS = Networks({
         "MAINNET": Mainnet, "TESTNET": Testnet
     })

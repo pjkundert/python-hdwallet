@@ -41,6 +41,7 @@ class Neurocoin(ICryptocurrency):
     })
     ECC = SLIP10Secp256k1ECC
     COIN_TYPE = 110
+    SUPPORT_BIP38 = True
     NETWORKS = Networks({
         "MAINNET": Mainnet
     })

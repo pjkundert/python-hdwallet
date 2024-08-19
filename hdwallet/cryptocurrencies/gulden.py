@@ -41,6 +41,7 @@ class Gulden(ICryptocurrency):
     })
     ECC = SLIP10Secp256k1ECC
     COIN_TYPE = 87
+    SUPPORT_BIP38 = True
     NETWORKS = Networks({
         "MAINNET": Mainnet
     })

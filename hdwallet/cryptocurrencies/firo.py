@@ -41,6 +41,7 @@ class Firo(ICryptocurrency):
     })
     ECC = SLIP10Secp256k1ECC
     COIN_TYPE = 136  # ZCoin coin type
+    SUPPORT_BIP38 = True
     NETWORKS = Networks({
         "MAINNET": Mainnet
     })

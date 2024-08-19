@@ -52,6 +52,7 @@ class ICryptocurrency:
     INFO: Info
     ECC: Type[IEllipticCurveCryptography]
     COIN_TYPE: int
+    SUPPORT_BIP38: bool = False
     NETWORKS: Networks
     DEFAULT_NETWORK: str
     ENTROPIES: Entropies
