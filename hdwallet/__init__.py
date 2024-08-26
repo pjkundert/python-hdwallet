@@ -4,6 +4,8 @@
 # Distributed under the MIT software license, see the accompanying
 # file COPYING or https://opensource.org/license/mit
 
+from typing import List
+
 from .info import (
     __name__,
     __versions__,
@@ -19,7 +21,7 @@ from .info import (
 )
 from .hdwallet import HDWallet
 
-__all__: list = [
+__all__: List[str] = [
     "__name__",
     "__versions__",
     "__license__",
