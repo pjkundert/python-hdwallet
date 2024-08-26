@@ -139,7 +139,7 @@ def test_bip32_from_wif_uncompressed(data):
         network=data["hdwallet"]["BIP32"]["uncompressed"]["network"],
         public_key_type=data["hdwallet"]["BIP32"]["uncompressed"]["public_key_type"]
     ).from_wif(
-        wif=data["hdwallet"]["BIP32"]["compressed"]["derivations"][-1]["wif"]
+        wif=data["hdwallet"]["BIP32"]["uncompressed"]["derivations"][-1]["wif"]
     )
 
     assert hdwallet.dumps() == None
