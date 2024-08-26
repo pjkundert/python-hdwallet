@@ -31,7 +31,7 @@ from ..const import (
 from ..cryptocurrencies import Bitcoin
 from ..crypto import hmac_sha512
 from ..wif import (
-    private_key_to_wif, wif_to_private_key
+    private_key_to_wif, wif_to_private_key, get_wif_type
 )
 from ..keys import (
     serialize, deserialize, is_root_key
@@ -302,6 +302,12 @@ class BIP32HD(IHD):
         :rtype: BIP32HD
         """
 
+        if get_wif_type(wif=wif) == "wif-compressed":
+            self._public_key_type: str = PUBLIC_KEY_TYPES.COMPRESSED
+            self._wif_type: str = WIF_TYPES.WIF_COMPRESSED
+        else:
+            self._public_key_type: str = PUBLIC_KEY_TYPES.UNCOMPRESSED
+            self._wif_type: str = WIF_TYPES.WIF
         self.from_private_key(private_key=wif_to_private_key(wif=wif))
         self._strict = None
         return self
