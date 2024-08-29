@@ -15,9 +15,6 @@ from ..mnemonics import IMnemonic
 
 
 class ISeed(ABC):
-    """
-    Interface class for Seed.
-    """
 
     _name: str
     _seed: str

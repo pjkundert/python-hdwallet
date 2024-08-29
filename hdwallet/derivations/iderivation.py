@@ -12,9 +12,6 @@ from ..utils import normalize_derivation
 
 
 class IDerivation:
-    """
-    Interface class for Derivation.
-    """
 
     _path: str = "m/"
     _indexes: List[int] = []

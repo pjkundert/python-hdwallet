@@ -17,10 +17,7 @@ from ..utils import (
 
 
 class IEntropy:
-    """
-    Interface class for Entropy.
-    """
-
+    
     _entropy: str
     _strength: int
 

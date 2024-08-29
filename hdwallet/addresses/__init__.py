@@ -182,7 +182,6 @@ class ADDRESSES:
         :rtype: List[Type[IAddress]]
         """
 
-
         return list(cls.dictionary.values())
 
     @classmethod

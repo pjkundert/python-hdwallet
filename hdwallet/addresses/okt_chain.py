@@ -58,7 +58,18 @@ class OKTChainAddress(IAddress):
 
     @classmethod
     def decode(cls, address: str, **kwargs: Any) -> str:
+        """
+        Decode a OKT-Chain address from Bech32 encoding.
 
+        :param address: The OKT-Chain address to decode.
+        :type address: str
+        :param kwargs: Additional keyword arguments:
+            - hrp (str, optional): Human-readable part for the Bech32 encoding. Defaults to cls.hrp.
+
+        :return: Decoded OKT-Chain address.
+        :rtype: str
+        """
+        
         return EthereumAddress.decode(
             EthereumAddress.address_prefix + bytes_to_string(
                 bech32_decode(cls.hrp, address)[1]

@@ -17,9 +17,6 @@ from ..ecc import IPublicKey
 
 
 class IAddress(ABC):
-    """
-    Interface class for Address.
-    """
 
     @staticmethod
     @abstractmethod

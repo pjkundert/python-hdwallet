@@ -17,9 +17,6 @@ from ..entropies import IEntropy
 
 
 class IMnemonic(ABC):
-    """
-    Interface class for Mnemonic.
-    """
 
     _mnemonic: List[str]
     _words: int

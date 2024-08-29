@@ -12,9 +12,6 @@ from ..derivations import IDerivation
 
 
 class IHD:
-    """
-    Interface class for HD.
-    """
 
     def __init__(self, **kwargs) -> None:
         pass
