@@ -1,4 +1,4 @@
-# Hierarchical Deterministic Wallet (HDWallet) v3.0.0-Alpha-0
+# Hierarchical Deterministic (HD) Wallet v3.0.0-Alpha-11
 
 [![Build Status](https://app.travis-ci.com/meherett/python-hdwallet.svg?branch=master)](https://app.travis-ci.com/meherett/python-hdwallet)
 [![PyPI Version](https://img.shields.io/pypi/v/hdwallet.svg?color=blue)](https://pypi.org/project/hdwallet)
