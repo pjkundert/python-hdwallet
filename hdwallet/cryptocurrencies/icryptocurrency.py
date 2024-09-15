@@ -44,6 +44,10 @@ class INetwork:
     PAYMENT_ADDRESS_HRP: Optional[str] = None
     REWARD_ADDRESS_HRP: Optional[str] = None
 
+    @classmethod
+    def name(cls) -> str:
+        return cls.__name__
+
 
 class ICryptocurrency:
 
