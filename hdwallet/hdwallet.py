@@ -172,7 +172,7 @@ class HDWallet:
 
         try:
             if not isinstance(network, str) and issubclass(network, INetwork):
-                network = network.__name__.lower()
+                network = network.name()
             if not self._cryptocurrency.NETWORKS.is_network(network=network):
                 raise NetworkError(
                     f"Wrong {self._cryptocurrency.NAME} network",
@@ -208,7 +208,7 @@ class HDWallet:
         self._language = kwargs.get("language", "english")
         self._passphrase = kwargs.get("passphrase", None)
         self._use_default_path = kwargs.get("use_default_path", False)
-        # self._cryptocurrency.get_default_path(network=self._network.__name__.lower())
+        # self._cryptocurrency.get_default_path(network=self._network.name())
         self._kwargs = {
             "staking_public_key": kwargs.get("staking_public_key", None),
             "payment_id": kwargs.get("payment_id", None)
@@ -240,7 +240,7 @@ class HDWallet:
         elif hd.name() == "Electrum-V2":
             self._hd = hd(mode=self._mode, public_key_type=self._public_key_type)
         elif hd.name() == "Monero":
-            self._hd = hd(network=self._network.__name__.lower())
+            self._hd = hd(network=self._network.name())
 
     def from_entropy(self, entropy: IEntropy) -> "HDWallet":
         """
@@ -729,7 +729,7 @@ class HDWallet:
         :rtype: str
         """
 
-        return self._network.__name__.lower()
+        return self._network.name()
 
     def entropy(self) -> Optional[str]:
         """
@@ -1399,7 +1399,7 @@ class HDWallet:
 
         if self._hd.name() == "Cardano":
             return self._hd.address(
-                network=self._network.__name__.lower(), **kwargs
+                network=self._network.name(), **kwargs
             )
         elif self._hd.name() in "Electrum-V1":
             return self._hd.address(
@@ -1432,7 +1432,7 @@ class HDWallet:
                     script_address_prefix=getattr(
                         self._network, f"{kwargs.get('address_type', self._address_type).upper()}_SCRIPT_ADDRESS_PREFIX"
                     ),
-                    network_type=self._network.__name__.lower(),
+                    network_type=self._network.name(),
                     public_key_type=self.public_key_type(),
                     hrp=self._network.HRP
                 )
@@ -1440,7 +1440,7 @@ class HDWallet:
                 public_key=self.public_key(),
                 public_key_address_prefix=self._network.PUBLIC_KEY_ADDRESS_PREFIX,
                 script_address_prefix=self._network.SCRIPT_ADDRESS_PREFIX,
-                network_type=self._network.__name__.lower(),
+                network_type=self._network.name(),
                 public_key_type=self.public_key_type(),
                 hrp=self._network.HRP,
                 address_type=kwargs.get(

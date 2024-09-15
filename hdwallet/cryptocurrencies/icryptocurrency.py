@@ -46,7 +46,7 @@ class INetwork:
 
     @classmethod
     def name(cls) -> str:
-        return cls.__name__
+        return cls.__name__.lower()
 
 
 class ICryptocurrency:
@@ -58,7 +58,7 @@ class ICryptocurrency:
     COIN_TYPE: int
     SUPPORT_BIP38: bool = False
     NETWORKS: Networks
-    DEFAULT_NETWORK: str
+    DEFAULT_NETWORK: INetwork
     ENTROPIES: Entropies
     MNEMONICS: Mnemonics
     SEEDS: Seeds
