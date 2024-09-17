@@ -226,97 +226,97 @@ def dumps(**kwargs) -> None:
                     )
                 )
 
-        if kwargs.get("format") == "csv":
 
-            hd_name: str = hdwallet._hd.name()
-            if kwargs.get("include"):
-                _include: str = kwargs.get("include")
-            elif hd_name == BIP32HD.name():
-                _include: str = "at:path,addresses:p2pkh,public_key,wif"
-            elif hd_name in [
-                BIP44HD.name(), BIP49HD.name(), BIP84HD.name(), BIP86HD.name()
-            ]:
-                _include: str = "at:path,address,public_key,wif"
-            elif hd_name == BIP141HD.name():
-                _include: str = f"at:path,addresses:p2wpkh,public_key,wif"
-            elif hd_name == CardanoHD.name():
-                _include: str = "at:path,address,public_key,private_key"
-            elif hd_name in [
-                ElectrumV1HD.name(), ElectrumV2HD.name()
-            ]:
-                _include: str = "at:change,at:address,address,public_key,wif"
-            elif hd_name == MoneroHD.name():
-                _include: str = "at:minor,at:major,sub_address"
-            else:
-                raise Exception("Unknown HD")
+        hd_name: str = hdwallet._hd.name()
+        if kwargs.get("include"):
+            _include: str = kwargs.get("include")
+        elif hd_name == BIP32HD.name():
+            _include: str = "at:path,addresses:p2pkh,public_key,wif"
+        elif hd_name in [
+            BIP44HD.name(), BIP49HD.name(), BIP84HD.name(), BIP86HD.name()
+        ]:
+            _include: str = "at:path,address,public_key,wif"
+        elif hd_name == BIP141HD.name():
+            _include: str = f"at:path,addresses:p2wpkh,public_key,wif"
+        elif hd_name == CardanoHD.name():
+            _include: str = "at:path,address,public_key,private_key"
+        elif hd_name in [
+            ElectrumV1HD.name(), ElectrumV2HD.name()
+        ]:
+            _include: str = "at:change,at:address,address,public_key,wif"
+        elif hd_name == MoneroHD.name():
+            _include: str = "at:minor,at:major,sub_address"
+        else:
+            raise Exception("Unknown HD")
 
-            hdwallet_csv = csv.DictWriter(
-                sys.stdout, fieldnames=_include.split(","), extrasaction="ignore", delimiter=kwargs.get("delimiter")
-            )
+        hdwallet_csv = csv.DictWriter(
+            sys.stdout, fieldnames=_include.split(","), extrasaction="ignore", delimiter=kwargs.get("delimiter")
+        )
 
-            if kwargs.get("include_header"):
-                hdwallet_csv.writeheader()
+        if kwargs.get("include_header"):
+            hdwallet_csv.writeheader()
 
-            def drive(*args) -> List[str]:
-                def drive_helper(derivations, current_derivation: List[Tuple[int, bool]] = []) -> List[str]:
-                    if not derivations:
+        def drive(*args) -> List[str]:
+            def drive_helper(derivations, current_derivation: List[Tuple[int, bool]] = []) -> List[str]:
+                if not derivations:
 
-                        derivation_name: str = hdwallet._derivation.name()
-                        if derivation_name in [
-                            "BIP44", "BIP49", "BIP84", "BIP86"
-                        ]:
-                            _derivation: IDerivation = DERIVATIONS.derivation(
-                                name=kwargs.get("derivation")
-                            ).__call__(
-                                coin_type=current_derivation[1][0],
-                                account=current_derivation[2][0],
-                                change=current_derivation[3][0],
-                                address=current_derivation[4][0]
-                            )
-                        elif derivation_name == "CIP1852":
-                            _derivation: IDerivation = DERIVATIONS.derivation(
-                                name=kwargs.get("derivation")
-                            ).__call__(
-                                coin_type=current_derivation[1][0],
-                                account=current_derivation[2][0],
-                                role=current_derivation[3][0],
-                                address=current_derivation[4][0]
-                            )
-                        elif derivation_name == 'Electrum':
-                            _derivation: IDerivation = DERIVATIONS.derivation(
-                                name=kwargs.get("derivation")
-                            ).__call__(
-                                change=current_derivation[0][0],
-                                address=current_derivation[1][0]
-                            )
-                        elif derivation_name == "Monero":
-                            _derivation: IDerivation = DERIVATIONS.derivation(
-                                name=kwargs.get("derivation")
-                            ).__call__(
-                                minor=current_derivation[0][0],
-                                major=current_derivation[1][0]
-                            )
-                        elif derivation_name == "HDW":
-                            _derivation: IDerivation = DERIVATIONS.derivation(
-                                name=kwargs.get("derivation")
-                            ).__call__(
-                                account=current_derivation[0][0],
-                                ecc=current_derivation[1][0],
-                                address=current_derivation[2][0]
-                            )
-                        else:
-                            _derivation: IDerivation = DERIVATIONS.derivation(
-                                name=kwargs.get("derivation")
-                            ).__call__(
-                                path="m/" + "/".join(
-                                    [str(item[0]) + "'" if item[1] else str(item[0]) for item in current_derivation]
-                                )
-                            )
-
-                        new_dump: dict = { }
-                        hdwallet.update_derivation(
-                            derivation=_derivation
+                    derivation_name: str = hdwallet._derivation.name()
+                    if derivation_name in [
+                        "BIP44", "BIP49", "BIP84", "BIP86"
+                    ]:
+                        _derivation: IDerivation = DERIVATIONS.derivation(
+                            name=kwargs.get("derivation")
+                        ).__call__(
+                            coin_type=current_derivation[1][0],
+                            account=current_derivation[2][0],
+                            change=current_derivation[3][0],
+                            address=current_derivation[4][0]
                         )
+                    elif derivation_name == "CIP1852":
+                        _derivation: IDerivation = DERIVATIONS.derivation(
+                            name=kwargs.get("derivation")
+                        ).__call__(
+                            coin_type=current_derivation[1][0],
+                            account=current_derivation[2][0],
+                            role=current_derivation[3][0],
+                            address=current_derivation[4][0]
+                        )
+                    elif derivation_name == 'Electrum':
+                        _derivation: IDerivation = DERIVATIONS.derivation(
+                            name=kwargs.get("derivation")
+                        ).__call__(
+                            change=current_derivation[0][0],
+                            address=current_derivation[1][0]
+                        )
+                    elif derivation_name == "Monero":
+                        _derivation: IDerivation = DERIVATIONS.derivation(
+                            name=kwargs.get("derivation")
+                        ).__call__(
+                            minor=current_derivation[0][0],
+                            major=current_derivation[1][0]
+                        )
+                    elif derivation_name == "HDW":
+                        _derivation: IDerivation = DERIVATIONS.derivation(
+                            name=kwargs.get("derivation")
+                        ).__call__(
+                            account=current_derivation[0][0],
+                            ecc=current_derivation[1][0],
+                            address=current_derivation[2][0]
+                        )
+                    else:
+                        _derivation: IDerivation = DERIVATIONS.derivation(
+                            name=kwargs.get("derivation")
+                        ).__call__(
+                            path="m/" + "/".join(
+                                [str(item[0]) + "'" if item[1] else str(item[0]) for item in current_derivation]
+                            )
+                        )
+
+                    hdwallet.update_derivation(
+                        derivation=_derivation
+                    )
+                    if kwargs.get("format") == "csv":
+                        new_dump: dict = { }
                         dump: dict = hdwallet.dump(exclude={"root"})
                         for key in [keys.split(":") for keys in _include.split(",")]:
                             if len(key) == 2:
@@ -324,30 +324,45 @@ def dumps(**kwargs) -> None:
                             else:
                                 new_dump.setdefault(f"{key[0]}", dump[key[0]])
                         hdwallet_csv.writerow(new_dump)
-                        return [_derivation.path()]
 
-                    path: List[str] = []
-                    if len(derivations[0]) == 3:
-                        for value in range(derivations[0][0], derivations[0][1] + 1):
-                            path += drive_helper(
-                                derivations[1:], current_derivation + [(value, derivations[0][2])]
-                            )
-                    else:
+                    elif kwargs.get("format") == "json":
+                        excludes = kwargs.get("exclude").split(",")
+                        dump: dict = hdwallet.dump(exclude={"root", *excludes})
+                        click.echo(json.dumps(dump, indent=4, ensure_ascii=False))
+
+                    return [_derivation.path()]
+
+                path: List[str] = []
+                if len(derivations[0]) == 3:
+                    for value in range(derivations[0][0], derivations[0][1] + 1):
                         path += drive_helper(
-                            derivations[1:], current_derivation + [derivations[0]]
+                            derivations[1:], current_derivation + [(value, derivations[0][2])]
                         )
-                    return path
-                return drive_helper(args)
+                else:
+                    path += drive_helper(
+                        derivations[1:], current_derivation + [derivations[0]]
+                    )
+                return path
+            return drive_helper(args)
 
+        if kwargs.get("format") == "csv":
             if hdwallet._derivation is None:
                 return None
 
             drive(*hdwallet._derivation.derivations())
 
         elif kwargs.get("format") == "json":
-            click.echo(json.dumps(
-                hdwallet.dumps(exclude=set(kwargs.get("exclude").split(","))), indent=4, ensure_ascii=False
-            ))
+            if hdwallet._derivation is None:
+                return None
+
+            excludes = kwargs.get("exclude").split(",")
+            if "root" not in excludes:
+                click.echo(json.dumps(
+                    hdwallet.dump(exclude={'derivation', *excludes}), indent=4, ensure_ascii=False
+                ))
+
+
+            drive(*hdwallet._derivation.derivations())
         else:
             click.echo(click.style(
                 f"Wrong format, (expected= json | csv, got='{kwargs.get('format')}')"
