@@ -43,7 +43,7 @@ def test_algorand_mnemonics(data):
             assert mnemonic.name() == __["name"]
             assert mnemonic.language().lower() == language
 
-    with pytest.raises(MnemonicError, match="Invalid mnemonic words count"): 
+    with pytest.raises(MnemonicError, match="Invalid mnemonic words"): 
         AlgorandMnemonic(
             mnemonic="flower letter world foil coin poverty romance tongue taste hip cradle follow proud pluck ten improve"
         )

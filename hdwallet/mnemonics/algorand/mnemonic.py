@@ -15,7 +15,7 @@ from ...entropies import (
 )
 from ...crypto import sha512_256
 from ...exceptions import (
-    Error, EntropyError, MnemonicError
+    Error, EntropyError, MnemonicError, ChecksumError
 )
 from ...utils import (
     get_bytes, bytes_to_string, convert_bits
@@ -192,7 +192,7 @@ class AlgorandMnemonic(IMnemonic):
         checksum_word_indexes: Optional[List[int]] = convert_bits(checksum, 8, 11)
         assert checksum_word_indexes is not None
         if checksum_word_indexes[0] != word_indexes[-1]:
-            raise Error(
+            raise ChecksumError(
                 "Invalid checksum", expected=words_list[checksum_word_indexes[0]], got=words_list[word_indexes[-1]]
             )
 

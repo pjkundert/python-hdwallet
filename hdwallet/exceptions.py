@@ -45,6 +45,8 @@ class Error(Exception):
 class EntropyError(Error):
     pass
 
+class ChecksumError(Error):
+    pass
 
 class MnemonicError(Error):
     pass
