@@ -60,7 +60,7 @@ class CardanoSeed(ISeed):
         )
 
         if cardano_type not in Cardano.TYPES.get_cardano_types():
-            raise Error(
+            raise SeedError(
                 "Invalid Cardano type", expected=Cardano.TYPES.get_cardano_types(), got=cardano_type
             )
 

@@ -15,7 +15,7 @@ from ...entropies import (
 )
 from ...crypto import sha256
 from ...exceptions import (
-    Error, EntropyError, MnemonicError
+    Error, EntropyError, MnemonicError, ChecksumError
 )
 from ...utils import (
     get_bytes,
@@ -302,7 +302,7 @@ class BIP39Mnemonic(IMnemonic):
         )
         checksum_bin_got: str = entropy_hash_bin[:checksum_length]
         if checksum_bin != checksum_bin_got:
-            raise Error(
+            raise ChecksumError(
                 "Invalid checksum", expected=checksum_bin, got=checksum_bin_got
             )
 

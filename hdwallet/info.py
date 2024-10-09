@@ -8,8 +8,8 @@ from typing import List
 
 __name__: str = "hdwallet"
 __versions__: dict = {
-    __name__: "v3.0.0a11",
-    "desktop": "v0.1.0b1"
+    __name__: "v3.0.0a12",
+    "desktop": "v0.1.0b9"
 }
 __license__: str = "MIT"
 __author__: str = "Meheret Tesfaye Batu"

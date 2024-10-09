@@ -13,6 +13,7 @@ from typing import (
 
 import os
 
+from ..exceptions import MnemonicError
 from ..entropies import IEntropy
 
 
@@ -41,7 +42,7 @@ class IMnemonic(ABC):
 
         self._mnemonic: List[str] = self.normalize(mnemonic)
         if not self.is_valid(self._mnemonic, **kwargs):
-            raise Exception("Invalid mnemonic words")
+            raise MnemonicError("Invalid mnemonic words")
 
         _, self._language = self.find_language(self._mnemonic)
         self._mnemonic_type = kwargs.get("mnemonic_type", None)
@@ -136,7 +137,7 @@ class IMnemonic(ABC):
         :param wordlist_path: Optional dictionary mapping language names to file paths of their word lists.
         :type wordlist_path: Optional[Dict[str, str]]
 
-        :return: A tuple containing the word list and the language name if found. Raises a ValueError if not found.
+        :return: A tuple containing the word list and the language name if found.
         :rtype: Union[str, Tuple[List[str], str]]
         """
 
@@ -154,11 +155,11 @@ class IMnemonic(ABC):
                     try:
                         words_list_with_index[word]
                     except KeyError as ex:
-                        raise ValueError(f"Unable to find word {word}") from ex
+                        raise MnemonicError(f"Unable to find word {word}") from ex
                 return words_list, language
-            except ValueError:
+            except (MnemonicError, ValueError):
                 continue
-        raise ValueError(f"Invalid language for mnemonic '{mnemonic}'")
+        raise MnemonicError(f"Invalid language for mnemonic '{mnemonic}'")
 
     @classmethod
     def is_valid(cls, mnemonic: Union[str, List[str]], **kwargs) -> bool:
@@ -176,7 +177,7 @@ class IMnemonic(ABC):
         try:
             cls.decode(mnemonic=mnemonic, **kwargs)
             return True
-        except ValueError:
+        except (ValueError, MnemonicError):
             return False
 
     @classmethod

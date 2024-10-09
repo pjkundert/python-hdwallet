@@ -15,7 +15,7 @@ from ...entropies import (
 )
 from ...crypto import crc32
 from ...exceptions import (
-    Error, EntropyError, MnemonicError
+    Error, EntropyError, MnemonicError, ChecksumError
 )
 from ...utils import (
     get_bytes, bytes_to_string, bytes_to_integer, bytes_chunk_to_words, words_to_bytes_chunk
@@ -289,7 +289,7 @@ class MoneroMnemonic(IMnemonic):
                 bytes_to_integer(crc32(prefixes)) % len(mnemonic)
             ]
             if words[-1] != checksum_word:
-                raise Error(
+                raise ChecksumError(
                     "Invalid checksum", expected=checksum_word, got=words[-1]
                 )
 

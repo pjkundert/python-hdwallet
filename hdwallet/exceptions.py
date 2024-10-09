@@ -45,6 +45,8 @@ class Error(Exception):
 class EntropyError(Error):
     pass
 
+class ChecksumError(Error):
+    pass
 
 class MnemonicError(Error):
     pass
@@ -87,4 +89,16 @@ class SymbolError(Error):
 
 
 class NetworkError(Error):
+    pass
+
+class PublicKeyError(Error):
+    pass
+
+class PrivateKeyError(Error):
+    pass
+
+class XPublicKeyError(Error):
+    pass
+
+class XPrivateKeyError(Error):
     pass

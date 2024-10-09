@@ -20,7 +20,7 @@ from ..crypto import (
 )
 from ..cryptocurrencies import Cardano
 from ..exceptions import (
-    Error, AddressError, DerivationError
+    Error, AddressError, DerivationError, PublicKeyError, PrivateKeyError, SeedError
 )
 from ..utils import (
     get_bytes,
@@ -82,9 +82,12 @@ class CardanoHD(BIP32HD):
         :rtype: CardanoHD
         """
 
-        self._seed = get_bytes(
-            seed.seed() if isinstance(seed, ISeed) else seed
-        )
+        try:
+            self._seed = get_bytes(
+                seed.seed() if isinstance(seed, ISeed) else seed
+            )
+        except ValueError as error:
+            raise SeedError("Invalid seed data")
 
         if self._cardano_type == Cardano.TYPES.BYRON_LEGACY:
             if len(self._seed) != 32:
@@ -219,14 +222,17 @@ class CardanoHD(BIP32HD):
         :rtype: CardanoHD
         """
 
-        if self._cardano_type in [
-            Cardano.TYPES.BYRON_ICARUS, Cardano.TYPES.BYRON_LEGACY, Cardano.TYPES.BYRON_LEDGER
-        ]:
-            raise Error(f"From private key is not implemented for Cardano {self._cardano_type} type")
-        self._private_key = self._ecc.PRIVATE_KEY.from_bytes(get_bytes(private_key))
-        self._public_key = self._private_key.public_key()
-        self._strict = None
-        return self
+        try:
+            if self._cardano_type in [
+                Cardano.TYPES.BYRON_ICARUS, Cardano.TYPES.BYRON_LEGACY, Cardano.TYPES.BYRON_LEDGER
+            ]:
+                raise Error(f"From private key is not implemented for Cardano {self._cardano_type} type")
+            self._private_key = self._ecc.PRIVATE_KEY.from_bytes(get_bytes(private_key))
+            self._public_key = self._private_key.public_key()
+            self._strict = None
+            return self
+        except ValueError as error:
+            raise PrivateKeyError("Invalid private key data")
 
     def from_public_key(self, public_key: str) -> "CardanoHD":
         """
@@ -239,13 +245,16 @@ class CardanoHD(BIP32HD):
         :rtype: CardanoHD
         """
 
-        if self._cardano_type in [
-            Cardano.TYPES.BYRON_ICARUS, Cardano.TYPES.BYRON_LEGACY, Cardano.TYPES.BYRON_LEDGER
-        ]:
-            raise Error(f"From public key is not implemented for Cardano {self._cardano_type} type")
-        self._public_key = self._ecc.PUBLIC_KEY.from_bytes(get_bytes(public_key))
-        self._strict = None
-        return self
+        try:
+            if self._cardano_type in [
+                Cardano.TYPES.BYRON_ICARUS, Cardano.TYPES.BYRON_LEGACY, Cardano.TYPES.BYRON_LEDGER
+            ]:
+                raise Error(f"From public key is not implemented for Cardano {self._cardano_type} type")
+            self._public_key = self._ecc.PUBLIC_KEY.from_bytes(get_bytes(public_key))
+            self._strict = None
+            return self
+        except ValueError as error:
+            raise PublicKeyError("Invalid public key data")
 
     def drive(self, index: int) -> Optional["CardanoHD"]:
         """

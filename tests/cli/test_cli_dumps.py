@@ -71,6 +71,15 @@ def get_hd_args(dumps, args):
     return args_ls
 
 
+def get_dumps_output(ddict):
+    root_keys = {k: v for k, v in ddict.items() if k != "derivations"}
+    ret = f"{json.dumps(root_keys, indent=4, ensure_ascii=False)}\n"
+
+    for d in ddict.get("derivations", []):
+        ret += f"{json.dumps(d, indent=4, ensure_ascii=False)}\n"
+
+    return ret
+
 @pytest.mark.parametrize(
     "hd_data",
     unpack_dumps(),
@@ -111,9 +120,9 @@ def test_cli_dumps(cli_tester, hd_data):
 
         assert cli.exit_code == 0        
         if rule["derivable"]:
-            assert json.loads(cli.output) == final_dumps
+            assert cli.output == get_dumps_output(final_dumps)
         else:
-            assert json.loads(cli.output) == None
+            assert cli.output.strip() == ""
 
         args[0] = "dump"
         args.remove("--format")

@@ -23,7 +23,7 @@ from ...derivations import (
 from ...crypto import double_sha256
 from ...cryptocurrencies import Bitcoin
 from ...exceptions import (
-    Error, DerivationError
+    Error, DerivationError, PublicKeyError, PrivateKeyError, SeedError
 )
 from ...utils import (
     get_bytes, encode, bytes_to_string, bytes_to_integer, integer_to_bytes
@@ -103,11 +103,14 @@ class ElectrumV1HD(IHD):
         :rtype: ElectrumV1HD
         """
 
-        self._seed = get_bytes(
-            seed.seed() if isinstance(seed, ISeed) else seed
-        )
-        self.from_private_key(private_key=self._seed)
-        return self
+        try:
+            self._seed = get_bytes(
+                seed.seed() if isinstance(seed, ISeed) else seed
+            )
+            self.from_private_key(private_key=self._seed)
+            return self
+        except ValueError as error:
+            raise SeedError("Invalid seed data")
 
     def from_private_key(self, private_key: Union[bytes, str, IPrivateKey]) -> "ElectrumV1HD":
         """
@@ -120,16 +123,19 @@ class ElectrumV1HD(IHD):
         :rtype: ElectrumV1HD
         """
 
-        if not isinstance(private_key, SLIP10Secp256k1PrivateKey):
-            private_key: IPrivateKey = SLIP10Secp256k1PrivateKey.from_bytes(
-                get_bytes(private_key)
-            )
+        try:
+            if not isinstance(private_key, SLIP10Secp256k1PrivateKey):
+                private_key: IPrivateKey = SLIP10Secp256k1PrivateKey.from_bytes(
+                    get_bytes(private_key)
+                )
 
-        self._master_private_key, self._master_public_key = (
-            private_key, private_key.public_key()
-        )
-        self.__update__()
-        return self
+            self._master_private_key, self._master_public_key = (
+                private_key, private_key.public_key()
+            )
+            self.__update__()
+            return self
+        except ValueError as error:
+            raise PrivateKeyError("Invalid private key data")
 
     def from_wif(self, wif: str) -> "ElectrumV1HD":
         """
@@ -156,13 +162,16 @@ class ElectrumV1HD(IHD):
         :rtype: ElectrumV1HD
         """
 
-        if not isinstance(public_key, SLIP10Secp256k1PublicKey):
-            public_key: IPublicKey = SLIP10Secp256k1PublicKey.from_bytes(
-                get_bytes(public_key)
-            )
+        try:
+            if not isinstance(public_key, SLIP10Secp256k1PublicKey):
+                public_key: IPublicKey = SLIP10Secp256k1PublicKey.from_bytes(
+                    get_bytes(public_key)
+                )
 
-        self._master_public_key = public_key
-        return self
+            self._master_public_key = public_key
+            return self
+        except ValueError as error:
+            raise PublicKeyError("Invalid public key error")
 
     def from_derivation(self, derivation: IDerivation) -> "ElectrumV1HD":
         """
