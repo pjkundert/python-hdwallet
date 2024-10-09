@@ -37,7 +37,7 @@ from ..keys import (
     serialize, deserialize, is_root_key
 )
 from ..exceptions import (
-    Error, AddressError, DerivationError, ExtendedKeyError
+    Error, AddressError, DerivationError, ExtendedKeyError, PublicKeyError, PrivateKeyError, SeedError
 )
 from ..utils import (
     get_bytes, get_hmac, bytes_to_integer, integer_to_bytes, bytes_to_string, reset_bits, set_bits
@@ -135,9 +135,13 @@ class BIP32HD(IHD):
         :rtype: BIP32HD
         """
 
-        self._seed = get_bytes(
-            seed.seed() if isinstance(seed, ISeed) else seed
-        )
+        try:
+            self._seed = get_bytes(
+                seed.seed() if isinstance(seed, ISeed) else seed
+            )
+        except ValueError as error:
+            raise SeedError("Invalid seed data")
+
         if len(self._seed) < 16:
             raise Error(f"Invalid seed length", expected="< 16", got=len(self._seed))
 
@@ -323,10 +327,13 @@ class BIP32HD(IHD):
         :rtype: BIP32HD
         """
 
-        self._private_key = self._ecc.PRIVATE_KEY.from_bytes(get_bytes(private_key))
-        self._public_key = self._private_key.public_key()
-        self._strict = None
-        return self
+        try:
+            self._private_key = self._ecc.PRIVATE_KEY.from_bytes(get_bytes(private_key))
+            self._public_key = self._private_key.public_key()
+            self._strict = None
+            return self
+        except ValueError as error:
+            raise PrivateKeyError("Invalid private key data")
 
     def from_public_key(self, public_key: str) -> "BIP32HD":
         """
@@ -339,9 +346,12 @@ class BIP32HD(IHD):
         :rtype: BIP32HD
         """
 
-        self._public_key = self._ecc.PUBLIC_KEY.from_bytes(get_bytes(public_key))
-        self._strict = None
-        return self
+        try:
+            self._public_key = self._ecc.PUBLIC_KEY.from_bytes(get_bytes(public_key))
+            self._strict = None
+            return self
+        except ValueError as error:
+            raise PublicKeyError("Invalid public key data")
 
     def from_derivation(self, derivation: IDerivation) -> "BIP32HD":
         """

@@ -20,7 +20,7 @@ from ..derivations import (
     IDerivation, MoneroDerivation
 )
 from ..exceptions import (
-    NetworkError, DerivationError, AddressError
+    NetworkError, DerivationError, AddressError, PrivateKeyError, PublicKeyError, SeedError
 )
 from ..utils import (
     get_bytes, bytes_to_string, integer_to_bytes, bytes_to_integer
@@ -106,15 +106,18 @@ class MoneroHD(IHD):
         :rtype: MoneroHD
         """
 
-        self._seed = get_bytes(
-            seed.seed() if isinstance(seed, ISeed) else seed
-        )
-        spend_private_key: bytes = (
-            self._seed if len(self._seed) == SLIP10Ed25519MoneroPrivateKey.length() else kekkak256(self._seed)
-        )
-        return self.from_spend_private_key(
-            spend_private_key=scalar_reduce(spend_private_key)
-        )
+        try:
+            self._seed = get_bytes(
+                seed.seed() if isinstance(seed, ISeed) else seed
+            )
+            spend_private_key: bytes = (
+                self._seed if len(self._seed) == SLIP10Ed25519MoneroPrivateKey.length() else kekkak256(self._seed)
+            )
+            return self.from_spend_private_key(
+                spend_private_key=scalar_reduce(spend_private_key)
+            )
+        except ValueError as error:
+            raise SeedError("Invalid seed data")
 
     def from_private_key(self, private_key: Union[bytes, str, IPrivateKey]) -> "MoneroHD":
         """
@@ -127,12 +130,15 @@ class MoneroHD(IHD):
         :rtype: MoneroHD
         """
 
-        self._private_key = (
-            private_key.raw() if isinstance(private_key, SLIP10Ed25519MoneroPrivateKey) else get_bytes(private_key)
-        )
-        return self.from_spend_private_key(
-            spend_private_key=scalar_reduce(kekkak256(self._private_key))
-        )
+        try:
+            self._private_key = (
+                private_key.raw() if isinstance(private_key, SLIP10Ed25519MoneroPrivateKey) else get_bytes(private_key)
+            )
+            return self.from_spend_private_key(
+                spend_private_key=scalar_reduce(kekkak256(self._private_key))
+            )
+        except ValueError as error:
+            raise PrivateKeyError("Invalid private key data")
 
     def from_derivation(self, derivation: IDerivation) -> "MoneroHD":
         """
@@ -213,10 +219,17 @@ class MoneroHD(IHD):
         :rtype: MoneroHD
         """
 
-        if isinstance(view_private_key, (bytes, str)):
-            view_private_key: IPrivateKey = SLIP10Ed25519MoneroPrivateKey.from_bytes(get_bytes(view_private_key))
-        if isinstance(spend_public_key, (bytes, str)):
-            spend_public_key: IPublicKey = SLIP10Ed25519MoneroPublicKey.from_bytes(get_bytes(spend_public_key))
+        try:
+            if isinstance(view_private_key, (bytes, str)):
+                view_private_key: IPrivateKey = SLIP10Ed25519MoneroPrivateKey.from_bytes(get_bytes(view_private_key))
+        except ValueError as error:
+            raise PrivateKeyError("Invalid view private key data")
+
+        try:
+            if isinstance(spend_public_key, (bytes, str)):
+                spend_public_key: IPublicKey = SLIP10Ed25519MoneroPublicKey.from_bytes(get_bytes(spend_public_key))
+        except ValueError as error:
+            raise PublicKeyError("Invalid spend public key data")
 
         self._spend_private_key = None
         self._view_private_key = view_private_key

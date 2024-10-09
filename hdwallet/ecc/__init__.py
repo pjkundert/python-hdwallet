@@ -8,7 +8,9 @@ from typing import (
     Dict, List, Type, Union
 )
 
-from ..exceptions import ECCError
+from ..exceptions import (
+    ECCError, PublicKeyError
+)
 from ..utils import get_bytes
 from .kholaw import (
     KholawEd25519ECC, KholawEd25519Point, KholawEd25519PublicKey, KholawEd25519PrivateKey
@@ -129,19 +131,22 @@ def validate_and_get_public_key(
     :return: A valid IPublicKey instance.
     :rtype: IPublicKey
     """
-    if isinstance(public_key, bytes):
-        public_key: IPublicKey = public_key_cls.from_bytes(public_key)
-    elif isinstance(public_key, str):
-        public_key: IPublicKey = public_key_cls.from_bytes(get_bytes(public_key))
-    elif not isinstance(public_key, public_key_cls):
-        ecc: Type[IEllipticCurveCryptography] = ECCS.ecc(
-            name=public_key_cls.name()
-        )
-        raise TypeError(
-            f"A {ecc.NAME} public key is required, (expected: {public_key_cls}, got: {type(public_key)}"
-        )
-    return public_key
-
+    
+    try:
+        if isinstance(public_key, bytes):
+            public_key: IPublicKey = public_key_cls.from_bytes(public_key)
+        elif isinstance(public_key, str):
+            public_key: IPublicKey = public_key_cls.from_bytes(get_bytes(public_key))
+        elif not isinstance(public_key, public_key_cls):
+            ecc: Type[IEllipticCurveCryptography] = ECCS.ecc(
+                name=public_key_cls.name()
+            )
+            raise PublicKeyError(
+                f"Invalid {ecc.NAME} public key instance", expected=public_key_cls, got=type(public_key)
+            )
+        return public_key
+    except ValueError as error:
+        raise PublicKeyError("Invalid public key data")
 
 __all__: List[str] = [
     "IPoint", "IPublicKey", "IPrivateKey", "IEllipticCurveCryptography",

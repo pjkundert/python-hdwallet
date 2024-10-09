@@ -32,7 +32,7 @@ from .cryptocurrencies.icryptocurrency import (
 )
 from .keys import deserialize
 from .exceptions import (
-    Error, NetworkError, AddressError, CryptocurrencyError
+    Error, NetworkError, AddressError, CryptocurrencyError, XPrivateKeyError, XPublicKeyError, PrivateKeyError, PublicKeyError
 )
 from .utils import (
     get_bytes, exclude_keys
@@ -448,9 +448,12 @@ class HDWallet:
         if self._hd.name() in ["Electrum-V1", "Monero"]:
             raise Error(f"Conversion from xprivate key is not implemented for the {self._hd.name()} HD type")
 
-        version, depth, parent_fingerprint, index, chain_code, key = deserialize(
-            key=xprivate_key, encoded=encoded
-        )
+        try:
+            version, depth, parent_fingerprint, index, chain_code, key = deserialize(
+                key=xprivate_key, encoded=encoded
+            )
+        except ValueError as Error:
+            raise XPrivateKeyError("Invalid xprivate key data")
 
         if not self._network.XPRIVATE_KEY_VERSIONS.is_version(version=version) or \
                 len(check_decode(xprivate_key) if encoded else xprivate_key) not in [78, 110]:
@@ -495,9 +498,12 @@ class HDWallet:
                 f"Conversion from xpublic key is not implemented for the {self._hd.name()} HD {self._cardano_type} type"
             )
 
-        version, depth, parent_fingerprint, index, chain_code, key = deserialize(
-            key=xpublic_key, encoded=encoded
-        )
+        try:
+            version, depth, parent_fingerprint, index, chain_code, key = deserialize(
+                key=xpublic_key, encoded=encoded
+            )
+        except ValueError as Error:
+            raise XPublicKeyError("Invalid xpublic key data")
 
         if not self._network.XPUBLIC_KEY_VERSIONS.is_version(version=version) or \
                 len(check_decode(xpublic_key) if encoded else xpublic_key) not in [78, 110]:
@@ -654,10 +660,13 @@ class HDWallet:
         +----------------+-----------------------------------------------------------------------------------------------------+
         """
 
-        if self._hd.name() != "Monero":
-            raise Error("From spend private key only supported by Monero HD ")
-        self._hd.from_spend_private_key(spend_private_key=spend_private_key)
-        return self
+        try:
+            if self._hd.name() != "Monero":
+                raise Error("From spend private key only supported by Monero HD ")
+            self._hd.from_spend_private_key(spend_private_key=spend_private_key)
+            return self
+        except ValueError as error:
+            raise PrivateKeyError("Invalid spend private key data")
 
     def from_watch_only(
         self,

@@ -90,3 +90,15 @@ class SymbolError(Error):
 
 class NetworkError(Error):
     pass
+
+class PublicKeyError(Error):
+    pass
+
+class PrivateKeyError(Error):
+    pass
+
+class XPublicKeyError(Error):
+    pass
+
+class XPrivateKeyError(Error):
+    pass
