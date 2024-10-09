@@ -44,6 +44,10 @@ class INetwork:
     PAYMENT_ADDRESS_HRP: Optional[str] = None
     REWARD_ADDRESS_HRP: Optional[str] = None
 
+    @classmethod
+    def name(cls) -> str:
+        return cls.__name__.lower()
+
 
 class ICryptocurrency:
 
@@ -54,7 +58,7 @@ class ICryptocurrency:
     COIN_TYPE: int
     SUPPORT_BIP38: bool = False
     NETWORKS: Networks
-    DEFAULT_NETWORK: str
+    DEFAULT_NETWORK: INetwork
     ENTROPIES: Entropies
     MNEMONICS: Mnemonics
     SEEDS: Seeds
