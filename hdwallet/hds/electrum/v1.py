@@ -169,6 +169,7 @@ class ElectrumV1HD(IHD):
                 )
 
             self._master_public_key = public_key
+            self.__update__()
             return self
         except ValueError as error:
             raise PublicKeyError("Invalid public key error")
