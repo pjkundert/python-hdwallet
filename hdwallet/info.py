@@ -8,7 +8,7 @@ from typing import List
 
 __name__: str = "hdwallet"
 __versions__: dict = {
-    __name__: "v3.0.0a12",
+    __name__: "v3.0.0a13",
     "desktop": "v0.1.0b11"
 }
 __license__: str = "MIT"
