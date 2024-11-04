@@ -25,7 +25,7 @@ from .ecc import (
     IPrivateKey, IPublicKey
 )
 from .const import (
-    PUBLIC_KEY_TYPES, ELECTRUM_V2_MODES
+    PUBLIC_KEY_TYPES, SEMANTICS, MODES
 )
 from .cryptocurrencies.icryptocurrency import (
     ICryptocurrency, INetwork
@@ -140,12 +140,12 @@ class HDWallet:
                 )
         elif hd.name() == "Electrum-V2":
             if not kwargs.get("mode"):
-                self._mode = kwargs.get("mode", ELECTRUM_V2_MODES.STANDARD)  # Default
-            elif kwargs.get("mode") in ELECTRUM_V2_MODES.get_modes():
+                self._mode = kwargs.get("mode", MODES.STANDARD)  # Default
+            elif kwargs.get("mode") in MODES.get_modes():
                 self._mode = kwargs.get("mode")
             else:
                 raise Error(
-                    f"Invalid {hd.name()} mode", expected=ELECTRUM_V2_MODES.get_modes(), got=kwargs.get("mode")
+                    f"Invalid {hd.name()} mode", expected=MODES.get_modes(), got=kwargs.get("mode")
                 )
             if not kwargs.get("mnemonic_type"):
                 self._mnemonic_type = kwargs.get("mnemonic_type", ELECTRUM_V2_MNEMONIC_TYPES.STANDARD)  # Default
@@ -1588,12 +1588,17 @@ class HDWallet:
                     _derivation["address"] = self.address(address="P2WPKH")
                 elif self._hd.name() == "BIP86":
                     _derivation["address"] = self.address(address="P2TR")
+                elif self._hd.name() == "BIP141":
+                    if self._semantic == SEMANTICS.P2WPKH:
+                        _derivation["address"] = self.address(address="P2WPKH")
+                    elif self._semantic == SEMANTICS.P2WPKH_IN_P2SH:
+                        _derivation["address"] = self.address(address="P2WPKH-In-P2SH")
+                    elif self._semantic == SEMANTICS.P2WSH:
+                        _derivation["address"] = self.address(address="P2WSH")
+                    elif self._semantic == SEMANTICS.P2WSH_IN_P2SH:
+                        _derivation["address"] = self.address(address="P2WSH-In-P2SH")
                 else:
                     for address in self._cryptocurrency.ADDRESSES.get_addresses():
-                        if self._hd.name() == "BIP141" and address in [
-                            "P2PKH", "P2SH", "P2TR"
-                        ]:
-                            continue
                         addresses[address.lower().replace("-", "_")] = self.address(address=address)
                 if addresses:
                     _derivation["addresses"] = addresses
