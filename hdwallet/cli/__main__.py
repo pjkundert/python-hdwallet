@@ -11,7 +11,7 @@ import click
 from ..cryptocurrencies import Cardano
 from ..mnemonics import ELECTRUM_V2_MNEMONIC_TYPES
 from ..const import (
-    PUBLIC_KEY_TYPES, ELECTRUM_V2_MODES
+    PUBLIC_KEY_TYPES, MODES
 )
 
 from .. import (
@@ -250,7 +250,7 @@ def cli_seed(**kwargs) -> None:
     "-at", "--address-type", type=str, default=None, help="Select Address type", show_default=True
 )
 @click.option(
-    "-mo", "--mode", type=str, default=ELECTRUM_V2_MODES.STANDARD, help="Select Mode of Electrum-V2", show_default=True
+    "-mo", "--mode", type=str, default=MODES.STANDARD, help="Select Mode of Electrum-V2", show_default=True
 )
 @click.option(
     "-mt", "--mnemonic-type", type=str, default=ELECTRUM_V2_MNEMONIC_TYPES.STANDARD, help="Select Mnemonic type of Electrum-V2", show_default=True
@@ -383,7 +383,7 @@ def cli_dump(**kwargs) -> None:  # cli_dumps(max_content_width=120)
     "-at", "--address-type", type=str, default=None, help="Select Address type", show_default=True
 )
 @click.option(
-    "-mo", "--mode", type=str, default=ELECTRUM_V2_MODES.STANDARD, help="Select Mode of Electrum-V2", show_default=True
+    "-mo", "--mode", type=str, default=MODES.STANDARD, help="Select Mode of Electrum-V2", show_default=True
 )
 @click.option(
     "-mt", "--mnemonic-type", type=str, default=ELECTRUM_V2_MNEMONIC_TYPES.STANDARD, help="Select Mnemonic type of Electrum-V2", show_default=True
