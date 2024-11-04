@@ -8,14 +8,14 @@
 from hdwallet.hds import ElectrumV2HD
 from hdwallet.derivations import ElectrumDerivation
 from hdwallet.const import (
-    PUBLIC_KEY_TYPES, ELECTRUM_V2_MODES
+    PUBLIC_KEY_TYPES, MODES
 )
 
 
 def test_electrum_v2_standard_2fa_hd(data):
 
     electrum_v2_hd: ElectrumV2HD = ElectrumV2HD(
-        mode=ELECTRUM_V2_MODES.STANDARD, public_key_type=PUBLIC_KEY_TYPES.UNCOMPRESSED
+        mode=MODES.STANDARD, public_key_type=PUBLIC_KEY_TYPES.UNCOMPRESSED
     )
 
     electrum_v2_hd.from_seed(

@@ -74,18 +74,9 @@ def test_bip141_from_entropy_compressed(data):
     assert hdwallet.parent_fingerprint() == data["hdwallet"]["BIP141"]["compressed"]["derivations"][-1]["parent_fingerprint"]
 
     assert hdwallet.address(
-        address=cryptocurrency.ADDRESSES.P2WPKH_IN_P2SH,
+        address=cryptocurrency.ADDRESSES.P2WPKH,
         script_address_prefix=cryptocurrency.NETWORKS.MAINNET.SCRIPT_ADDRESS_PREFIX
-    ) == data["hdwallet"]["BIP141"]["compressed"]["derivations"][-1]["addresses"]["p2wpkh_in_p2sh"]
-    assert hdwallet.address(
-        address=cryptocurrency.ADDRESSES.P2WSH,
-        hrp=cryptocurrency.NETWORKS.MAINNET.HRP,
-        witness_version=cryptocurrency.NETWORKS.MAINNET.WITNESS_VERSIONS.P2WSH
-    ) == data["hdwallet"]["BIP141"]["compressed"]["derivations"][-1]["addresses"]["p2wsh"]
-    assert hdwallet.address(
-        address=cryptocurrency.ADDRESSES.P2WSH_IN_P2SH,
-        script_address_prefix=cryptocurrency.NETWORKS.MAINNET.SCRIPT_ADDRESS_PREFIX
-    ) == data["hdwallet"]["BIP141"]["compressed"]["derivations"][-1]["addresses"]["p2wsh_in_p2sh"]
+    ) == data["hdwallet"]["BIP141"]["compressed"]["derivations"][-1]["address"]
 
     assert hdwallet.dumps() == data["hdwallet"]["BIP141"]["compressed"]
 
@@ -160,20 +151,7 @@ def test_bip141_from_entropy_uncompressed(data):
         address=cryptocurrency.ADDRESSES.P2WPKH,
         hrp=cryptocurrency.NETWORKS.MAINNET.HRP,
         witness_version=cryptocurrency.NETWORKS.MAINNET.WITNESS_VERSIONS.P2WPKH
-    ) == data["hdwallet"]["BIP141"]["uncompressed"]["derivations"][-1]["addresses"]["p2wpkh"]
-    assert hdwallet.address(
-        address=cryptocurrency.ADDRESSES.P2WPKH_IN_P2SH,
-        script_address_prefix=cryptocurrency.NETWORKS.MAINNET.SCRIPT_ADDRESS_PREFIX
-    ) == data["hdwallet"]["BIP141"]["uncompressed"]["derivations"][-1]["addresses"]["p2wpkh_in_p2sh"]
-    assert hdwallet.address(
-        address=cryptocurrency.ADDRESSES.P2WSH,
-        hrp=cryptocurrency.NETWORKS.MAINNET.HRP,
-        witness_version=cryptocurrency.NETWORKS.MAINNET.WITNESS_VERSIONS.P2WSH
-    ) == data["hdwallet"]["BIP141"]["uncompressed"]["derivations"][-1]["addresses"]["p2wsh"]
-    assert hdwallet.address(
-        address=cryptocurrency.ADDRESSES.P2WSH_IN_P2SH,
-        script_address_prefix=cryptocurrency.NETWORKS.MAINNET.SCRIPT_ADDRESS_PREFIX
-    ) == data["hdwallet"]["BIP141"]["uncompressed"]["derivations"][-1]["addresses"]["p2wsh_in_p2sh"]
+    ) == data["hdwallet"]["BIP141"]["uncompressed"]["derivations"][-1]["address"]
 
     assert hdwallet.dumps() == data["hdwallet"]["BIP141"]["uncompressed"]
 

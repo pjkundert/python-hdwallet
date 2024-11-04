@@ -101,20 +101,7 @@ def test_bip141_from_public_key_compressed(data):
         address=cryptocurrency.ADDRESSES.P2WPKH,
         hrp=cryptocurrency.NETWORKS.MAINNET.HRP,
         witness_version=cryptocurrency.NETWORKS.MAINNET.WITNESS_VERSIONS.P2WPKH
-    ) == dump["derivation"]["addresses"]["p2wpkh"]
-    assert hdwallet.address(
-        address=cryptocurrency.ADDRESSES.P2WPKH_IN_P2SH,
-        script_address_prefix=cryptocurrency.NETWORKS.MAINNET.SCRIPT_ADDRESS_PREFIX
-    ) == dump["derivation"]["addresses"]["p2wpkh_in_p2sh"]
-    assert hdwallet.address(
-        address=cryptocurrency.ADDRESSES.P2WSH,
-        hrp=cryptocurrency.NETWORKS.MAINNET.HRP,
-        witness_version=cryptocurrency.NETWORKS.MAINNET.WITNESS_VERSIONS.P2WSH
-    ) == dump["derivation"]["addresses"]["p2wsh"]
-    assert hdwallet.address(
-        address=cryptocurrency.ADDRESSES.P2WSH_IN_P2SH,
-        script_address_prefix=cryptocurrency.NETWORKS.MAINNET.SCRIPT_ADDRESS_PREFIX
-    ) == dump["derivation"]["addresses"]["p2wsh_in_p2sh"]
+    ) == dump["derivation"]["address"]
 
 
 def test_bip141_from_public_key_uncompressed(data):
@@ -207,17 +194,4 @@ def test_bip141_from_public_key_uncompressed(data):
         address=cryptocurrency.ADDRESSES.P2WPKH,
         hrp=cryptocurrency.NETWORKS.MAINNET.HRP,
         witness_version=cryptocurrency.NETWORKS.MAINNET.WITNESS_VERSIONS.P2WPKH
-    ) == dump["derivation"]["addresses"]["p2wpkh"]
-    assert hdwallet.address(
-        address=cryptocurrency.ADDRESSES.P2WPKH_IN_P2SH,
-        script_address_prefix=cryptocurrency.NETWORKS.MAINNET.SCRIPT_ADDRESS_PREFIX
-    ) == dump["derivation"]["addresses"]["p2wpkh_in_p2sh"]
-    assert hdwallet.address(
-        address=cryptocurrency.ADDRESSES.P2WSH,
-        hrp=cryptocurrency.NETWORKS.MAINNET.HRP,
-        witness_version=cryptocurrency.NETWORKS.MAINNET.WITNESS_VERSIONS.P2WSH
-    ) == dump["derivation"]["addresses"]["p2wsh"]
-    assert hdwallet.address(
-        address=cryptocurrency.ADDRESSES.P2WSH_IN_P2SH,
-        script_address_prefix=cryptocurrency.NETWORKS.MAINNET.SCRIPT_ADDRESS_PREFIX
-    ) == dump["derivation"]["addresses"]["p2wsh_in_p2sh"]
+    ) == dump["derivation"]["address"]

@@ -217,13 +217,13 @@ class HDWallet:
         if hd.name() in [
             "BIP32", "BIP44", "BIP86", "Cardano"
         ]:
-            self._semantic = kwargs.get("semantic", "P2PKH")
+            self._semantic = kwargs.get("semantic", "p2pkh")
         elif hd.name() == "BIP49":
-            self._semantic = kwargs.get("semantic", "P2WPKH_IN_P2SH")
+            self._semantic = kwargs.get("semantic", "p2wpkh-in-p2sh")
         elif hd.name() in [
             "BIP84", "BIP141"
         ]:
-            self._semantic = kwargs.get("semantic", "P2WPKH")
+            self._semantic = kwargs.get("semantic", "p2wpkh")
         else:
             self._semantic = None
 
