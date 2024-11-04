@@ -9,6 +9,7 @@ from hdwallet.mnemonics.bip39 import (
 from hdwallet.seeds.bip39 import BIP39Seed
 from hdwallet.cryptocurrencies import Bitcoin as Cryptocurrency
 from hdwallet.derivations import CustomDerivation
+from hdwallet.const import SEMANTICS
 from hdwallet.hds import BIP141HD
 
 
@@ -37,16 +38,14 @@ bip39_seed: BIP39Seed = BIP39Seed(seed=seed)
 
 # Initialize BIP141 HD
 bip141_hd: BIP141HD = BIP141HD(
-    ecc=Cryptocurrency.ECC, semantic="P2WPKH"
+    ecc=Cryptocurrency.ECC, semantic=SEMANTICS.P2WPKH
 )
 # Update BIP141 HD root keys from seed
 bip141_hd.from_seed(
     seed=bip39_seed
 )
 
-# bip141_hd.from_semantic(semantic="P2WPKH-In-P2SH")
-# bip141_hd.from_semantic(semantic="P2WSH")
-# bip141_hd.from_semantic(semantic="P2WSH-In-P2SH")
+# bip141_hd.from_semantic(semantic=SEMANTICS.P2WPKH)
 
 # Dump root keys
 print("BIP141 Seed:", bip141_hd.seed())
