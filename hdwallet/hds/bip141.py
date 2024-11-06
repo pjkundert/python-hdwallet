@@ -10,7 +10,9 @@ from typing import (
 
 from ..cryptocurrencies import Bitcoin
 from ..ecc import IEllipticCurveCryptography
-from ..const import PUBLIC_KEY_TYPES
+from ..const import (
+    PUBLIC_KEY_TYPES, SEMANTICS
+)
 from ..addresses import (
     P2WPKHAddress, P2WPKHInP2SHAddress, P2WSHAddress, P2WSHInP2SHAddress
 )
@@ -74,15 +76,13 @@ class BIP141HD(BIP32HD):
         :rtype: BIP141HD
         """
 
-        if semantic not in [
-            "P2WPKH", "P2WPKH_IN_P2SH", "P2WSH", "P2WSH_IN_P2SH"
-        ]:
-            raise Error(f"Invalid {self.name()} semantic type", expected=[
-                "P2WPKH", "P2WPKH_IN_P2SH", "P2WSH", "P2WSH_IN_P2SH"
-            ], got=semantic)
+        if semantic not in SEMANTICS.get_types():
+            raise Error(
+                f"Invalid {self.name()} semantic type", expected=SEMANTICS.get_types(), got=semantic
+            )
         self._semantic = semantic
 
-        if semantic == "P2WPKH":
+        if semantic == SEMANTICS.P2WPKH:
             self._address = P2WPKHAddress.name()
             self._xprivate_key_version = kwargs.get(
                 "p2wpkh_xprivate_key_version", Bitcoin.NETWORKS.MAINNET.XPRIVATE_KEY_VERSIONS.P2WPKH
@@ -90,7 +90,7 @@ class BIP141HD(BIP32HD):
             self._xpublic_key_version = kwargs.get(
                 "p2wpkh_xpublic_key_version", Bitcoin.NETWORKS.MAINNET.XPUBLIC_KEY_VERSIONS.P2WPKH
             )
-        elif semantic == "P2WPKH_IN_P2SH":
+        elif semantic == SEMANTICS.P2WPKH_IN_P2SH:
             self._address = P2WPKHInP2SHAddress.name()
             self._xprivate_key_version = kwargs.get(
                 "p2wpkh_in_p2sh_xprivate_key_version", Bitcoin.NETWORKS.MAINNET.XPRIVATE_KEY_VERSIONS.P2WPKH_IN_P2SH
@@ -98,7 +98,7 @@ class BIP141HD(BIP32HD):
             self._xpublic_key_version = kwargs.get(
                 "p2wpkh_in_p2sh_xpublic_key_version", Bitcoin.NETWORKS.MAINNET.XPUBLIC_KEY_VERSIONS.P2WPKH_IN_P2SH
             )
-        elif semantic == "P2WSH":
+        elif semantic == SEMANTICS.P2WSH:
             self._address = P2WSHAddress.name()
             self._xprivate_key_version = kwargs.get(
                 "p2wsh_xprivate_key_version", Bitcoin.NETWORKS.MAINNET.XPRIVATE_KEY_VERSIONS.P2WSH
@@ -106,7 +106,7 @@ class BIP141HD(BIP32HD):
             self._xpublic_key_version = kwargs.get(
                 "p2wsh_xpublic_key_version", Bitcoin.NETWORKS.MAINNET.XPUBLIC_KEY_VERSIONS.P2WSH
             )
-        elif semantic == "P2WSH_IN_P2SH":
+        elif semantic == SEMANTICS.P2WSH_IN_P2SH:
             self._address = P2WSHInP2SHAddress.name()
             self._xprivate_key_version = kwargs.get(
                 "p2wsh_in_p2sh_xprivate_key_version", Bitcoin.NETWORKS.MAINNET.XPRIVATE_KEY_VERSIONS.P2WSH_IN_P2SH

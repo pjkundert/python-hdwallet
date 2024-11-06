@@ -19,7 +19,7 @@ from ...derivations import (
 )
 from ...cryptocurrencies import Bitcoin
 from ...const import (
-    PUBLIC_KEY_TYPES, ELECTRUM_V2_MODES, WIF_TYPES
+    PUBLIC_KEY_TYPES, MODES, WIF_TYPES
 )
 from ...exceptions import (
     Error, DerivationError, AddressError
@@ -36,7 +36,7 @@ class ElectrumV2HD(IHD):
     _derivation: ElectrumDerivation
 
     def __init__(
-        self, mode: str = ELECTRUM_V2_MODES.STANDARD, public_key_type: str = PUBLIC_KEY_TYPES.UNCOMPRESSED, **kwargs
+        self, mode: str = MODES.STANDARD, public_key_type: str = PUBLIC_KEY_TYPES.UNCOMPRESSED, **kwargs
     ) -> None:
         """
         Initialize an instance of ElectrumV2HD.
@@ -52,9 +52,9 @@ class ElectrumV2HD(IHD):
 
         super(ElectrumV2HD, self).__init__(**kwargs)
 
-        if mode not in ELECTRUM_V2_MODES.get_modes():
+        if mode not in MODES.get_modes():
             raise Error(
-                f"Invalid {self.name()} mode", expected=ELECTRUM_V2_MODES.get_modes(), got=mode
+                f"Invalid {self.name()} mode", expected=MODES.get_modes(), got=mode
             )
         self._mode = mode
 
@@ -175,7 +175,7 @@ class ElectrumV2HD(IHD):
         """
 
         custom_derivation: CustomDerivation = CustomDerivation()
-        if self._mode == ELECTRUM_V2_MODES.SEGWIT:
+        if self._mode == MODES.SEGWIT:
             custom_derivation.from_index(index=0, hardened=True)
         custom_derivation.from_index(index=change_index)  # Change index
         custom_derivation.from_index(index=address_index)  # Address index
@@ -363,18 +363,18 @@ class ElectrumV2HD(IHD):
         :rtype: str
         """
 
-        if self._mode == ELECTRUM_V2_MODES.STANDARD:
+        if self._mode == MODES.STANDARD:
             return P2PKHAddress.encode(
                 public_key=self.public_key(),
                 public_key_address_prefix=public_key_address_prefix,
                 public_key_type=self._public_key_type
             )
-        elif self._mode == ELECTRUM_V2_MODES.SEGWIT:
+        elif self._mode == MODES.SEGWIT:
             return P2WPKHAddress.encode(
                 public_key=self.public_key(),
                 hrp=hrp,
                 witness_version=witness_version
             )
         raise AddressError(
-            f"Invalid {self.name()} mode", expected=ELECTRUM_V2_MODES.get_modes(), got=self._mode
+            f"Invalid {self.name()} mode", expected=MODES.get_modes(), got=self._mode
         )

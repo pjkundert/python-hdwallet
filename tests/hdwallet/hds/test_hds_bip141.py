@@ -12,7 +12,7 @@ from hdwallet.hds import BIP141HD
 
 def test_bip141_hd(data):
     bip141_hd: BIP141HD = BIP141HD(
-        ecc=Cryptocurrency.ECC, semantic="P2WPKH"
+        ecc=Cryptocurrency.ECC, semantic="p2wpkh"
     )
 
     bip141_hd.from_seed(
@@ -23,7 +23,7 @@ def test_bip141_hd(data):
 
     assert bip141_hd.name() == data["hds"]["BIP141"]["name"]
     assert bip141_hd.seed() == data["hds"]["BIP141"]["seed"]
-    assert bip141_hd.semantic() == "P2WPKH"
+    assert bip141_hd.semantic() == "p2wpkh"
 
     assert bip141_hd.root_xprivate_key() == data["hds"]["BIP141"]["root-xprivate-key"]
     assert bip141_hd.root_xpublic_key() == data["hds"]["BIP141"]["root-xpublic-key"]

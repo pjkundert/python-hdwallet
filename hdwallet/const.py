@@ -191,7 +191,7 @@ class ExtendedKeyVersions(NestedNamespace):
         return bytes_to_integer(version) in self.__dict__.values()
 
     def get_version(self, name: str) -> Union[str, int, bytes]:
-        return self.__getattribute__(name)
+        return self.__getattribute__(name.upper().replace('-', '_'))
 
     def get_name(self, version: bytes) -> Optional[str]:
         name: Optional[str] = None
@@ -270,9 +270,45 @@ class WIF_TYPES:
         ]
 
 
-class ELECTRUM_V2_MODES:
+class SEMANTICS:
     """
-    ``PUBLIC_KEY_TYPES`` Constants.
+    BIP141 ``SEMANTICS`` Constants.
+
+    +-----------------+------------------+
+    | Name            | Value            |
+    +=================+==================+
+    | P2WPKH          | 'p2wpkh'         |
+    +-----------------+------------------+
+    | P2WPKH_IN_P2SH  | 'p2wpkh-in-p2sh' |
+    +-----------------+------------------+
+    | P2WSH           | 'p2wsh'          |
+    +-----------------+------------------+
+    | P2WSH_IN_P2SH   | 'p2wsh-in-p2sh'  |
+    +-----------------+------------------+
+    """
+
+    P2WPKH: str = "p2wpkh"
+    P2WPKH_IN_P2SH: str = "p2wpkh-in-p2sh"
+    P2WSH: str = "p2wsh"
+    P2WSH_IN_P2SH: str = "p2wsh-in-p2sh"
+
+    @classmethod
+    def get_types(cls) -> List[str]:
+        """
+        Get a list of all BIP141 semantic types.
+
+        :return: List of BIP141 semantic types.
+        :rtype: List[str]
+        """
+
+        return [
+            cls.P2WPKH, cls.P2WPKH_IN_P2SH, cls.P2WSH, cls.P2WSH_IN_P2SH
+        ]
+
+
+class MODES:
+    """
+    Electrum-V2 ``MODES`` Constants.
 
     +----------------+-----------------+
     | Name           | Value           |

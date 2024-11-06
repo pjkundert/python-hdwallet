@@ -10,7 +10,7 @@ from hdwallet.mnemonics import (
 from hdwallet.derivations import ElectrumDerivation
 from hdwallet.cryptocurrencies import Bitcoin
 from hdwallet.const import (
-    ELECTRUM_V2_MODES, PUBLIC_KEY_TYPES
+    MODES, PUBLIC_KEY_TYPES
 )
 from hdwallet.hds import ElectrumV2HD
 
@@ -23,7 +23,7 @@ hdwallet: HDWallet = HDWallet(
     network=Bitcoin.NETWORKS.MAINNET,
     language=ELECTRUM_V2_MNEMONIC_LANGUAGES.PORTUGUESE,
     mnemonic_type=ELECTRUM_V2_MNEMONIC_TYPES.SEGWIT,
-    mode=ELECTRUM_V2_MODES.SEGWIT,
+    mode=MODES.SEGWIT,
     public_key_type=PUBLIC_KEY_TYPES.UNCOMPRESSED
 ).from_entropy(
     entropy=ElectrumV2Entropy(

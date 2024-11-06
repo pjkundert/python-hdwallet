@@ -259,7 +259,6 @@ rules = {
     "BIP49" : bip_44_to_bip_144_rule,
     "BIP84" : bip_44_to_bip_144_rule,
     "BIP86" : bip_44_to_bip_144_rule,
-    "BIP141" : bip_44_to_bip_144_rule,
     "Cardano": {
         "available-methods": {
             "entropy": {

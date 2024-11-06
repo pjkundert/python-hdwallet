@@ -26,7 +26,7 @@ hdwallet: HDWallet = HDWallet(
     )
 ).from_derivation(
     derivation=MoneroDerivation(
-        minor=10, major=(1, 3)
+        minor=0, major=0
     )
 )
 

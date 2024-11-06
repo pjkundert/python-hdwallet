@@ -3,7 +3,9 @@
 from hdwallet import HDWallet
 from hdwallet.cryptocurrencies import Qtum as Cryptocurrency
 from hdwallet.derivations import CustomDerivation
-from hdwallet.const import PUBLIC_KEY_TYPES
+from hdwallet.const import (
+    PUBLIC_KEY_TYPES, SEMANTICS
+)
 from hdwallet.hds import BIP141HD
 
 import json
@@ -13,7 +15,8 @@ hdwallet: HDWallet = HDWallet(
     cryptocurrency=Cryptocurrency,
     hd=BIP141HD,
     network=Cryptocurrency.NETWORKS.MAINNET,
-    public_key_type=PUBLIC_KEY_TYPES.COMPRESSED
+    public_key_type=PUBLIC_KEY_TYPES.COMPRESSED,
+    semantic=SEMANTICS.P2WSH
 ).from_xpublic_key(
     xpublic_key="xpub661MyMwAqRbcEYxcChjb28wcZSFGCJS5dz4MtqnkXvfcvG6RDHWwA8Yyj8huR1AnPaWwMjjwux3n6b5hNnTcgwYXSfCsi9RnQ6RvY3RZ8fm",
     strict=True
