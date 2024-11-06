@@ -226,7 +226,7 @@ def cli_seed(**kwargs) -> None:
     "-prv", "--private-key", type=str, default=None, help="Set Private key", show_default=True
 )
 @click.option(
-    "-w", "--wif", type=str, default=None, help="Set Wallet Important Format (WIF)", show_default=True
+    "-w", "--wif", type=str, default=None, help="Set Wallet Import Format (WIF)", show_default=True
 )
 @click.option(
     "-pub", "--public-key", type=str, default=None, help="Set Public key", show_default=True
@@ -268,7 +268,7 @@ def cli_seed(**kwargs) -> None:
     "-ex", "--exclude", type=str, default="", help="Set Exclude keys from dumped", show_default=True
 )
 @click.option(
-    "-ib", "--is-bip38", type=bool, default=False, help="Is Encrypted Wallet Important Format", show_default=True
+    "-ib", "--is-bip38", type=bool, default=False, help="Is Encrypted Wallet Import Format", show_default=True
 )
 def cli_dump(**kwargs) -> None:  # cli_dumps(max_content_width=120)
     return dump(**kwargs)
@@ -359,7 +359,7 @@ def cli_dump(**kwargs) -> None:  # cli_dumps(max_content_width=120)
     "-prv", "--private-key", type=str, default=None, help="Set Private key", show_default=True
 )
 @click.option(
-    "-w", "--wif", type=str, default=None, help="Set Wallet Important Format (WIF)", show_default=True
+    "-w", "--wif", type=str, default=None, help="Set Wallet Import Format (WIF)", show_default=True
 )
 @click.option(
     "-pub", "--public-key", type=str, default=None, help="Set Public key", show_default=True
@@ -413,7 +413,7 @@ def cli_dump(**kwargs) -> None:  # cli_dumps(max_content_width=120)
     "-de", "--delimiter", type=str, default=" ", help="Set Delimiter for CSV", show_default=True
 )
 @click.option(
-    "-ib", "--is-bip38", type=bool, default=False, help="Is Encrypted Wallet Important Format", show_default=True
+    "-ib", "--is-bip38", type=bool, default=False, help="Is Encrypted Wallet Import Format", show_default=True
 )
 def cli_dumps(**kwargs) -> None:  # cli_dumps(max_content_width=120)
     return dumps(**kwargs)

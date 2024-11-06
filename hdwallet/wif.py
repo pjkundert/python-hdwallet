@@ -17,7 +17,7 @@ from .utils import (
     get_bytes, integer_to_bytes, bytes_to_string
 )
 
-# Wallet important format prefix
+# Wallet import format prefix
 WIF_PREFIX: int = 0x80
 # Private key prefixes
 UNCOMPRESSED_PRIVATE_KEY_PREFIX: int = 0x00
@@ -50,7 +50,7 @@ def decode_wif(wif: str) -> Tuple[bytes, str, bytes]:
 
     raw: bytes = decode(wif)
     if not raw.startswith(integer_to_bytes(0x80)):
-        raise ValueError(f"Invalid wallet important format")
+        raise ValueError(f"Invalid wallet import format")
 
     prefix_length: int = len(integer_to_bytes(WIF_PREFIX))
     prefix_got: bytes = raw[:prefix_length]
@@ -64,7 +64,7 @@ def decode_wif(wif: str) -> Tuple[bytes, str, bytes]:
     wif_type: str = WIF_TYPES.WIF
 
     if len(private_key) not in [33, 32]:
-        raise ValueError(f"Invalid wallet important format")
+        raise ValueError(f"Invalid wallet import format")
     elif len(private_key) == 33:
         private_key = private_key[:-len(integer_to_bytes(COMPRESSED_PRIVATE_KEY_PREFIX))]
         wif_type = WIF_TYPES.WIF_COMPRESSED
@@ -74,14 +74,14 @@ def decode_wif(wif: str) -> Tuple[bytes, str, bytes]:
 
 def private_key_to_wif(private_key: Union[str, bytes], wif_type: str = WIF_TYPES.WIF_COMPRESSED) -> str:
     """
-    Private key to Wallet Important Format (WIF) converter
+    Private key to Wallet Import Format (WIF) converter
 
     :param private_key: Private key
     :type private_key: Union[str, bytes]
-    :param wif_type: Wallet Important Format (WIF) type, default to ``wif-compressed``
+    :param wif_type: Wallet Import Format (WIF) type, default to ``wif-compressed``
     :type wif_type: str
 
-    :returns: str -- Wallet Important Format
+    :returns: str -- Wallet Import Format
     """
 
     # Getting uncompressed and compressed
@@ -97,9 +97,9 @@ def private_key_to_wif(private_key: Union[str, bytes], wif_type: str = WIF_TYPES
 
 def wif_to_private_key(wif: str) -> str:
     """
-    Wallet Important Format (WIF) to Private key converter
+    Wallet Import Format (WIF) to Private key converter
 
-    :param wif: Wallet Important Format
+    :param wif: Wallet Import Format
     :type wif: str
 
     :returns: str -- Private key
@@ -110,9 +110,9 @@ def wif_to_private_key(wif: str) -> str:
 
 def get_wif_type(wif: str) -> str:
     """
-    Get Wallet Important Format (WIF) type
+    Get Wallet Import Format (WIF) type
 
-    :param wif: Wallet Important Format
+    :param wif: Wallet Import Format
     :type wif: str
 
     :returns: str -- WFI type
@@ -123,9 +123,9 @@ def get_wif_type(wif: str) -> str:
 
 def get_wif_checksum(wif: str) -> str:
     """
-    Get Wallet Important Format (WFI) checksum
+    Get Wallet Import Format (WFI) checksum
 
-    :param wif: Wallet Important Format
+    :param wif: Wallet Import Format
     :type wif: str
 
     :returns: str -- WFI checksum

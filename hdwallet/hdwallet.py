@@ -606,7 +606,7 @@ class HDWallet:
         """
 
         if self._hd.name() in ["Cardano", "Monero"]:
-            raise Error(f"Wallet Important Format (WIF) is not supported by {self._hd.name()} HD wallet's")
+            raise Error(f"Wallet Import Format (WIF) is not supported by {self._hd.name()} HD wallet's")
 
         self._hd.from_wif(wif=wif)
         return self
