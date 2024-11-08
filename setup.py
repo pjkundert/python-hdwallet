@@ -31,7 +31,7 @@ spec.loader.exec_module(info)
 
 setup(
     name=info.__name__,
-    version=info.__versions__[info.__name__],
+    version=info.__version__,
     description=info.__description__,
     long_description=long_description,
     long_description_content_type="text/markdown",
@@ -56,8 +56,7 @@ setup(
     extras_require=dict(
         cli=get_requirements(name="requirements/cli"),
         docs=get_requirements(name="requirements/docs"),
-        tests=get_requirements(name="requirements/tests"),
-        desktop=get_requirements(name="requirements/desktop")
+        tests=get_requirements(name="requirements/tests")
     ),
     classifiers=[
         "Development Status :: 5 - Production/Stable",

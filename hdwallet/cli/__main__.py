@@ -15,7 +15,7 @@ from ..const import (
 )
 
 from .. import (
-    __versions__, __name__
+    __version__, __name__
 )
 
 from .generate.entropy import generate_entropy
@@ -33,7 +33,7 @@ def current_version(
 ) -> None:
     if not value or context.resilient_parsing:
         return
-    click.echo(__versions__[__name__])
+    click.echo(__version__)
     context.exit()
 
 

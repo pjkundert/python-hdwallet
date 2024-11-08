@@ -8,7 +8,7 @@ from typing import List
 
 from .info import (
     __name__,
-    __versions__,
+    __version__,
     __license__,
     __author__,
     __email__,
@@ -23,7 +23,7 @@ from .hdwallet import HDWallet
 
 __all__: List[str] = [
     "__name__",
-    "__versions__",
+    "__version__",
     "__license__",
     "__author__",
     "__email__",
