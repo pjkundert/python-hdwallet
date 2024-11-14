@@ -7,14 +7,14 @@
 from typing import List
 
 __name__: str = "hdwallet"
-__version__: dict = "v3.0.0a13"
+__version__: str = "v3.0.0b1"
 __license__: str = "MIT"
 __author__: str = "Meheret Tesfaye Batu"
 __email__: str = "meherett.batu@gmail.com"
 __documentation__: str = "https://hdwallet.readthedocs.com"
 __description__: str = "Python-based library for the implementation of a hierarchical deterministic wallet " \
                        "generator for more than 205+ multiple cryptocurrencies."
-__url__: str = "https://github.com/meherett/python-hdwallet"
+__url__: str = "https://github.com/talonlab/python-hdwallet"
 __tracker__: str = f"{__url__}/issues"
 __keywords__: List[str] = [
     "ecc", "kholaw", "slip10", "ed25519", "nist256p1", "secp256k1"  # ECC keywords
