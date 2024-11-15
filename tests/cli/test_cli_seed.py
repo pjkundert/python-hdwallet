@@ -19,7 +19,7 @@ def test_cli_seed(data, cli_tester):
                     for language in data["seeds"][client][words][mnemonic_type].keys():
                         cli_args = [
                                 "generate", "seed",
-                                "--name", client,
+                                "--client", client,
                                 "--mnemonic-type", mnemonic_type,
                                 "--mnemonic", data["seeds"][client][words][mnemonic_type][language]["mnemonic"]
                             ]
@@ -36,14 +36,14 @@ def test_cli_seed(data, cli_tester):
                         )
                         output = json.loads(cli.output)
 
-                        assert output["name"] == client
+                        assert output["client"] == client
                         assert output["seed"] == seed
             elif client == "Cardano":
                 for cardano_type in data["seeds"][client][words].keys():
                     for language in data["seeds"][client][words][cardano_type].keys():
                         cli_args = [
                                 "generate", "seed",
-                                "--name", client,
+                                "--client", client,
                                 "--cardano-type", cardano_type,
                                 "--mnemonic", data["seeds"][client][words][cardano_type][language]["mnemonic"]
                             ]
@@ -60,13 +60,13 @@ def test_cli_seed(data, cli_tester):
                         )
                         output = json.loads(cli.output)
 
-                        assert output["name"] == client
+                        assert output["client"] == client
                         assert output["seed"] == seed
             else:
                 for language in data["seeds"][client][words].keys():
                     cli_args = [
                             "generate", "seed",
-                            "--name", client,
+                            "--client", client,
                             "--mnemonic", data["seeds"][client][words][language]["mnemonic"]
                         ]
 
@@ -82,5 +82,5 @@ def test_cli_seed(data, cli_tester):
                     )
                     output = json.loads(cli.output)
 
-                    assert output["name"] == client
+                    assert output["client"] == client
                     assert output["seed"] == seed

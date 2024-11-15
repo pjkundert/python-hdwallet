@@ -296,7 +296,7 @@ rules = {
         "args": {
             "cardano-type": "cardano_type",
             "language": "language",
-            "seed-name": ("Cardano",),
+            "seed-client": ("Cardano",),
             "address-type": ("staking",)
         }
     },
@@ -348,9 +348,9 @@ rules = {
         },
         "args": {
             "public-key-type": "public_key_type",
-            "entropy-name": ("Electrum-V1",),
-            "mnemonic-name": ("Electrum-V1",),
-            "seed-name": ("Electrum-V1",),
+            "entropy-client": ("Electrum-V1",),
+            "mnemonic-client": ("Electrum-V1",),
+            "seed-client": ("Electrum-V1",),
             "language": "language"
         }
     },
@@ -379,9 +379,9 @@ rules = {
         "args": {
             "mnemonic-type": "mnemonic_type",
             "mode": "mode",
-            "entropy-name": ("Electrum-V2",),
-            "mnemonic-name": ("Electrum-V2",),
-            "seed-name": ("Electrum-V2",),
+            "entropy-client": ("Electrum-V2",),
+            "mnemonic-client": ("Electrum-V2",),
+            "seed-client": ("Electrum-V2",),
             "language": "language"
         }
     },
@@ -422,9 +422,9 @@ rules = {
         "args": {
             "language": "language",
             "network": "network",
-            "entropy-name": ("Monero",),
-            "mnemonic-name": ("Monero",),
-            "seed-name": ("Monero",),
+            "entropy-client": ("Monero",),
+            "mnemonic-client": ("Monero",),
+            "seed-client": ("Monero",),
             "payment-id": ("ad17dc6e6793d178",)
         }
     }

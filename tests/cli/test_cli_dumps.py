@@ -118,7 +118,7 @@ def test_cli_dumps(cli_tester, hd_data):
 
         cli = cli_tester.invoke(cli_main, args)
 
-        assert cli.exit_code == 0        
+        assert cli.exit_code == 0
         if rule["derivable"]:
             assert cli.output == get_dumps_output(final_dumps)
         else:

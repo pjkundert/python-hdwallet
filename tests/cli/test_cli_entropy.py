@@ -17,7 +17,7 @@ def test_cli_entropy(data, cli_tester):
             cli = cli_tester.invoke(
                 cli_main, [
                     "generate", "entropy",
-                    "--name", client,
+                    "--client", client,
                     "--strength", strength
                 ]
             )
@@ -25,7 +25,7 @@ def test_cli_entropy(data, cli_tester):
             output = json.loads(cli.output)
             assert cli.exit_code == 0
 
-            assert output["name"] == client
+            assert output["client"] == client
             assert output["strength"] == int(strength)
 
             if client == "Electrum-V2":

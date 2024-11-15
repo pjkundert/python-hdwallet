@@ -26,8 +26,8 @@ def check_mnemonics(
     assert cli_word.exit_code == 0
     assert cli_entropy.exit_code == 0
 
-    assert output_word["name"] == client
-    assert output_entropy["name"] == client
+    assert output_word["client"] == client
+    assert output_entropy["client"] == client
 
     assert output_word["words"] == words
     assert output_entropy["words"] == words
@@ -48,7 +48,7 @@ def test_cli_mnemonic(data, cli_tester):
                         cli_word = cli_tester.invoke(
                             cli_main, [
                                 "generate", "mnemonic",
-                                "--name", client,
+                                "--client", client,
                                 "--mnemonic-type", mnemonic_type,
                                 "--words", mnemonic_data["words"],
                                 "--language", language
@@ -58,7 +58,7 @@ def test_cli_mnemonic(data, cli_tester):
                         cli_entropy = cli_tester.invoke(
                             cli_main, [
                                 "generate", "mnemonic",
-                                "--name", client,
+                                "--client", client,
                                 "--mnemonic-type", mnemonic_type,
                                 "--entropy", mnemonic_data["entropy-not-suitable"],
                                 "--language", language
@@ -79,7 +79,7 @@ def test_cli_mnemonic(data, cli_tester):
                     cli_word = cli_tester.invoke(
                         cli_main, [
                             "generate", "mnemonic",
-                            "--name", client,
+                            "--client", client,
                             "--words", mnemonic_data["words"],
                             "--language", language
                         ]
@@ -87,7 +87,7 @@ def test_cli_mnemonic(data, cli_tester):
 
                     entropy_args = [
                             "generate", "mnemonic",
-                            "--name", client,
+                            "--client", client,
                             "--entropy", mnemonic_data["entropy"],
                             "--language", language
                         ]
