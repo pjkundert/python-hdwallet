@@ -250,14 +250,14 @@ def dumps(**kwargs) -> None:
             raise Exception("Unknown HD")
 
         tmp_addresses = [
-            "Algorand", "Aptos", "Cosmos", "Ethereum", "EOS", "Ergo", "Filecoin", "Harmony", "Icon", "Injective",
-            "MultiversX", "Nano", "Neo", "OKT-Chain", "Stellar", "Solana", "Sui", "Tezos", "XinFin", "Zilliqa"
+            "Algorand", "Aptos", "Avalanche", "Cosmos", "EOS", "Ergo", "Ethereum", "Filecoin", "Harmony", "Icon", "Injective", "MultiversX",
+            "Nano", "Near", "Neo", "OKT-Chain", "Ripple", "Solana", "Stellar", "Sui", "Tezos", "Tron", "XinFin", "Zilliqa"
         ]
         tmp_cryptocurrency = get_cryptocurrency(symbol=hdwallet.symbol())
         if hdwallet.cryptocurrency() in ("Bitcoin-Cash", "Bitcoin-Cash-SLP", "eCash"):
             _include: str = "at:path,addresses:legacy-p2pkh,public_key,wif"
         elif any([address in tmp_addresses for address in tmp_cryptocurrency.ADDRESSES.get_addresses()]):
-            _include: str = "at:path,address,public_key,wif"
+            _include: str = "at:path,address,public_key,private_key"
 
         if hdwallet.cryptocurrency() == "Avalanche":
             _include: str = "at:path,addresses:p-chain,public_key,wif"
