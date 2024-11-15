@@ -75,43 +75,43 @@ def dump(**kwargs) -> None:
         )
 
         if kwargs.get("entropy"):
-            if not ENTROPIES.is_entropy(name=kwargs.get("entropy_name")):
+            if not ENTROPIES.is_entropy(name=kwargs.get("entropy_client")):
                 click.echo(click.style(
-                    f"Wrong entropy name, (expected={ENTROPIES.names()}, got='{kwargs.get('entropy_name')}')"
+                    f"Wrong entropy client, (expected={ENTROPIES.names()}, got='{kwargs.get('entropy_client')}')"
                 ), err=True)
                 sys.exit()
             hdwallet.from_entropy(
-                entropy=ENTROPIES.entropy(name=kwargs.get("entropy_name")).__call__(
+                entropy=ENTROPIES.entropy(name=kwargs.get("entropy_client")).__call__(
                     entropy=kwargs.get("entropy")
                 )
             )
         elif kwargs.get("mnemonic"):
-            if not MNEMONICS.is_mnemonic(name=kwargs.get("mnemonic_name")):
+            if not MNEMONICS.is_mnemonic(name=kwargs.get("mnemonic_client")):
                 click.echo(click.style(
-                    f"Wrong mnemonic name, (expected={MNEMONICS.names()}, got='{kwargs.get('mnemonic_name')}')"
+                    f"Wrong mnemonic client, (expected={MNEMONICS.names()}, got='{kwargs.get('mnemonic_client')}')"
                 ), err=True)
                 sys.exit()
-            if kwargs.get("mnemonic_name") == "Electrum-V2":
+            if kwargs.get("mnemonic_client") == "Electrum-V2":
                 hdwallet.from_mnemonic(
-                    mnemonic=MNEMONICS.mnemonic(name=kwargs.get("mnemonic_name")).__call__(
+                    mnemonic=MNEMONICS.mnemonic(name=kwargs.get("mnemonic_client")).__call__(
                         mnemonic=kwargs.get("mnemonic"),
                         mnemonic_type=kwargs.get("mnemonic_type")
                     )
                 )
             else:
                 hdwallet.from_mnemonic(
-                    mnemonic=MNEMONICS.mnemonic(name=kwargs.get("mnemonic_name")).__call__(
+                    mnemonic=MNEMONICS.mnemonic(name=kwargs.get("mnemonic_client")).__call__(
                         mnemonic=kwargs.get("mnemonic")
                     )
                 )
         elif kwargs.get("seed"):
-            if not SEEDS.is_seed(name=kwargs.get("seed_name")):
+            if not SEEDS.is_seed(name=kwargs.get("seed_client")):
                 click.echo(click.style(
-                    f"Wrong seed name, (expected={SEEDS.names()}, got='{kwargs.get('seed_name')}')"
+                    f"Wrong seed client, (expected={SEEDS.names()}, got='{kwargs.get('seed_client')}')"
                 ), err=True)
                 sys.exit()
             hdwallet.from_seed(
-                seed=SEEDS.seed(name=kwargs.get("seed_name")).__call__(
+                seed=SEEDS.seed(name=kwargs.get("seed_client")).__call__(
                     seed=kwargs.get("seed")
                 )
             )
@@ -135,7 +135,7 @@ def dump(**kwargs) -> None:
 
             _wif = kwargs.get("wif")
 
-            if kwargs.get("is_bip38"):
+            if kwargs.get("bip38"):
 
                 bip38: BIP38 = BIP38(
                   cryptocurrency=BIP38_CRYPTOCURRENCIES[cryptocurrency.NAME], network=kwargs.get("network")

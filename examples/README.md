@@ -1,5 +1,5 @@
 
-# v3+ Command Line Interface (CLI)
+# Command Line Interface (CLI)
 
 ## Generate Command
 
@@ -7,11 +7,11 @@
 
 Generate entropy from strength number
 ```
-hdwallet generate entropy --name BIP39 --strength 160
+hdwallet generate entropy --client BIP39 --strength 160
 ```
 alias
 ```
-hdwallet g e -n BIP39 -s 160
+hdwallet g e -c BIP39 -sym 160
 ```
 
 <details open>
@@ -19,7 +19,7 @@ hdwallet g e -n BIP39 -s 160
 
 ```json5
 {
-    "name": "BIP39",
+    "client": "BIP39",
     "entropy": "10ad31cfb2860b312f0911fc9de22d836ca3eb14",
     "strength": 160
 }
@@ -31,11 +31,11 @@ hdwallet g e -n BIP39 -s 160
 
 Generate mnemonic from words number
 ```
-hdwallet generate mnemonic --name BIP39 --words 15 --language russian
+hdwallet generate mnemonic --client BIP39 --words 15 --language russian
 ```
 alias
 ```
-hdwallet g m -n BIP39 -w 15 -l russian
+hdwallet g m -c BIP39 -w 15 -l russian
 ```
 
 <details open>
@@ -43,7 +43,7 @@ hdwallet g m -n BIP39 -w 15 -l russian
 
 ```json5
 {
-    "name": "BIP39",
+    "client": "BIP39",
     "mnemonic": "шкура практика овраг замок реклама мирный факт пятьсот намерен свитер паутина спальня жуткий вальс спешить",
     "language": "Russian",
     "words": 15
@@ -53,11 +53,11 @@ hdwallet g m -n BIP39 -w 15 -l russian
 
 Generate mnemonic from entropy hex string
 ```
-hdwallet generate mnemonic --name BIP39 --entropy 10ad31cfb2860b312f0911fc9de22d836ca3eb14 --language english
+hdwallet generate mnemonic --client BIP39 --entropy 10ad31cfb2860b312f0911fc9de22d836ca3eb14 --language english
 ```
 alias
 ```
-hdwallet g m -n BIP39 -e 10ad31cfb2860b312f0911fc9de22d836ca3eb14 -l english
+hdwallet g m -c BIP39 -e 10ad31cfb2860b312f0911fc9de22d836ca3eb14 -l english
 ```
 
 <details open>
@@ -65,7 +65,7 @@ hdwallet g m -n BIP39 -e 10ad31cfb2860b312f0911fc9de22d836ca3eb14 -l english
 
 ```json5
 {
-    "name": "BIP39",
+    "client": "BIP39",
     "mnemonic": "awful hat initial govern gaze obtain rotate captain wish upper merge almost sketch void face",
     "language": "English",
     "words": 15
@@ -77,11 +77,11 @@ hdwallet g m -n BIP39 -e 10ad31cfb2860b312f0911fc9de22d836ca3eb14 -l english
 
 Generate seed from mnemonic words
 ```
-hdwallet generate seed --name BIP39 --passphrase meherett --mnemonic "awful hat initial govern gaze obtain rotate captain wish upper merge almost sketch void face"
+hdwallet generate seed --client BIP39 --passphrase meherett --mnemonic "awful hat initial govern gaze obtain rotate captain wish upper merge almost sketch void face"
 ```
 alias
 ```
-hdwallet g s -n BIP39 -p meherett -m "awful hat initial govern gaze obtain rotate captain wish upper merge almost sketch void face"
+hdwallet g s -c BIP39 -p meherett -m "awful hat initial govern gaze obtain rotate captain wish upper merge almost sketch void face"
 ```
 
 <details open>
@@ -89,7 +89,7 @@ hdwallet g s -n BIP39 -p meherett -m "awful hat initial govern gaze obtain rotat
 
 ```json5
 {
-    "name": "BIP39",
+    "client": "BIP39",
     "seed": "e7bc9f2abb0827137b408c10d9942066a1f2f356d1cda46f6c0dd5fbc2f7c996328100e580adc26ac614de68644bec61e885afd03dc74eade545fd53b1312cdb"
 }
 ```
@@ -104,7 +104,7 @@ hdwallet dump --symbol BTC --hd BIP32 --entropy 10ad31cfb2860b312f0911fc9de22d83
 ```
 alias
 ```
-hdwallet ds -s BTC -h BIP32 -e 10ad31cfb2860b312f0911fc9de22d836ca3eb14 -p "m/524'/0-2" -f csv
+hdwallet ds -sym BTC -h BIP32 -e 10ad31cfb2860b312f0911fc9de22d836ca3eb14 -p "m/524'/0-2" -f csv
 ```
 
 <details>
@@ -175,7 +175,7 @@ hdwallet dump --symbol ALGO --hd BIP44 --derivation BIP44 --entropy 10ad31cfb286
 ```
 alias
 ```
-hdwallet d -s ALGO -h BIP44 -d BIP44 -e 10ad31cfb2860b312f0911fc9de22d836ca3eb14 -ac 1
+hdwallet d -sym ALGO -h BIP44 -d BIP44 -e 10ad31cfb2860b312f0911fc9de22d836ca3eb14 -ac 1
 ```
 
 <details>
@@ -245,7 +245,7 @@ hdwallet dump --symbol BTC --hd BIP49 --derivation BIP49 --entropy 10ad31cfb2860
 ```
 alias
 ```
-hdwallet d -s BTC -h BIP49 -d BIP49 -e 10ad31cfb2860b312f0911fc9de22d836ca3eb14 -ad 5
+hdwallet d -sym BTC -h BIP49 -d BIP49 -e 10ad31cfb2860b312f0911fc9de22d836ca3eb14 -ad 5
 ```
 
 <details>
@@ -315,7 +315,7 @@ hdwallet dump --symbol BTC --hd BIP84 --derivation BIP84 --entropy 10ad31cfb2860
 ```
 alias
 ```
-hdwallet d -s BTC -h BIP84 -d BIP84 -e 10ad31cfb2860b312f0911fc9de22d836ca3eb14 -ad 10
+hdwallet d -sym BTC -h BIP84 -d BIP84 -e 10ad31cfb2860b312f0911fc9de22d836ca3eb14 -ad 10
 ```
 
 <details>
@@ -385,7 +385,7 @@ hdwallet dump --symbol BTC --hd BIP86 --derivation BIP86 --entropy 10ad31cfb2860
 ```
 alias
 ```
-hdwallet d -s BTC -h BIP86 -d BIP86 -e 10ad31cfb2860b312f0911fc9de22d836ca3eb14
+hdwallet d -sym BTC -h BIP86 -d BIP86 -e 10ad31cfb2860b312f0911fc9de22d836ca3eb14
 ```
 
 <details>
@@ -455,7 +455,7 @@ hdwallet dump --symbol BTC --hd BIP141 --path "m/0'/0" --entropy 10ad31cfb2860b3
 ```
 alias
 ```
-hdwallet d -s BTC -h BIP141 -p "m/0'/0" -e 10ad31cfb2860b312f0911fc9de22d836ca3eb14
+hdwallet d -sym BTC -h BIP141 -p "m/0'/0" -e 10ad31cfb2860b312f0911fc9de22d836ca3eb14
 ```
 
 <details>
@@ -526,7 +526,7 @@ hdwallet dump --symbol ADA --hd Cardano --derivation BIP44 --cardano-type byron-
 ```
 alias
 ```
-hdwallet d -s ADA -h Cardano -d BIP44 -ct byron-icarus -e 10ad31cfb2860b312f0911fc9de22d836ca3eb14
+hdwallet d -sym ADA -h Cardano -d BIP44 -ct byron-icarus -e 10ad31cfb2860b312f0911fc9de22d836ca3eb14
 ```
 
 <details>
@@ -592,7 +592,7 @@ hdwallet dump --symbol ADA --hd Cardano --derivation BIP44 --cardano-type byron-
 ```
 alias
 ```
-hdwallet d -s ADA -h Cardano -d BIP44 -ct byron-ledger -m "awful hat initial govern gaze obtain rotate captain wish upper merge almost sketch void face"
+hdwallet d -sym ADA -h Cardano -d BIP44 -ct byron-ledger -m "awful hat initial govern gaze obtain rotate captain wish upper merge almost sketch void face"
 ```
 
 <details>
@@ -658,7 +658,7 @@ hdwallet dump --symbol ADA --hd Cardano --path "m/0'/0'" --cardano-type byron-le
 ```
 alias
 ```
-hdwallet d -s ADA -h Cardano -p "m/0'/0'" -ct byron-legacy -m "awful hat initial govern gaze obtain rotate captain wish upper merge almost sketch void face"
+hdwallet d -sym ADA -h Cardano -p "m/0'/0'" -ct byron-legacy -m "awful hat initial govern gaze obtain rotate captain wish upper merge almost sketch void face"
 ```
 
 <details>
@@ -720,7 +720,7 @@ hdwallet dump --symbol ADA --hd Cardano --derivation CIP1852 --cardano-type shel
 ```
 alias
 ```
-hdwallet d -s ADA -h Cardano -d CIP1852 -ct shelley-icarus -e 10ad31cfb2860b312f0911fc9de22d836ca3eb14 -at staking -ro 2
+hdwallet d -sym ADA -h Cardano -d CIP1852 -ct shelley-icarus -e 10ad31cfb2860b312f0911fc9de22d836ca3eb14 -at staking -ro 2
 ```
 
 <details>
@@ -786,7 +786,7 @@ hdwallet dump --symbol ADA --hd Cardano --derivation CIP1852 --cardano-type shel
 ```
 alias
 ```
-hdwallet d -s ADA -h Cardano -d CIP1852 -ct shelley-icarus -e 10ad31cfb2860b312f0911fc9de22d836ca3eb14 -at payment -ro 0 -stpub 0020abee887fdd95da102dbe8518d244c38487fc8f2b5039ed50200d979df72e28
+hdwallet d -sym ADA -h Cardano -d CIP1852 -ct shelley-icarus -e 10ad31cfb2860b312f0911fc9de22d836ca3eb14 -at payment -ro 0 -stpub 0020abee887fdd95da102dbe8518d244c38487fc8f2b5039ed50200d979df72e28
 ```
 
 <details>
@@ -854,7 +854,7 @@ hdwallet dump --symbol ADA --hd Cardano --derivation CIP1852 --cardano-type shel
 ```
 alias
 ```
-hdwallet d -s ADA -h Cardano -d CIP1852 -ct shelley-ledger -m "awful hat initial govern gaze obtain rotate captain wish upper merge almost sketch void face" -at staking -ro 2 -pp meherett
+hdwallet d -sym ADA -h Cardano -d CIP1852 -ct shelley-ledger -m "awful hat initial govern gaze obtain rotate captain wish upper merge almost sketch void face" -at staking -ro 2 -pp meherett
 ```
 
 <details>
@@ -920,7 +920,7 @@ hdwallet dump --symbol ADA --hd Cardano --derivation CIP1852 --cardano-type shel
 ```
 alias
 ```
-hdwallet d -s ADA -h Cardano -d CIP1852 -ct shelley-ledger -m "awful hat initial govern gaze obtain rotate captain wish upper merge almost sketch void face" -at payment -ro 0 -pp meherett -stpub 00461b719be821d726f219e37c4b4a4a4f7ec37501de16c370810ecb9f7e96c704
+hdwallet d -sym ADA -h Cardano -d CIP1852 -ct shelley-ledger -m "awful hat initial govern gaze obtain rotate captain wish upper merge almost sketch void face" -at payment -ro 0 -pp meherett -stpub 00461b719be821d726f219e37c4b4a4a4f7ec37501de16c370810ecb9f7e96c704
 ```
 
 <details>
@@ -986,7 +986,7 @@ hdwallet dump --symbol BTC --hd Electrum-V1 --derivation Electrum --entropy-name
 ```
 alias
 ```
-hdwallet d -s BTC -h Electrum-V1 -d Electrum -en Electrum-V1 -e d36ee56e7948d94192ca1ad58df509e8 --public-key-type uncompressed
+hdwallet d -sym BTC -h Electrum-V1 -d Electrum -en Electrum-V1 -e d36ee56e7948d94192ca1ad58df509e8 --public-key-type uncompressed
 ```
 
 <details>
@@ -1034,7 +1034,7 @@ hdwallet dump --symbol BTC --hd Electrum-V2 --derivation Electrum --entropy-name
 ```
 alias
 ```
-hdwallet d -s BTC -h Electrum-V2 -d Electrum -en Electrum-V2 -e e6fec331ee9e4fbb924dfedc3a9cbf59 --public-key-type uncompressed
+hdwallet d -sym BTC -h Electrum-V2 -d Electrum -en Electrum-V2 -e e6fec331ee9e4fbb924dfedc3a9cbf59 --public-key-type uncompressed
 ```
 
 <details>
@@ -1084,7 +1084,7 @@ hdwallet dump --symbol XMR --hd Monero --derivation Monero --entropy d0168dd591f
 ```
 alias
 ```
-hdwallet d -s XMR -h Monero -d Monero -e d0168dd591f0daa6daef028f01994da6
+hdwallet d -sym XMR -h Monero -d Monero -e d0168dd591f0daa6daef028f01994da6
 ```
 
 <details>
@@ -1132,7 +1132,7 @@ hdwallet dumps --symbol BTC --hd BIP32 --entropy 10ad31cfb2860b312f0911fc9de22d8
 ```
 alias
 ```
-hdwallet ds -s BTC -h BIP32 -e 10ad31cfb2860b312f0911fc9de22d836ca3eb14 -p "m/524'/0-2" -f json
+hdwallet ds -sym BTC -h BIP32 -e 10ad31cfb2860b312f0911fc9de22d836ca3eb14 -p "m/524'/0-2" -f json
 ```
 
 <details>
@@ -1267,7 +1267,7 @@ hdwallet dumps --symbol BTC --hd BIP32 --entropy 10ad31cfb2860b312f0911fc9de22d8
 ```
 alias
 ```
-hdwallet ds -s BTC -h BIP32 -e 10ad31cfb2860b312f0911fc9de22d836ca3eb14 -p "m/524'/0-2" -f csv
+hdwallet ds -sym BTC -h BIP32 -e 10ad31cfb2860b312f0911fc9de22d836ca3eb14 -p "m/524'/0-2" -f csv
 ```
 
 <details>
@@ -1290,7 +1290,7 @@ hdwallet dumps --symbol ALGO --hd BIP44 --derivation BIP44 --entropy 10ad31cfb28
 ```
 alias
 ```
-hdwallet ds -s ALGO -h BIP44 -d BIP44 -e 10ad31cfb2860b312f0911fc9de22d836ca3eb14 -ac "1-2" -f json
+hdwallet ds -sym ALGO -h BIP44 -d BIP44 -e 10ad31cfb2860b312f0911fc9de22d836ca3eb14 -ac "1-2" -f json
 ```
 
 <details>
@@ -1392,7 +1392,7 @@ hdwallet dumps --symbol ALGO --hd BIP44 --derivation BIP44 --entropy 10ad31cfb28
 ```
 alias
 ```
-hdwallet ds -s ALGO -h BIP44 -d BIP44 -e 10ad31cfb2860b312f0911fc9de22d836ca3eb14 -ac "1-2" -f csv
+hdwallet ds -sym ALGO -h BIP44 -d BIP44 -e 10ad31cfb2860b312f0911fc9de22d836ca3eb14 -ac "1-2" -f csv
 ```
 
 <details>
@@ -1414,7 +1414,7 @@ hdwallet dumps --symbol BTC --hd BIP49 --derivation BIP49 --entropy 10ad31cfb286
 ```
 alias
 ```
-hdwallet ds -s BTC -h BIP49 -d BIP49 -e 10ad31cfb2860b312f0911fc9de22d836ca3eb14 -ad "5-6" -f json
+hdwallet ds -sym BTC -h BIP49 -d BIP49 -e 10ad31cfb2860b312f0911fc9de22d836ca3eb14 -ad "5-6" -f json
 ```
 
 <details>
@@ -1516,7 +1516,7 @@ hdwallet dumps --symbol BTC --hd BIP49 --derivation BIP49 --entropy 10ad31cfb286
 ```
 alias
 ```
-hdwallet ds -s BTC -h BIP49 -d BIP49 -e 10ad31cfb2860b312f0911fc9de22d836ca3eb14 -ad "5-6" -f csv
+hdwallet ds -sym BTC -h BIP49 -d BIP49 -e 10ad31cfb2860b312f0911fc9de22d836ca3eb14 -ad "5-6" -f csv
 ```
 
 <details>
@@ -1538,7 +1538,7 @@ hdwallet dumps --symbol BTC --hd BIP84 --derivation BIP84 --entropy 10ad31cfb286
 ```
 alias
 ```
-hdwallet ds -s BTC -h BIP84 -d BIP84 -e 10ad31cfb2860b312f0911fc9de22d836ca3eb14 -ad "10-11" -f json
+hdwallet ds -sym BTC -h BIP84 -d BIP84 -e 10ad31cfb2860b312f0911fc9de22d836ca3eb14 -ad "10-11" -f json
 ```
 
 <details>
@@ -1640,7 +1640,7 @@ hdwallet dumps --symbol BTC --hd BIP84 --derivation BIP84 --entropy 10ad31cfb286
 ```
 alias
 ```
-hdwallet ds -s BTC -h BIP84 -d BIP84 -e 10ad31cfb2860b312f0911fc9de22d836ca3eb14 -ad "10-11" -f csv
+hdwallet ds -sym BTC -h BIP84 -d BIP84 -e 10ad31cfb2860b312f0911fc9de22d836ca3eb14 -ad "10-11" -f csv
 ```
 
 <details>
@@ -1662,7 +1662,7 @@ hdwallet dumps --symbol BTC --hd BIP86 --derivation BIP86 --entropy 10ad31cfb286
 ```
 alias
 ```
-hdwallet ds -s BTC -h BIP86 -d BIP86 -e 10ad31cfb2860b312f0911fc9de22d836ca3eb14 -ad "1-2" -f json
+hdwallet ds -sym BTC -h BIP86 -d BIP86 -e 10ad31cfb2860b312f0911fc9de22d836ca3eb14 -ad "1-2" -f json
 ```
 
 <details>
@@ -1764,7 +1764,7 @@ hdwallet dumps --symbol BTC --hd BIP86 --derivation BIP86 --entropy 10ad31cfb286
 ```
 alias
 ```
-hdwallet ds -s BTC -h BIP86 -d BIP86 -e 10ad31cfb2860b312f0911fc9de22d836ca3eb14 -ad "1-2" -f csv
+hdwallet ds -sym BTC -h BIP86 -d BIP86 -e 10ad31cfb2860b312f0911fc9de22d836ca3eb14 -ad "1-2" -f csv
 ```
 
 <details>
@@ -1786,7 +1786,7 @@ hdwallet dumps --symbol BTC --hd BIP141 --path "m/0'/0-1" --entropy 10ad31cfb286
 ```
 alias
 ```
-hdwallet ds -s BTC -h BIP141 -p "m/0'/0-1" -e 10ad31cfb2860b312f0911fc9de22d836ca3eb14 -f json
+hdwallet ds -sym BTC -h BIP141 -p "m/0'/0-1" -e 10ad31cfb2860b312f0911fc9de22d836ca3eb14 -f json
 ```
 
 <details>
@@ -1885,7 +1885,7 @@ hdwallet dumps --symbol BTC --hd BIP141 --path "m/0'/0-1" --entropy 10ad31cfb286
 ```
 alias
 ```
-hdwallet ds -s BTC -h BIP141 -p "m/0'/0-1" -e 10ad31cfb2860b312f0911fc9de22d836ca3eb14 -f csv
+hdwallet ds -sym BTC -h BIP141 -p "m/0'/0-1" -e 10ad31cfb2860b312f0911fc9de22d836ca3eb14 -f csv
 ```
 
 <details>
@@ -1909,7 +1909,7 @@ hdwallet dumps --symbol ADA --hd Cardano --derivation BIP44 --cardano-type byron
 ```
 alias
 ```
-hdwallet ds -s ADA -h Cardano -d BIP44 -ct byron-icarus -e 10ad31cfb2860b312f0911fc9de22d836ca3eb14 -ad "1-2" -f json
+hdwallet ds -sym ADA -h Cardano -d BIP44 -ct byron-icarus -e 10ad31cfb2860b312f0911fc9de22d836ca3eb14 -ad "1-2" -f json
 ```
 
 <details>
@@ -2004,7 +2004,7 @@ hdwallet dumps --symbol ADA --hd Cardano --derivation BIP44 --cardano-type byron
 ```
 alias
 ```
-hdwallet ds -s ADA -h Cardano -d BIP44 -ct byron-icarus -e 10ad31cfb2860b312f0911fc9de22d836ca3eb14 -ad "1-2" -f csv
+hdwallet ds -sym ADA -h Cardano -d BIP44 -ct byron-icarus -e 10ad31cfb2860b312f0911fc9de22d836ca3eb14 -ad "1-2" -f csv
 ```
 
 <details>
@@ -2026,7 +2026,7 @@ hdwallet dumps --symbol ADA --hd Cardano --derivation BIP44 --cardano-type byron
 ```
 alias
 ```
-hdwallet ds -s ADA -h Cardano -d BIP44 -ct byron-ledger -m "awful hat initial govern gaze obtain rotate captain wish upper merge almost sketch void face" -ad "1-2" -f json
+hdwallet ds -sym ADA -h Cardano -d BIP44 -ct byron-ledger -m "awful hat initial govern gaze obtain rotate captain wish upper merge almost sketch void face" -ad "1-2" -f json
 ```
 
 <details>
@@ -2121,7 +2121,7 @@ hdwallet dumps --symbol ADA --hd Cardano --derivation BIP44 --cardano-type byron
 ```
 alias
 ```
-hdwallet ds -s ADA -h Cardano -d BIP44 -ct byron-ledger -m "awful hat initial govern gaze obtain rotate captain wish upper merge almost sketch void face" -ad "1-2" -f csv
+hdwallet ds -sym ADA -h Cardano -d BIP44 -ct byron-ledger -m "awful hat initial govern gaze obtain rotate captain wish upper merge almost sketch void face" -ad "1-2" -f csv
 ```
 
 <details>
@@ -2143,7 +2143,7 @@ hdwallet dumps --symbol ADA --hd Cardano --path "m/0'/0-1'" --cardano-type byron
 ```
 alias
 ```
-hdwallet ds -s ADA -h Cardano -p "m/0'/0-1'" -ct byron-legacy -m "awful hat initial govern gaze obtain rotate captain wish upper merge almost sketch void face" -f json
+hdwallet ds -sym ADA -h Cardano -p "m/0'/0-1'" -ct byron-legacy -m "awful hat initial govern gaze obtain rotate captain wish upper merge almost sketch void face" -f json
 ```
 
 <details>
@@ -2225,7 +2225,7 @@ hdwallet dumps --symbol ADA --hd Cardano --path "m/0'/0-1'" --cardano-type byron
 ```
 alias
 ```
-hdwallet ds -s ADA -h Cardano -p "m/0'/0-1'" -ct byron-legacy -m "awful hat initial govern gaze obtain rotate captain wish upper merge almost sketch void face" -f csv
+hdwallet ds -sym ADA -h Cardano -p "m/0'/0-1'" -ct byron-legacy -m "awful hat initial govern gaze obtain rotate captain wish upper merge almost sketch void face" -f csv
 ```
 
 <details>
@@ -2247,7 +2247,7 @@ hdwallet dumps --symbol ADA --hd Cardano --derivation CIP1852 --cardano-type she
 ```
 alias
 ```
-hdwallet ds -s ADA -h Cardano -d CIP1852 -ct shelley-icarus -e 10ad31cfb2860b312f0911fc9de22d836ca3eb14 -at staking -ro 2 -ad "1-2" -f json
+hdwallet ds -sym ADA -h Cardano -d CIP1852 -ct shelley-icarus -e 10ad31cfb2860b312f0911fc9de22d836ca3eb14 -at staking -ro 2 -ad "1-2" -f json
 ```
 
 <details>
@@ -2342,7 +2342,7 @@ hdwallet dumps --symbol ADA --hd Cardano --derivation CIP1852 --cardano-type she
 ```
 alias
 ```
-hdwallet ds -s ADA -h Cardano -d CIP1852 -ct shelley-icarus -e 10ad31cfb2860b312f0911fc9de22d836ca3eb14 -at staking -ro 2 -ad "1-2" -f csv
+hdwallet ds -sym ADA -h Cardano -d CIP1852 -ct shelley-icarus -e 10ad31cfb2860b312f0911fc9de22d836ca3eb14 -at staking -ro 2 -ad "1-2" -f csv
 ```
 
 <details>
@@ -2362,7 +2362,7 @@ hdwallet dumps --symbol ADA --hd Cardano --derivation CIP1852 --cardano-type she
 ```
 alias
 ```
-hdwallet ds -s ADA -h Cardano -d CIP1852 -ct shelley-icarus -e 10ad31cfb2860b312f0911fc9de22d836ca3eb14 -at payment -ro 0 -ad "1-2" -stpub 0020abee887fdd95da102dbe8518d244c38487fc8f2b5039ed50200d979df72e28 -f json
+hdwallet ds -sym ADA -h Cardano -d CIP1852 -ct shelley-icarus -e 10ad31cfb2860b312f0911fc9de22d836ca3eb14 -at payment -ro 0 -ad "1-2" -stpub 0020abee887fdd95da102dbe8518d244c38487fc8f2b5039ed50200d979df72e28 -f json
 ```
 
 <details>
@@ -2457,7 +2457,7 @@ hdwallet dumps --symbol ADA --hd Cardano --derivation CIP1852 --cardano-type she
 ```
 alias
 ```
-hdwallet ds -s ADA -h Cardano -d CIP1852 -ct shelley-icarus -e 10ad31cfb2860b312f0911fc9de22d836ca3eb14 -at payment -ro 0 -ad "1-2" -stpub 0020abee887fdd95da102dbe8518d244c38487fc8f2b5039ed50200d979df72e28 -f csv
+hdwallet ds -sym ADA -h Cardano -d CIP1852 -ct shelley-icarus -e 10ad31cfb2860b312f0911fc9de22d836ca3eb14 -at payment -ro 0 -ad "1-2" -stpub 0020abee887fdd95da102dbe8518d244c38487fc8f2b5039ed50200d979df72e28 -f csv
 ```
 
 <details>
@@ -2479,7 +2479,7 @@ hdwallet dumps --symbol ADA --hd Cardano --derivation CIP1852 --cardano-type she
 ```
 alias
 ```
-hdwallet ds -s ADA -h Cardano -d CIP1852 -ct shelley-ledger -m "awful hat initial govern gaze obtain rotate captain wish upper merge almost sketch void face" -at staking -ro 2 -ad "1-2" -pp meherett -f json
+hdwallet ds -sym ADA -h Cardano -d CIP1852 -ct shelley-ledger -m "awful hat initial govern gaze obtain rotate captain wish upper merge almost sketch void face" -at staking -ro 2 -ad "1-2" -pp meherett -f json
 ```
 
 <details>
@@ -2574,7 +2574,7 @@ hdwallet dumps --symbol ADA --hd Cardano --derivation CIP1852 --cardano-type she
 ```
 alias
 ```
-hdwallet ds -s ADA -h Cardano -d CIP1852 -ct shelley-ledger -m "awful hat initial govern gaze obtain rotate captain wish upper merge almost sketch void face" -at staking -ro 2 -ad "1-2" -pp meherett -f csv
+hdwallet ds -sym ADA -h Cardano -d CIP1852 -ct shelley-ledger -m "awful hat initial govern gaze obtain rotate captain wish upper merge almost sketch void face" -at staking -ro 2 -ad "1-2" -pp meherett -f csv
 ```
 
 <details>
@@ -2594,7 +2594,7 @@ hdwallet dumps --symbol ADA --hd Cardano --derivation CIP1852 --cardano-type she
 ```
 alias
 ```
-hdwallet ds -s ADA -h Cardano -d CIP1852 -ct shelley-ledger -m "awful hat initial govern gaze obtain rotate captain wish upper merge almost sketch void face" -at payment -ro 0 -ad "1-2" -pp meherett -stpub 00461b719be821d726f219e37c4b4a4a4f7ec37501de16c370810ecb9f7e96c704 -f json
+hdwallet ds -sym ADA -h Cardano -d CIP1852 -ct shelley-ledger -m "awful hat initial govern gaze obtain rotate captain wish upper merge almost sketch void face" -at payment -ro 0 -ad "1-2" -pp meherett -stpub 00461b719be821d726f219e37c4b4a4a4f7ec37501de16c370810ecb9f7e96c704 -f json
 ```
 
 <details>
@@ -2689,7 +2689,7 @@ hdwallet dumps --symbol ADA --hd Cardano --derivation CIP1852 --cardano-type she
 ```
 alias
 ```
-hdwallet ds -s ADA -h Cardano -d CIP1852 -ct shelley-ledger -m "awful hat initial govern gaze obtain rotate captain wish upper merge almost sketch void face" -at payment -ro 0 -ad "1-2" -pp meherett -stpub 00461b719be821d726f219e37c4b4a4a4f7ec37501de16c370810ecb9f7e96c704 -f csv
+hdwallet ds -sym ADA -h Cardano -d CIP1852 -ct shelley-ledger -m "awful hat initial govern gaze obtain rotate captain wish upper merge almost sketch void face" -at payment -ro 0 -ad "1-2" -pp meherett -stpub 00461b719be821d726f219e37c4b4a4a4f7ec37501de16c370810ecb9f7e96c704 -f csv
 ```
 
 <details>
@@ -2711,7 +2711,7 @@ hdwallet dumps --symbol BTC --hd Electrum-V1 --derivation Electrum --entropy-nam
 ```
 alias
 ```
-hdwallet ds -s BTC -h Electrum-V1 -d Electrum -en Electrum-V1 -e d36ee56e7948d94192ca1ad58df509e8 --public-key-type uncompressed -ad "1-2" -f json
+hdwallet ds -sym BTC -h Electrum-V1 -d Electrum -en Electrum-V1 -e d36ee56e7948d94192ca1ad58df509e8 --public-key-type uncompressed -ad "1-2" -f json
 ```
 
 <details>
@@ -2773,7 +2773,7 @@ hdwallet dumps --symbol BTC --hd Electrum-V1 --derivation Electrum --entropy-nam
 ```
 alias
 ```
-hdwallet ds -s BTC -h Electrum-V1 -d Electrum -en Electrum-V1 -e d36ee56e7948d94192ca1ad58df509e8 --public-key-type uncompressed -ad "1-2" -f csv
+hdwallet ds -sym BTC -h Electrum-V1 -d Electrum -en Electrum-V1 -e d36ee56e7948d94192ca1ad58df509e8 --public-key-type uncompressed -ad "1-2" -f csv
 ```
 
 <details>
@@ -2795,7 +2795,7 @@ hdwallet dumps --symbol BTC --hd Electrum-V2 --derivation Electrum --entropy-nam
 ```
 alias
 ```
-hdwallet ds -s BTC -h Electrum-V2 -d Electrum -en Electrum-V2 -e e6fec331ee9e4fbb924dfedc3a9cbf59 --public-key-type uncompressed -ad "1-2" -f json
+hdwallet ds -sym BTC -h Electrum-V2 -d Electrum -en Electrum-V2 -e e6fec331ee9e4fbb924dfedc3a9cbf59 --public-key-type uncompressed -ad "1-2" -f json
 ```
 
 <details>
@@ -2859,7 +2859,7 @@ hdwallet dumps --symbol BTC --hd Electrum-V2 --derivation Electrum --entropy-nam
 ```
 alias
 ```
-hdwallet ds -s BTC -h Electrum-V2 -d Electrum -en Electrum-V2 -e e6fec331ee9e4fbb924dfedc3a9cbf59 --public-key-type uncompressed -ad "1-2" -f csv
+hdwallet ds -sym BTC -h Electrum-V2 -d Electrum -en Electrum-V2 -e e6fec331ee9e4fbb924dfedc3a9cbf59 --public-key-type uncompressed -ad "1-2" -f csv
 ```
 
 <details>
@@ -2881,7 +2881,7 @@ hdwallet dumps --symbol XMR --hd Monero --derivation Monero --entropy d0168dd591
 ```
 alias
 ```
-hdwallet ds -s XMR -h Monero -d Monero -e d0168dd591f0daa6daef028f01994da6 -mi "1-2" -f json
+hdwallet ds -sym XMR -h Monero -d Monero -e d0168dd591f0daa6daef028f01994da6 -mi "1-2" -f json
 ```
 
 <details>
@@ -2934,7 +2934,7 @@ hdwallet dumps --symbol XMR --hd Monero --derivation Monero --entropy d0168dd591
 ```
 alias
 ```
-hdwallet ds -s XMR -h Monero -d Monero -e d0168dd591f0daa6daef028f01994da6 -mi "1-2" -f csv
+hdwallet ds -sym XMR -h Monero -d Monero -e d0168dd591f0daa6daef028f01994da6 -mi "1-2" -f csv
 ```
 
 <details>

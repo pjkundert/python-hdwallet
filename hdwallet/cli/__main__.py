@@ -14,9 +14,7 @@ from ..const import (
     PUBLIC_KEY_TYPES, MODES
 )
 
-from .. import (
-    __version__, __name__
-)
+from .. import __version__
 
 from .generate.entropy import generate_entropy
 from .generate.mnemonic import generate_mnemonic
@@ -76,7 +74,7 @@ def generate(context: click.core.Context) -> None:
     short_help="Select Entropy for generation entropy"
 )
 @click.option(
-    "-n", "--name", type=str, default="BIP39", help="Set Entropy name", show_default=True
+    "-c", "--client", type=str, default="BIP39", help="Set Entropy client", show_default=True
 )
 @click.option(
     "-s", "--strength", type=int, default=None, help="Set Strength for entropy", show_default=True
@@ -92,7 +90,7 @@ def cli_entropy(**kwargs) -> None:
     short_help="Select Mnemonic for generation mnemonic"
 )
 @click.option(
-    "-n", "--name", type=str, default="BIP39", help="Set Mnemonic name", show_default=True
+    "-c", "--client", type=str, default="BIP39", help="Set Mnemonic client", show_default=True
 )
 @click.option(
     "-l", "--language", type=str, default=None, help="Set Mnemonic language", show_default=True
@@ -107,10 +105,10 @@ def cli_entropy(**kwargs) -> None:
     "-mt", "--mnemonic-type", type=str, default="standard", help="Set Mnemonic type for Electrum-V2", show_default=True
 )
 @click.option(
-    "-ma", "--max-attempts", type=int, default=(10 ** 60), help="Set Max attempts for Electrum-V2", show_default=True
+    "-max", "--max-attempts", type=int, default=(10 ** 60), help="Set Max attempts for Electrum-V2", show_default=True
 )
 @click.option(
-    "-c", "--checksum", type=bool, default=False, help="Set Checksum for Monero", show_default=True
+    "-cs", "--checksum", type=bool, default=False, help="Set Checksum for Monero", show_default=True
 )
 def cli_mnemonic(**kwargs) -> None:
     return generate_mnemonic(**kwargs)
@@ -123,7 +121,7 @@ def cli_mnemonic(**kwargs) -> None:
     short_help="Select Seed for generation seed"
 )
 @click.option(
-    "-n", "--name", type=str, default="BIP39", help="Set Seed name", show_default=True
+    "-c", "--client", type=str, default="BIP39", help="Set Seed client", show_default=True
 )
 @click.option(
     "-m", "--mnemonic", type=str, default=None, help="Set Seed mnemonic", show_default=True
@@ -145,22 +143,22 @@ def cli_seed(**kwargs) -> None:
     "dump", aliases=["d"], options_metavar="[OPTIONS]", short_help="Select Dump hdwallet keys"
 )
 @click.option(
-    "-s", "--symbol", type=str, default="BTC", help="Set Cryptocurrency ticker symbol", show_default=True
+    "-sym", "--symbol", type=str, default="BTC", help="Set Cryptocurrency ticker symbol", show_default=True
 )
 @click.option(
-    "-h", "--hd", type=str, default="BIP32", help="Select HD", show_default=True
+    "-h", "--hd", type=str, default="BIP44", help="Select HD", show_default=True
 )
 @click.option(
     "-n", "--network", type=str, default="mainnet", help="Select Network type", show_default=True
 )
 @click.option(
-    "-en", "--entropy-name", type=str, default="BIP39", help="Select Entropy name", show_default=True
+    "-ec", "--entropy-client", type=str, default="BIP39", help="Select Entropy client", show_default=True
 )
 @click.option(
     "-e", "--entropy", type=str, default=None, help="Set Master key from Entropy hex string", show_default=True
 )
 @click.option(
-    "-mn", "--mnemonic-name", type=str, default="BIP39", help="Select Mnemonic name", show_default=True
+    "-mc", "--mnemonic-client", type=str, default="BIP39", help="Select Mnemonic client", show_default=True
 )
 @click.option(
     "-m", "--mnemonic", type=str, default=None, help="Set Master key from Mnemonic words", show_default=True
@@ -169,10 +167,10 @@ def cli_seed(**kwargs) -> None:
     "-l", "--language", type=str, default="english", help="Select Language for mnemonic", show_default=True
 )
 @click.option(
-    "-sn", "--seed-name", type=str, default="BIP39", help="Select Seed name", show_default=True
+    "-sc", "--seed-client", type=str, default="BIP39", help="Select Seed client", show_default=True
 )
 @click.option(
-    "-sd", "--seed", type=str, default=None, help="Set Master key from Seed hex string", show_default=True
+    "-s", "--seed", type=str, default=None, help="Set Master key from Seed hex string", show_default=True
 )
 @click.option(
     "-pp", "--passphrase", type=str, default=None, help="Set Passphrase for mnemonic & seed", show_default=True
@@ -193,7 +191,7 @@ def cli_seed(**kwargs) -> None:
     "-pkt", "--public-key-type", type=str, default=PUBLIC_KEY_TYPES.COMPRESSED, help="Select Public key type", show_default=True
 )
 @click.option(
-    "-d", "--derivation", type=str, default="Custom", help="Select Derivation name", show_default=True
+    "-d", "--derivation", type=str, default="BIP44", help="Select Derivation name", show_default=True
 )
 @click.option(
     "-ac", "--account", type=str, default="0", help="Set Account index for derivation", show_default=True
@@ -202,7 +200,7 @@ def cli_seed(**kwargs) -> None:
     "-ch", "--change", type=str, default="0", help="Set Change index for derivation", show_default=True
 )
 @click.option(
-    "-ec", "--ecc", type=str, default="0", help="Set ECC index for HDW derivation", show_default=True
+    "-ecc", "--ecc", type=str, default="0", help="Set ECC index for HDW derivation", show_default=True
 )
 @click.option(
     "-ro", "--role", type=str, default="0", help="Set Role index for CIP1852 derivation", show_default=True
@@ -227,6 +225,9 @@ def cli_seed(**kwargs) -> None:
 )
 @click.option(
     "-w", "--wif", type=str, default=None, help="Set Wallet Import Format (WIF)", show_default=True
+)
+@click.option(
+    "-b38", "--bip38", type=bool, default=False, help="Is BIP38 Encrypted Wallet Import Format", show_default=True
 )
 @click.option(
     "-pub", "--public-key", type=str, default=None, help="Set Public key", show_default=True
@@ -267,9 +268,6 @@ def cli_seed(**kwargs) -> None:
 @click.option(
     "-ex", "--exclude", type=str, default="", help="Set Exclude keys from dumped", show_default=True
 )
-@click.option(
-    "-ib", "--is-bip38", type=bool, default=False, help="Is Encrypted Wallet Import Format", show_default=True
-)
 def cli_dump(**kwargs) -> None:  # cli_dumps(max_content_width=120)
     return dump(**kwargs)
 
@@ -278,22 +276,22 @@ def cli_dump(**kwargs) -> None:  # cli_dumps(max_content_width=120)
     "dumps", aliases=["ds"], options_metavar="[OPTIONS]", short_help="Select Dumps hdwallet keys"
 )
 @click.option(
-    "-s", "--symbol", type=str, default="BTC", help="Set Cryptocurrency ticker symbol", show_default=True
+    "-sym", "--symbol", type=str, default="BTC", help="Set Cryptocurrency ticker symbol", show_default=True
 )
 @click.option(
-    "-h", "--hd", type=str, default="BIP32", help="Select HD", show_default=True
+    "-h", "--hd", type=str, default="BIP44", help="Select HD", show_default=True
 )
 @click.option(
     "-n", "--network", type=str, default="mainnet", help="Select Network type", show_default=True
 )
 @click.option(
-    "-en", "--entropy-name", type=str, default="BIP39", help="Select Entropy name", show_default=True
+    "-ec", "--entropy-client", type=str, default="BIP39", help="Select Entropy client", show_default=True
 )
 @click.option(
     "-e", "--entropy", type=str, default=None, help="Set Master key from Entropy hex string", show_default=True
 )
 @click.option(
-    "-mn", "--mnemonic-name", type=str, default="BIP39", help="Select Mnemonic name", show_default=True
+    "-mc", "--mnemonic-client", type=str, default="BIP39", help="Select Mnemonic client", show_default=True
 )
 @click.option(
     "-m", "--mnemonic", type=str, default=None, help="Set Master key from Mnemonic words", show_default=True
@@ -302,10 +300,10 @@ def cli_dump(**kwargs) -> None:  # cli_dumps(max_content_width=120)
     "-l", "--language", type=str, default="english", help="Select Language for mnemonic", show_default=True
 )
 @click.option(
-    "-sn", "--seed-name", type=str, default="BIP39", help="Select Seed name", show_default=True
+    "-sc", "--seed-client", type=str, default="BIP39", help="Select Seed client", show_default=True
 )
 @click.option(
-    "-sd", "--seed", type=str, default=None, help="Set Master key from Seed hex string", show_default=True
+    "-s", "--seed", type=str, default=None, help="Set Master key from Seed hex string", show_default=True
 )
 @click.option(
     "-pp", "--passphrase", type=str, default=None, help="Set Passphrase for mnemonic & seed", show_default=True
@@ -326,7 +324,7 @@ def cli_dump(**kwargs) -> None:  # cli_dumps(max_content_width=120)
     "-pkt", "--public-key-type", type=str, default=PUBLIC_KEY_TYPES.COMPRESSED, help="Select Public key type", show_default=True
 )
 @click.option(
-    "-d", "--derivation", type=str, default="Custom", help="Select Derivation name", show_default=True
+    "-d", "--derivation", type=str, default="BIP44", help="Select Derivation name", show_default=True
 )
 @click.option(
     "-ac", "--account", type=str, default="0", help="Set Account index for derivation", show_default=True
@@ -335,7 +333,7 @@ def cli_dump(**kwargs) -> None:  # cli_dumps(max_content_width=120)
     "-ch", "--change", type=str, default="0", help="Set Change index for derivation", show_default=True
 )
 @click.option(
-    "-ec", "--ecc", type=str, default="0", help="Set ECC index for HDW derivation", show_default=True
+    "-ecc", "--ecc", type=str, default="0", help="Set ECC index for HDW derivation", show_default=True
 )
 @click.option(
     "-ro", "--role", type=str, default="0", help="Set Role index for CIP1852 derivation", show_default=True
@@ -360,6 +358,9 @@ def cli_dump(**kwargs) -> None:  # cli_dumps(max_content_width=120)
 )
 @click.option(
     "-w", "--wif", type=str, default=None, help="Set Wallet Import Format (WIF)", show_default=True
+)
+@click.option(
+    "-b38", "--bip38", type=bool, default=False, help="Is BIP38 Encrypted Wallet Import Format", show_default=True
 )
 @click.option(
     "-pub", "--public-key", type=str, default=None, help="Set Public key", show_default=True
@@ -411,9 +412,6 @@ def cli_dump(**kwargs) -> None:  # cli_dumps(max_content_width=120)
 )
 @click.option(
     "-de", "--delimiter", type=str, default=" ", help="Set Delimiter for CSV", show_default=True
-)
-@click.option(
-    "-ib", "--is-bip38", type=bool, default=False, help="Is Encrypted Wallet Import Format", show_default=True
 )
 def cli_dumps(**kwargs) -> None:  # cli_dumps(max_content_width=120)
     return dumps(**kwargs)

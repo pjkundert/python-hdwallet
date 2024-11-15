@@ -21,41 +21,41 @@ from ...entropies import (
 
 def generate_entropy(**kwargs) -> None:
     try:
-        if not ENTROPIES.is_entropy(name=kwargs.get("name")):
+        if not ENTROPIES.is_entropy(name=kwargs.get("client")):
             click.echo(click.style(
-                f"Wrong entropy name, (expected={ENTROPIES.names()}, got='{kwargs.get('name')}')"
+                f"Wrong entropy client, (expected={ENTROPIES.names()}, got='{kwargs.get('client')}')"
             ), err=True)
             sys.exit()
 
         if kwargs.get("strength") is None:  # Set default strength
-            if kwargs.get("name") == AlgorandEntropy.name():
+            if kwargs.get("client") == AlgorandEntropy.name():
                 strength: int = ALGORAND_ENTROPY_STRENGTHS.TWO_HUNDRED_FIFTY_SIX
-            elif kwargs.get("name") == BIP39Entropy.name():
+            elif kwargs.get("client") == BIP39Entropy.name():
                 strength: int = BIP39_ENTROPY_STRENGTHS.ONE_HUNDRED_TWENTY_EIGHT
-            elif kwargs.get("name") == ElectrumV1Entropy.name():
+            elif kwargs.get("client") == ElectrumV1Entropy.name():
                 strength: int = ELECTRUM_V1_ENTROPY_STRENGTHS.ONE_HUNDRED_TWENTY_EIGHT
-            elif kwargs.get("name") == ElectrumV2Entropy.name():
+            elif kwargs.get("client") == ElectrumV2Entropy.name():
                 strength: int = ELECTRUM_V2_ENTROPY_STRENGTHS.ONE_HUNDRED_THIRTY_TWO
-            elif kwargs.get("name") == MoneroEntropy.name():
+            elif kwargs.get("client") == MoneroEntropy.name():
                 strength: int = MONERO_ENTROPY_STRENGTHS.ONE_HUNDRED_TWENTY_EIGHT
         else:
             strength: int = kwargs.get("strength")
 
-        if not ENTROPIES.entropy(name=kwargs.get("name")).is_valid_strength(strength=strength):
+        if not ENTROPIES.entropy(name=kwargs.get("client")).is_valid_strength(strength=strength):
             click.echo(click.style(
-                f"Wrong {kwargs.get('name')} entropy strength, "
-                f"(expected={ENTROPIES.entropy(name=kwargs.get('name')).strengths}, got='{strength}')"
+                f"Wrong {kwargs.get('client')} entropy strength, "
+                f"(expected={ENTROPIES.entropy(name=kwargs.get('client')).strengths}, got='{strength}')"
             ), err=True)
             sys.exit()
 
-        entropy: IEntropy = ENTROPIES.entropy(name=kwargs.get("name")).__call__(
-            entropy=ENTROPIES.entropy(name=kwargs.get("name")).generate(
+        entropy: IEntropy = ENTROPIES.entropy(name=kwargs.get("client")).__call__(
+            entropy=ENTROPIES.entropy(name=kwargs.get("client")).generate(
                 strength=strength
             )
         )
         click.echo(json.dumps(
             {
-                "name": entropy.name(),
+                "client": entropy.name(),
                 "entropy": entropy.entropy(),
                 "strength": entropy.strength()
             },

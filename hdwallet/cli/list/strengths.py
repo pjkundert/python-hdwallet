@@ -24,7 +24,6 @@ def list_strengths():
             [
                 f"{entropy.name()} Strengths"
             ],
-            tablefmt="github",
             stralign="left",
             numalign="left"
         ))

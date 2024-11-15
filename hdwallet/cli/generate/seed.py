@@ -16,33 +16,37 @@ from ...seeds import (
 
 def generate_seed(**kwargs) -> None:
     try:
-        if not SEEDS.is_seed(name=kwargs.get("name")):
+        if not kwargs.get("mnemonic"):
+            click.echo(click.style(f"Mnemonic is required for {kwargs.get('client')} client"), err=True)
+            sys.exit()
+
+        if not SEEDS.is_seed(name=kwargs.get("client")):
             click.echo(click.style(
-                f"Wrong seed name, (expected={SEEDS.names()}, got='{kwargs.get('name')}')"
+                f"Wrong seed client, (expected={SEEDS.names()}, got='{kwargs.get('client')}')"
             ), err=True)
             sys.exit()
 
-        if kwargs.get("name") == "Electrum-V2":
+        if kwargs.get("client") == "Electrum-V2":
             if not MNEMONICS.mnemonic(name="Electrum-V2").is_valid(
                 mnemonic=kwargs.get("mnemonic"), mnemonic_type=kwargs.get("mnemonic_type")
             ):
                 click.echo(click.style(f"Invalid Electrum-V2 mnemonic"), err=True)
                 sys.exit()
         else:
-            mnemonic_name: str = "BIP39" if kwargs.get("name") == CardanoSeed.name() else kwargs.get("name")
+            mnemonic_name: str = "BIP39" if kwargs.get("client") == CardanoSeed.name() else kwargs.get("client")
             if not MNEMONICS.mnemonic(name=mnemonic_name).is_valid(mnemonic=kwargs.get("mnemonic")):
                 click.echo(click.style(f"Invalid {mnemonic_name} mnemonic"), err=True)
                 sys.exit()
 
 
-        if kwargs.get("name") == BIP39Seed.name():
+        if kwargs.get("client") == BIP39Seed.name():
             seed: ISeed = BIP39Seed(
                 seed=BIP39Seed.from_mnemonic(
                     mnemonic=kwargs.get("mnemonic"),
                     passphrase=kwargs.get("passphrase")
                 )
             )
-        elif kwargs.get("name") == CardanoSeed.name():
+        elif kwargs.get("client") == CardanoSeed.name():
             seed: ISeed = CardanoSeed(
                 seed=CardanoSeed.from_mnemonic(
                     mnemonic=kwargs.get("mnemonic"),
@@ -50,7 +54,7 @@ def generate_seed(**kwargs) -> None:
                     cardano_type=kwargs.get("cardano_type")
                 )
             )
-        elif kwargs.get("name") == ElectrumV2Seed.name():
+        elif kwargs.get("client") == ElectrumV2Seed.name():
             seed: ISeed = ElectrumV2Seed(
                 seed=ElectrumV2Seed.from_mnemonic(
                     mnemonic=kwargs.get("mnemonic"),
@@ -59,13 +63,13 @@ def generate_seed(**kwargs) -> None:
                 )
             )
         else:
-            seed: ISeed = SEEDS.seed(name=kwargs.get("name")).__call__(
-                seed=SEEDS.seed(name=kwargs.get("name")).from_mnemonic(
+            seed: ISeed = SEEDS.seed(name=kwargs.get("client")).__call__(
+                seed=SEEDS.seed(name=kwargs.get("client")).from_mnemonic(
                     mnemonic=kwargs.get("mnemonic")
                 )
             )
         output: dict = {
-            "name": seed.name(),
+            "client": seed.name(),
             "seed": seed.seed()
         }
         if seed.name() == CardanoSeed.name():

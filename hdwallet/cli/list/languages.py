@@ -27,7 +27,6 @@ def list_languages():
             [
                 f"{mnemonic.name()} Languages"
             ],
-            tablefmt="github",
             stralign="left",
             numalign="left"
         ))
