@@ -61,9 +61,9 @@ class Tron(ICryptocurrency):
     })
     DEFAULT_HD = HDS.BIP44
     ADDRESSES = Addresses({
-        "P2PKH", "P2SH"
+        "TRON": "Tron"
     })
-    DEFAULT_ADDRESS = ADDRESSES.P2PKH
+    DEFAULT_ADDRESS = ADDRESSES.TRON
     PARAMS = Params({
         "ALPHABET": "123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz"
     })

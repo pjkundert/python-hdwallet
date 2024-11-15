@@ -60,10 +60,10 @@ class Ripple(ICryptocurrency):
         "BIP32", "BIP44"
     })
     DEFAULT_HD = HDS.BIP44
-    ADDRESSES = Addresses((
-        "P2PKH", "P2SH"
-    ))
-    DEFAULT_ADDRESS = ADDRESSES.P2PKH
+    ADDRESSES = Addresses({
+        "RIPPLE": "Ripple"
+    })
+    DEFAULT_ADDRESS = ADDRESSES.RIPPLE
     PARAMS = Params({
         "ALPHABET": "rpshnaf39wBUDNEGHJKLM4PQRST7VWXYZ2bcdeCg65jkm8oFqi1tuvAxyz"
     })
