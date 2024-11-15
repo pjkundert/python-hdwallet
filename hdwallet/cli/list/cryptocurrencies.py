@@ -14,7 +14,7 @@ from ...cryptocurrencies import CRYPTOCURRENCIES
 def list_cryptocurrencies():
 
     documents, table, headers = [], [], [
-        "Cryptocurrency", "Symbol", "Coin Type", "Networks", "ECC", "HDs", "BIP38", "Addresses"
+        "Cryptocurrency", "Symbol", "Coin Type", "Networks", "ECC"
     ]
 
     for cryptocurrency in CRYPTOCURRENCIES.classes():
@@ -24,10 +24,7 @@ def list_cryptocurrencies():
             "symbol": cryptocurrency.SYMBOL,
             "coin_type": cryptocurrency.COIN_TYPE,
             "networks": ", ".join(cryptocurrency.NETWORKS.get_networks()),
-            "ecc": cryptocurrency.ECC.NAME,
-            "hds": ", ".join(cryptocurrency.HDS.get_hds()),
-            "bip38": cryptocurrency.SUPPORT_BIP38,
-            "addresses": ", ".join(cryptocurrency.ADDRESSES.get_addresses()),
+            "ecc": cryptocurrency.ECC.NAME
         }
         documents.append(document)
 
@@ -38,15 +35,12 @@ def list_cryptocurrencies():
             document["coin_type"],
             document["networks"],
             document["ecc"],
-            document["hds"],
-            document["bip38"],
-            document["addresses"]
         ])
 
     click.echo(tabulate(
         table,
         headers,
         colalign=(
-            "left", "center", "center", "center", "center", "center", "center", "center"
+            "left", "center", "center", "center", "center"
         )
     ))
