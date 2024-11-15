@@ -1,5 +1,6 @@
 # Files stuff
 .coverage
+.coveralls.yml
 
 # Folders stuff
 experiment/
