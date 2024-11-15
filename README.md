@@ -1,4 +1,4 @@
-# Hierarchical Deterministic (HD) Wallet v3.0.0-Alpha-11
+# Hierarchical Deterministic (HD) Wallet
 
 [![Build Status](https://app.travis-ci.com/meherett/python-hdwallet.svg?branch=master)](https://app.travis-ci.com/meherett/python-hdwallet)
 [![PyPI Version](https://img.shields.io/pypi/v/hdwallet.svg?color=blue)](https://pypi.org/project/hdwallet)
@@ -12,17 +12,17 @@ It allows the handling of multiple coins, multiple accounts, external and intern
 
 ![HDWallet-CLI](https://raw.githubusercontent.com/meherett/python-hdwallet/master/docs/static/svg/hdwallet-cli.svg)
 
-For more info see the BIP specs.
+For more info see the Improvement Proposal specs.
 
-| BIP's                                                                    | Titles                                                     |
-| :----------------------------------------------------------------------- | :--------------------------------------------------------- |
+| IP's                                                                     | Titles                                                     |
+|:-------------------------------------------------------------------------|:-----------------------------------------------------------|
 | [BIP39](https://github.com/bitcoin/bips/blob/master/bip-0039.mediawiki)  | Mnemonic code for generating deterministic keys            |
-| [BIP85](https://github.com/bitcoin/bips/blob/master/bip-0085.mediawiki)  | Deterministic Entropy From BIP32 Keychains                 |
 | [BIP32](https://github.com/bitcoin/bips/blob/master/bip-0032.mediawiki)  | Hierarchical Deterministic Wallets                         |
 | [BIP44](https://github.com/bitcoin/bips/blob/master/bip-0044.mediawiki)  | Multi-Account Hierarchy for Deterministic Wallets          |
 | [BIP49](https://github.com/bitcoin/bips/blob/master/bip-0049.mediawiki)  | Derivation scheme for P2WPKH-nested-in-P2SH based accounts |
 | [BIP84](https://github.com/bitcoin/bips/blob/master/bip-0084.mediawiki)  | Derivation scheme for P2WPKH based accounts                |
 | [BIP141](https://github.com/bitcoin/bips/blob/master/bip-0141.mediawiki) | Segregated Witness (Consensus layer)                       |
+| [BIP38](https://github.com/bitcoin/bips/blob/master/bip-0038.mediawiki)  | Passphrase-protected private key                           |
 
 ## Installation
 
