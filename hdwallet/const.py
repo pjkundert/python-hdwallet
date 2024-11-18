@@ -190,6 +190,9 @@ class ExtendedKeyVersions(NestedNamespace):
     def is_version(self, version: bytes) -> bool:
         return bytes_to_integer(version) in self.__dict__.values()
 
+    def get_versions(self) -> List[str]:
+        return [version.lower().replace('_', '-') for version in self.__dict__.keys()]
+
     def get_version(self, name: str) -> Union[str, int, bytes]:
         return self.__getattribute__(name.upper().replace('-', '_'))
 
