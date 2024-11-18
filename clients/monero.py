@@ -68,5 +68,5 @@ MAJOR_INDEXES: int = 5
 for minor_index in range(MINER_INDEXES):
     for major_index in range(MAJOR_INDEXES):
         print(f"Monero Sub-Address (Minor: {minor_index}, Major: {major_index}):", monero_hd.sub_address(
-            minor_index=minor_index, major_index=major_index
+            minor=minor_index, major=major_index
         ))
