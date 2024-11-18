@@ -13,6 +13,8 @@ from ..derivations import IDerivation
 
 class IHD:
 
+    _derivation: IDerivation
+
     def __init__(self, **kwargs) -> None:
         pass
 
@@ -159,6 +161,15 @@ class IHD:
         :return: The cleaned HD instance.
         :rtype: HD
         """
+
+    def derivation(self) -> IDerivation:
+        """
+        Retrieves the derivation method used for key generation.
+
+        :return: An object representing the derivation details.
+        :rtype: IDerivation
+        """
+        return self._derivation
 
     def seed(self) -> Optional[str]:
         """

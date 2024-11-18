@@ -231,7 +231,10 @@ class HDWallet:
             "BIP32", "BIP44", "BIP49", "BIP84", "BIP86", "BIP141"
         ]:
             self._hd = hd(
-                ecc=cryptocurrency.ECC, public_key_type=self._public_key_type, semantic=self._semantic
+                ecc=cryptocurrency.ECC,
+                public_key_type=self._public_key_type,
+                semantic=self._semantic,
+                coin_type=self._cryptocurrency.COIN_TYPE
             )
         elif hd.name() == "Cardano":
             self._hd = hd(cardano_type=self._cardano_type)
@@ -418,6 +421,7 @@ class HDWallet:
         self._hd.from_seed(
             seed=seed.seed(), passphrase=self.passphrase()
         )
+        self._derivation = self._hd.derivation()
         return self
 
     def from_xprivate_key(self, xprivate_key: str, encoded: bool = True, strict: bool = False) -> "HDWallet":
