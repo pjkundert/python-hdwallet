@@ -10,6 +10,13 @@ from .iprivate_key import IPrivateKey
 
 
 class IEllipticCurveCryptography:
+    """
+    Interface for Elliptic Curve Cryptography (ECC) representation.
+
+    This interface defines the key components and attributes required
+    for elliptic curve cryptography operations. It is intended to be
+    implemented by specific ECC classes.
+    """
 
     NAME: str
     ORDER: int

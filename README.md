@@ -1,4 +1,4 @@
-<img height="100" alt="HDWallet" src="./docs/static/svg/hdwallet-square.svg">
+<img height="100" alt="HDWallet" src="./docs/static/svg/hdwallet-logo.svg">
 
 # Hierarchical Deterministic (HD) Wallet
 
@@ -13,10 +13,11 @@ Python-based library for the implementation of a Hierarchical Deterministic (HD)
 It allows the handling of multiple coins, multiple accounts, external and internal chains per account, and millions of addresses per chain.
 
 > The library is designed to be flexible and scalable, making it ideal for developers who need to integrate multi-currency wallet functionalities into their applications. 
-> It supports standard protocols, ensuring compatibility with existing wallets and services. With features such as secure seed generation, key management, and advanced account controls, 
-> this library simplifies the complexity of blockchain interactions and enhances security for end-users.
+> It supports standard protocols for compatibility with other wallets and services, offering features like secure seed creation, efficient key management, and easy account handling.
+>
+> This library simplifies the complexity of blockchain interactions and enhances security for end-users. 
 
-|                               | Protocols                                                                                                                                                                                                                                                                                                                                                                                                             |
+| Components                    | Protocols                                                                                                                                                                                                                                                                                                                                                                                                             |
 |:------------------------------|:----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | Cryptocurrencies              | <a href="#supported-cryptocurrencies">#supported-cryptocurrencies</a>                                                                                                                                                                                                                                                                                                                                                 |
 | Entropies                     | ``Algorand``, ``BIP39``, ``Electrum-V1``, ``Electrum-V2``, ``Monero``                                                                                                                                                                                                                                                                                                                                                 |
@@ -485,7 +486,7 @@ This library simplifies the process of creating a new Hierarchical Deterministic
 
 ## Donations
 
-If You found this tool helpful consider making a donation:
+If you found this tool helpful, consider making a donation and help this repo reach ⭐!
 
 | Coins       | Addresses                                  |
 |-------------|:-------------------------------------------|

@@ -35,20 +35,21 @@ class ECCS:
     as well as methods to validate and access specific ecc classes by name.
 
     Here are available ecc names and classes:
+
     +--------------------------+--------------------------------------------------------------------------+
     | Name                     | Class                                                                    |
     +==========================+==========================================================================+
-    | KholawEd25519ECC         | <class 'hdwallet.ecc.kholaw.ed25519.KholawEd25519ECC'>                   |
+    | KholawEd25519ECC         | :class:`hdwallet.ecc.kholaw.ed25519.KholawEd25519ECC`                    |
     +--------------------------+--------------------------------------------------------------------------+
-    | SLIP10Ed25519ECC         |  <class 'hdwallet.ecc.slip10.ed25519.SLIP10Ed25519ECC'>                  |
+    | SLIP10Ed25519ECC         | :class:`hdwallet.ecc.slip10.ed25519.SLIP10Ed25519ECC`                    |
     +--------------------------+--------------------------------------------------------------------------+
-    | SLIP10Ed25519Blake2bECC  |  <class 'hdwallet.ecc.slip10.ed25519.blake2b.SLIP10Ed25519Blake2bECC'>   |
+    | SLIP10Ed25519Blake2bECC  | :class:`hdwallet.ecc.slip10.ed25519.blake2b.SLIP10Ed25519Blake2bECC`     |
     +--------------------------+--------------------------------------------------------------------------+
-    | SLIP10Ed25519MoneroECC   | <class 'hdwallet.ecc.slip10.ed25519.monero.SLIP10Ed25519MoneroECC'>      |
+    | SLIP10Ed25519MoneroECC   | :class:`hdwallet.ecc.slip10.ed25519.monero.SLIP10Ed25519MoneroECC`       |
     +--------------------------+--------------------------------------------------------------------------+
-    | SLIP10Nist256p1ECC       | <class 'hdwallet.ecc.slip10.nist256p1.SLIP10Nist256p1ECC'>               |
+    | SLIP10Nist256p1ECC       | :class:`hdwallet.ecc.slip10.nist256p1.SLIP10Nist256p1ECC`                |
     +--------------------------+--------------------------------------------------------------------------+
-    | SLIP10Secp256k1ECC       | <class 'hdwallet.ecc.slip10.secp256k1.SLIP10Secp256k1ECCCoincurve'>      |
+    | SLIP10Secp256k1ECC       | :class:`hdwallet.ecc.slip10.secp256k1.SLIP10Secp256k1ECC`                |
     +--------------------------+--------------------------------------------------------------------------+
     """
 

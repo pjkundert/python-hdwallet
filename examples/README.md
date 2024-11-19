@@ -1,6 +1,44 @@
 
 # Command Line Interface (CLI)
 
+### Help
+
+```
+hdwallet --help
+```
+
+<details open>
+  <summary>Output</summary><br/>
+
+```shell
+Usage: hdwallet [OPTIONS] COMMAND [ARGS]...
+
+Options:
+  -v, --version  Show HDWallet version and exit
+  -h, --help     Show this message and exit.
+
+Commands:
+  dump (d)      Select Dump hdwallet keys
+  dumps (ds)    Select Dumps hdwallet keys
+  generate (g)  Select Generate for HDWallet
+  list (l)      Select List for HDWallet information
+```
+</details>
+
+### Version
+
+```
+hdwallet --version
+```
+
+<details open>
+  <summary>Output</summary><br/>
+
+```shell
+v3.0.0
+```
+</details>
+
 ## Generate Command
 
 ### Entropy

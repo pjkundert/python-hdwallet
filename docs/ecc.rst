@@ -5,6 +5,15 @@ Elliptic Curve Cryptographys
 ============================
 
 
+.. autoclass:: hdwallet.ecc.ECCS
+    :members:
+
+.. autoclass:: hdwallet.ecc.iecc.IEllipticCurveCryptography
+    :members:
+
+.. autoclass:: hdwallet.ecc.kholaw.ed25519.KholawEd25519ECC
+    :members:
+
 .. autoclass:: hdwallet.ecc.kholaw.ed25519.point.KholawEd25519Point
     :members:
 
@@ -45,6 +54,8 @@ Elliptic Curve Cryptographys
 >>> public_key.point().x()
 18529038270296824438026848489315401829943202020841826252456650783397010322849
 
+.. autoclass:: hdwallet.ecc.slip10.ed25519.blake2b.SLIP10Ed25519Blake2bECC
+    :members:
 
 .. autoclass:: hdwallet.ecc.slip10.ed25519.blake2b.point.SLIP10Ed25519Blake2bPoint
     :members:
@@ -86,6 +97,8 @@ Elliptic Curve Cryptographys
 >>> public_key.point().x()
 35008547582340824597639173221735807482318787407965447203743372716499096148063
 
+.. autoclass:: hdwallet.ecc.slip10.ed25519.monero.SLIP10Ed25519MoneroECC
+    :members:
 
 .. autoclass:: hdwallet.ecc.slip10.ed25519.monero.point.SLIP10Ed25519MoneroPoint
     :members:
@@ -127,6 +140,8 @@ Elliptic Curve Cryptographys
 >>> public_key.point().x()
 29078407399097928298542937704975150613766572636435642857509307729044618011935
 
+.. autoclass:: hdwallet.ecc.slip10.ed25519.SLIP10Ed25519ECC
+    :members:
 
 .. autoclass:: hdwallet.ecc.slip10.ed25519.point.SLIP10Ed25519Point
     :members:
@@ -167,6 +182,9 @@ Elliptic Curve Cryptographys
 >>> public_key.point().x()
 35008547582340824597639173221735807482318787407965447203743372716499096148063
 
+.. autoclass:: hdwallet.ecc.slip10.nist256p1.SLIP10Nist256p1ECC
+    :members:
+
 .. autoclass:: hdwallet.ecc.slip10.nist256p1.point.SLIP10Nist256p1Point
     :members:
 
@@ -206,6 +224,12 @@ Elliptic Curve Cryptographys
 >>> public_key.point().x()
 103462310269679299860340333843259692621316029910306332627414876684344367472209
 
+.. autoclass:: hdwallet.ecc.slip10.secp256k1.SLIP10Secp256k1ECC
+    :members:
+
+.. autoclass:: hdwallet.ecc.slip10.secp256k1.SLIP10Secp256k1ECCCoincurve
+    :members:
+
 .. autoclass:: hdwallet.ecc.slip10.secp256k1.point.SLIP10Secp256k1PointCoincurve
     :members:
 
@@ -236,6 +260,48 @@ Elliptic Curve Cryptographys
 >>> SLIP10Secp256k1PublicKeyCoincurve.name()
 'SLIP10-Secp256k1'
 >>> public_key = SLIP10Secp256k1PublicKeyCoincurve.from_bytes(
+...     get_bytes("0374a436044b4904bbd7a074b098d65fad39fc5b66f28da8440f10dbcf86568429")
+... )
+>>> public_key.raw_compressed().hex()
+'0374a436044b4904bbd7a074b098d65fad39fc5b66f28da8440f10dbcf86568429'
+>>> public_key.point().raw_encoded().hex()
+'0374a436044b4904bbd7a074b098d65fad39fc5b66f28da8440f10dbcf86568429'
+>>> public_key.point().x()
+52758426164353529380574599868388529660378638078403259786555024244882051335209
+
+.. autoclass:: hdwallet.ecc.slip10.secp256k1.SLIP10Secp256k1ECCECDSA
+    :members:
+
+.. autoclass:: hdwallet.ecc.slip10.secp256k1.point.SLIP10Secp256k1PointECDSA
+    :members:
+
+.. autoclass:: hdwallet.ecc.slip10.secp256k1.private_key.SLIP10Secp256k1PrivateKeyECDSA
+    :members:
+
+>>> from hdwallet.ecc.slip10.secp256k1.private_key import SLIP10Secp256k1PrivateKeyECDSA
+>>> from hdwallet.utils import get_bytes
+>>> SLIP10Secp256k1PrivateKeyECDSA.name()
+'SLIP10-Secp256k1'
+>>> SLIP10Secp256k1PrivateKeyECDSA.length()
+32
+>>> private_key = SLIP10Secp256k1PrivateKeyECDSA.from_bytes(
+...     get_bytes("b66022fff8b6322f8b8fa444d6d097457b6b9e7bb05add5b75f9c827df7bd3b6")
+... )
+>>> private_key.raw().hex()
+'b66022fff8b6322f8b8fa444d6d097457b6b9e7bb05add5b75f9c827df7bd3b6'
+>>> private_key.public_key().raw_compressed().hex()
+'0374a436044b4904bbd7a074b098d65fad39fc5b66f28da8440f10dbcf86568429'
+>>> private_key.public_key().raw_uncompressed().hex()
+'0474a436044b4904bbd7a074b098d65fad39fc5b66f28da8440f10dbcf86568429aae5b09b4de9cee5d2f9f98044f688aa98f910134a8e87eff28ec5ba35ddf273'
+
+.. autoclass:: hdwallet.ecc.slip10.secp256k1.public_key.SLIP10Secp256k1PublicKeyECDSA
+    :members:
+
+>>> from hdwallet.ecc.slip10.secp256k1.public_key import SLIP10Secp256k1PublicKeyECDSA
+>>> from hdwallet.utils import get_bytes
+>>> SLIP10Secp256k1PublicKeyECDSA.name()
+'SLIP10-Secp256k1'
+>>> public_key = SLIP10Secp256k1PublicKeyECDSA.from_bytes(
 ...     get_bytes("0374a436044b4904bbd7a074b098d65fad39fc5b66f28da8440f10dbcf86568429")
 ... )
 >>> public_key.raw_compressed().hex()

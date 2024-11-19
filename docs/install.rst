@@ -6,21 +6,21 @@ The easiest way to install ``hdwallet`` is via pip:
 
 ::
 
-    $ pip install hdwallet
+    pip install hdwallet
 
 
 To install ``hdwallet`` command line interface globally, for Linux `sudo` may be required:
 
 ::
 
-    $ pip install hdwallet[cli]
+    pip install hdwallet[cli]
 
 
 After you have installed, type ``hdwallet`` to verify that it worked:
 
 ::
 
-    $ hdwallet
+    hdwallet
     Usage: hdwallet [OPTIONS] COMMAND [ARGS]...
 
     Options:
@@ -38,7 +38,7 @@ If you want to run the latest version of the code, you can install from git:
 
 ::
 
-    $ pip install git+git://github.com/talonlab/python-hdwallet.git
+    pip install git+git://github.com/talonlab/python-hdwallet.git
 
 
 For the versions available, see the `tags on this repository <https://github.com/talonlab/python-hdwallet/tags>`_.
@@ -50,4 +50,4 @@ We welcome pull requests. To get started, just fork this `github repository <htt
 
 ::
 
-    $ pip install -e .[cli,tests,docs]
+    pip install -e .[cli,tests,docs]
