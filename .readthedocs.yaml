@@ -16,7 +16,7 @@ python:
             - docs
 
 formats:
-  - html
+  - htmlzip
 
 sphinx:
   builder: html
