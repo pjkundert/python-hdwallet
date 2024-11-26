@@ -233,11 +233,9 @@ def dumps(**kwargs) -> None:
         elif hd_name == BIP32HD.name():
             _include: str = "at:path,addresses:p2pkh,public_key,wif"
         elif hd_name in [
-            BIP44HD.name(), BIP49HD.name(), BIP84HD.name(), BIP86HD.name()
+            BIP44HD.name(), BIP49HD.name(), BIP84HD.name(), BIP86HD.name(), BIP141HD.name()
         ]:
             _include: str = "at:path,address,public_key,wif"
-        elif hd_name == BIP141HD.name():
-            _include: str = f"at:path,addresses:p2wpkh,public_key,wif"
         elif hd_name == CardanoHD.name():
             _include: str = "at:path,address,public_key,private_key"
         elif hd_name in [
