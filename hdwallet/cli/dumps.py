@@ -57,11 +57,11 @@ def dumps(**kwargs) -> None:
             if kwargs.get("hd") in [
                 "BIP32", "BIP44", "BIP86", "Cardano"
             ]:
-                semantic = "P2PKH"
+                semantic = cryptocurrency.DEFAULT_SEMANTIC
             elif kwargs.get("hd") == "BIP49":
-                semantic = "P2WPKH_IN_P2SH"
+                semantic = "p2wpkh-in-p2sh"
             elif kwargs.get("hd") in ["BIP84", "BIP141"]:
-                semantic = "P2WPKH"
+                semantic = "p2wpkh"
 
         hdwallet: HDWallet = HDWallet(
             cryptocurrency=cryptocurrency,
