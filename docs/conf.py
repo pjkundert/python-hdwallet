@@ -54,6 +54,8 @@ exclude_patterns = []
 
 # -- Options for HTML output -------------------------------------------------
 
+html_logo = "static/svg/hdwallet-logo.svg"
+
 # The theme to use for HTML and HTML Help pages.  See the documentation for
 # a list of builtin themes.
 html_theme = "furo"
@@ -91,10 +93,13 @@ html_theme_options = {
     # "announcement": "<em>Important</em> announcement!",
 }
 
+# Set a minimal HTML title
+html_title = release
+
 # Add any paths that contain custom static files (such as style sheets) here,
 # relative to this directory. They are copied after the builtin static files,
 # so a file named "default.css" will overwrite the builtin "default.css".
-html_static_path = ["static", "static/css", "static/gif"]
+html_static_path = ["static", "static/css", "static/svg"]
 
 # Autodoc member order
 autodoc_member_order = "bysource"

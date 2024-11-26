@@ -25,25 +25,34 @@ Hierarchical Deterministic Wallet
 Python-based library for the implementation of a Hierarchical Deterministic (HD) Wallet generator supporting more than 200 cryptocurrencies.
 It allows the handling of multiple coins, multiple accounts, external and internal chains per account, and millions of addresses per chain.
 
-For more info see the BIP specs.
+.. epigraph::
+
+   The library is designed to be flexible and scalable, making it ideal for developers who need to integrate multi-currency wallet functionalities into their applications.
+   It supports standard protocols for compatibility with other wallets and services, offering features like secure seed creation, efficient key management, and easy account handling.
+
+   This library simplifies the complexity of blockchain interactions and enhances security for end-users.
 
 .. list-table::
-   :widths: 10 185
+   :widths: 30 200
    :header-rows: 1
 
-   * - BIP's
-     - Titles
-   * - `BIP39 <https://github.com/bitcoin/bips/blob/master/bip-0039.mediawiki>`_
-     - Mnemonic code for generating deterministic keys
-   * - `BIP85 <https://github.com/bitcoin/bips/blob/master/bip-0085.mediawiki>`_
-     - Deterministic Entropy From BIP32 Keychains
-   * - `BIP32 <https://github.com/bitcoin/bips/blob/master/bip-0032.mediawiki>`_
-     - Hierarchical Deterministic Wallets
-   * - `BIP44 <https://github.com/bitcoin/bips/blob/master/bip-0044.mediawiki>`_
-     - Multi-Account Hierarchy for Deterministic Wallets
-   * - `BIP49 <https://github.com/bitcoin/bips/blob/master/bip-0049.mediawiki>`_
-     - Derivation scheme for P2WPKH-nested-in-P2SH based accounts
-   * - `BIP84 <https://github.com/bitcoin/bips/blob/master/bip-0084.mediawiki>`_
-     - Derivation scheme for P2WPKH based accounts
-   * - `BIP141 <https://github.com/bitcoin/bips/blob/master/bip-0141.mediawiki>`_
-     - Segregated Witness (Consensus layer)
+   * - Components
+     - Protocols
+   * - Cryptocurrencies
+     - `#supported-cryptocurrencies <cryptocurrencies.html>`_
+   * - Entropies
+     - ``Algorand``, ``BIP39``, ``Electrum-V1``, ``Electrum-V2``, ``Monero``
+   * - Mnemonics
+     - ``Algorand``, ``BIP39``, ``Electrum-V1``, ``Electrum-V2``, ``Monero``
+   * - Seeds
+     - ``Algorand``, ``BIP39``, ``Cardano``, ``Electrum-V1``, ``Electrum-V2``, ``Monero``
+   * - Elliptic Curve Cryptography's
+     - ``Kholaw-Ed25519``, ``SLIP10-Ed25519``, ``SLIP10-Ed25519-Blake2b``, ``SLIP10-Ed25519-Monero``, ``SLIP10-Nist256p1``, ``SLIP10-Secp256k1``
+   * - Hierarchical Deterministic's
+     - ``BIP32``, ``BIP44``, ``BIP49``, ``BIP84``, ``BIP86``, ``BIP141``, ``Cardano``, ``Electrum-V1``, ``Electrum-V2``, ``Monero``
+   * - Derivations
+     - ``BIP44``, ``BIP49``, ``BIP84``, ``BIP86``, ``CIP1852``, ``Custom``, ``Electrum``, ``Monero``, ``HDW (Our own custom derivation)``
+   * - Addresses
+     - ``Algorand``, ``Aptos``, ``Avalanche``, ``Cardano``, ``Cosmos``, ``EOS``, ``Ergo``, ``Ethereum``, ``Filecoin``, ``Harmony``, ``Icon``, ``Injective``, ``Monero``, ``MultiversX``, ``Nano``, ``Near``, ``Neo``, ``OKT-Chain``, ``P2PKH``, ``P2SH``, ``P2TR``, ``P2WPKH``, ``P2WPKH-In-P2SH``, ``P2WSH``, ``P2WSH-In-P2SH``, ``Ripple``, ``Solana``, ``Stellar``, ``Sui``, ``Tezos``, ``Tron``, ``XinFin``, ``Zilliqa``
+   * - Others
+     - ``BIP38``, ``Wallet Import Format``, ``Serialization``
