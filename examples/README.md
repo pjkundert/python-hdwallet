@@ -5,6 +5,8 @@ The ``hdwallet`` command serves as the main entry point for interacting with the
 It allows users to manage Hierarchical Deterministic (HD) Wallet, enabling key generation, wallet inspection, 
 and data dumping in a secure and user-friendly manner.
 
+![HDWallet-CLI](../docs/static/svg/hdwallet-cli.svg)
+
 ### Help
 
 ```
