@@ -98,7 +98,7 @@ class Litecoin(ICryptocurrency):
         "BIP39"
     })
     HDS = HDs({
-        "BIP32", "BIP44"
+        "BIP32", "BIP44", "BIP84"
     })
     DEFAULT_HD = HDS.BIP44
     ADDRESSES = Addresses((

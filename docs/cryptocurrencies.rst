@@ -891,7 +891,7 @@ This library simplifies the process of generating a new HDWallet's for:
     - 2
     - ``mainnet`` ``testnet``
     - SLIP10-Secp256k1
-    - ``BIP44`` ``BIP32``
+    - ``BIP84``, ``BIP44`` ``BIP32``
     - ✅
     - ``P2PKH`` ``P2SH`` ``P2WPKH`` ``P2WPKH-In-P2SH`` ``P2WSH`` ``P2WSH-In-P2SH``
   * - `Litecoin-Cash <https://github.com/litecoincash-project/litecoincash>`_
