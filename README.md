@@ -2,7 +2,7 @@
 
 # Hierarchical Deterministic (HD) Wallet
 
-[![Build Status](https://app.travis-ci.com/talonlab/python-hdwallet.svg?branch=master)](https://app.travis-ci.com/talonlab/python-hdwallet)
+[![Build Status](https://img.shields.io/github/actions/workflow/status/talonlab/python-hdwallet/build.yml)](https://github.com/talonlab/python-hdwallet/actions/workflows/build.yml)
 [![PyPI Version](https://img.shields.io/pypi/v/hdwallet.svg?color=blue)](https://pypi.org/project/hdwallet)
 [![Documentation Status](https://readthedocs.org/projects/hdwallet/badge/?version=master)](https://hdwallet.readthedocs.io)
 [![PyPI License](https://img.shields.io/pypi/l/hdwallet?color=black)](https://pypi.org/project/hdwallet)

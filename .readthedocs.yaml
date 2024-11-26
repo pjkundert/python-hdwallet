@@ -15,7 +15,8 @@ python:
             - cli
             - docs
 
-formats: all
+formats:
+  - html
 
 sphinx:
   builder: html
