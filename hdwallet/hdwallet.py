@@ -217,7 +217,7 @@ class HDWallet:
         if hd.name() in [
             "BIP32", "BIP44", "BIP86", "Cardano"
         ]:
-            self._semantic = kwargs.get("semantic", "p2pkh")
+            self._semantic = kwargs.get("semantic", self._cryptocurrency.DEFAULT_SEMANTIC)
         elif hd.name() == "BIP49":
             self._semantic = kwargs.get("semantic", "p2wpkh-in-p2sh")
         elif hd.name() in [
@@ -852,9 +852,7 @@ class HDWallet:
         :rtype: Optional[str]
         """
 
-        if self._hd.name() == "BIP141":
-            return self._hd.semantic()
-        return None
+        return self._semantic
 
     def cardano_type(self) -> Optional[str]:
         """
@@ -1654,15 +1652,12 @@ class HDWallet:
         if self._hd.name() in [
             "BIP32", "BIP44", "BIP49", "BIP84", "BIP86", "BIP141", "Cardano"
         ]:
-            if self._hd.name() == "BIP141":
-                _root.update(
-                    semantic=self.semantic()
-                )
             if self._hd.name() == "Cardano":
                 _root.update(
                     cardano_type=self.cardano_type()
                 )
             _root.update(
+                semantic=self.semantic(),
                 root_xprivate_key=self.root_xprivate_key(),
                 root_xpublic_key=self.root_xpublic_key(),
                 root_private_key=self.root_private_key(),

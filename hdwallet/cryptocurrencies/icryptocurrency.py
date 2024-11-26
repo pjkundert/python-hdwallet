@@ -71,6 +71,7 @@ class ICryptocurrency:
     ADDRESS_PREFIXES: Optional[AddressPrefixes] = None
     DEFAULT_ADDRESS_PREFIX: Optional[str] = None
     PARAMS: Optional[Params] = None
+    DEFAULT_SEMANTIC: str = "p2pkh"
 
     @classmethod
     def get_default_path(cls, network: Union[str, Type[INetwork]]) -> str:

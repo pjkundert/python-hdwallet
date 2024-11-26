@@ -23,14 +23,16 @@ class Mainnet(INetwork):
         "P2WSH": 0x00
     })    
     XPRIVATE_KEY_VERSIONS = XPrivateKeyVersions({
-        "P2PKH": 0x02fac398,
-        "P2SH": 0x02fac398,
+        "DOGECOIN": 0x02fac398,
+        "P2PKH": 0x0488ade4,
+        "P2SH": 0x0488ade4,
         "P2WPKH": 0x04b2430c,
         "P2WPKH_IN_P2SH": 0x049d7878
     })
     XPUBLIC_KEY_VERSIONS = XPublicKeyVersions({
-        "P2PKH": 0x02facafd,
-        "P2SH": 0x02facafd,
+        "DOGECOIN": 0x02facafd,
+        "P2PKH": 0x0488b21e,
+        "P2SH": 0x0488b21e,
         "P2WPKH": 0x04b24746,
         "P2WPKH_IN_P2SH": 0x049d7cb2
     })
@@ -48,12 +50,14 @@ class Testnet(INetwork):
         "P2WSH": 0x00
     })
     XPRIVATE_KEY_VERSIONS = XPrivateKeyVersions({
+        "DOGECOIN": 0x04358394,
         "P2PKH": 0x04358394,
         "P2SH": 0x04358394,
         "P2WPKH": 0x04358394,
         "P2WPKH_IN_P2SH": 0x04358394
     })
     XPUBLIC_KEY_VERSIONS = XPublicKeyVersions({
+        "DOGECOIN": 0x043587cf,
         "P2PKH": 0x043587cf,
         "P2SH": 0x043587cf,
         "P2WPKH": 0x043587cf,
@@ -98,3 +102,4 @@ class Dogecoin(ICryptocurrency):
         "P2PKH", "P2SH", "P2WPKH", {"P2WPKH_IN_P2SH": "P2WPKH-In-P2SH"}
     ))
     DEFAULT_ADDRESS = ADDRESSES.P2PKH
+    DEFAULT_SEMANTIC = "dogecoin"
