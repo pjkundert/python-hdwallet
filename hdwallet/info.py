@@ -12,14 +12,13 @@ __license__: str = "MIT"
 __author__: str = "Meheret Tesfaye Batu"
 __email__: str = "meherett.batu@gmail.com"
 __documentation__: str = "https://hdwallet.readthedocs.com"
-__description__: str = "Python-based library for the implementation of a hierarchical deterministic wallet " \
-                       "generator for more than 205+ multiple cryptocurrencies."
+__description__: str = "Python-based library for the implementation of a Hierarchical Deterministic (HD) Wallet generator supporting more than 200 cryptocurrencies."
 __url__: str = "https://github.com/talonlab/python-hdwallet"
 __tracker__: str = f"{__url__}/issues"
 __keywords__: List[str] = [
-    "ecc", "kholaw", "slip10", "ed25519", "nist256p1", "secp256k1"  # ECC keywords
+    "ecc", "kholaw", "slip10", "ed25519", "nist256p1", "secp256k1",  # ECC keywords
     "hd", "bip32", "bip44", "bip49", "bip84", "bip86", "bip141", "monero", "cardano",  # HD keywords
-    "entropy", "mnemonic", "seed", "bip39", "algorand", "electrum"  # Entropy, Mnemonic and Seed keywords
+    "entropy", "mnemonic", "seed", "bip39", "algorand", "electrum",  # Entropy, Mnemonic and Seed keywords
     "cryptocurrencies", "bitcoin", "ethereum", "cryptography", "cli", "cip1852"  # Other keywords
 ]
 __websites__: List[str] = [

@@ -52,15 +52,16 @@ templates_path = ["templates"]
 # This pattern also affects html_static_path and html_extra_path.
 exclude_patterns = []
 
-# -- Options for HTML output -------------------------------------------------
+# Disable PDF and EPUB builders
+builders = ['html']  # Only HTML builder
 
-html_logo = "static/svg/hdwallet-logo.svg"
+# -- Options for HTML output -------------------------------------------------
 
 # The theme to use for HTML and HTML Help pages.  See the documentation for
 # a list of builtin themes.
 html_theme = "furo"
 # Product logo name
-# html_logo = "static/png/hdwallet.png"
+html_logo = "static/svg/hdwallet-logo.svg"
 # Theme options
 html_theme_options = {
     # "canonical_url": "",
