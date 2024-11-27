@@ -1,4 +1,4 @@
-<img height="100" alt="HDWallet" src="./docs/static/svg/hdwallet-logo.svg">
+<img height="100" alt="HDWallet" src="https://raw.githubusercontent.com/talonlab/python-hdwallet/refs/heads/master/docs/static/svg/hdwallet-logo.svg">
 
 # Hierarchical Deterministic (HD) Wallet
 
@@ -155,15 +155,15 @@ print(json.dumps(hdwallet.dump(exclude={"indexes"}), indent=4, ensure_ascii=Fals
 ```
 </details>
 
-Explore more [Examples](./examples)
+Explore more [Examples](https://github.com/talonlab/python-hdwallet/blob/master/examples)
 
 ### Command Line Interface (CLI)
 
 The ``hdwallet`` CLI provides a simple way to generate wallets, derive addresses, and manage keys directly from your terminal, with options for exporting data in JSON and CSV formats. 
 
-![HDWallet-CLI](./docs/static/svg/hdwallet-cli.svg)
+![HDWallet-CLI](https://raw.githubusercontent.com/talonlab/python-hdwallet/refs/heads/master/docs/static/svg/hdwallet-cli.svg)
 
-Explore more [Commands](./examples#readme)
+Explore more [Commands](https://github.com/talonlab/python-hdwallet/blob/master/examples#readme)
 
 ### Clients
 
@@ -234,7 +234,7 @@ m/44'/60'/0'/0/10 0xEf4ba16373841C53a9Ba168873fC3967118C1d37 0x1d8e676c6da57922d
 ```
 </details>
 
-Explore more [Clients](./clients)
+Explore more [Clients](https://github.com/talonlab/python-hdwallet/blob/master/clients)
 
 ## Development
 
@@ -263,12 +263,12 @@ tests against a specific version of Python.
 
 ## Contributing
 
-Feel free to open an [issue](https://github.com/talonlab/hdwallet/issues) if you find a problem,
+Feel free to open an [issue](https://github.com/talonlab/python-hdwallet/issues) if you find a problem,
 or a pull request if you've solved an issue. And also any help in testing, development,
 documentation and other tasks is highly appreciated and useful to the project.
 There are tasks for contributors of all experience levels.
 
-For more information, see the [CONTRIBUTING.md](./CONTRIBUTING.md) file.
+For more information, see the [CONTRIBUTING.md](https://github.com/talonlab/python-hdwallet/blob/master/CONTRIBUTING.md) file.
 
 ## Supported Cryptocurrencies
 
@@ -487,12 +487,12 @@ This library simplifies the process of creating a new Hierarchical Deterministic
 
 ## Donations
 
-If you found this tool helpful, consider making a donation and help this repo reach ⭐!
+If you found this tool useful, consider supporting its development with a donation and help this repository gain more ⭐!
 
-| Coins       | Addresses                                  |
-|-------------|:-------------------------------------------|
-| BTC         | 16c7ajUwHEMaafrceuYSrd35SDjmfVdjoS         |
-| ETH, ERC-20 | 0xD3cbCB0B6F82A03C715D665b72dC44CEf54e6D9B |
+- **Bitcoin** - 16c7ajUwHEMaafrceuYSrd35SDjmfVdjoS
+- **Ethereum / ERC20** - 0xD3cbCB0B6F82A03C715D665b72dC44CEf54e6D9B
+
+Thank you very much for your support.
 
 ## License
 

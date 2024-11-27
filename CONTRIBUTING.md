@@ -2,7 +2,7 @@
 
 First off, thanks for taking the time to contribute and
 when contributing to this repository, please first discuss 
-the change you wish to make via [issue](https://github.com/meherett/hdwallet/issues) 
+the change you wish to make via [issue](https://github.com/talonlab/hdwallet/issues) 
 with the owners of this repository before making a change.
 
 ## Development
@@ -10,7 +10,7 @@ with the owners of this repository before making a change.
 To get started, just fork this repo, clone it locally, and run:
 
 ```
-$ pip install -e .[tests,docs] -r requirements.txt
+pip install -e .[cli,tests,docs] -r requirements.txt
 ```
 
 ## Pull Request
@@ -37,14 +37,20 @@ git push origin new-feature
 - Ensure any install or build dependencies are removed before the end of the layer when doing a build.
 - Include any relevant documentation updates
 
-GitHub's documentation for working on pull requests is [available here](https://help.github.com/articles/about-pull-requests/).
+GitHub's documentation for working on pull requests is [available here](https://help.github.com/articles/about-pull-requests).
 
 ## Testing
 
 You can run the tests with:
 
 ```
-$ pytest
+coverage run -m pytest
+```
+
+To see the coverage:
+
+```
+coverage report
 ```
 
 Or use `tox` to run the complete suite against the full set of build targets, or pytest to run specific 
@@ -52,4 +58,4 @@ tests against a specific version of Python.
 
 ## License
 
-Distributed under the [ISC](https://github.com/meherett/python-hdwallet/blob/master/LICENSE) license. See ``LICENSE`` for more information.
+Distributed under the [MIT](https://github.com/talonlab/python-hdwallet/blob/master/LICENSE) license. See ``LICENSE`` for more information.
