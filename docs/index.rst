@@ -4,8 +4,8 @@ Hierarchical Deterministic Wallet
 
 |Build Status| |PyPI Version| |Documentation Status| |PyPI License| |PyPI Python Version| |Coverage Status|
 
-.. |Build Status| image:: https://travis-ci.org/talonlab/python-hdwallet.svg?branch=master
-   :target: https://travis-ci.org/talonlab/python-hdwallet?branch=master
+.. |Build Status| image:: https://img.shields.io/github/actions/workflow/status/talonlab/python-hdwallet/build.yml
+   :target: https://github.com/talonlab/python-hdwallet/actions/workflows/build.yml
 
 .. |PyPI Version| image:: https://img.shields.io/pypi/v/hdwallet.svg?color=blue
    :target: https://pypi.org/project/hdwallet
