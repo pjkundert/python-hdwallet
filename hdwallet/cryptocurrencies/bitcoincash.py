@@ -73,7 +73,7 @@ class Testnet(INetwork):
     WIF_PREFIX = 0xef
 
 
-class Regtest(INetwork):
+class Regtest(Testnet):
 
     HRP = "bchreg"
 
