@@ -6,10 +6,6 @@ Cryptocurrencies
 
 This library simplifies the process of generating a new HDWallet's for:
 
-.. note::
-
-    All Cryptocurrencies testnet networks default paths are set to ``m/44'/1'/0'/0/0`` value.
-
 .. list-table::
   :width: 100%
   :header-rows: 1

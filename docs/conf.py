@@ -20,7 +20,6 @@ from hdwallet.info import (
 
 sys.path.insert(0, os.path.abspath(".."))
 
-
 # -- Project information -----------------------------------------------------
 
 project = "HDWallet"
