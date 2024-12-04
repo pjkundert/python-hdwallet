@@ -49,10 +49,10 @@ class Testnet(INetwork):
     PAYMENT_ADDRESS_HRP = "addr_test"
     REWARD_ADDRESS_HRP = "stake_test"
     XPRIVATE_KEY_VERSIONS = XPrivateKeyVersions({
-        "P2PKH": 0x0f4331d4
+        "P2PKH": 0x04358394
     })
     XPUBLIC_KEY_VERSIONS = XPublicKeyVersions({
-        "P2PKH": 0x0488b21e
+        "P2PKH": 0x043587cf
     })
 
 
