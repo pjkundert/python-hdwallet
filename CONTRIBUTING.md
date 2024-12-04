@@ -10,7 +10,7 @@ with the owners of this repository before making a change.
 To get started, just fork this repo, clone it locally, and run:
 
 ```
-pip install -e .[cli,tests,docs] -r requirements.txt
+pip install -e .[cli,tests,docs]
 ```
 
 ## Pull Request
