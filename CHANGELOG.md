@@ -1,0 +1,144 @@
+# Changelog
+
+## [v3.0.1](https://github.com/talonlab/python-hdwallet/tree/v3.0.1) (2024-11-27)
+
+[Full Changelog](https://github.com/talonlab/python-hdwallet/compare/v3.0.0...v3.0.1)
+
+**Improvements:**
+
+- Include a Source link in our PyPI metadata, pointing directly to this repository. 
+
+## [v3.0.0](https://github.com/talonlab/python-hdwallet/tree/v3.0.0) (2024-11-26)
+
+[Full Changelog](https://github.com/talonlab/python-hdwallet/compare/v2.2.1...v3.0.0)
+
+We are pleased to announce the release of **python-hdwallet v3.0.0**, a comprehensive update introducing new standards, enhanced functionality, and expanded support for diverse blockchain ecosystems.
+
+**New Features:**
+
+- Full support for entropy generation and mnemonic phrase creation for: ``Algorand``, ``Electrum-V1``, ``Electrum-V2``, ``Monero``
+-  Add new Elliptic Curve Cryptography's (ECCs): ``Kholaw-Ed25519``, ``SLIP10-Ed25519``, ``SLIP10-Ed25519-Blake2b``, ``SLIP10-Ed25519-Monero``, ``SLIP10-Nist256p1`` algorithms.
+- Add support for seed generation specific to: ``Algorand``, ``Cardano``,  ``Electrum-V1``, ``Electrum-V2``, ``Monero``
+- Extended support for Hierarchical Deterministic structures, including: ``BIP86``, ``Cardano``, ``Electrum-V1``, ``Electrum-V2``, ``Monero``
+- Support for advanced derivations: ``BIP86``, ``CIP1852``, ``Electrum``, ``Monero``, ``HDW (Our own derivation method)`` 
+- Comprehensive support for generating addresses across a wide range of protocols and formats: ``Algorand``, ``Aptos``, ``Avalanche``, ``Cardano``, ``Cosmos``, ``EOS``, ``Ergo``, ``Ethereum``, ``Filecoin``, ``Harmony``, ``Icon``, ``Injective``, ``Monero``, ``MultiversX``, ``Nano``, ``Near``, ``Neo``, ``OKT-Chain``, ``P2TR``, ``Ripple``, ``Solana``, ``Stellar``, ``Sui``, ``Tezos``, ``Tron``, ``XinFin``, ``Zilliqa``
+- BIP38: Secure, password-protected private key handling
+
+**New Cryptocurrencies:**
+
+With the integration of multiple Elliptic Curve Cryptography (ECC) algorithms, we have significantly expanded our support, enabling enhanced compatibility and functionality for a wide range of cryptocurrencies.
+
+<details>
+  <summary>See more</summary><br/>
+
+
+| Name             | Symbol | Coin Type |             Networks             |
+|:-----------------|:------:|:---------:|:--------------------------------:|
+| Adcoin           |  ACC   |    161    |            `mainnet`             |
+| Akash-Network    |  AKT   |    118    |            `mainnet`             |
+| Algorand         |  ALGO  |    283    |            `mainnet`             |
+| Aptos            |  APT   |    637    |            `mainnet`             |
+| Arbitrum         |  ARB   |    60     |            `mainnet`             |
+| Avalanche        |  AVAX  |   9000    |            `mainnet`             |
+| Avian            |  AVN   |    921    |            `mainnet`             |
+| Axelar           |  AXL   |    118    |            `mainnet`             |
+| Band-Protocol    |  BAND  |    494    |            `mainnet`             |
+| Binance          |  BNB   |    714    |            `mainnet`             |
+| Bitcoin-Atom     |  BCA   |    185    |            `mainnet`             |
+| Bitcoin-Cash-SLP |  SLP   |    145    |       `mainnet`, `testnet`       |
+| Bitcoin-Green    |  BITG  |    222    |            `mainnet`             |
+| Bitcoin-Private  |  BTCP  |    183    |       `mainnet`, `testnet`       |
+| Cardano          |  ADA   |   1815    |       `mainnet`, `testnet`       |
+| Celo             |  CELO  |   52752   |            `mainnet`             |
+| Chihuahua        |  HUA   |    118    |            `mainnet`             |
+| Cosmos           |  ATOM  |    118    |            `mainnet`             |
+| DeepOnion        | ONION  |    305    |            `mainnet`             |
+| Divi             |  DIVI  |    301    |       `mainnet`, `testnet`       |
+| eCash            |  XEC   |    145    |       `mainnet`, `testnet`       |
+| E-coin           |  ECN   |    115    |            `mainnet`             |
+| e-Gulden         |  EFL   |    78     |            `mainnet`             |
+| EOS              |  EOS   |    194    |            `mainnet`             |
+| Ergo             |  ERG   |    429    |       `mainnet`, `testnet`       |
+| Evrmore          |  EVR   |    175    |       `mainnet`, `testnet`       |
+| Fantom           |  FTM   |    60     |            `mainnet`             |
+| Fetch.ai         |  FET   |    118    |            `mainnet`             |
+| Filecoin         |  FIL   |    461    |            `mainnet`             |
+| Firo             |  FIRO  |    136    |            `mainnet`             |
+| Foxdcoin         |  FOXD  |    175    |       `mainnet`, `testnet`       |
+| Harmony          |  ONE   |   1023    |            `mainnet`             |
+| Horizen          |  ZEN   |    121    |            `mainnet`             |
+| Huobi-Token      |   HT   |    553    |            `mainnet`             |
+| Icon             |  ICX   |    74     |            `mainnet`             |
+| Injective        |  INJ   |    60     |            `mainnet`             |
+| InsaneCoin       |  INSN  |    68     |            `mainnet`             |
+| IRISnet          |  IRIS  |    566    |            `mainnet`             |
+| Kava             |  KAVA  |    459    |            `mainnet`             |
+| Landcoin         |  LDCN  |    63     |            `mainnet`             |
+| Metis            | METIS  |    60     |            `mainnet`             |
+| Monero           |  XMR   |    128    | `mainnet`, `stagenet`, `testnet` |
+| Monk             |  MONK  |    214    |            `mainnet`             |
+| MultiversX       |  EGLD  |    508    |            `mainnet`             |
+| Nano             |  XNO   |    165    |            `mainnet`             |
+| Near             |  NEAR  |    397    |            `mainnet`             |
+| Neo              |  NEO   |    888    |            `mainnet`             |
+| Nine-Chronicles  |  NCG   |    567    |            `mainnet`             |
+| OKT-Chain        |  OKT   |    996    |            `mainnet`             |
+| Onix             |  ONX   |    174    |            `mainnet`             |
+| Ontology         |  ONT   |   1024    |            `mainnet`             |
+| Optimism         |   OP   |    60     |            `mainnet`             |
+| Osmosis          |  OSMO  |    118    |            `mainnet`             |
+| Particl          |  PART  |    44     |            `mainnet`             |
+| Pi-Network       |   PI   |  314159   |            `mainnet`             |
+| Polygon          | MATIC  |    60     |            `mainnet`             |
+| PoSW-Coin        |  POSW  |    47     |            `mainnet`             |
+| Ripple           |  XRP   |    144    |            `mainnet`             |
+| Ritocoin         |  RITO  |   19169   |            `mainnet`             |
+| Secret           |  SCRT  |    529    |            `mainnet`             |
+| Shentu           |  CTK   |    118    |            `mainnet`             |
+| Solana           |  SOL   |    501    |            `mainnet`             |
+| Stafi            |  FIS   |    907    |            `mainnet`             |
+| Stellar          |  XLM   |    148    |            `mainnet`             |
+| Sui              |  SUI   |    784    |            `mainnet`             |
+| Terra            |  LUNA  |    330    |            `mainnet`             |
+| Tezos            |  XTZ   |   1729    |            `mainnet`             |
+| Theta            | THETA  |    500    |            `mainnet`             |
+| TWINS            | TWINS  |    970    |       `mainnet`, `testnet`       |
+| VeChain          |  VET   |    818    |            `mainnet`             |
+| Verge            |  XVG   |    77     |            `mainnet`             |
+| Voxels           |  VOX   |    129    |            `mainnet`             |
+| Wagerr           |  WGR   |     0     |            `mainnet`             |
+| Zetacoin         |  ZET   |    719    |            `mainnet`             |
+| Zilliqa          |  ZIL   |    313    |            `mainnet`             |
+| ZooBC            |  ZBC   |    883    |            `mainnet`             |
+
+</details>
+
+**Enhancements:**
+
+- Derivation Path Ranges For Dumps: The derivation path supports ranges defined directly in the string format. For example:
+    - A path like `m/0-2` will be automatically unrolled into:
+      ```
+      m/0
+      m/1
+      m/2
+      ```
+  - Tuple-Based Ranges: Tuples can be passed directly to the derivation function for dynamic and programmatic control. For instance:
+    ```python
+    BIP44Derivation(address=(0, 2))
+    ```
+    This will generate the derivation paths for accounts `m/44'/0'/0'/0/0` through `m/44'/0'/0'/0/2` inclusively.
+      ```
+      m/44'/0'/0'/0/0
+      m/44'/0'/0'/0/1
+      m/44'/0'/0'/0/2
+      ```
+- Modify BIP32 name into Custom derivation.
+
+**Closed issues:**
+
+- Support Uncompressed addresses for SLIP10-Secp256k1 ECC #58 #50 
+- Add BIP86 Hierarchical Deterministic and P2RT Address for Bitcoin and Qtum #27 #84 
+- Add BIP84 Hierarchical Deterministic for Litecoin #78
+- Add new cryptocurrencies #45 #76  #83
+
+This release marks a significant milestone in delivering a robust, versatile tool for developers and blockchain enthusiasts. For more https://hdwallet.readthedocs.io
