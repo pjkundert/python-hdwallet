@@ -12,7 +12,7 @@ from hdwallet.hds import BIP141HD
 
 def test_bip141_hd(data):
     bip141_hd: BIP141HD = BIP141HD(
-        ecc=Cryptocurrency.ECC, semantic="p2wpkh"
+        ecc=Cryptocurrency.ECC, wif_prefix = Cryptocurrency.NETWORKS.MAINNET.WIF_PREFIX, semantic="p2wpkh"
     )
 
     bip141_hd.from_seed(

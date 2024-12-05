@@ -6,6 +6,7 @@
 # file COPYING or https://opensource.org/license/mit
 
 from hdwallet.hds import ElectrumV2HD
+from hdwallet.cryptocurrencies import Bitcoin as Cryptocurrency
 from hdwallet.derivations import ElectrumDerivation
 from hdwallet.const import (
     PUBLIC_KEY_TYPES, MODES
@@ -15,7 +16,9 @@ from hdwallet.const import (
 def test_electrum_v2_segwit_2fa_hd(data):
 
     electrum_v2_hd: ElectrumV2HD = ElectrumV2HD(
-        mode=MODES.SEGWIT, public_key_type=PUBLIC_KEY_TYPES.UNCOMPRESSED
+        mode=MODES.SEGWIT,
+        wif_prefix = Cryptocurrency.NETWORKS.MAINNET.WIF_PREFIX,
+        public_key_type=PUBLIC_KEY_TYPES.UNCOMPRESSED
     )
 
     electrum_v2_hd.from_seed(

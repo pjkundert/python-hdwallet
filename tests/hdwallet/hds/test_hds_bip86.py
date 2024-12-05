@@ -11,7 +11,12 @@ from hdwallet.hds import BIP86HD
 
 def test_bip86_hd(data):
     bip86_hd: BIP86HD = BIP86HD(
-        ecc=Cryptocurrency.ECC, coin_type=Cryptocurrency.COIN_TYPE, account=0, change="external-chain", address=0
+        ecc=Cryptocurrency.ECC,
+        coin_type=Cryptocurrency.COIN_TYPE,
+        wif_prefix=Cryptocurrency.NETWORKS.MAINNET.WIF_PREFIX,
+        account=0,
+        change="external-chain",
+        address=0
     )
 
     bip86_hd.from_seed(

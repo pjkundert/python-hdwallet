@@ -12,7 +12,7 @@ from hdwallet.hds import BIP49HD
 
 def test_bip49_hd(data):
     bip49_hd: BIP49HD = BIP49HD(
-        ecc=Cryptocurrency.ECC
+        ecc=Cryptocurrency.ECC, wif_prefix = Cryptocurrency.NETWORKS.MAINNET.WIF_PREFIX
     )
 
     bip49_hd.from_seed(
