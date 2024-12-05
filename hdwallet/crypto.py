@@ -15,6 +15,7 @@ import hashlib
 import hmac
 
 from .libs.ripemd160 import ripemd160 as r160
+from .const import SLIP10_SECP256K1_CONST
 from .utils import (
     get_bytes, encode, integer_to_bytes
 )
@@ -376,6 +377,23 @@ def ripemd160(data: Union[str, bytes]) -> bytes:
     if "ripemd160" in hashlib.algorithms_available:
         hashlib.new("ripemd160", get_bytes(data)).digest()
     return r160(get_bytes(data))
+
+
+def get_checksum(data: Union[str, bytes]) -> bytes:
+    """
+    Calculate the checksum for the given raw bytes.
+
+    The checksum is derived by performing a double SHA-256 hash on the input
+    and returning the first few bytes, as determined by `CHECKSUM_BYTE_LENGTH`.
+
+    :param data: The raw data to checksum.
+    :type data: Union[str, bytes]
+
+    :returns: The checksum of the data.
+    :rtype: bytes
+    """
+
+    return double_sha256(data)[:SLIP10_SECP256K1_CONST.CHECKSUM_BYTE_LENGTH]
 
 
 def sha512(data: Union[str, bytes]) -> bytes:

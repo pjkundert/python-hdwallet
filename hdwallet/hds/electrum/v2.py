@@ -22,7 +22,7 @@ from ...const import (
     PUBLIC_KEY_TYPES, MODES, WIF_TYPES
 )
 from ...exceptions import (
-    Error, DerivationError, AddressError
+    Error, DerivationError, AddressError, WIFError
 )
 from ..bip32 import BIP32HD
 from ..ihd import IHD
@@ -33,6 +33,7 @@ class ElectrumV2HD(IHD):
     _mode: str
     _wif_type: str
     _public_key_type: str
+    _wif_prefix: Optional[int] = None
     _derivation: ElectrumDerivation
 
     def __init__(
@@ -66,6 +67,7 @@ class ElectrumV2HD(IHD):
             raise Error(
                 f"Invalid {self.name()} public key type", expected=PUBLIC_KEY_TYPES.get_types(), got=public_key_type
             )
+        self._wif_prefix = kwargs.get("wif_prefix", None)
         self._public_key_type = public_key_type
         self._bip32_hd: BIP32HD = BIP32HD(
             ecc=Bitcoin.ECC, public_key_type=self._public_key_type
@@ -222,6 +224,9 @@ class ElectrumV2HD(IHD):
         :rtype: Optional[str]
         """
 
+        if self._wif_prefix is None:
+            raise WIFError("WIF prefix is required")
+
         if wif_type:
             if wif_type not in WIF_TYPES.get_types():
                 raise Error(
@@ -232,7 +237,7 @@ class ElectrumV2HD(IHD):
             _wif_type: str = self._wif_type
 
         return private_key_to_wif(
-            private_key=self.master_private_key(), wif_type=_wif_type
+            private_key=self.master_private_key(), wif_type=_wif_type, wif_prefix=self._wif_prefix
         )
 
     def master_public_key(self, public_key_type: Optional[str] = None) -> str:
@@ -273,6 +278,9 @@ class ElectrumV2HD(IHD):
         :rtype: Optional[str]
         """
 
+        if self._wif_prefix is None:
+            raise WIFError("WIF prefix is required")
+
         if wif_type:
             if wif_type not in WIF_TYPES.get_types():
                 raise Error(
@@ -283,7 +291,7 @@ class ElectrumV2HD(IHD):
             _wif_type: str = self._wif_type
 
         return private_key_to_wif(
-            private_key=self.private_key(), wif_type=_wif_type
+            private_key=self.private_key(), wif_type=_wif_type, wif_prefix=self._wif_prefix
         )
 
     def wif_type(self) -> str:

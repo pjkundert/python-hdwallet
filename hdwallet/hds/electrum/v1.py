@@ -23,7 +23,7 @@ from ...derivations import (
 from ...crypto import double_sha256
 from ...cryptocurrencies import Bitcoin
 from ...exceptions import (
-    Error, DerivationError, PublicKeyError, PrivateKeyError, SeedError
+    Error, DerivationError, PublicKeyError, PrivateKeyError, SeedError, WIFError
 )
 from ...utils import (
     get_bytes, encode, bytes_to_string, bytes_to_integer, integer_to_bytes
@@ -41,6 +41,7 @@ class ElectrumV1HD(IHD):
     _public_key: IPublicKey
     _public_key_type: str
     _wif_type: str
+    _wif_prefix: Optional[int] = None
     _derivation: ElectrumDerivation
 
     def __init__(self, public_key_type: str = PUBLIC_KEY_TYPES.UNCOMPRESSED, **kwargs) -> None:
@@ -62,6 +63,7 @@ class ElectrumV1HD(IHD):
             raise Error(
                 "Invalid public key type", expected=PUBLIC_KEY_TYPES.get_types(), got=public_key_type
             )
+        self._wif_prefix = kwargs.get("wif_prefix", None)
         self._public_key_type = public_key_type
         self._master_private_key = None
         self._private_key = None
@@ -147,8 +149,12 @@ class ElectrumV1HD(IHD):
         :return: Updated instance of ElectrumV1HD.
         :rtype: ElectrumV1HD
         """
+
+        if self._wif_prefix is None:
+            raise WIFError("WIF prefix is required")
+
         return self.from_private_key(
-            private_key=wif_to_private_key(wif=wif)
+            private_key=wif_to_private_key(wif=wif, wif_prefix=self._wif_prefix)
         )
 
     def from_public_key(self, public_key: Union[bytes, str, IPublicKey]) -> "ElectrumV1HD":
@@ -284,6 +290,9 @@ class ElectrumV1HD(IHD):
         :rtype: Optional[str]
         """
 
+        if self._wif_prefix is None:
+            raise WIFError("WIF prefix is required")
+
         if wif_type:
             if wif_type not in WIF_TYPES.get_types():
                 raise Error(
@@ -294,7 +303,7 @@ class ElectrumV1HD(IHD):
             _wif_type: str = self._wif_type
 
         return private_key_to_wif(
-            private_key=self.master_private_key(), wif_type=_wif_type
+            private_key=self.master_private_key(), wif_type=_wif_type, wif_prefix=self._wif_prefix
         ) if self.master_private_key() else None
 
     def master_public_key(self, public_key_type: Optional[str] = None) -> str:
@@ -345,6 +354,9 @@ class ElectrumV1HD(IHD):
         if not self._private_key:
             return None
 
+        if self._wif_prefix is None:
+            raise WIFError("WIF prefix is required")
+
         if wif_type:
             if wif_type not in WIF_TYPES.get_types():
                 raise Error(
@@ -355,7 +367,7 @@ class ElectrumV1HD(IHD):
             _wif_type: str = self._wif_type
 
         return private_key_to_wif(
-            private_key=self.private_key(), wif_type=_wif_type
+            private_key=self.private_key(), wif_type=_wif_type, wif_prefix=self._wif_prefix
         )
 
     def wif_type(self) -> str:

@@ -37,7 +37,7 @@ from ..keys import (
     serialize, deserialize, is_root_key
 )
 from ..exceptions import (
-    Error, AddressError, DerivationError, ExtendedKeyError, PublicKeyError, PrivateKeyError, SeedError
+    Error, AddressError, DerivationError, ExtendedKeyError, PublicKeyError, PrivateKeyError, SeedError, WIFError
 )
 from ..utils import (
     get_bytes, get_hmac, bytes_to_integer, integer_to_bytes, bytes_to_string, reset_bits, set_bits
@@ -58,6 +58,7 @@ class BIP32HD(IHD):
     _public_key: Optional[IPublicKey] = None
     _public_key_type: str = PUBLIC_KEY_TYPES.COMPRESSED
     _wif_type: str = WIF_TYPES.WIF_COMPRESSED
+    _wif_prefix: Optional[int] = None
     _fingerprint: Optional[bytes] = None
     _parent_fingerprint: Optional[bytes] = None
     _strict: Optional[bool] = None
@@ -97,6 +98,7 @@ class BIP32HD(IHD):
                 expected=PUBLIC_KEY_TYPES.get_types(),
                 got=public_key_type
             )
+        self._wif_prefix = kwargs.get("wif_prefix", None)
         self._public_key_type = public_key_type
         self._derivation = CustomDerivation(
             path=kwargs.get("path", None), indexes=kwargs.get("indexes", None)
@@ -306,13 +308,16 @@ class BIP32HD(IHD):
         :rtype: BIP32HD
         """
 
-        if get_wif_type(wif=wif) == "wif-compressed":
+        if self._wif_prefix is None:
+            raise WIFError("WIF prefix is required")
+
+        if get_wif_type(wif=wif, wif_prefix=self._wif_prefix) == "wif-compressed":
             self._public_key_type: str = PUBLIC_KEY_TYPES.COMPRESSED
             self._wif_type: str = WIF_TYPES.WIF_COMPRESSED
         else:
             self._public_key_type: str = PUBLIC_KEY_TYPES.UNCOMPRESSED
             self._wif_type: str = WIF_TYPES.WIF
-        self.from_private_key(private_key=wif_to_private_key(wif=wif))
+        self.from_private_key(private_key=wif_to_private_key(wif=wif, wif_prefix=self._wif_prefix))
         self._strict = None
         return self
 
@@ -726,6 +731,9 @@ class BIP32HD(IHD):
         :rtype: Optional[str]
         """
 
+        if self._wif_prefix is None:
+            raise WIFError("WIF prefix is required")
+
         if wif_type:
             if wif_type not in WIF_TYPES.get_types():
                 raise Error(
@@ -736,7 +744,7 @@ class BIP32HD(IHD):
             _wif_type: str = self._wif_type
 
         return private_key_to_wif(
-            private_key=self.root_private_key(), wif_type=_wif_type
+            private_key=self.root_private_key(), wif_type=_wif_type, wif_prefix=self._wif_prefix
         ) if self.root_private_key() else None
 
     def root_chain_code(self) -> Optional[str]:
@@ -859,6 +867,9 @@ class BIP32HD(IHD):
         :rtype: Optional[str]
         """
 
+        if self._wif_prefix is None:
+            raise WIFError("WIF prefix is required")
+
         if wif_type:
             if wif_type not in WIF_TYPES.get_types():
                 raise Error(
@@ -871,7 +882,7 @@ class BIP32HD(IHD):
             _wif_type: str = self._wif_type
 
         return private_key_to_wif(
-            private_key=self.private_key(), wif_type=_wif_type
+            private_key=self.private_key(), wif_type=_wif_type, wif_prefix=self._wif_prefix
         ) if self.private_key() else None
 
     def wif_type(self) -> Optional[str]:

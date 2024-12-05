@@ -234,14 +234,19 @@ class HDWallet:
                 ecc=cryptocurrency.ECC,
                 public_key_type=self._public_key_type,
                 semantic=self._semantic,
-                coin_type=self._cryptocurrency.COIN_TYPE
+                coin_type=self._cryptocurrency.COIN_TYPE,
+                wif_prefix=self._network.WIF_PREFIX
             )
         elif hd.name() == "Cardano":
             self._hd = hd(cardano_type=self._cardano_type)
         elif hd.name() == "Electrum-V1":
-            self._hd = hd(public_key_type=self._public_key_type)
+            self._hd = hd(
+                public_key_type=self._public_key_type, wif_prefix=self._network.WIF_PREFIX
+            )
         elif hd.name() == "Electrum-V2":
-            self._hd = hd(mode=self._mode, public_key_type=self._public_key_type)
+            self._hd = hd(
+                mode=self._mode, public_key_type=self._public_key_type, wif_prefix=self._network.WIF_PREFIX
+            )
         elif hd.name() == "Monero":
             self._hd = hd(network=self._network.name())
 
@@ -988,7 +993,7 @@ class HDWallet:
         :rtype: Optional[str]
         """
 
-        if self._hd.name() not in ["Cardano"]:
+        if self._hd.name() not in ["Cardano", "Monero"]:
             if self._hd.name() in ["Electrum-V1", "Electrum-V2"]:
                 return self._hd.master_wif(wif_type=wif_type)
             return self._hd.root_wif(wif_type=wif_type)
@@ -1042,7 +1047,7 @@ class HDWallet:
         :rtype: Optional[str]
         """
 
-        if self._hd.name() not in ["Cardano"]:
+        if self._hd.name() not in ["Cardano", "Monero"]:
             if self._hd.name() in ["Electrum-V1", "Electrum-V2"]:
                 return self._hd.master_wif(wif_type=wif_type)
             return self._hd.root_wif(wif_type=wif_type)
@@ -1164,7 +1169,7 @@ class HDWallet:
         :rtype: Optional[str]
         """
 
-        if self._hd.name() not in ["Cardano"]:
+        if self._hd.name() not in ["Cardano", "Monero"]:
             return self._hd.wif(wif_type=wif_type)
         return None
 

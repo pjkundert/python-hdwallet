@@ -84,6 +84,10 @@ class AddressError(Error):
     pass
 
 
+class WIFError(Error):
+    pass
+
+
 class SymbolError(Error):
     pass
 
@@ -91,14 +95,18 @@ class SymbolError(Error):
 class NetworkError(Error):
     pass
 
+
 class PublicKeyError(Error):
     pass
+
 
 class PrivateKeyError(Error):
     pass
 
+
 class XPublicKeyError(Error):
     pass
+
 
 class XPrivateKeyError(Error):
     pass
