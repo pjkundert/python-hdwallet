@@ -1,4 +1,8 @@
-<img height="100" alt="HDWallet" src="https://raw.githubusercontent.com/talonlab/python-hdwallet/refs/heads/master/docs/static/svg/hdwallet-logo.svg">
+<div align="right">
+    <a target="_blank" href="https://hdwallet.online"><img height="25" alt="Desktop" src="https://raw.githubusercontent.com/talonlab/python-hdwallet/refs/heads/master/docs/static/svg/online-badge.svg"></a>
+    <a target="_blank" href="https://github.com/talonlab/hdwallet-desktop"><img height="25" alt="Desktop" src="https://raw.githubusercontent.com/talonlab/python-hdwallet/refs/heads/master/docs/static/svg/desktop-badge.svg"></a>
+    <img align="left" height="100" alt="HDWallet" src="https://raw.githubusercontent.com/talonlab/python-hdwallet/refs/heads/master/docs/static/svg/hdwallet-logo.svg">
+</div><br><br><br>
 
 # Hierarchical Deterministic (HD) Wallet
 
@@ -491,6 +495,7 @@ If you found this tool useful, consider supporting its development with a donati
 
 - **Bitcoin** - 16c7ajUwHEMaafrceuYSrd35SDjmfVdjoS
 - **Ethereum / ERC20** - 0xD3cbCB0B6F82A03C715D665b72dC44CEf54e6D9B
+- **Solana** - 9cVoan5GvnpVvysEkFWEFR4k9cpTdWKmqQ6Gi7nwM5ES
 
 Thank you very much for your support.
 

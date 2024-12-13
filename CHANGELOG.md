@@ -1,5 +1,34 @@
 # Changelog
 
+## [v3.1.0](https://github.com/talonlab/python-hdwallet/tree/v3.1.0) (2024-12-13)
+
+[Full Changelog](https://github.com/talonlab/python-hdwallet/compare/v3.0.1...v3.1.0)
+
+**New Additions:**
+
+- Add `WIFError` class on exception
+- Add more const values for `SLIP10_SECP256K1_CONST`
+  - PRIVATE_KEY_UNCOMPRESSED_PREFIX=0x00, 
+  - PRIVATE_KEY_COMPRESSED_PREFIX=0x01 
+  - CHECKSUM_BYTE_LENGTH=4
+
+**Enhancements:**
+
+- Upgrade Wallet Import Format (WIF) implementations of all functions
+- Update `from_wif`, `root_wif`, and `wif` of BIP32 HD functions
+- Update `from_wif`, `master_wif`, and `wif` of Electrum-V1 HD functions
+- Update `master_wif`, and `wif` of Electrum-V2 HD functions
+- Update `master_wif`, `root_wif`, and `wif` of maine HDWallet functions
+- Moved `get_checksum` function from wif.py into crypto.py
+
+**Fix Bugs:**
+
+- Fix Cardano testnet network extended versions
+
+**Merge pull requests:**
+
+- Fix bitcoin-cash regtest config #104 (@amikingo)
+
 ## [v3.0.1](https://github.com/talonlab/python-hdwallet/tree/v3.0.1) (2024-11-27)
 
 [Full Changelog](https://github.com/talonlab/python-hdwallet/compare/v3.0.0...v3.0.1)
