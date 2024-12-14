@@ -108,7 +108,7 @@ class HDWallet:
         self._cryptocurrency = cryptocurrency()
 
         if hd is None:  # Use default hd
-            hd = HDS[self._cryptocurrency.DEFAULT_HD]
+            hd = HDS.hd(self._cryptocurrency.DEFAULT_HD)
         elif hd is not None and not issubclass(hd, IHD):
             raise Error(
                 "Invalid Hierarchical Deterministic (HD) sub-class", expected=Type[IHD], got=type(hd)
