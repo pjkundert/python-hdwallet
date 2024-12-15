@@ -1,5 +1,23 @@
 # Changelog
 
+## [v3.2.0](https://github.com/talonlab/python-hdwallet/tree/v3.2.0) (2024-12-15)
+
+[Full Changelog](https://github.com/talonlab/python-hdwallet/compare/v3.1.0...v3.2.0)
+
+**Improvements:**
+
+- Modify default address assignment to align with HD wallet standards and semantic configurations.
+- Set default Electrum V1 and V2 HD's wif_prefix into `Bitcoin.NETWORKS.MAINNET.WIF_PREFIX`
+
+**Fix Bugs:**
+
+- Fix: WIF value return funcs of BIP32, Electrum-V1 & Electrum-V2 HD's
+- Fix: Tezos address return function
+
+**Closed issues:**
+
+- Fix: use default HD class issue #107
+
 ## [v3.1.0](https://github.com/talonlab/python-hdwallet/tree/v3.1.0) (2024-12-13)
 
 [Full Changelog](https://github.com/talonlab/python-hdwallet/compare/v3.0.1...v3.1.0)

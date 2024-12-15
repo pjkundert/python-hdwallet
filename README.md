@@ -491,7 +491,7 @@ This library simplifies the process of creating a new Hierarchical Deterministic
 
 ## Donations
 
-If you found this tool useful, consider supporting its development with a donation and help this repository gain more ⭐!
+If this tool was helpful, support its development with a donation or a ⭐!
 
 - **Bitcoin** - 16c7ajUwHEMaafrceuYSrd35SDjmfVdjoS
 - **Ethereum / ERC20** - 0xD3cbCB0B6F82A03C715D665b72dC44CEf54e6D9B
