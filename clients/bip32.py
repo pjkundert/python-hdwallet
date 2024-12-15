@@ -37,7 +37,7 @@ bip39_seed: BIP39Seed = BIP39Seed(seed=seed)
 
 # Initialize BIP32 HD
 bip32_hd: BIP32HD = BIP32HD(
-    ecc=Cryptocurrency.ECC
+    ecc=Cryptocurrency.ECC, wif_prefix=Cryptocurrency.NETWORKS.MAINNET.WIF_PREFIX
 )
 # Update BIP32 HD root keys from seed
 bip32_hd.from_seed(

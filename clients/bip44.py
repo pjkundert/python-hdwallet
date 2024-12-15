@@ -8,7 +8,9 @@ from hdwallet.mnemonics.bip39 import (
 )
 from hdwallet.seeds.bip39 import BIP39Seed
 from hdwallet.cryptocurrencies import Bitcoin as Cryptocurrency
-from hdwallet.derivations import BIP44Derivation
+from hdwallet.derivations import (
+    BIP44Derivation, CHANGES
+)
 from hdwallet.hds import BIP44HD
 
 
@@ -37,7 +39,12 @@ bip39_seed: BIP39Seed = BIP39Seed(seed=seed)
 
 # Initialize BIP44 HD
 bip44_hd: BIP44HD = BIP44HD(
-    ecc=Cryptocurrency.ECC, coin_type=Cryptocurrency.COIN_TYPE, account=0, change="external-chain", address=0
+    ecc=Cryptocurrency.ECC,
+    wif_prefix=Cryptocurrency.NETWORKS.MAINNET.WIF_PREFIX,
+    coin_type=Cryptocurrency.COIN_TYPE,
+    account=0,
+    change=CHANGES.EXTERNAL_CHAIN,
+    address=0
 )
 # Update BIP44 HD root keys from seed
 bip44_hd.from_seed(
@@ -57,7 +64,7 @@ bip44_derivation: BIP44Derivation = BIP44Derivation(
     coin_type=Cryptocurrency.COIN_TYPE
 )
 bip44_derivation.from_account(account=0)
-bip44_derivation.from_change(change="internal-chain")
+bip44_derivation.from_change(change=CHANGES.INTERNAL_CHAIN)
 bip44_derivation.from_address(address=0)
 
 # Update current BIP44 HD derivation
@@ -67,7 +74,7 @@ bip44_hd.from_derivation(
 # Or update current BIP44 HD derivation by changing indexes
 # bip44_hd.from_coin_type(coin_type=Cryptocurrency.COIN_TYPE)
 # bip44_hd.from_account(account=0)
-# bip44_hd.from_change(change="internal-chain")
+# bip44_hd.from_change(change=CHANGES.INTERNAL_CHAIN)
 # bip44_hd.from_address(address=0)
 
 # Dump derived keys

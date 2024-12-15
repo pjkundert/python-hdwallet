@@ -8,7 +8,9 @@ from hdwallet.mnemonics.bip39 import (
 )
 from hdwallet.seeds.bip39 import BIP39Seed
 from hdwallet.cryptocurrencies import Bitcoin as Cryptocurrency
-from hdwallet.derivations import BIP86Derivation
+from hdwallet.derivations import (
+    BIP86Derivation, CHANGES
+)
 from hdwallet.hds import BIP86HD
 
 
@@ -37,7 +39,12 @@ bip39_seed: BIP39Seed = BIP39Seed(seed=seed)
 
 # Initialize BIP86 HD
 bip86_hd: BIP86HD = BIP86HD(
-    ecc=Cryptocurrency.ECC, coin_type=Cryptocurrency.COIN_TYPE, account=0, change="external-chain", address=0
+    ecc=Cryptocurrency.ECC,
+    wif_prefix=Cryptocurrency.NETWORKS.MAINNET.WIF_PREFIX,
+    coin_type=Cryptocurrency.COIN_TYPE,
+    account=0,
+    change=CHANGES.EXTERNAL_CHAIN,
+    address=0
 )
 # Update BIP86 HD root keys from seed
 bip86_hd.from_seed(
@@ -57,7 +64,7 @@ bip86_derivation: BIP86Derivation = BIP86Derivation(
     coin_type=Cryptocurrency.COIN_TYPE
 )
 bip86_derivation.from_account(account=0)
-bip86_derivation.from_change(change="external-chain")
+bip86_derivation.from_change(change=CHANGES.INTERNAL_CHAIN)
 bip86_derivation.from_address(address=1)
 
 # Update current BIP86 HD derivation
@@ -67,7 +74,7 @@ bip86_hd.from_derivation(
 # Or update current BIP86 HD derivation by changing indexes
 # bip86_hd.from_coin_type(coin_type=Cryptocurrency.COIN_TYPE)
 # bip86_hd.from_account(account=0)
-# bip86_hd.from_change(change="internal-chain")
+# bip86_hd.from_change(change=CHANGES.INTERNAL_CHAIN)
 # bip86_hd.from_address(address=0)
 
 # Dump derived keys
