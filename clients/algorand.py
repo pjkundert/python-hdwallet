@@ -35,5 +35,5 @@ hdwallet: HDWallet = HDWallet(
 )
 
 print(json.dumps(hdwallet.dump(exclude={
-    "root", "indexes", "xprivate_key", "xpublic_key"
+    "root", "indexes", "xprivate_key", "xpublic_key", "wif", "chain_code", "parent_fingerprint"
 }), indent=4, ensure_ascii=False))
