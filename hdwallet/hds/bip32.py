@@ -732,7 +732,7 @@ class BIP32HD(IHD):
         """
 
         if self._wif_prefix is None:
-            raise WIFError("WIF prefix is required")
+            return None
 
         if wif_type:
             if wif_type not in WIF_TYPES.get_types():
@@ -868,7 +868,7 @@ class BIP32HD(IHD):
         """
 
         if self._wif_prefix is None:
-            raise WIFError("WIF prefix is required")
+            return None
 
         if wif_type:
             if wif_type not in WIF_TYPES.get_types():
