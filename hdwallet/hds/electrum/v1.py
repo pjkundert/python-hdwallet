@@ -63,7 +63,7 @@ class ElectrumV1HD(IHD):
             raise Error(
                 "Invalid public key type", expected=PUBLIC_KEY_TYPES.get_types(), got=public_key_type
             )
-        self._wif_prefix = kwargs.get("wif_prefix", None)
+        self._wif_prefix = kwargs.get("wif_prefix", Bitcoin.NETWORKS.MAINNET.WIF_PREFIX)
         self._public_key_type = public_key_type
         self._master_private_key = None
         self._private_key = None
