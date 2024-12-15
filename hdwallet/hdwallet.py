@@ -56,6 +56,7 @@ class HDWallet:
     _network: INetwork
     _address: Type[IAddress]
     _address_type: Optional[str] = None
+    _address_prefix: Optional[str] = None
 
     _entropy: Optional[IEntropy] = None
     _language: Optional[str] = None
@@ -187,6 +188,21 @@ class HDWallet:
 
         if address is None:  # Use default address
             address = self._cryptocurrency.DEFAULT_ADDRESS
+            if hd.name() == "BIP49":
+                address = "P2WPKH-In-P2SH"
+            elif hd.name() == "BIP84":
+                address = "P2WPKH"
+            elif hd.name() == "BIP86":
+                address = "P2TR"
+            elif hd.name() == "BIP141":
+                if self._semantic == SEMANTICS.P2WPKH:
+                    address = "P2WPKH"
+                elif self._semantic == SEMANTICS.P2WPKH_IN_P2SH:
+                    address = "P2WPKH-In-P2SH"
+                elif self._semantic == SEMANTICS.P2WSH:
+                    address = "P2WSH"
+                elif self._semantic == SEMANTICS.P2WSH_IN_P2SH:
+                    address = "P2WSH-In-P2SH"
         elif issubclass(address, IAddress):
             address = address.name()
         if address not in self._cryptocurrency.ADDRESSES.get_addresses():
@@ -199,6 +215,10 @@ class HDWallet:
         self._address_type = kwargs.get(
             "address_type", self._cryptocurrency.DEFAULT_ADDRESS_TYPE
         )
+        if self._cryptocurrency.NAME == "Tezos":
+            self._address_prefix = kwargs.get(
+                "address_prefix", self._cryptocurrency.DEFAULT_ADDRESS_PREFIX
+            )
 
         if hd.name() not in cryptocurrency.HDS.get_hds():
             raise CryptocurrencyError(
@@ -615,7 +635,9 @@ class HDWallet:
         """
 
         if self._hd.name() in ["Cardano", "Monero"]:
-            raise Error(f"Wallet Import Format (WIF) is not supported by {self._hd.name()} HD wallet's")
+            raise Error(f"WIF isn't supported by {self._hd.name()} HD")
+        if self._network.WIF_PREFIX is None:
+            raise Error(f"WIF isn't supported by {self._cryptocurrency.NAME} cryptocurrency")
 
         self._hd.from_wif(wif=wif)
         return self
@@ -644,7 +666,7 @@ class HDWallet:
         """
 
         if self._hd.name() in ["Monero"]:
-            raise Error(f"From public key is not implemented for the {self._hd.name()} HD type")
+            raise Error(f"From public key isn't implemented for the {self._hd.name()} HD type")
         self._hd.from_public_key(public_key=public_key)
         return self
 
@@ -671,7 +693,7 @@ class HDWallet:
 
         try:
             if self._hd.name() != "Monero":
-                raise Error("From spend private key only supported by Monero HD ")
+                raise Error("From spend private key only supported by Monero HD")
             self._hd.from_spend_private_key(spend_private_key=spend_private_key)
             return self
         except ValueError as error:
@@ -1461,6 +1483,9 @@ class HDWallet:
                 hrp=self._network.HRP,
                 address_type=kwargs.get(
                     "address_type", self._address_type
+                ),
+                address_prefix=kwargs.get(
+                    "address_prefix", self._address_prefix  # Tezos
                 )
             )
 
