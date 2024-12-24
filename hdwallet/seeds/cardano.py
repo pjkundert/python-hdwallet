@@ -16,7 +16,7 @@ from ..mnemonics import (
 from ..cryptocurrencies import Cardano
 from ..crypto import blake2b_256
 from ..exceptions import (
-    Error, MnemonicError
+    Error, MnemonicError, SeedError
 )
 from ..utils import (
     get_bytes, bytes_to_string
