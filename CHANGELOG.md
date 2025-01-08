@@ -1,5 +1,13 @@
 # Changelog
 
+## [v3.2.1](https://github.com/talonlab/python-hdwallet/tree/v3.2.1) (2025-01-08)
+
+[Full Changelog](https://github.com/talonlab/python-hdwallet/compare/v3.2.0...v3.2.1)
+
+**Fix Bugs:**
+
+- Fix: import SeedError exception on Cardano seed
+
 ## [v3.2.0](https://github.com/talonlab/python-hdwallet/tree/v3.2.0) (2024-12-15)
 
 [Full Changelog](https://github.com/talonlab/python-hdwallet/compare/v3.1.0...v3.2.0)
