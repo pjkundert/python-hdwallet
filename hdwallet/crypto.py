@@ -1,5 +1,9 @@
 #!/usr/bin/env python3
 
+# Copyright © 2020-2025, Meheret Tesfaye Batu <meherett.batu@gmail.com>
+# Distributed under the MIT software license, see the accompanying
+# file COPYING or https://opensource.org/license/mit
+
 from typing import (
     Optional, Union, Tuple
 )
@@ -74,7 +78,7 @@ def blake2b(data: Union[bytes, str], digest_size: int, key: Union[bytes, str] = 
     :param digest_size: The size of the resulting digest in bytes.
     :type digest_size: int
     :param key: Optional key for keyed hashing, as bytes or a string. Default is an empty byte string.
-    :type key: Union[bytes, str], optional
+    :type key: Union[bytes, str]
     :param salt: Optional salt for added randomness, as bytes or a string. Default is an empty byte string.
     :type salt: Union[bytes, str], optional
 
@@ -94,7 +98,7 @@ def blake2b_32(data: Union[bytes, str], key: Union[bytes, str] = b"", salt: Unio
     :param data: The data to be hashed, as bytes or a string.
     :type data: Union[bytes, str]
     :param key: Optional key for keyed hashing, as bytes or a string. Default is an empty byte string.
-    :type key: Union[bytes, str], optional
+    :type key: Union[bytes, str]
     :param salt: Optional salt for added randomness, as bytes or a string. Default is an empty byte string.
     :type salt: Union[bytes, str], optional
 
@@ -112,7 +116,7 @@ def blake2b_40(data: Union[bytes, str], key: Union[bytes, str] = b"", salt: Unio
     :param data: The data to be hashed, as bytes or a string.
     :type data: Union[bytes, str]
     :param key: Optional key for keyed hashing, as bytes or a string. Default is an empty byte string.
-    :type key: Union[bytes, str], optional
+    :type key: Union[bytes, str]
     :param salt: Optional salt for added randomness, as bytes or a string. Default is an empty byte string.
     :type salt: Union[bytes, str], optional
 
@@ -130,7 +134,7 @@ def blake2b_160(data: Union[bytes, str], key: Union[bytes, str] = b"", salt: Uni
     :param data: The data to be hashed, as bytes or a string.
     :type data: Union[bytes, str]
     :param key: Optional key for keyed hashing, as bytes or a string. Default is an empty byte string.
-    :type key: Union[bytes, str], optional
+    :type key: Union[bytes, str]
     :param salt: Optional salt for added randomness, as bytes or a string. Default is an empty byte string.
     :type salt: Union[bytes, str], optional
 
@@ -148,7 +152,7 @@ def blake2b_224(data: Union[bytes, str], key: Union[bytes, str] = b"", salt: Uni
     :param data: The data to be hashed, as bytes or a string.
     :type data: Union[bytes, str]
     :param key: Optional key for keyed hashing, as bytes or a string. Default is an empty byte string.
-    :type key: Union[bytes, str], optional
+    :type key: Union[bytes, str]
     :param salt: Optional salt for added randomness, as bytes or a string. Default is an empty byte string.
     :type salt: Union[bytes, str], optional
 
@@ -166,7 +170,7 @@ def blake2b_256(data: Union[bytes, str], key: Union[bytes, str] = b"", salt: Uni
     :param data: The data to be hashed, as bytes or a string.
     :type data: Union[bytes, str]
     :param key: Optional key for keyed hashing, as bytes or a string. Default is an empty byte string.
-    :type key: Union[bytes, str], optional
+    :type key: Union[bytes, str]
     :param salt: Optional salt for added randomness, as bytes or a string. Default is an empty byte string.
     :type salt: Union[bytes, str], optional
 
@@ -184,7 +188,7 @@ def blake2b_512(data: Union[bytes, str], key: Union[bytes, str] = b"", salt: Uni
     :param data: The data to be hashed, as bytes or a string.
     :type data: Union[bytes, str]
     :param key: Optional key for keyed hashing, as bytes or a string. Default is an empty byte string.
-    :type key: Union[bytes, str], optional
+    :type key: Union[bytes, str]
     :param salt: Optional salt for added randomness, as bytes or a string. Default is an empty byte string.
     :type salt: Union[bytes, str], optional
 
