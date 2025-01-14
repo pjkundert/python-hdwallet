@@ -95,7 +95,7 @@ class HDWDerivation(IDerivation):
             raise DerivationError(
                 f"Bad {self.name()} ecc index", expected=self.excepted_ecc, got=ecc
             )
-        ecc = ecc.NAME if issubclass(ecc, IEllipticCurveCryptography) else ecc
+        ecc = ecc if type(ecc) in [str, int] else ecc.NAME
 
         self._account = normalize_index(index=account, hardened=True)
         self._ecc = normalize_index(
@@ -158,7 +158,7 @@ class HDWDerivation(IDerivation):
             raise DerivationError(
                 f"Bad {self.name()} ecc index", expected=self.excepted_ecc, got=ecc
             )
-        ecc = ecc.NAME if issubclass(ecc, IEllipticCurveCryptography) else ecc
+        ecc = ecc if type(ecc) in [str, int] else ecc.NAME
         self._ecc = normalize_index(
             index=(self.eccs[ecc] if ecc in self.eccs.keys() else ecc), hardened=False
         )
