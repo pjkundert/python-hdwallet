@@ -44,7 +44,7 @@ def test_bip44_derivation(data):
     derivation.clean()
     assert derivation.name() == data["derivations"]["HDW"]["default"]["name"]
     assert derivation.account() == data["derivations"]["HDW"]["default"]["account"]
-    assert derivation.ecc() == data["derivations"]["HDW"]["default"]["ecc"]
+    assert derivation.ecc() == data["derivations"]["HDW"]["from"]["ecc"]
     assert derivation.address() == data["derivations"]["HDW"]["default"]["address"]
 
     derivation = HDWDerivation()
