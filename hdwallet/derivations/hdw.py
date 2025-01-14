@@ -1,13 +1,16 @@
 #!/usr/bin/env python3
 
-# Copyright © 2020-2024, Meheret Tesfaye Batu <meherett.batu@gmail.com>
+# Copyright © 2020-2025, Meheret Tesfaye Batu <meherett.batu@gmail.com>
 # Distributed under the MIT software license, see the accompanying
 # file COPYING or https://opensource.org/license/mit
 
 from typing import (
-    Tuple, Union, Optional, Dict
+    Tuple, Union, Optional, Dict, Type
 )
 
+from ..ecc import (
+    ECCS as EllipticCurveCryptographies, IEllipticCurveCryptography
+)
 from ..utils import (
     normalize_index, normalize_derivation, index_tuple_to_string
 )
@@ -65,7 +68,7 @@ class HDWDerivation(IDerivation):
     def __init__(
         self,
         account: Union[str, int, Tuple[int, int]] = 0,
-        ecc: Optional[Union[str, int]] = "SLIP10-Secp256k1",
+        ecc: Optional[Union[str, int, Type[IEllipticCurveCryptography]]] = "SLIP10-Secp256k1",
         address: Union[str, int, Tuple[int, int]] = 0
     ) -> None:
         """
@@ -74,7 +77,7 @@ class HDWDerivation(IDerivation):
         :param account: The HDW account index or tuple. Defaults to 0.
         :type account: Union[str, int, Tuple[int, int]]
         :param ecc: The HDW ecc index. 
-        :type ecc: Union[str, int]
+        :type ecc: Union[str, int, Type[IEllipticCurveCryptography]]
         :param address: The HDW address index or tuple. Defaults to 0.
         :type address: Union[str, int, Tuple[int, int]]
 
@@ -82,12 +85,17 @@ class HDWDerivation(IDerivation):
         """
         super(HDWDerivation, self).__init__()
 
-        self.excepted_ecc = [*self.eccs.keys(), *self.eccs.values(), *map(str, self.eccs.values())]
-
+        self.excepted_ecc = [
+            *self.eccs.keys(),
+            *self.eccs.values(),
+            *EllipticCurveCryptographies.classes(),
+            *map(str, self.eccs.values())
+        ]
         if ecc not in self.excepted_ecc:
             raise DerivationError(
                 f"Bad {self.name()} ecc index", expected=self.excepted_ecc, got=ecc
             )
+        ecc = ecc.NAME if issubclass(ecc, IEllipticCurveCryptography) else ecc
 
         self._account = normalize_index(index=account, hardened=True)
         self._ecc = normalize_index(
@@ -134,13 +142,13 @@ class HDWDerivation(IDerivation):
         ))
         return self
 
-    def from_ecc(self, ecc: Union[str, int]) -> "HDWDerivation":
+    def from_ecc(self, ecc: Union[str, int, Type[IEllipticCurveCryptography]]) -> "HDWDerivation":
         """
         Set the object's `_ecc` attribute to the specified ecc index or key,
         updating `_path`, `_indexes`, and `_derivations` accordingly.
 
         :param ecc: The ecc index or key to set. Can be a string, integer, or one of the predefined keys.
-        :type ecc: Union[str, int]
+        :type ecc: Union[str, int, Type[IEllipticCurveCryptography]]
 
         :return: The updated `HDWDerivation` object itself after setting the ecc.
         :rtype: HDWDerivation
@@ -150,6 +158,7 @@ class HDWDerivation(IDerivation):
             raise DerivationError(
                 f"Bad {self.name()} ecc index", expected=self.excepted_ecc, got=ecc
             )
+        ecc = ecc.NAME if issubclass(ecc, IEllipticCurveCryptography) else ecc
         self._ecc = normalize_index(
             index=(self.eccs[ecc] if ecc in self.eccs.keys() else ecc), hardened=False
         )
@@ -191,7 +200,6 @@ class HDWDerivation(IDerivation):
         """
 
         self._account = normalize_index(index=0, hardened=True)
-        self._ecc = normalize_index(index=self.eccs["SLIP10-Secp256k1"], hardened=False)
         self._address = normalize_index(index=0, hardened=False)
         self._path, self._indexes, self._derivations = normalize_derivation(path=(
             f"m/"
