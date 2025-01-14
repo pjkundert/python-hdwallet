@@ -101,10 +101,8 @@ print(json.dumps(hdwallet.dump(exclude={"indexes"}), indent=4, ensure_ascii=Fals
 # print(json.dumps(hdwallet.dumps(exclude={"indexes"}), indent=4, ensure_ascii=False))  # dumps
 ```
 
-<br/>
-
-<details>
-  <summary>Output</summary>
+<details open>
+  <summary>Output</summary><br/>
 
 ```json
 {
@@ -219,10 +217,8 @@ for derivation in hdwallet.dumps(exclude={"root", "indexes"}):
     print(f"{derivation['at']['path']} {derivation['address']} 0x{derivation['private_key']}")
 ```
 
-<br/>
-
-<details>
-  <summary>Output</summary>
+<details open>
+  <summary>Output</summary><br/>
 
 ```shell script
 Mnemonic: abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon about
