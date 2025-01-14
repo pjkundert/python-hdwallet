@@ -1,5 +1,18 @@
 # Changelog
 
+## [v3.2.2](https://github.com/talonlab/python-hdwallet/tree/v3.2.2) (2025-01-14)
+
+[Full Changelog](https://github.com/talonlab/python-hdwallet/compare/v3.2.1...v3.2.2)
+
+**Improvements:**
+
+- Update: The HDWDerivation `ecc` parameter now accepts an ECC instance
+- Drop: List items are converted into a string in case of an exception
+
+**Fix Bugs:**
+
+- Fix: HDWDerivation `ecc` constant value on clean
+
 ## [v3.2.1](https://github.com/talonlab/python-hdwallet/tree/v3.2.1) (2025-01-08)
 
 [Full Changelog](https://github.com/talonlab/python-hdwallet/compare/v3.2.0...v3.2.1)

@@ -104,7 +104,7 @@ print(json.dumps(hdwallet.dump(exclude={"indexes"}), indent=4, ensure_ascii=Fals
 <details open>
   <summary>Output</summary><br/>
 
-```json5
+```json
 {
     "cryptocurrency": "Bitcoin",
     "symbol": "BTC",

@@ -7,7 +7,7 @@
 from typing import List
 
 __name__: str = "hdwallet"
-__version__: str = "v3.2.1"
+__version__: str = "v3.2.2"
 __license__: str = "MIT"
 __author__: str = "Meheret Tesfaye Batu"
 __email__: str = "meherett.batu@gmail.com"
@@ -28,6 +28,6 @@ __websites__: List[str] = [
     "https://talonlab.gitbook.io/hdwallet",
     __documentation__,
     "https://hdwallet.online",
-    "https://hd.wallet",  # On Web3 browsers like Brave
+    "https://hd.wallet",  # On Web3 domain
     __url__
 ]
