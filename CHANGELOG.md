@@ -1,8 +1,8 @@
 # Changelog
 
-## [v3.2.2](https://github.com/talonlab/python-hdwallet/tree/v3.2.2) (2025-01-14)
+## [v3.2.3](https://github.com/talonlab/python-hdwallet/tree/v3.2.3) (2025-01-14)
 
-[Full Changelog](https://github.com/talonlab/python-hdwallet/compare/v3.2.1...v3.2.2)
+[Full Changelog](https://github.com/talonlab/python-hdwallet/compare/v3.2.1...v3.2.3)
 
 **Improvements:**
 
@@ -12,6 +12,7 @@
 **Fix Bugs:**
 
 - Fix: HDWDerivation `ecc` constant value on clean
+- Fix: ECC parameter instant checker on HDWDerivation
 
 ## [v3.2.1](https://github.com/talonlab/python-hdwallet/tree/v3.2.1) (2025-01-08)
 

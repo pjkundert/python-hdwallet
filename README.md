@@ -101,8 +101,10 @@ print(json.dumps(hdwallet.dump(exclude={"indexes"}), indent=4, ensure_ascii=Fals
 # print(json.dumps(hdwallet.dumps(exclude={"indexes"}), indent=4, ensure_ascii=False))  # dumps
 ```
 
-<details open>
-  <summary>Output</summary><br/>
+<br/>
+
+<details>
+  <summary>Output</summary>
 
 ```json
 {
@@ -217,8 +219,10 @@ for derivation in hdwallet.dumps(exclude={"root", "indexes"}):
     print(f"{derivation['at']['path']} {derivation['address']} 0x{derivation['private_key']}")
 ```
 
-<details open>
-  <summary>Output</summary><br/>
+<br/>
+
+<details>
+  <summary>Output</summary>
 
 ```shell script
 Mnemonic: abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon about
@@ -507,7 +511,7 @@ We accept a wide range of cryptocurrencies! If you'd like to donate using anothe
 | SLIP10-Ed25519-Blake2b | `0051e8b29f7d0214dc96843cdbdcc071dc65397016ea6f7381f81bf42d76c7357c`           | [generate](https://hdwallet.online/dumps/slip10-ed25519-blake2b/XNO?network=mainnet&hd=BIP32&from=public-key&public-key=0051e8b29f7d0214dc96843cdbdcc071dc65397016ea6f7381f81bf42d76c7357c&format=JSON&exclude=root&generate=true)                                                                                                         |
 | SLIP10-Nist256p1       | `039ee4e2aadd6f4e7938d164b646c4b424114b8dd57252287151398ba0baf25780`           | [generate](https://hdwallet.online/dumps/slip10-nist256p1/NEO?network=mainnet&hd=BIP32&from=public-key&public-key=039ee4e2aadd6f4e7938d164b646c4b424114b8dd57252287151398ba0baf25780&format=JSON&exclude=root&generate=true)                                                                                                               |
 
-Thank you very much for your support!
+Thank you very much for your support :)
 
 ## License
 
