@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-# Copyright © 2020-2024, Meheret Tesfaye Batu <meherett.batu@gmail.com>
+# Copyright © 2020-2025, Meheret Tesfaye Batu <meherett.batu@gmail.com>
 # Distributed under the MIT software license, see the accompanying
 # file COPYING or https://opensource.org/license/mit
 
@@ -19,17 +19,8 @@ class Error(Exception):
         got: Any = None
     ):
         self._message, self._detail, self._expected, self._got = (
-            message, detail, None, f"'{got}'"
+            message, detail, expected, f"'{got}'"
         )
-
-        if isinstance(expected, list):
-            for expect in expected:
-                if self._expected is None:
-                    self._expected = f"'{expect}'"
-                else:
-                    self._expected += f", '{expect}'"
-        else:
-            self._expected = expected
 
     def __str__(self):
         if self._expected and self._got and self._detail:
