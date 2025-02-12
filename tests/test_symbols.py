@@ -69,6 +69,7 @@ def test_symbols():
 	assert DGC == "DGC"
 	assert DIVI == "DIVI"
 	assert DOGE == "DOGE"
+	assert DYDX == "DYDX"
 	assert XEC == "XEC"
 	assert ECN == "ECN"
 	assert EDRC == "EDRC"

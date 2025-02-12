@@ -70,6 +70,7 @@ from .digibyte import DigiByte
 from .digitalcoin import Digitalcoin
 from .divi import Divi
 from .dogecoin import Dogecoin
+from .dydx import dYdX
 from .ecash import eCash
 from .ecoin import ECoin
 from .edrcoin import EDRCoin
@@ -284,6 +285,7 @@ class CRYPTOCURRENCIES:
         Digitalcoin.NAME: Digitalcoin,
         Divi.NAME: Divi,
         Dogecoin.NAME: Dogecoin,
+        dYdX.NAME: dYdX,
         eCash.NAME: eCash,
         ECoin.NAME: ECoin,
         EDRCoin.NAME: EDRCoin,

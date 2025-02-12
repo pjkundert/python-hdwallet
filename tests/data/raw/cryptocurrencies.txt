@@ -59,8 +59,9 @@ Digi-Byte               DGB         20                mainnet               SLIP
 Digitalcoin             DGC         18                mainnet               SLIP10-Secp256k1
 Divi                    DIVI        301           mainnet, testnet          SLIP10-Secp256k1
 Dogecoin                DOGE         3            mainnet, testnet          SLIP10-Secp256k1
+dYdX                    DYDX     22000118             mainnet               SLIP10-Secp256k1
 eCash                   XEC         145           mainnet, testnet          SLIP10-Secp256k1
-E-coin                  ECN         115               mainnet               SLIP10-Secp256k1
+E-Coin                  ECN         115               mainnet               SLIP10-Secp256k1
 EDR-Coin                EDRC        56                mainnet               SLIP10-Secp256k1
 e-Gulden                EFL         78                mainnet               SLIP10-Secp256k1
 Einsteinium             EMC2        41                mainnet               SLIP10-Secp256k1
@@ -142,7 +143,7 @@ Omni                    OMNI        200           mainnet, testnet          SLIP
 Onix                    ONX         174               mainnet               SLIP10-Secp256k1
 Ontology                ONT        1024               mainnet               SLIP10-Nist256p1
 Optimism                 OP         60                mainnet               SLIP10-Secp256k1
-Osmosis                 OSMO        118               mainnet               SLIP10-Secp256k1
+Osmosis                 OSMO     10000118             mainnet               SLIP10-Secp256k1
 Particl                 PART        44                mainnet               SLIP10-Secp256k1
 Peercoin                PPC          6                mainnet               SLIP10-Secp256k1
 Pesobit                 PSB         62                mainnet               SLIP10-Secp256k1

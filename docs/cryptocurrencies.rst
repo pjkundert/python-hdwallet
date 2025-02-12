@@ -490,6 +490,14 @@ This library simplifies the process of generating a new HDWallet's for:
     - ``BIP44`` ``BIP32``
     - ✅
     - ``P2PKH`` ``P2SH`` ``P2WPKH`` ``P2WPKH-In-P2SH``
+  * - `dYdX <https://github.com/dydxprotocol>`_
+    - DYDX
+    - 22000118
+    - ``mainnet``
+    - SLIP10-Secp256k1
+    - ``BIP44`` ``BIP32``
+    - ❌
+    - ``Cosmos``
   * - `eCash <https://github.com/bitcoin-abc>`_
     - XEC
     - 145

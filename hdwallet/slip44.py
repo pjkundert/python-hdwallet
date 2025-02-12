@@ -66,6 +66,7 @@ class CoinTypes:  # https://github.com/satoshilabs/slips/blob/master/slip-0044.m
     Digitalcoin: int = 18
     Divi: int = 301
     Dogecoin: int = 3
+    dYdX: int = 22000118
     eCash: int = 145  # Bitcoin-Cash
     ECoin: int = 115
     EDRCoin: int = 56

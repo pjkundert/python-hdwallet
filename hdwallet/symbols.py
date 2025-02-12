@@ -124,6 +124,8 @@ DGC: str = "DGC"
 DIVI: str = "DIVI"
 # Dogecoin
 DOGE: str = "DOGE"
+# dYdX
+DYDX: str = "DYDX"
 # eCash
 XEC: str = "XEC"
 # E-coin
@@ -483,6 +485,7 @@ __all__: List[str] = [
     "DGC",
     "DIVI",
     "DOGE",
+    "DYDX",
     "XEC",
     "ECN",
     "EDRC",
