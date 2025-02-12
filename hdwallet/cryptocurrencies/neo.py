@@ -1,9 +1,10 @@
 #!/usr/bin/env python3
 
-# Copyright © 2020-2024, Meheret Tesfaye Batu <meherett.batu@gmail.com>
+# Copyright © 2020-2025, Meheret Tesfaye Batu <meherett.batu@gmail.com>
 # Distributed under the MIT software license, see the accompanying
 # file COPYING or https://opensource.org/license/mit
 
+from ..slip44 import CoinTypes
 from ..ecc import SLIP10Nist256p1ECC
 from ..const import (
     Info, Entropies, Mnemonics, Seeds, HDs, Addresses, Networks, Params, XPrivateKeyVersions, XPublicKeyVersions
@@ -35,7 +36,7 @@ class Neo(ICryptocurrency):
         ]
     })
     ECC = SLIP10Nist256p1ECC
-    COIN_TYPE = 888
+    COIN_TYPE = CoinTypes.Neo
     NETWORKS = Networks({
         "MAINNET": Mainnet
     })

@@ -1,11 +1,12 @@
 #!/usr/bin/env python3
 
-# Copyright © 2020-2024, Meheret Tesfaye Batu <meherett.batu@gmail.com>
+# Copyright © 2020-2025, Meheret Tesfaye Batu <meherett.batu@gmail.com>
 # Distributed under the MIT software license, see the accompanying
 # file COPYING or https://opensource.org/license/mit
 
 from typing import List
 
+from ..slip44 import CoinTypes
 from ..ecc import KholawEd25519ECC
 from ..const import (
     Info, NestedNamespace, Entropies, Mnemonics, Seeds, HDs, Addresses, AddressTypes, Networks, Params, XPrivateKeyVersions, XPublicKeyVersions
@@ -68,7 +69,7 @@ class Cardano(ICryptocurrency):
         ]
     })
     ECC = KholawEd25519ECC
-    COIN_TYPE = 1815
+    COIN_TYPE = CoinTypes.Cardano
     NETWORKS = Networks({
         "MAINNET": Mainnet, "TESTNET": Testnet
     })

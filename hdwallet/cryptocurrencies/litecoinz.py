@@ -1,9 +1,10 @@
 #!/usr/bin/env python3
 
-# Copyright © 2020-2024, Meheret Tesfaye Batu <meherett.batu@gmail.com>
+# Copyright © 2020-2025, Meheret Tesfaye Batu <meherett.batu@gmail.com>
 # Distributed under the MIT software license, see the accompanying
 # file COPYING or https://opensource.org/license/mit
 
+from ..slip44 import CoinTypes
 from ..ecc import SLIP10Secp256k1ECC
 from ..const import (
     Info, Entropies, Mnemonics, Seeds, HDs, Addresses, Networks, XPrivateKeyVersions, XPublicKeyVersions
@@ -41,7 +42,7 @@ class LitecoinZ(ICryptocurrency):
         ]
     })
     ECC = SLIP10Secp256k1ECC
-    COIN_TYPE = 221
+    COIN_TYPE = CoinTypes.LitecoinZ
     SUPPORT_BIP38 = True
     NETWORKS = Networks({
         "MAINNET": Mainnet

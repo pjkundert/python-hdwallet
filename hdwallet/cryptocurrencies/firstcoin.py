@@ -1,9 +1,10 @@
 #!/usr/bin/env python3
 
-# Copyright © 2020-2024, Meheret Tesfaye Batu <meherett.batu@gmail.com>
+# Copyright © 2020-2025, Meheret Tesfaye Batu <meherett.batu@gmail.com>
 # Distributed under the MIT software license, see the accompanying
 # file COPYING or https://opensource.org/license/mit
 
+from ..slip44 import CoinTypes
 from ..ecc import SLIP10Secp256k1ECC
 from ..const import (
     Info, Entropies, Mnemonics, Seeds, HDs, Addresses, Networks, XPrivateKeyVersions, XPublicKeyVersions
@@ -36,11 +37,11 @@ class Firstcoin(ICryptocurrency):
     INFO = Info({
         "WHITEPAPER": "https://first-coin-club.blogspot.com/2017/11/whitepaper.html",
         "WEBSITES": [
-            "http://firstcoinproject.com"
+            "https://firstcoinproject.com"
         ]
     })
     ECC = SLIP10Secp256k1ECC
-    COIN_TYPE = 167
+    COIN_TYPE = CoinTypes.Firstcoin
     SUPPORT_BIP38 = True
     NETWORKS = Networks({
         "MAINNET": Mainnet
