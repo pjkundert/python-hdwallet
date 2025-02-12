@@ -1,9 +1,10 @@
 #!/usr/bin/env python3
 
-# Copyright © 2020-2024, Meheret Tesfaye Batu <meherett.batu@gmail.com>
+# Copyright © 2020-2025, Meheret Tesfaye Batu <meherett.batu@gmail.com>
 # Distributed under the MIT software license, see the accompanying
 # file COPYING or https://opensource.org/license/mit
 
+from ..slip44 import CoinTypes
 from ..ecc import SLIP10Secp256k1ECC
 from ..const import (
     Info, WitnessVersions, Entropies, Mnemonics, Seeds, HDs, Addresses, AddressTypes, Networks, XPrivateKeyVersions,
@@ -74,7 +75,7 @@ class Testnet(INetwork):
     WIF_PREFIX = 0xef
 
 
-class ECash(ICryptocurrency):
+class eCash(ICryptocurrency):
 
     NAME = "eCash"
     SYMBOL = "XEC"
@@ -85,7 +86,7 @@ class ECash(ICryptocurrency):
         ]
     })
     ECC = SLIP10Secp256k1ECC
-    COIN_TYPE = 145  # Bitcoin-Cash coin type
+    COIN_TYPE = CoinTypes.eCash
     NETWORKS = Networks({
         "MAINNET": Mainnet, "TESTNET": Testnet
     })

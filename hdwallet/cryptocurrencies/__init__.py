@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-# Copyright © 2020-2024, Meheret Tesfaye Batu <meherett.batu@gmail.com>
+# Copyright © 2020-2025, Meheret Tesfaye Batu <meherett.batu@gmail.com>
 # Distributed under the MIT software license, see the accompanying
 # file COPYING or https://opensource.org/license/mit
 
@@ -70,10 +70,10 @@ from .digibyte import DigiByte
 from .digitalcoin import Digitalcoin
 from .divi import Divi
 from .dogecoin import Dogecoin
-from .ecash import ECash
+from .ecash import eCash
 from .ecoin import ECoin
 from .edrcoin import EDRCoin
-from .egulden import EGulden
+from .egulden import eGulden
 from .einsteinium import Einsteinium
 from .elastos import Elastos
 from .energi import Energi
@@ -284,10 +284,10 @@ class CRYPTOCURRENCIES:
         Digitalcoin.NAME: Digitalcoin,
         Divi.NAME: Divi,
         Dogecoin.NAME: Dogecoin,
-        ECash.NAME: ECash,
+        eCash.NAME: eCash,
         ECoin.NAME: ECoin,
         EDRCoin.NAME: EDRCoin,
-        EGulden.NAME: EGulden,
+        eGulden.NAME: eGulden,
         Einsteinium.NAME: Einsteinium,
         Elastos.NAME: Elastos,
         Energi.NAME: Energi,
