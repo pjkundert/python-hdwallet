@@ -32,7 +32,7 @@ class Mainnet(INetwork):
 
 class Firo(ICryptocurrency):
 
-    NAME = "Firo"
+    NAME = "Firo"  # ZCoin old name
     SYMBOL = "FIRO"
     INFO = Info({
         "SOURCE_CODE": "https://github.com/firoorg/firo",
