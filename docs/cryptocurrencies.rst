@@ -1156,7 +1156,7 @@ This library simplifies the process of generating a new HDWallet's for:
     - ``Ethereum``
   * - `Osmosis <https://github.com/osmosis-labs/osmosis>`_
     - OSMO
-    - 118
+    - 10000118
     - ``mainnet``
     - SLIP10-Secp256k1
     - ``BIP44`` ``BIP32``
