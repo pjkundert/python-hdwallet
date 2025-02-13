@@ -1,5 +1,21 @@
 # Changelog
 
+**New Cryptocurrencies:**
+
+| Name | Symbol | Coin Type | Networks  |
+|:-----|:------:|:---------:|:---------:|
+| dYdX |  DYDX  | 22000118  | `mainnet` |
+
+**Improvements:**
+
+- Add: SLIP-0044 coin types on single file
+- Update: All cryptocurrencies coin-type into SLIP44
+- Modify: Both `eCash` & `e-Gulden` class names
+
+**Fix Bugs:**
+
+- Fix: Osmosis coin-type into `10000118` value
+
 ## [v3.2.3](https://github.com/talonlab/python-hdwallet/tree/v3.2.3) (2025-01-14)
 
 [Full Changelog](https://github.com/talonlab/python-hdwallet/compare/v3.2.1...v3.2.3)
