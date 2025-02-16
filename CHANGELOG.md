@@ -1,5 +1,9 @@
 # Changelog
 
+## [v3.3.0](https://github.com/talonlab/python-hdwallet/tree/v3.3.0) (2025-02-16)
+
+[Full Changelog](https://github.com/talonlab/python-hdwallet/compare/v3.2.3...v3.3.0)
+
 **New Cryptocurrencies:**
 
 | Name | Symbol | Coin Type | Networks  |
