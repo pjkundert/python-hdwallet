@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-# Copyright © 2020-2024, Meheret Tesfaye Batu <meherett.batu@gmail.com>
+# Copyright © 2020-2025, Meheret Tesfaye Batu <meherett.batu@gmail.com>
 # Distributed under the MIT software license, see the accompanying
 # file COPYING or https://opensource.org/license/mit
 
@@ -9,6 +9,7 @@ from typing import (
 )
 
 import os
+import re
 
 from ..exceptions import EntropyError
 from ..utils import (
@@ -90,6 +91,22 @@ class IEntropy:
         return bytes_to_string(
             os.urandom(strength // 8)
         )
+
+    @classmethod
+    def is_valid(cls, entropy: str) -> bool:
+        """
+        Checks if the given entropy is valid.
+
+        :param entropy: Hex string representing entropy
+        :type entropy: str
+
+        :return: True if is valid, False otherwise.
+        :rtype: bool
+        """
+
+        return isinstance(entropy, str) and bool(re.fullmatch(
+            r'^[0-9a-fA-F]+$', entropy
+        )) and cls.is_valid_strength(len(entropy) * 4)
 
     @classmethod
     def is_valid_strength(cls, strength: int) -> bool:
