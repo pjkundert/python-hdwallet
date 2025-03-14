@@ -1,15 +1,15 @@
 #!/usr/bin/env python3
 
-# Copyright © 2020-2024, Meheret Tesfaye Batu <meherett.batu@gmail.com>
+# Copyright © 2020-2025, Meheret Tesfaye Batu <meherett.batu@gmail.com>
 # Distributed under the MIT software license, see the accompanying
 # file COPYING or https://opensource.org/license/mit
 
 from abc import (
     ABC, abstractmethod
 )
-from typing import (
-    Union, Optional
-)
+from typing import Union
+
+import re
 
 from ..mnemonics import IMnemonic
 
@@ -18,6 +18,8 @@ class ISeed(ABC):
 
     _name: str
     _seed: str
+
+    length: int
 
     def __init__(self, seed: str, **kwargs) -> None:
         """
@@ -35,6 +37,22 @@ class ISeed(ABC):
     @classmethod
     def name(cls) -> str:
         pass
+
+    @classmethod
+    def is_valid(cls, seed: str) -> bool:
+        """
+        Checks if the given seed is valid.
+
+        :param seed: Hex string representing seed
+        :type seed: str
+
+        :return: True if is valid, False otherwise.
+        :rtype: bool
+        """
+
+        return isinstance(seed, str) and bool(re.fullmatch(
+            r'^[0-9a-fA-F]+$', seed
+        )) and len(seed) == cls.length
 
     def seed(self) -> str:
         """

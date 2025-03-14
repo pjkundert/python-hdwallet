@@ -1,14 +1,15 @@
 #!/usr/bin/env python3
 
-# Copyright © 2020-2024, Meheret Tesfaye Batu <meherett.batu@gmail.com>
+# Copyright © 2020-2025 , Meheret Tesfaye Batu <meherett.batu@gmail.com>
 # Distributed under the MIT software license, see the accompanying
 # file COPYING or https://opensource.org/license/mit
 
 from typing import (
-    Optional, Union
+    Optional, Union, List
 )
 
 import cbor2
+import re
 
 from ..mnemonics import (
     IMnemonic, BIP39Mnemonic
@@ -38,6 +39,11 @@ class CardanoSeed(ISeed):
     """
 
     _cardano_type: str
+    lengths: List[int] = [
+        32,  # Byron-Icarus and Shelly-Icarus
+        128,  # Byron-Ledger and Shelly-Ledger
+        64  # Byron-Legacy
+    ]
 
     def __init__(
         self, seed: str, cardano_type: str = Cardano.TYPES.BYRON_ICARUS, passphrase: Optional[str] = None
@@ -47,7 +53,6 @@ class CardanoSeed(ISeed):
 
         :param seed: The seed value used to generate Cardano keys.
         :type seed: str
-
         :param cardano_type: The type of Cardano seed. Defaults to Cardano.TYPES.BYRON_ICARUS.
         :type cardano_type: str, optional
 
@@ -87,6 +92,35 @@ class CardanoSeed(ISeed):
         """
 
         return self._cardano_type
+
+    @classmethod
+    def is_valid(cls, seed: str, cardano_type: str = Cardano.TYPES.BYRON_ICARUS) -> bool:
+        """
+        Checks if the given seed is valid.
+
+        :param seed: Hex string representing seed
+        :type seed: str
+        :param cardano_type: The type of Cardano seed. Defaults to Cardano.TYPES.BYRON_ICARUS.
+        :type cardano_type: str, optional
+
+        :return: True if is valid, False otherwise.
+        :rtype: bool
+        """
+
+        if not isinstance(seed, str) or not bool(re.fullmatch(
+            r'^[0-9a-fA-F]+$', seed
+        )): return False
+
+        if cardano_type in [Cardano.TYPES.BYRON_ICARUS, Cardano.TYPES.SHELLEY_ICARUS]:
+            return len(seed) == cls.lengths[0]
+        elif cardano_type in [Cardano.TYPES.BYRON_LEDGER, Cardano.TYPES.SHELLEY_LEDGER]:
+            return len(seed) == cls.lengths[1]
+        elif cardano_type == Cardano.TYPES.BYRON_LEGACY:
+            return len(seed) == cls.lengths[2]
+        else:
+            raise SeedError(
+                "Invalid Cardano type", expected=Cardano.TYPES.get_cardano_types(), got=cardano_type
+            )
 
     @classmethod
     def from_mnemonic(
