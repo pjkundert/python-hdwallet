@@ -241,6 +241,159 @@ m/44'/60'/0'/0/10 0xEf4ba16373841C53a9Ba168873fC3967118C1d37 0x1d8e676c6da57922d
 ```
 </details>
 
+[Phantom](https://github.com/phantom) wallet look's like:
+
+```python
+#!/usr/bin/env python3
+
+from typing import Type
+
+import json
+
+from hdwallet.mnemonics import BIP39Mnemonic
+from hdwallet.cryptocurrencies import (
+    ICryptocurrency, Bitcoin, Ethereum, Solana
+)
+from hdwallet.hds import (
+    IHD, BIP32HD, BIP44HD, BIP49HD, BIP84HD
+)
+from hdwallet.derivations import (
+    IDerivation, CustomDerivation, BIP44Derivation, BIP49Derivation, BIP84Derivation
+)
+from hdwallet.const import PUBLIC_KEY_TYPES
+from hdwallet.libs.base58 import encode
+from hdwallet.utils import get_bytes
+from hdwallet import HDWallet
+
+
+mnemonic: BIP39Mnemonic = BIP39Mnemonic(
+    mnemonic="abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon about"
+)
+
+# Phantom wallet standards
+standards: dict = {
+    "solana": {
+        "hd": BIP32HD,
+        "derivation": CustomDerivation(path=f"m/44'/{Solana.COIN_TYPE}'/0'/0'")
+    },
+    "ethereum": {
+        "hd": BIP44HD,
+        "derivation": BIP44Derivation(coin_type=Ethereum.COIN_TYPE)
+    },
+    "bitcoin": {
+        "legacy": {
+            "hd": BIP44HD,
+            "derivation": BIP44Derivation(coin_type=Bitcoin.COIN_TYPE)
+        },
+        "nested-segwit": {
+            "hd": BIP49HD,
+            "derivation": BIP49Derivation(coin_type=Bitcoin.COIN_TYPE)
+        },
+        "native-segwit": {
+            "hd": BIP84HD,
+            "derivation": BIP84Derivation(coin_type=Bitcoin.COIN_TYPE)
+        }
+    }
+}
+
+def generate_phantom_hdwallet(cryptocurrency: Type[ICryptocurrency], hd: Type[IHD], network: str, derivation: IDerivation, **kwargs) -> HDWallet:
+    return HDWallet(cryptocurrency=cryptocurrency, hd=hd, network=network, kwargs=kwargs).from_mnemonic(mnemonic=mnemonic).from_derivation(derivation=derivation)
+
+print("Mnemonic:", mnemonic.mnemonic(), "\n")
+
+# Solana
+solana_hdwallet: HDWallet = generate_phantom_hdwallet(
+    cryptocurrency=Solana,
+    hd=standards["solana"]["hd"],
+    network=Solana.NETWORKS.MAINNET,
+    derivation=standards["solana"]["derivation"]
+)
+print(f"{solana_hdwallet.cryptocurrency()} ({solana_hdwallet.symbol()}) wallet:", json.dumps(dict(
+    path=solana_hdwallet.path(),
+    base58=encode(get_bytes(
+        solana_hdwallet.private_key() + solana_hdwallet.public_key()[2:]
+    )),
+    private_key=solana_hdwallet.private_key(),
+    public_key=solana_hdwallet.public_key()[2:],
+    address=solana_hdwallet.address()
+), indent=4))
+
+# Ethereum
+ethereum_hdwallet: HDWallet = generate_phantom_hdwallet(
+    cryptocurrency=Ethereum,
+    hd=standards["ethereum"]["hd"],
+    network=Ethereum.NETWORKS.MAINNET,
+    derivation=standards["ethereum"]["derivation"]
+)
+print(f"{ethereum_hdwallet.cryptocurrency()} ({ethereum_hdwallet.symbol()}) wallet:", json.dumps(dict(
+    path=ethereum_hdwallet.path(),
+    private_key=f"0x{ethereum_hdwallet.private_key()}",
+    public_key=ethereum_hdwallet.public_key(),
+    address=ethereum_hdwallet.address()
+), indent=4))
+
+# Bitcoin (Legacy, Nested-SegWit, Native-SegWit)
+for address_type in ["legacy", "nested-segwit", "native-segwit"]:
+
+    bitcoin_hdwallet: HDWallet = generate_phantom_hdwallet(
+        cryptocurrency=Bitcoin,
+        hd=standards["bitcoin"][address_type]["hd"],
+        network=Bitcoin.NETWORKS.MAINNET,
+        derivation=standards["bitcoin"][address_type]["derivation"],
+        public_key_type=PUBLIC_KEY_TYPES.COMPRESSED
+    )
+    print(f"{bitcoin_hdwallet.cryptocurrency()} ({bitcoin_hdwallet.symbol()}) {address_type.title()} wallet:", json.dumps(dict(
+        path=bitcoin_hdwallet.path(),
+        wif=bitcoin_hdwallet.wif(),
+        private_key=bitcoin_hdwallet.private_key(),
+        public_key=bitcoin_hdwallet.public_key(),
+        address=bitcoin_hdwallet.address()
+    ), indent=4))
+```
+
+<details open>
+  <summary>Output</summary><br/>
+
+```shell script
+Mnemonic: abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon about 
+
+Solana (SOL) wallet: {
+    "path": "m/44'/501'/0'/0'",
+    "base58": "27npWoNE4HfmLeQo1TyWcW7NEA28qnsnDK7kcttDQEWrCWnro83HMJ97rMmpvYYZRwDAvG4KRuB7hTBacvwD7bgi",
+    "private_key": "37df573b3ac4ad5b522e064e25b63ea16bcbe79d449e81a0268d1047948bb445",
+    "public_key": "00f036276246a75b9de3349ed42b15e232f6518fc20f5fcd4f1d64e81f9bd258f7",
+    "address": "HAgk14JpMQLgt6rVgv7cBQFJWFto5Dqxi472uT3DKpqk"
+}
+Ethereum (ETH) wallet: {
+    "path": "m/44'/60'/0'/0/0",
+    "private_key": "0x1ab42cc412b618bdea3a599e3c9bae199ebf030895b039e9db1e30dafb12b727",
+    "public_key": "0237b0bb7a8288d38ed49a524b5dc98cff3eb5ca824c9f9dc0dfdb3d9cd600f299",
+    "address": "0x9858EfFD232B4033E47d90003D41EC34EcaEda94"
+}
+Bitcoin (BTC) Legacy wallet: {
+    "path": "m/44'/0'/0'/0/0",
+    "wif": "L4p2b9VAf8k5aUahF1JCJUzZkgNEAqLfq8DDdQiyAprQAKSbu8hf",
+    "private_key": "e284129cc0922579a535bbf4d1a3b25773090d28c909bc0fed73b5e0222cc372",
+    "public_key": "03aaeb52dd7494c361049de67cc680e83ebcbbbdbeb13637d92cd845f70308af5e",
+    "address": "1LqBGSKuX5yYUonjxT5qGfpUsXKYYWeabA"
+}
+Bitcoin (BTC) Nested-Segwit wallet: {
+    "path": "m/49'/0'/0'/0/0",
+    "wif": "KyvHbRLNXfXaHuZb3QRaeqA5wovkjg4RuUpFGCxdH5UWc1Foih9o",
+    "private_key": "508c73a06f6b6c817238ba61be232f5080ea4616c54f94771156934666d38ee3",
+    "public_key": "039b3b694b8fc5b5e07fb069c783cac754f5d38c3e08bed1960e31fdb1dda35c24",
+    "address": "37VucYSaXLCAsxYyAPfbSi9eh4iEcbShgf"
+}
+Bitcoin (BTC) Native-Segwit wallet: {
+    "path": "m/84'/0'/0'/0/0",
+    "wif": "KyZpNDKnfs94vbrwhJneDi77V6jF64PWPF8x5cdJb8ifgg2DUc9d",
+    "private_key": "4604b4b710fe91f584fff084e1a9159fe4f8408fff380596a604948474ce4fa3",
+    "public_key": "0330d54fd0dd420a6e5f8d3624f5f3482cae350f79d5f0753bf5beef9c2d91af3c",
+    "address": "bc1qcr8te4kr609gcawutmrza0j4xv80jy8z306fyu"
+}
+```
+</details>
+
 Explore more [Clients](https://github.com/talonlab/python-hdwallet/blob/master/clients)
 
 ## Development
