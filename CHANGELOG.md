@@ -1,5 +1,25 @@
 # Changelog
 
+## [v3.4.0](https://github.com/talonlab/python-hdwallet/tree/v3.4.0) (2025-03-15)
+
+[Full Changelog](https://github.com/talonlab/python-hdwallet/compare/v3.3.0...v3.4.0)
+
+**New Cryptocurrencies:**
+
+| Name    | Symbol | Coin Type | Networks  |
+|:--------|:------:|:---------:|:---------:|
+| Neutron |  NTRN  |    118    | `mainnet` |
+
+**Improvements:**
+
+- Add: ``is_valid`` function for validating entropies hex string
+- Add: ``is_valid`` function for validating seeds hex string
+- Add: ``is_valid_key`` function for validating extended(x)-keys string
+
+**Fix Bugs:**
+
+- Fix: Phantom client base58 encode of Solana
+
 ## [v3.3.0](https://github.com/talonlab/python-hdwallet/tree/v3.3.0) (2025-02-16)
 
 [Full Changelog](https://github.com/talonlab/python-hdwallet/compare/v3.2.3...v3.3.0)
