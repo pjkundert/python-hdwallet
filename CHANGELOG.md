@@ -6,14 +6,13 @@
 
 **New Cryptocurrencies:**
 
-| Name    | Symbol | Coin Type | Networks  |
-|:--------|:------:|:---------:|:---------:|
-| Neutron |  NTRN  |    118    | `mainnet` |
+| Name                                      | Symbol | Coin Type | Networks  |
+|:------------------------------------------|:------:|:---------:|:---------:|
+| [Neutron](https://github.com/neutron-org) |  NTRN  |    118    | `mainnet` |
 
-**Improvements:**
+**New Additions:**
 
-- Add: ``is_valid`` function for validating entropies hex string
-- Add: ``is_valid`` function for validating seeds hex string
+- Add: ``is_valid`` function for validating entropies & seeds hex string
 - Add: ``is_valid_key`` function for validating extended(x)-keys string
 
 **Fix Bugs:**
@@ -26,9 +25,9 @@
 
 **New Cryptocurrencies:**
 
-| Name | Symbol | Coin Type | Networks  |
-|:-----|:------:|:---------:|:---------:|
-| dYdX |  DYDX  | 22000118  | `mainnet` |
+| Name                                    | Symbol | Coin Type | Networks  |
+|:----------------------------------------|:------:|:---------:|:---------:|
+| [dYdX](https://github.com/dydxprotocol) |  DYDX  | 22000118  | `mainnet` |
 
 **Improvements:**
 
