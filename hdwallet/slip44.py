@@ -138,6 +138,7 @@ class CoinTypes:  # https://github.com/satoshilabs/slips/blob/master/slip-0044.m
     Neo: int = 888
     Neoscoin: int = 25
     Neurocoin: int = 110
+    Neutron: int = 118  # Cosmos
     NewYorkCoin: int = 179
     NineChronicles: int = 567
     NIX: int = 400

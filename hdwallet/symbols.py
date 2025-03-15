@@ -268,6 +268,8 @@ NEO: str = "NEO"
 NEOS: str = "NEOS"
 # Neurocoin
 NRO: str = "NRO"
+# Neutron
+NTRN: str = "NTRN"
 # New York Coin
 NYC: str = "NYC"
 # Nine-Chronicles
@@ -557,6 +559,7 @@ __all__: List[str] = [
     "NEO",
     "NEOS",
     "NRO",
+    "NTRN",
     "NYC",
     "NCG",
     "NIX",

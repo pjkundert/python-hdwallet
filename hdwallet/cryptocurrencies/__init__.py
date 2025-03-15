@@ -142,6 +142,7 @@ from .neblio import Neblio
 from .neo import Neo
 from .neoscoin import Neoscoin
 from .neurocoin import Neurocoin
+from .neutron import Neutron
 from .newyorkcoin import NewYorkCoin
 from .ninechronicles import NineChronicles
 from .nix import NIX
@@ -357,6 +358,7 @@ class CRYPTOCURRENCIES:
         Neo.NAME: Neo,
         Neoscoin.NAME: Neoscoin,
         Neurocoin.NAME: Neurocoin,
+        Neutron.NAME: Neutron,
         NewYorkCoin.NAME: NewYorkCoin,
         NineChronicles.NAME: NineChronicles,
         NIX.NAME: NIX,

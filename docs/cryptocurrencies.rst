@@ -1066,6 +1066,14 @@ This library simplifies the process of generating a new HDWallet's for:
     - ``BIP44`` ``BIP32``
     - ✅
     - ``P2PKH`` ``P2SH``
+  * - `Neutron <https://github.com/neutron-org>`_
+    - NTRN
+    - 118
+    - ``mainnet``
+    - SLIP10-Secp256k1
+    - ``BIP44`` ``BIP32``
+    - ❌
+    - ``Cosmos``
   * - `New-York-Coin <https://github.com/NewYorkCoinNYC/newyorkcoin>`_
     - NYC
     - 179

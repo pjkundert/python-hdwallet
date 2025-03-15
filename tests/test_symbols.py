@@ -141,6 +141,7 @@ def test_symbols():
 	assert NEO == "NEO"
 	assert NEOS == "NEOS"
 	assert NRO == "NRO"
+	assert NTRN == "NTRN"
 	assert NYC == "NYC"
 	assert NCG == "NCG"
 	assert NIX == "NIX"

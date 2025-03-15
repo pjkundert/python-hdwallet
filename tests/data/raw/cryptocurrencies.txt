@@ -131,6 +131,7 @@ Neblio                  NEBL        146               mainnet               SLIP
 Neo                     NEO         888               mainnet               SLIP10-Nist256p1
 Neoscoin                NEOS        25                mainnet               SLIP10-Secp256k1
 Neurocoin               NRO         110               mainnet               SLIP10-Secp256k1
+Neutron                 NTRN        118               mainnet               SLIP10-Secp256k1
 New-York-Coin           NYC         179               mainnet               SLIP10-Secp256k1
 Nine-Chronicles         NCG         567               mainnet               SLIP10-Secp256k1
 NIX                     NIX         400               mainnet               SLIP10-Secp256k1
