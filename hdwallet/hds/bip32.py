@@ -34,10 +34,10 @@ from ..wif import (
     private_key_to_wif, wif_to_private_key, get_wif_type
 )
 from ..keys import (
-    serialize, deserialize, is_root_key
+    serialize, deserialize, is_valid_key, is_root_key
 )
 from ..exceptions import (
-    Error, AddressError, DerivationError, ExtendedKeyError, PublicKeyError, PrivateKeyError, SeedError, WIFError
+    Error, AddressError, DerivationError, XPrivateKeyError, XPublicKeyError, PublicKeyError, PrivateKeyError, SeedError, WIFError
 )
 from ..utils import (
     get_bytes, get_hmac, bytes_to_integer, integer_to_bytes, bytes_to_string, reset_bits, set_bits
@@ -229,11 +229,12 @@ class BIP32HD(IHD):
         :rtype: BIP32HD
         """
 
+        if not is_valid_key(key=xprivate_key, encoded=encoded):
+            raise XPrivateKeyError("Invalid extended(x) private key")
         if len(check_decode(xprivate_key) if encoded else xprivate_key) not in [78, 110]:
-            raise ExtendedKeyError("Invalid extended(x) private key")
-        elif not is_root_key(key=xprivate_key, encoded=encoded):
-            if strict:
-                raise ExtendedKeyError("Invalid root extended(x) private key")
+            raise XPrivateKeyError("Invalid extended(x) private key")
+        if not is_root_key(key=xprivate_key, encoded=encoded) and strict:
+            raise XPrivateKeyError("Invalid root extended(x) private key")
 
         version, depth, parent_fingerprint, index, chain_code, key = deserialize(
             key=xprivate_key, encoded=encoded
@@ -272,16 +273,16 @@ class BIP32HD(IHD):
         :rtype: BIP32HD
         """
 
+        if not is_valid_key(key=xpublic_key, encoded=encoded):
+            raise XPublicKeyError("Invalid extended(x) public key")
         if len(check_decode(xpublic_key) if encoded else xpublic_key) != 78:
-            raise ExtendedKeyError("Invalid extended(x) public key")
-        elif not is_root_key(key=xpublic_key, encoded=encoded):
-            if strict:
-                raise ExtendedKeyError("Invalid root extended(x) public key")
+            raise XPublicKeyError("Invalid extended(x) public key")
+        if not is_root_key(key=xpublic_key, encoded=encoded) and strict:
+            raise XPublicKeyError("Invalid root extended(x) public key")
 
         version, depth, parent_fingerprint, index, chain_code, key = deserialize(
             key=xpublic_key, encoded=encoded
         )
-
         self._root_chain_code = chain_code
         self._root_public_key = self._ecc.PUBLIC_KEY.from_bytes(key)
         self._root_depth = depth

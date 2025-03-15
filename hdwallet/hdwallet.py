@@ -30,7 +30,9 @@ from .const import (
 from .cryptocurrencies.icryptocurrency import (
     ICryptocurrency, INetwork
 )
-from .keys import deserialize
+from .keys import (
+    deserialize, is_valid_key
+)
 from .exceptions import (
     Error, NetworkError, AddressError, CryptocurrencyError, XPrivateKeyError, XPublicKeyError, PrivateKeyError, PublicKeyError
 )
@@ -477,13 +479,12 @@ class HDWallet:
         if self._hd.name() in ["Electrum-V1", "Monero"]:
             raise Error(f"Conversion from xprivate key is not implemented for the {self._hd.name()} HD type")
 
-        try:
-            version, depth, parent_fingerprint, index, chain_code, key = deserialize(
-                key=xprivate_key, encoded=encoded
-            )
-        except ValueError as Error:
+        if not is_valid_key(key=xprivate_key, encoded=encoded):
             raise XPrivateKeyError("Invalid xprivate key data")
 
+        version, depth, parent_fingerprint, index, chain_code, key = deserialize(
+            key=xprivate_key, encoded=encoded
+        )
         if not self._network.XPRIVATE_KEY_VERSIONS.is_version(version=version) or \
                 len(check_decode(xprivate_key) if encoded else xprivate_key) not in [78, 110]:
             raise Error(f"Invalid {self._cryptocurrency.NAME} extended(x) private key")
@@ -527,13 +528,12 @@ class HDWallet:
                 f"Conversion from xpublic key is not implemented for the {self._hd.name()} HD {self._cardano_type} type"
             )
 
-        try:
-            version, depth, parent_fingerprint, index, chain_code, key = deserialize(
-                key=xpublic_key, encoded=encoded
-            )
-        except ValueError as Error:
-            raise XPublicKeyError("Invalid xpublic key data")
+        if not is_valid_key(key=xpublic_key, encoded=encoded):
+            raise XPrivateKeyError("Invalid xpublic key data")
 
+        version, depth, parent_fingerprint, index, chain_code, key = deserialize(
+            key=xpublic_key, encoded=encoded
+        )
         if not self._network.XPUBLIC_KEY_VERSIONS.is_version(version=version) or \
                 len(check_decode(xpublic_key) if encoded else xpublic_key) not in [78, 110]:
             raise Error(f"Invalid {self._cryptocurrency.NAME} extended(x) public key")

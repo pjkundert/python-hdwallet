@@ -16,6 +16,7 @@ from .libs.base58 import (
 from .utils import (
     get_bytes, bytes_to_string, bytes_to_integer, integer_to_bytes
 )
+from .exceptions import ExtendedKeyError
 
 
 def serialize(
@@ -63,9 +64,18 @@ def deserialize(
     )
 
 
-def is_root_key(
-    key: str, encoded: bool = True
-) -> bool:
+def is_valid_key(key: str, encoded: bool = True) -> bool:
+    try:
+        deserialize(key=key, encoded=encoded)
+        return True
+    except Exception:
+        return False
+
+
+def is_root_key(key: str, encoded: bool = True) -> bool:
+
+    if not is_valid_key(key=key, encoded=encoded):
+        raise ExtendedKeyError("Invalid extended(x) key")
 
     version, depth, parent_fingerprint, index, chain_code, key = deserialize(
         key=key, encoded=encoded
