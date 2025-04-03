@@ -16,8 +16,10 @@
 Python-based library for the implementation of a Hierarchical Deterministic (HD) Wallet generator supporting more than 200 cryptocurrencies.
 It allows the handling of multiple coins, multiple accounts, external and internal chains per account, and millions of addresses per chain.
 
-**Online Version**: [https://hdwallet.online](https://hdwallet.online) <br>
-**Offline Version**: [hdwallet-desktop](https://github.com/talonlab/hdwallet-desktop/releases)
+## Clients
+
+**Online Version** (not-recommended): [https://hdwallet.online](https://hdwallet.online) <br>
+**Offline Version** (recommended): [hdwallet-desktop](https://github.com/talonlab/hdwallet-desktop/releases)
 
 > The library is designed to be flexible and scalable, making it ideal for developers who need to integrate multi-currency wallet functionalities into their applications. 
 > It supports standard protocols for compatibility with other wallets and services, offering features like secure seed creation, efficient key management, and easy account handling.
