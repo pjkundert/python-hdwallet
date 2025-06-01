@@ -15,7 +15,7 @@ hdwallet: HDWallet = HDWallet(
     cryptocurrency=Cryptocurrency,
     hd=BIP44HD,
     network=Cryptocurrency.NETWORKS.MAINNET,
-    passphrase=None  # "talonlab"
+    passphrase=None  # "hdwallet-io"
 ).from_mnemonic(   # Get Ethereum HDWallet from mnemonic phrase
     mnemonic=BIP39Mnemonic(
         mnemonic=BIP39Mnemonic.from_words(

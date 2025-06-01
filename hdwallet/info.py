@@ -14,7 +14,7 @@ __email__: str = "meherett.batu@gmail.com"
 __documentation__: str = "https://hdwallet.readthedocs.com"
 __description__: str = "Python-based library for the implementation of a Hierarchical Deterministic (HD) Wallet generator supporting more than 200 cryptocurrencies."
 __url__: str = "https://hdwallet.io"
-__source__: str = "https://github.com/talonlab/python-hdwallet"
+__source__: str = "https://github.com/hdwallet-io/python-hdwallet"
 __changelog__: str = f"{__source__}/blob/master/CHANGELOG.md"
 __tracker__: str = f"{__source__}/issues"
 __keywords__: List[str] = [
@@ -24,8 +24,8 @@ __keywords__: List[str] = [
     "cryptocurrencies", "bitcoin", "ethereum", "cryptography", "cli", "cip1852"  # Other keywords
 ]
 __websites__: List[str] = [
-    "https://talonlab.org",
-    "https://talonlab.gitbook.io/hdwallet",
+    "https://hdwallet-io.org",
+    "https://hdwallet-io.gitbook.io/hdwallet",
     __documentation__,
     "https://hdwallet.online",
     "https://hd.wallet",  # On Web3 domain

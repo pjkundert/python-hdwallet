@@ -1,17 +1,17 @@
 <div align="right">
-    <a target="_blank" href="https://hdwallet.online"><img height="25" alt="Desktop" src="https://raw.githubusercontent.com/talonlab/python-hdwallet/refs/heads/master/docs/static/svg/online-badge.svg"></a>
-    <a target="_blank" href="https://github.com/talonlab/hdwallet-desktop"><img height="25" alt="Desktop" src="https://raw.githubusercontent.com/talonlab/python-hdwallet/refs/heads/master/docs/static/svg/desktop-badge.svg"></a>
-    <img align="left" height="100" alt="HDWallet" src="https://raw.githubusercontent.com/talonlab/python-hdwallet/refs/heads/master/docs/static/svg/hdwallet-logo.svg">
+    <a target="_blank" href="https://hdwallet.online"><img height="25" alt="Desktop" src="https://raw.githubusercontent.com/hdwallet-io/python-hdwallet/refs/heads/master/docs/static/svg/online-badge.svg"></a>
+    <a target="_blank" href="https://github.com/hdwallet-io/hdwallet-desktop"><img height="25" alt="Desktop" src="https://raw.githubusercontent.com/hdwallet-io/python-hdwallet/refs/heads/master/docs/static/svg/desktop-badge.svg"></a>
+    <img align="left" height="100" alt="HDWallet" src="https://raw.githubusercontent.com/hdwallet-io/python-hdwallet/refs/heads/master/docs/static/svg/hdwallet-logo.svg">
 </div><br><br><br>
 
 # Hierarchical Deterministic (HD) Wallet
 
-[![Build Status](https://img.shields.io/github/actions/workflow/status/talonlab/python-hdwallet/build.yml)](https://github.com/talonlab/python-hdwallet/actions/workflows/build.yml)
+[![Build Status](https://img.shields.io/github/actions/workflow/status/hdwallet-io/python-hdwallet/build.yml)](https://github.com/hdwallet-io/python-hdwallet/actions/workflows/build.yml)
 [![PyPI Version](https://img.shields.io/pypi/v/hdwallet.svg?color=blue)](https://pypi.org/project/hdwallet)
 [![Documentation Status](https://readthedocs.org/projects/hdwallet/badge/?version=master)](https://hdwallet.readthedocs.io)
 [![PyPI License](https://img.shields.io/pypi/l/hdwallet?color=black)](https://pypi.org/project/hdwallet)
 [![PyPI Python Version](https://img.shields.io/pypi/pyversions/hdwallet.svg)](https://pypi.org/project/hdwallet)
-[![Coverage Status](https://coveralls.io/repos/github/talonlab/python-hdwallet/badge.svg?branch=master)](https://coveralls.io/github/talonlab/python-hdwallet)
+[![Coverage Status](https://coveralls.io/repos/github/hdwallet-io/python-hdwallet/badge.svg?branch=master)](https://coveralls.io/github/hdwallet-io/python-hdwallet)
 
 Python-based library for the implementation of a Hierarchical Deterministic (HD) Wallet generator supporting more than 200 cryptocurrencies.
 It allows the handling of multiple coins, multiple accounts, external and internal chains per account, and millions of addresses per chain.
@@ -19,7 +19,7 @@ It allows the handling of multiple coins, multiple accounts, external and intern
 ## Clients
 
 **Online Version** (not-recommended): [https://hdwallet.online](https://hdwallet.online) <br>
-**Offline Version** (recommended): [hdwallet-desktop](https://github.com/talonlab/hdwallet-desktop/releases)
+**Offline Version** (recommended): [hdwallet-desktop](https://github.com/hdwallet-io/hdwallet-desktop/releases)
 
 > The library is designed to be flexible and scalable, making it ideal for developers who need to integrate multi-currency wallet functionalities into their applications. 
 > It supports standard protocols for compatibility with other wallets and services, offering features like secure seed creation, efficient key management, and easy account handling.
@@ -55,10 +55,10 @@ pip install hdwallet[cli]
 If you want to run the latest version of the code, you can install from the git:
 
 ```
-pip install git+ssh://github.com/talonlab/python-hdwallet.git
+pip install git+ssh://github.com/hdwallet-io/python-hdwallet.git
 ```
 
-For the versions available, see the [tags on this repository](https://github.com/talonlab/python-hdwallet/tags).
+For the versions available, see the [tags on this repository](https://github.com/hdwallet-io/python-hdwallet/tags).
 
 ## Quick Usage
 
@@ -88,7 +88,7 @@ hdwallet: HDWallet = HDWallet(
     network=Cryptocurrency.NETWORKS.MAINNET,
     language=BIP39_MNEMONIC_LANGUAGES.KOREAN,
     public_key_type=PUBLIC_KEY_TYPES.COMPRESSED,
-    passphrase="talonlab"
+    passphrase="hdwallet-io"
 ).from_entropy(  # Get Bitcoin HDWallet from entropy
     entropy=BIP39Entropy(
         entropy=BIP39Entropy.generate(
@@ -118,7 +118,7 @@ print(json.dumps(hdwallet.dump(exclude={"indexes"}), indent=4, ensure_ascii=Fals
     "entropy": "00000000000000000000000000000000",
     "strength": 128,
     "mnemonic": "가격 가격 가격 가격 가격 가격 가격 가격 가격 가격 가격 가능",
-    "passphrase": "talonlab",
+    "passphrase": "hdwallet-io",
     "language": "Korean",
     "seed": "4e415367c4a4d57ed9737ca50d2f8bf38a274d1d7fb3dd6598c759101c595cdf54045dbaeb216cf3751ce47862c41ff79caf961ca6c2aed11854afeb5efc1ab7",
     "ecc": "SLIP10-Secp256k1",
@@ -164,15 +164,15 @@ print(json.dumps(hdwallet.dump(exclude={"indexes"}), indent=4, ensure_ascii=Fals
 ```
 </details>
 
-Explore more [Examples](https://github.com/talonlab/python-hdwallet/blob/master/examples)
+Explore more [Examples](https://github.com/hdwallet-io/python-hdwallet/blob/master/examples)
 
 ### Command Line Interface (CLI)
 
 The ``hdwallet`` CLI provides a simple way to generate wallets, derive addresses, and manage keys directly from your terminal, with options for exporting data in JSON and CSV formats. 
 
-![HDWallet-CLI](https://raw.githubusercontent.com/talonlab/python-hdwallet/refs/heads/master/docs/static/svg/hdwallet-cli.svg)
+![HDWallet-CLI](https://raw.githubusercontent.com/hdwallet-io/python-hdwallet/refs/heads/master/docs/static/svg/hdwallet-cli.svg)
 
-Explore more [Commands](https://github.com/talonlab/python-hdwallet/blob/master/examples#readme)
+Explore more [Commands](https://github.com/hdwallet-io/python-hdwallet/blob/master/examples#readme)
 
 ### Clients
 
@@ -196,7 +196,7 @@ hdwallet: HDWallet = HDWallet(
     cryptocurrency=Cryptocurrency,
     hd=BIP44HD,
     network=Cryptocurrency.NETWORKS.MAINNET,
-    passphrase=None  # "talonlab"
+    passphrase=None  # "hdwallet-io"
 ).from_mnemonic(   # Get Ethereum HDWallet from mnemonic phrase
     mnemonic=BIP39Mnemonic(
         mnemonic=BIP39Mnemonic.from_words(
@@ -396,7 +396,7 @@ Bitcoin (BTC) Native-Segwit wallet: {
 ```
 </details>
 
-Explore more [Clients](https://github.com/talonlab/python-hdwallet/blob/master/clients)
+Explore more [Clients](https://github.com/hdwallet-io/python-hdwallet/blob/master/clients)
 
 ## Development
 
@@ -425,12 +425,12 @@ tests against a specific version of Python.
 
 ## Contributing
 
-Feel free to open an [issue](https://github.com/talonlab/python-hdwallet/issues) if you find a problem,
+Feel free to open an [issue](https://github.com/hdwallet-io/python-hdwallet/issues) if you find a problem,
 or a pull request if you've solved an issue. And also any help in testing, development,
 documentation and other tasks is highly appreciated and useful to the project.
 There are tasks for contributors of all experience levels.
 
-For more information, see the [CONTRIBUTING.md](https://github.com/talonlab/python-hdwallet/blob/master/CONTRIBUTING.md) file.
+For more information, see the [CONTRIBUTING.md](https://github.com/hdwallet-io/python-hdwallet/blob/master/CONTRIBUTING.md) file.
 
 ## Supported Cryptocurrencies
 
@@ -669,4 +669,4 @@ We accept a wide range of cryptocurrencies! If you'd like to donate using anothe
 
 ## License
 
-Distributed under the [MIT](https://github.com/talonlab/python-hdwallet/blob/master/LICENSE) license. See ``LICENSE`` for more information.
+Distributed under the [MIT](https://github.com/hdwallet-io/python-hdwallet/blob/master/LICENSE) license. See ``LICENSE`` for more information.

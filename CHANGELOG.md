@@ -1,8 +1,8 @@
 # Changelog
 
-## [v3.4.0](https://github.com/talonlab/python-hdwallet/tree/v3.4.0) (2025-03-15)
+## [v3.4.0](https://github.com/hdwallet-io/python-hdwallet/tree/v3.4.0) (2025-03-15)
 
-[Full Changelog](https://github.com/talonlab/python-hdwallet/compare/v3.3.0...v3.4.0)
+[Full Changelog](https://github.com/hdwallet-io/python-hdwallet/compare/v3.3.0...v3.4.0)
 
 **New Cryptocurrencies:**
 
@@ -19,9 +19,9 @@
 
 - Fix: Phantom client base58 encode of Solana
 
-## [v3.3.0](https://github.com/talonlab/python-hdwallet/tree/v3.3.0) (2025-02-16)
+## [v3.3.0](https://github.com/hdwallet-io/python-hdwallet/tree/v3.3.0) (2025-02-16)
 
-[Full Changelog](https://github.com/talonlab/python-hdwallet/compare/v3.2.3...v3.3.0)
+[Full Changelog](https://github.com/hdwallet-io/python-hdwallet/compare/v3.2.3...v3.3.0)
 
 **New Cryptocurrencies:**
 
@@ -39,9 +39,9 @@
 
 - Fix: Osmosis coin-type into `10000118` value
 
-## [v3.2.3](https://github.com/talonlab/python-hdwallet/tree/v3.2.3) (2025-01-14)
+## [v3.2.3](https://github.com/hdwallet-io/python-hdwallet/tree/v3.2.3) (2025-01-14)
 
-[Full Changelog](https://github.com/talonlab/python-hdwallet/compare/v3.2.1...v3.2.3)
+[Full Changelog](https://github.com/hdwallet-io/python-hdwallet/compare/v3.2.1...v3.2.3)
 
 **Improvements:**
 
@@ -53,17 +53,17 @@
 - Fix: HDWDerivation `ecc` constant value on clean
 - Fix: ECC parameter instant checker on HDWDerivation
 
-## [v3.2.1](https://github.com/talonlab/python-hdwallet/tree/v3.2.1) (2025-01-08)
+## [v3.2.1](https://github.com/hdwallet-io/python-hdwallet/tree/v3.2.1) (2025-01-08)
 
-[Full Changelog](https://github.com/talonlab/python-hdwallet/compare/v3.2.0...v3.2.1)
+[Full Changelog](https://github.com/hdwallet-io/python-hdwallet/compare/v3.2.0...v3.2.1)
 
 **Fix Bugs:**
 
 - Fix: import SeedError exception on Cardano seed
 
-## [v3.2.0](https://github.com/talonlab/python-hdwallet/tree/v3.2.0) (2024-12-15)
+## [v3.2.0](https://github.com/hdwallet-io/python-hdwallet/tree/v3.2.0) (2024-12-15)
 
-[Full Changelog](https://github.com/talonlab/python-hdwallet/compare/v3.1.0...v3.2.0)
+[Full Changelog](https://github.com/hdwallet-io/python-hdwallet/compare/v3.1.0...v3.2.0)
 
 **Improvements:**
 
@@ -79,9 +79,9 @@
 
 - Fix: use default HD class issue #107
 
-## [v3.1.0](https://github.com/talonlab/python-hdwallet/tree/v3.1.0) (2024-12-13)
+## [v3.1.0](https://github.com/hdwallet-io/python-hdwallet/tree/v3.1.0) (2024-12-13)
 
-[Full Changelog](https://github.com/talonlab/python-hdwallet/compare/v3.0.1...v3.1.0)
+[Full Changelog](https://github.com/hdwallet-io/python-hdwallet/compare/v3.0.1...v3.1.0)
 
 **New Additions:**
 
@@ -108,17 +108,17 @@
 
 - Fix bitcoin-cash regtest config #104 (@amikingo)
 
-## [v3.0.1](https://github.com/talonlab/python-hdwallet/tree/v3.0.1) (2024-11-27)
+## [v3.0.1](https://github.com/hdwallet-io/python-hdwallet/tree/v3.0.1) (2024-11-27)
 
-[Full Changelog](https://github.com/talonlab/python-hdwallet/compare/v3.0.0...v3.0.1)
+[Full Changelog](https://github.com/hdwallet-io/python-hdwallet/compare/v3.0.0...v3.0.1)
 
 **Improvements:**
 
 - Include a Source link in our PyPI metadata, pointing directly to this repository. 
 
-## [v3.0.0](https://github.com/talonlab/python-hdwallet/tree/v3.0.0) (2024-11-26)
+## [v3.0.0](https://github.com/hdwallet-io/python-hdwallet/tree/v3.0.0) (2024-11-26)
 
-[Full Changelog](https://github.com/talonlab/python-hdwallet/compare/v2.2.1...v3.0.0)
+[Full Changelog](https://github.com/hdwallet-io/python-hdwallet/compare/v2.2.1...v3.0.0)
 
 We are pleased to announce the release of **python-hdwallet v3.0.0**, a comprehensive update introducing new standards, enhanced functionality, and expanded support for diverse blockchain ecosystems.
 

@@ -4,8 +4,8 @@ Hierarchical Deterministic Wallet
 
 |Build Status| |PyPI Version| |Documentation Status| |PyPI License| |PyPI Python Version| |Coverage Status|
 
-.. |Build Status| image:: https://img.shields.io/github/actions/workflow/status/talonlab/python-hdwallet/build.yml
-   :target: https://github.com/talonlab/python-hdwallet/actions/workflows/build.yml
+.. |Build Status| image:: https://img.shields.io/github/actions/workflow/status/hdwallet-io/python-hdwallet/build.yml
+   :target: https://github.com/hdwallet-io/python-hdwallet/actions/workflows/build.yml
 
 .. |PyPI Version| image:: https://img.shields.io/pypi/v/hdwallet.svg?color=blue
    :target: https://pypi.org/project/hdwallet
@@ -19,8 +19,8 @@ Hierarchical Deterministic Wallet
 .. |PyPI Python Version| image:: https://img.shields.io/pypi/pyversions/hdwallet.svg
    :target: https://pypi.org/project/hdwallet
 
-.. |Coverage Status| image:: https://coveralls.io/repos/github/talonlab/python-hdwallet/badge.svg?branch=master
-   :target: https://coveralls.io/github/talonlab/python-hdwallet?branch=master
+.. |Coverage Status| image:: https://coveralls.io/repos/github/hdwallet-io/python-hdwallet/badge.svg?branch=master
+   :target: https://coveralls.io/github/hdwallet-io/python-hdwallet?branch=master
 
 Python-based library for the implementation of a Hierarchical Deterministic (HD) Wallet generator supporting more than 200 cryptocurrencies.
 It allows the handling of multiple coins, multiple accounts, external and internal chains per account, and millions of addresses per chain.
