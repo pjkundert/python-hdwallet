@@ -61,6 +61,10 @@ class Nano(ICryptocurrency):
         "NANO": "Nano"
     })
     DEFAULT_ADDRESS = ADDRESSES.NANO
+    SEMANTICS = [
+        "p2pkh"
+    ]
+    DEFAULT_SEMANTIC = "p2pkh"
     PARAMS = Params({
         "ADDRESS_PREFIX": "nano_",
         "ALPHABET": "13456789abcdefghijkmnopqrstuwxyz",

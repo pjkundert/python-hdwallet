@@ -5,15 +5,13 @@
 # file COPYING or https://opensource.org/license/mit
 
 from typing import (
-    Optional, Union, Type
+    Optional, List, Type
 )
 
 from ..ecc import IEllipticCurveCryptography
-from ..derivations.bip44 import BIP44Derivation
 from ..const import (
     Info, WitnessVersions, Entropies, Mnemonics, Seeds, HDs, Addresses, AddressTypes, AddressPrefixes, Networks, Params, XPrivateKeyVersions, XPublicKeyVersions
 )
-from ..exceptions import NetworkError
 
 
 class INetwork:
@@ -50,7 +48,7 @@ class ICryptocurrency:
     INFO: Info
     ECC: Type[IEllipticCurveCryptography]
     COIN_TYPE: int
-    SUPPORT_BIP38: bool = False
+    SUPPORT_BIP38: bool
     NETWORKS: Networks
     DEFAULT_NETWORK: INetwork
     ENTROPIES: Entropies
@@ -65,5 +63,6 @@ class ICryptocurrency:
     DEFAULT_ADDRESS_TYPE: Optional[str] = None
     ADDRESS_PREFIXES: Optional[AddressPrefixes] = None
     DEFAULT_ADDRESS_PREFIX: Optional[str] = None
-    DEFAULT_SEMANTIC: str = "p2pkh"
+    SEMANTICS: List[str] = []
+    DEFAULT_SEMANTIC: Optional[str] = None
     PARAMS: Optional[Params] = None

@@ -64,3 +64,7 @@ class Harmony(ICryptocurrency):
         "HARMONY": "Harmony"
     })
     DEFAULT_ADDRESS = ADDRESSES.HARMONY
+    SEMANTICS = [
+        "p2pkh"
+    ]
+    DEFAULT_SEMANTIC = "p2pkh"

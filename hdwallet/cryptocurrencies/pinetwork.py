@@ -61,6 +61,10 @@ class PiNetwork(ICryptocurrency):
         "STELLAR": "Stellar"
     })
     DEFAULT_ADDRESS = ADDRESSES.STELLAR
+    SEMANTICS = [
+        "p2pkh"
+    ]
+    DEFAULT_SEMANTIC = "p2pkh"
     ADDRESS_TYPES = AddressTypes({
         "PRIVATE_KEY": "private_key",
         "PUBLIC_KEY": "public_key"

@@ -110,3 +110,7 @@ class Evrmore(ICryptocurrency):
         "P2PKH", "P2SH", "P2WPKH", {"P2WPKH_IN_P2SH": "P2WPKH-In-P2SH"}, "P2WSH", {"P2WSH_IN_P2SH": "P2WSH-In-P2SH"}
     ))
     DEFAULT_ADDRESS = ADDRESSES.P2PKH
+    SEMANTICS = [
+        "p2pkh", "p2sh", "p2wpkh", "p2wpkh-in-p2sh", "p2wsh", "p2wsh-in-p2sh"
+    ]
+    DEFAULT_SEMANTIC = "p2pkh"

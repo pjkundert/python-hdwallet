@@ -63,3 +63,7 @@ class Injective(ICryptocurrency):
         "INJECTIVE": "Injective"
     })
     DEFAULT_ADDRESS = ADDRESSES.INJECTIVE
+    SEMANTICS = [
+        "p2pkh"
+    ]
+    DEFAULT_SEMANTIC = "p2pkh"

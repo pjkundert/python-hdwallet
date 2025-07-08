@@ -62,6 +62,10 @@ class EOS(ICryptocurrency):
         "EOS"
     })
     DEFAULT_ADDRESS = ADDRESSES.EOS
+    SEMANTICS = [
+        "p2pkh"
+    ]
+    DEFAULT_SEMANTIC = "p2pkh"
     PARAMS = Params({
         "ADDRESS_PREFIX": "EOS",
         "CHECKSUM_LENGTH": 4

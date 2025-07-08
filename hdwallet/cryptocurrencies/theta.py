@@ -62,3 +62,7 @@ class Theta(ICryptocurrency):
         "ETHEREUM": "Ethereum"
     })
     DEFAULT_ADDRESS = ADDRESSES.ETHEREUM
+    SEMANTICS = [
+        "p2pkh"
+    ]
+    DEFAULT_SEMANTIC = "p2pkh"

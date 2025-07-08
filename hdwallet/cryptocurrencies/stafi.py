@@ -63,3 +63,7 @@ class Stafi(ICryptocurrency):
         "COSMOS": "Cosmos"
     })
     DEFAULT_ADDRESS = ADDRESSES.COSMOS
+    SEMANTICS = [
+        "p2pkh"
+    ]
+    DEFAULT_SEMANTIC = "p2pkh"

@@ -63,6 +63,10 @@ class Binance(ICryptocurrency):
         "COSMOS": "Cosmos", "ETHEREUM": "Ethereum"
     })
     DEFAULT_ADDRESS = ADDRESSES.COSMOS
+    SEMANTICS = [
+        "p2pkh"
+    ]
+    DEFAULT_SEMANTIC = "p2pkh"
     ADDRESS_TYPES = AddressTypes({
         "CHAIN": "chain",
         "SMART_CHAIN": "smart-chain"

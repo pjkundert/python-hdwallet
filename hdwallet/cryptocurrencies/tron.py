@@ -68,6 +68,10 @@ class Tron(ICryptocurrency):
         "TRON": "Tron"
     })
     DEFAULT_ADDRESS = ADDRESSES.TRON
+    SEMANTICS = [
+        "p2pkh", "p2sh"
+    ]
+    DEFAULT_SEMANTIC = "p2pkh"
     PARAMS = Params({
         "ALPHABET": "123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz"
     })

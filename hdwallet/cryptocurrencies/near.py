@@ -61,3 +61,7 @@ class Near(ICryptocurrency):
         "NEAR": "Near"
     })
     DEFAULT_ADDRESS = ADDRESSES.NEAR
+    SEMANTICS = [
+        "p2pkh"
+    ]
+    DEFAULT_SEMANTIC = "p2pkh"

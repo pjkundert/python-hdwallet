@@ -63,3 +63,7 @@ class Zilliqa(ICryptocurrency):
         "ZILLIQA": "Zilliqa"
     })
     DEFAULT_ADDRESS = ADDRESSES.ZILLIQA
+    SEMANTICS = [
+        "p2pkh"
+    ]
+    DEFAULT_SEMANTIC = "p2pkh"

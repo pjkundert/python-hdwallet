@@ -61,6 +61,10 @@ class Tezos(ICryptocurrency):
         "TEZOS": "Tezos"
     })
     DEFAULT_ADDRESS = ADDRESSES.TEZOS
+    SEMANTICS = [
+        "p2pkh"
+    ]
+    DEFAULT_SEMANTIC = "p2pkh"
     ADDRESS_PREFIXES = AddressPrefixes({
         "TZ1": "tz1",
         "TZ2": "tz2",

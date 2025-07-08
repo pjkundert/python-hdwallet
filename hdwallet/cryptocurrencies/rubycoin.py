@@ -66,3 +66,7 @@ class Rubycoin(ICryptocurrency):
         "P2PKH", "P2SH"
     })
     DEFAULT_ADDRESS = ADDRESSES.P2PKH
+    SEMANTICS = [
+        "p2pkh", "p2sh"
+    ]
+    DEFAULT_SEMANTIC = "p2pkh"

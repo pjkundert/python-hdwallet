@@ -63,3 +63,7 @@ class MultiversX(ICryptocurrency):
         "MULTIVERSX": "MultiversX"
     })
     DEFAULT_ADDRESS = ADDRESSES.MULTIVERSX
+    SEMANTICS = [
+        "p2pkh"
+    ]
+    DEFAULT_SEMANTIC = "p2pkh"

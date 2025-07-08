@@ -76,6 +76,10 @@ class Ergo(ICryptocurrency):
         "ERGO": "Ergo"
     })
     DEFAULT_ADDRESS = ADDRESSES.ERGO
+    SEMANTICS = [
+        "p2pkh"
+    ]
+    DEFAULT_SEMANTIC = "p2pkh"
     ADDRESS_TYPES = AddressTypes({
         "P2PKH": "p2pkh",
         "P2SH": "p2sh"

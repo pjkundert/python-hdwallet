@@ -62,6 +62,10 @@ class Algorand(ICryptocurrency):
         "ALGORAND": "Algorand"
     })
     DEFAULT_ADDRESS = ADDRESSES.ALGORAND
+    SEMANTICS = [
+        "p2pkh"
+    ]
+    DEFAULT_SEMANTIC = "p2pkh"
     PARAMS = Params({
         "CHECKSUM_LENGTH": 4
     })

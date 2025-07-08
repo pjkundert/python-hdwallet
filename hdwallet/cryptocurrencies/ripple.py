@@ -67,6 +67,10 @@ class Ripple(ICryptocurrency):
         "RIPPLE": "Ripple"
     })
     DEFAULT_ADDRESS = ADDRESSES.RIPPLE
+    SEMANTICS = [
+        "p2pkh", "p2sh"
+    ]
+    DEFAULT_SEMANTIC = "p2pkh"
     PARAMS = Params({
         "ALPHABET": "rpshnaf39wBUDNEGHJKLM4PQRST7VWXYZ2bcdeCg65jkm8oFqi1tuvAxyz"
     })

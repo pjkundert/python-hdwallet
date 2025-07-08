@@ -102,6 +102,10 @@ class Cardano(ICryptocurrency):
         "CARDANO": "Cardano"
     })
     DEFAULT_ADDRESS = ADDRESSES.CARDANO
+    SEMANTICS = [
+        "p2pkh"
+    ]
+    DEFAULT_SEMANTIC = "p2pkh"
     ADDRESS_TYPES = AddressTypes({
         "PUBLIC_KEY": "public-key",
         "REDEMPTION": "redemption",

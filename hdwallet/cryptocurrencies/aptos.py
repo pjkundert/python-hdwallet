@@ -61,6 +61,10 @@ class Aptos(ICryptocurrency):
         "APTOS": "Aptos"
     })
     DEFAULT_ADDRESS = ADDRESSES.APTOS
+    SEMANTICS = [
+        "p2pkh"
+    ]
+    DEFAULT_SEMANTIC = "p2pkh"
     PARAMS = Params({
         "SUFFIX": 0x00,
         "ADDRESS_PREFIX": "0x"

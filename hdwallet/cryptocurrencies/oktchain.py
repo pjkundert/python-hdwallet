@@ -63,3 +63,7 @@ class OKTChain(ICryptocurrency):
         "OKT_CHAIN": "OKT-Chain"
     })
     DEFAULT_ADDRESS = ADDRESSES.OKT_CHAIN
+    SEMANTICS = [
+        "p2pkh"
+    ]
+    DEFAULT_SEMANTIC = "p2pkh"

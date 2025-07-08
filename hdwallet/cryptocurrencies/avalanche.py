@@ -64,6 +64,10 @@ class Avalanche(ICryptocurrency):
         "AVALANCHE": "Avalanche", "ETHEREUM": "Ethereum"
     })
     DEFAULT_ADDRESS = ADDRESSES.AVALANCHE
+    SEMANTICS = [
+        "p2pkh"
+    ]
+    DEFAULT_SEMANTIC = "p2pkh"
     ADDRESS_TYPES = AddressTypes({
         "C_CHAIN": "c-chain",
         "P_CHAIN": "p-chain",

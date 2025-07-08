@@ -62,6 +62,10 @@ class Filecoin(ICryptocurrency):
         "FILECOIN": "Filecoin"
     })
     DEFAULT_ADDRESS = ADDRESSES.FILECOIN
+    SEMANTICS = [
+        "p2pkh"
+    ]
+    DEFAULT_SEMANTIC = "p2pkh"
     ADDRESS_TYPES = AddressTypes({
         "SECP256K1": "secp256k1",
         "BLS": "bls"

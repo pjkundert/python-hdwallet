@@ -61,6 +61,10 @@ class Sui(ICryptocurrency):
         "SUI": "Sui"
     })
     DEFAULT_ADDRESS = ADDRESSES.SUI
+    SEMANTICS = [
+        "p2pkh"
+    ]
+    DEFAULT_SEMANTIC = "p2pkh"
     PARAMS = Params({
         "KEY_TYPE": 0x00,
         "ADDRESS_PREFIX": "0x"

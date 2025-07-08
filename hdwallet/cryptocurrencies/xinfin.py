@@ -63,6 +63,10 @@ class XinFin(ICryptocurrency):
         "XINFIN": "XinFin"
     })
     DEFAULT_ADDRESS = ADDRESSES.XINFIN
+    SEMANTICS = [
+        "p2pkh"
+    ]
+    DEFAULT_SEMANTIC = "p2pkh"
     PARAMS = Params({
         "ADDRESS_PREFIX": "xdc"
     })
