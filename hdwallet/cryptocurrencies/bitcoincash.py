@@ -16,6 +16,7 @@ from .icryptocurrency import (
 
 class Mainnet(INetwork):
 
+    NAME = "mainnet"
     LEGACY_PUBLIC_KEY_ADDRESS_PREFIX = 0x00
     LEGACY_SCRIPT_ADDRESS_PREFIX = 0x05
     STD_PUBLIC_KEY_ADDRESS_PREFIX = 0x00
@@ -46,6 +47,7 @@ class Mainnet(INetwork):
 
 class Testnet(INetwork):
 
+    NAME = "testnet"
     LEGACY_PUBLIC_KEY_ADDRESS_PREFIX = 0x6f
     LEGACY_SCRIPT_ADDRESS_PREFIX = 0xc4
     STD_PUBLIC_KEY_ADDRESS_PREFIX = 0x00

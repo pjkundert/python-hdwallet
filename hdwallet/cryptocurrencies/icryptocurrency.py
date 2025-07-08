@@ -18,6 +18,7 @@ from ..exceptions import NetworkError
 
 class INetwork:
 
+    NAME: str
     # Bitcoin network types
     PUBLIC_KEY_ADDRESS_PREFIX: Optional[int] = None
     SCRIPT_ADDRESS_PREFIX: Optional[int] = None
@@ -27,26 +28,19 @@ class INetwork:
     XPUBLIC_KEY_VERSIONS: Optional[XPublicKeyVersions] = None
     MESSAGE_PREFIX: Optional[str] = None
     WIF_PREFIX: Optional[int] = None
-
     # Bitcoin-Cash, Bitcoin-Cash-SLP and eCash network types
     LEGACY_PUBLIC_KEY_ADDRESS_PREFIX: Optional[int] = None
     STD_PUBLIC_KEY_ADDRESS_PREFIX: Optional[int] = None
     LEGACY_SCRIPT_ADDRESS_PREFIX: Optional[int] = None
     STD_SCRIPT_ADDRESS_PREFIX: Optional[int] = None
-
     # Monero network types
     STANDARD: Optional[int] = None
     INTEGRATED: Optional[int] = None
     SUB_ADDRESS: Optional[int] = None
-
     # Cardano network types
     TYPE: Optional[int] = None
     PAYMENT_ADDRESS_HRP: Optional[str] = None
     REWARD_ADDRESS_HRP: Optional[str] = None
-
-    @classmethod
-    def name(cls) -> str:
-        return cls.__name__.lower()
 
 
 class ICryptocurrency:

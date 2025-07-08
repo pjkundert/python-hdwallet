@@ -16,6 +16,7 @@ from .icryptocurrency import (
 
 class Mainnet(INetwork):
 
+    NAME = "mainnet"
     PUBLIC_KEY_ADDRESS_PREFIX = 0x41
     SCRIPT_ADDRESS_PREFIX = 0x17
     XPRIVATE_KEY_VERSIONS = XPrivateKeyVersions({

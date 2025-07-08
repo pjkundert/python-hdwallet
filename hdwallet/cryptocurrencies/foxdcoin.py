@@ -16,6 +16,7 @@ from .icryptocurrency import (
 
 class Mainnet(INetwork):
 
+    NAME = "mainnet"
     PUBLIC_KEY_ADDRESS_PREFIX = 0x23
     SCRIPT_ADDRESS_PREFIX = 0x1e
     HRP = "fx"
@@ -45,6 +46,7 @@ class Mainnet(INetwork):
 
 class Testnet(INetwork):
 
+    NAME = "testnet"
     PUBLIC_KEY_ADDRESS_PREFIX = 0x5f
     SCRIPT_ADDRESS_PREFIX = 0x5a
     HRP = "tf"

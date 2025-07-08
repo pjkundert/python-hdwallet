@@ -16,6 +16,7 @@ from hdwallet.cryptocurrencies.icryptocurrency import (
 
 class Mainnet(INetwork):
 
+    NAME = "mainnet"
     HRP = "dydx"
     XPRIVATE_KEY_VERSIONS = XPrivateKeyVersions({
         "P2PKH": 0x488ade4

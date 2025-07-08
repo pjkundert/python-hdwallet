@@ -33,6 +33,7 @@ class Types(NestedNamespace):
 
 class Mainnet(INetwork):
 
+    NAME = "mainnet"
     TYPE = 1
     PAYMENT_ADDRESS_HRP = "addr"
     REWARD_ADDRESS_HRP = "stake"
@@ -46,6 +47,7 @@ class Mainnet(INetwork):
 
 class Testnet(INetwork):
 
+    NAME = "testnet"
     TYPE = 0
     PAYMENT_ADDRESS_HRP = "addr_test"
     REWARD_ADDRESS_HRP = "stake_test"

@@ -16,6 +16,7 @@ from .icryptocurrency import (
 
 class Mainnet(INetwork):
 
+    NAME = "mainnet"
     STANDARD = 0x12
     INTEGRATED = 0x13
     SUB_ADDRESS = 0x2a
@@ -23,6 +24,7 @@ class Mainnet(INetwork):
 
 class Stagenet(INetwork):
 
+    NAME = "stagenet"
     STANDARD = 0x18
     INTEGRATED = 0x19
     SUB_ADDRESS = 0x24
@@ -30,6 +32,7 @@ class Stagenet(INetwork):
 
 class Testnet(INetwork):
 
+    NAME = "testnet"
     STANDARD = 0x35
     INTEGRATED = 0x36
     SUB_ADDRESS = 0x3f
