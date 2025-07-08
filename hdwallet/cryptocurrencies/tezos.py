@@ -38,6 +38,7 @@ class Tezos(ICryptocurrency):
     })
     ECC = SLIP10Ed25519ECC
     COIN_TYPE = CoinTypes.Tezos
+    SUPPORT_BIP38 = False
     NETWORKS = Networks({
         "MAINNET": Mainnet
     })
@@ -55,6 +56,7 @@ class Tezos(ICryptocurrency):
         "BIP32", "BIP44"
     })
     DEFAULT_HD = HDS.BIP44
+    DEFAULT_PATH = f"m/44'/{COIN_TYPE}'/0'/0/0"
     ADDRESSES = Addresses({
         "TEZOS": "Tezos"
     })

@@ -19,7 +19,7 @@ from ..exceptions import NetworkError
 class INetwork:
 
     NAME: str
-    # Bitcoin network types
+    # Bitcoin
     PUBLIC_KEY_ADDRESS_PREFIX: Optional[int] = None
     SCRIPT_ADDRESS_PREFIX: Optional[int] = None
     HRP: Optional[str] = None
@@ -28,16 +28,16 @@ class INetwork:
     XPUBLIC_KEY_VERSIONS: Optional[XPublicKeyVersions] = None
     MESSAGE_PREFIX: Optional[str] = None
     WIF_PREFIX: Optional[int] = None
-    # Bitcoin-Cash, Bitcoin-Cash-SLP and eCash network types
+    # Bitcoin-Cash | Bitcoin-Cash-SLP | eCash
     LEGACY_PUBLIC_KEY_ADDRESS_PREFIX: Optional[int] = None
     STD_PUBLIC_KEY_ADDRESS_PREFIX: Optional[int] = None
     LEGACY_SCRIPT_ADDRESS_PREFIX: Optional[int] = None
     STD_SCRIPT_ADDRESS_PREFIX: Optional[int] = None
-    # Monero network types
+    # Monero
     STANDARD: Optional[int] = None
     INTEGRATED: Optional[int] = None
     SUB_ADDRESS: Optional[int] = None
-    # Cardano network types
+    # Cardano
     TYPE: Optional[int] = None
     PAYMENT_ADDRESS_HRP: Optional[str] = None
     REWARD_ADDRESS_HRP: Optional[str] = None
@@ -58,33 +58,12 @@ class ICryptocurrency:
     SEEDS: Seeds
     HDS: HDs
     DEFAULT_HD: str
+    DEFAULT_PATH: str
     ADDRESSES: Addresses
     DEFAULT_ADDRESS: str
     ADDRESS_TYPES: Optional[AddressTypes] = None
     DEFAULT_ADDRESS_TYPE: Optional[str] = None
     ADDRESS_PREFIXES: Optional[AddressPrefixes] = None
     DEFAULT_ADDRESS_PREFIX: Optional[str] = None
-    PARAMS: Optional[Params] = None
     DEFAULT_SEMANTIC: str = "p2pkh"
-
-    @classmethod
-    def get_default_path(cls, network: Union[str, Type[INetwork]]) -> str:
-        try:
-            if not isinstance(network, str) and issubclass(network, INetwork):
-                network = network.__name__.lower()
-            if not cls.NETWORKS.is_network(network=network):
-                raise NetworkError(
-                    f"Wrong {cls.NAME} network", expected=cls.NETWORKS.networks(), got=network
-                )
-
-            bip44_derivation: BIP44Derivation = BIP44Derivation(
-                account=0, change="external-chain", address=0
-            )
-            bip44_derivation.from_coin_type(
-                coin_type=cls.COIN_TYPE if network == "mainnet" else 1
-            )
-            return bip44_derivation.path()
-        except TypeError:
-            raise NetworkError(
-                "Invalid network type", expected=[str, INetwork], got=type(network)
-            )
+    PARAMS: Optional[Params] = None

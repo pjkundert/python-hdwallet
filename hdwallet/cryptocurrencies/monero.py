@@ -51,6 +51,7 @@ class Monero(ICryptocurrency):
     })
     ECC = SLIP10Ed25519MoneroECC
     COIN_TYPE = CoinTypes.Monero
+    SUPPORT_BIP38 = False
     NETWORKS = Networks({
         "MAINNET": Mainnet, "STAGENET": Stagenet, "TESTNET": Testnet
     })
@@ -68,6 +69,7 @@ class Monero(ICryptocurrency):
         "MONERO": "Monero"
     })
     DEFAULT_HD = HDS.MONERO
+    DEFAULT_PATH = f"m/44'/{COIN_TYPE}'/0'/0/0"
     ADDRESSES = Addresses({
         "MONERO": "Monero"
     })

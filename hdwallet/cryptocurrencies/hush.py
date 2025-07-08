@@ -63,6 +63,7 @@ class Hush(ICryptocurrency):
         "BIP32", "BIP44"
     })
     DEFAULT_HD = HDS.BIP44
+    DEFAULT_PATH = f"m/44'/{COIN_TYPE}'/0'/0/0"
     ADDRESSES = Addresses({
         "P2PKH", "P2SH"
     })

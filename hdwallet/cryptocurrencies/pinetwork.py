@@ -38,6 +38,7 @@ class PiNetwork(ICryptocurrency):
     })
     ECC = SLIP10Ed25519ECC
     COIN_TYPE = CoinTypes.PiNetwork
+    SUPPORT_BIP38 = False
     NETWORKS = Networks({
         "MAINNET": Mainnet
     })
@@ -55,6 +56,7 @@ class PiNetwork(ICryptocurrency):
         "BIP32", "BIP44"
     })
     DEFAULT_HD = HDS.BIP44
+    DEFAULT_PATH = f"m/44'/{COIN_TYPE}'/0'/0/0"
     ADDRESSES = Addresses({
         "STELLAR": "Stellar"
     })

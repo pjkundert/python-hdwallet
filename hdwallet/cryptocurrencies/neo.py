@@ -38,6 +38,7 @@ class Neo(ICryptocurrency):
     })
     ECC = SLIP10Nist256p1ECC
     COIN_TYPE = CoinTypes.Neo
+    SUPPORT_BIP38 = False
     NETWORKS = Networks({
         "MAINNET": Mainnet
     })
@@ -55,6 +56,7 @@ class Neo(ICryptocurrency):
         "BIP32", "BIP44"
     })
     DEFAULT_HD = HDS.BIP44
+    DEFAULT_PATH = f"m/44'/{COIN_TYPE}'/0'/0/0"
     ADDRESSES = Addresses({
         "NEO": "Neo"
     })

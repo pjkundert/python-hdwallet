@@ -40,6 +40,7 @@ class MultiversX(ICryptocurrency):
     })
     ECC = SLIP10Ed25519ECC
     COIN_TYPE = CoinTypes.MultiversX
+    SUPPORT_BIP38 = False
     NETWORKS = Networks({
         "MAINNET": Mainnet
     })
@@ -57,6 +58,7 @@ class MultiversX(ICryptocurrency):
         "BIP32", "BIP44"
     })
     DEFAULT_HD = HDS.BIP44
+    DEFAULT_PATH = f"m/44'/{COIN_TYPE}'/0'/0/0"
     ADDRESSES = Addresses({
         "MULTIVERSX": "MultiversX"
     })

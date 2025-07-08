@@ -72,6 +72,7 @@ class Cardano(ICryptocurrency):
     })
     ECC = KholawEd25519ECC
     COIN_TYPE = CoinTypes.Cardano
+    SUPPORT_BIP38 = False
     NETWORKS = Networks({
         "MAINNET": Mainnet, "TESTNET": Testnet
     })
@@ -89,6 +90,7 @@ class Cardano(ICryptocurrency):
         "CARDANO": "Cardano"
     })
     DEFAULT_HD = HDS.CARDANO
+    DEFAULT_PATH = f"m/44'/{COIN_TYPE}'/0'/0/0"
     TYPES = Types({
         "BYRON_ICARUS": "byron-icarus",
         "BYRON_LEDGER": "byron-ledger",

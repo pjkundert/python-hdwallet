@@ -40,6 +40,7 @@ class Stafi(ICryptocurrency):
     })
     ECC = SLIP10Secp256k1ECC
     COIN_TYPE = CoinTypes.Stafi
+    SUPPORT_BIP38 = False
     NETWORKS = Networks({
         "MAINNET": Mainnet
     })
@@ -57,6 +58,7 @@ class Stafi(ICryptocurrency):
         "BIP32", "BIP44"
     })
     DEFAULT_HD = HDS.BIP44
+    DEFAULT_PATH = f"m/44'/{COIN_TYPE}'/0'/0/0"
     ADDRESSES = Addresses({
         "COSMOS": "Cosmos"
     })

@@ -82,6 +82,7 @@ class Testnet(INetwork):
 
 class Regtest(Testnet):
 
+    NAME = "regtest"
     HRP = "bcrt"
 
 
@@ -116,6 +117,7 @@ class Bitcoin(ICryptocurrency):
         "BIP32", "BIP44", "BIP49", "BIP84", "BIP86", "BIP141", {"ELECTRUM_V1": "Electrum-V1"}, {"ELECTRUM_V2": "Electrum-V2"}
     ))
     DEFAULT_HD = HDS.BIP44
+    DEFAULT_PATH = f"m/44'/{COIN_TYPE}'/0'/0/0"
     ADDRESSES = Addresses((
         "P2PKH", "P2SH", "P2TR", "P2WPKH", {"P2WPKH_IN_P2SH": "P2WPKH-In-P2SH"}, "P2WSH", {"P2WSH_IN_P2SH": "P2WSH-In-P2SH"}
     ))

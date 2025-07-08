@@ -41,6 +41,7 @@ class Harmony(ICryptocurrency):
     })
     ECC = SLIP10Secp256k1ECC
     COIN_TYPE = CoinTypes.Harmony
+    SUPPORT_BIP38 = False
     NETWORKS = Networks({
         "MAINNET": Mainnet
     })
@@ -58,6 +59,7 @@ class Harmony(ICryptocurrency):
         "BIP32", "BIP44"
     })
     DEFAULT_HD = HDS.BIP44
+    DEFAULT_PATH = f"m/44'/{COIN_TYPE}'/0'/0/0"
     ADDRESSES = Addresses({
         "HARMONY": "Harmony"
     })
