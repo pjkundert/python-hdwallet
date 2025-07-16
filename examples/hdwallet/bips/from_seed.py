@@ -1,11 +1,9 @@
 #!/usr/bin/env python3
 
 from hdwallet import HDWallet
-from hdwallet.mnemonics import (
-    BIP39Mnemonic, BIP39_MNEMONIC_LANGUAGES, MONERO_MNEMONIC_WORDS
-)
-from hdwallet.cryptocurrencies import Binance as Cryptocurrency
-from hdwallet.const import PUBLIC_KEY_TYPES
+from hdwallet.seeds import AlgorandSeed
+from hdwallet.cryptocurrencies import Algorand as Cryptocurrency
+from hdwallet.consts import PUBLIC_KEY_TYPES
 from hdwallet.derivations import (
     BIP44Derivation, CHANGES
 )
@@ -18,14 +16,10 @@ hdwallet: HDWallet = HDWallet(
     cryptocurrency=Cryptocurrency,
     hd=BIP32HD,
     network=Cryptocurrency.NETWORKS.MAINNET,
-    public_key_type=PUBLIC_KEY_TYPES.COMPRESSED,
-    passphrase="meherett"
-).from_mnemonic(
-    mnemonic=BIP39Mnemonic(
-        mnemonic=BIP39Mnemonic.from_words(
-            words=MONERO_MNEMONIC_WORDS.TWELVE,
-            language=BIP39_MNEMONIC_LANGUAGES.ITALIAN
-        )
+    public_key_type=PUBLIC_KEY_TYPES.COMPRESSED
+).from_seed(
+    seed=AlgorandSeed(
+        seed="680dca0430704e98224ea64e48964f647d6a428116e629f83c34fe37f799712a"
     )
 ).from_derivation(
     derivation=BIP44Derivation(

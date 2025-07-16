@@ -3,7 +3,7 @@
 from hdwallet import HDWallet
 from hdwallet.cryptocurrencies import Qtum as Cryptocurrency
 from hdwallet.derivations import CustomDerivation
-from hdwallet.const import (
+from hdwallet.consts import (
     PUBLIC_KEY_TYPES, SEMANTICS
 )
 from hdwallet.hds import BIP141HD

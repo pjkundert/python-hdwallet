@@ -1,30 +1,24 @@
 #!/usr/bin/env python3
 
 from hdwallet import HDWallet
-from hdwallet.seeds import ElectrumV2Seed
 from hdwallet.derivations import ElectrumDerivation
 from hdwallet.cryptocurrencies import Bitcoin
-from hdwallet.const import (
-    MODES, PUBLIC_KEY_TYPES
-)
-from hdwallet.hds import ElectrumV2HD
+from hdwallet.consts import PUBLIC_KEY_TYPES
+from hdwallet.hds import ElectrumV1HD
 
 import json
 
 
 hdwallet: HDWallet = HDWallet(
     cryptocurrency=Bitcoin,
-    hd=ElectrumV2HD,
+    hd=ElectrumV1HD,
     network=Bitcoin.NETWORKS.MAINNET,
-    mode=MODES.SEGWIT,
     public_key_type=PUBLIC_KEY_TYPES.UNCOMPRESSED
-).from_seed(
-    seed=ElectrumV2Seed(
-        seed="4c423a08ccc9d0fe2fb6136ffdc5292a18c0a552e1246b572a5740c523052882880ca55faf84c996945c7f7145c84ddaedb671e8f23c9bff87617f67e9fb1319"
-    )
+).from_private_key(
+    private_key="0fea3ff3b19b033672e8ac8a3b26fed252daf30762c8294e9dd62dc417d2108e"
 ).from_derivation(
     derivation=ElectrumDerivation(
-        change=(0, 2), address=(1, 2)
+        change=(0, 2), address=0
     )
 )
 

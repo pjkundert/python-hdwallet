@@ -3,7 +3,7 @@
 from hdwallet import HDWallet
 from hdwallet.derivations import ElectrumDerivation
 from hdwallet.cryptocurrencies import Bitcoin
-from hdwallet.const import PUBLIC_KEY_TYPES
+from hdwallet.consts import PUBLIC_KEY_TYPES
 from hdwallet.hds import ElectrumV1HD
 
 import json

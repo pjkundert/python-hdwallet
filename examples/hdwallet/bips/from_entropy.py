@@ -6,7 +6,7 @@ from hdwallet.entropies import (
 )
 from hdwallet.mnemonics import BIP39_MNEMONIC_LANGUAGES
 from hdwallet.cryptocurrencies import Qtum as Cryptocurrency
-from hdwallet.const import PUBLIC_KEY_TYPES
+from hdwallet.consts import PUBLIC_KEY_TYPES
 from hdwallet.derivations import (
     BIP44Derivation, CHANGES
 )

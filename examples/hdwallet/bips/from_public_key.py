@@ -2,7 +2,7 @@
 
 from hdwallet import HDWallet
 from hdwallet.cryptocurrencies import Bitcoin as Cryptocurrency
-from hdwallet.const import PUBLIC_KEY_TYPES
+from hdwallet.consts import PUBLIC_KEY_TYPES
 from hdwallet.hds import BIP44HD
 
 import json

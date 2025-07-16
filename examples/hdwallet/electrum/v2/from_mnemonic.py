@@ -1,15 +1,12 @@
 #!/usr/bin/env python3
 
 from hdwallet import HDWallet
-from hdwallet.entropies import (
-    ElectrumV2Entropy, ELECTRUM_V2_ENTROPY_STRENGTHS
-)
 from hdwallet.mnemonics import (
-    ELECTRUM_V2_MNEMONIC_LANGUAGES, ELECTRUM_V2_MNEMONIC_TYPES
+    ElectrumV2Mnemonic, ELECTRUM_V2_MNEMONIC_LANGUAGES, ELECTRUM_V2_MNEMONIC_TYPES, ELECTRUM_V2_MNEMONIC_WORDS
 )
 from hdwallet.derivations import ElectrumDerivation
 from hdwallet.cryptocurrencies import Bitcoin
-from hdwallet.const import (
+from hdwallet.consts import (
     MODES, PUBLIC_KEY_TYPES
 )
 from hdwallet.hds import ElectrumV2HD
@@ -21,19 +18,22 @@ hdwallet: HDWallet = HDWallet(
     cryptocurrency=Bitcoin,
     hd=ElectrumV2HD,
     network=Bitcoin.NETWORKS.MAINNET,
-    language=ELECTRUM_V2_MNEMONIC_LANGUAGES.PORTUGUESE,
+    language=ELECTRUM_V2_MNEMONIC_LANGUAGES.SPANISH,
     mnemonic_type=ELECTRUM_V2_MNEMONIC_TYPES.SEGWIT,
     mode=MODES.SEGWIT,
     public_key_type=PUBLIC_KEY_TYPES.UNCOMPRESSED
-).from_entropy(
-    entropy=ElectrumV2Entropy(
-        entropy=ElectrumV2Entropy.generate(
-            strength=ELECTRUM_V2_ENTROPY_STRENGTHS.ONE_HUNDRED_THIRTY_TWO
-        )
+).from_mnemonic(
+    mnemonic=ElectrumV2Mnemonic(
+        mnemonic=ElectrumV2Mnemonic.from_words(
+            words=ELECTRUM_V2_MNEMONIC_WORDS.TWELVE,
+            language=ELECTRUM_V2_MNEMONIC_LANGUAGES.SPANISH,
+            mnemonic_type=ELECTRUM_V2_MNEMONIC_TYPES.SEGWIT,
+        ),
+        mnemonic_type=ELECTRUM_V2_MNEMONIC_TYPES.SEGWIT
     )
 ).from_derivation(
     derivation=ElectrumDerivation(
-        change=(1, 2), address=(1, 2)
+        change=0, address=0
     )
 )
 
