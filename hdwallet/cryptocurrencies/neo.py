@@ -6,7 +6,7 @@
 
 from ..slip44 import CoinTypes
 from ..ecc import SLIP10Nist256p1ECC
-from ..const import (
+from ..consts import (
     Info, Entropies, Mnemonics, Seeds, HDs, Addresses, Networks, Params, XPrivateKeyVersions, XPublicKeyVersions
 )
 from .icryptocurrency import (

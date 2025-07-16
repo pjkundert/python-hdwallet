@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-# Copyright © 2020-2024, Meheret Tesfaye Batu <meherett.batu@gmail.com>
+# Copyright © 2020-2025, Meheret Tesfaye Batu <meherett.batu@gmail.com>
 # Distributed under the MIT software license, see the accompanying
 # file COPYING or https://opensource.org/license/mit
 
@@ -16,7 +16,7 @@ from ...addresses import P2PKHAddress
 from ...wif import (
     private_key_to_wif, wif_to_private_key
 )
-from ...const import PUBLIC_KEY_TYPES
+from ...consts import PUBLIC_KEY_TYPES
 from ...derivations import (
     IDerivation, ElectrumDerivation
 )

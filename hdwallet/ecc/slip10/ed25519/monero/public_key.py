@@ -1,10 +1,10 @@
 #!/usr/bin/env python3
 
-# Copyright © 2020-2024, Meheret Tesfaye Batu <meherett.batu@gmail.com>
+# Copyright © 2020-2025, Meheret Tesfaye Batu <meherett.batu@gmail.com>
 # Distributed under the MIT software license, see the accompanying
 # file COPYING or https://opensource.org/license/mit
 
-from .....const import SLIP10_ED25519_CONST
+from .....consts import SLIP10_ED25519_CONST
 from ....iecc import IPoint
 from .. import SLIP10Ed25519PublicKey
 from .point import SLIP10Ed25519MoneroPoint

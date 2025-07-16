@@ -19,7 +19,7 @@ import hashlib
 import hmac
 
 from .libs.ripemd160 import ripemd160 as r160
-from .const import SLIP10_SECP256K1_CONST
+from .consts import SLIP10_SECP256K1_CONST
 from .utils import (
     get_bytes, encode, integer_to_bytes
 )

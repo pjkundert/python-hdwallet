@@ -9,7 +9,7 @@ from hdwallet.mnemonics import (
 from hdwallet.seeds import ElectrumV1Seed
 from hdwallet.hds import ElectrumV1HD
 from hdwallet.derivations import ElectrumDerivation
-from hdwallet.const import PUBLIC_KEY_TYPES
+from hdwallet.consts import PUBLIC_KEY_TYPES
 
 
 # Generate Electrum-V1 entropy

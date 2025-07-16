@@ -6,7 +6,7 @@
 
 from hdwallet.slip44 import CoinTypes
 from hdwallet.ecc import SLIP10Secp256k1ECC
-from hdwallet.const import (
+from hdwallet.consts import (
     Info, Entropies, Mnemonics, Seeds, HDs, Addresses, Networks, XPrivateKeyVersions, XPublicKeyVersions
 )
 from hdwallet.cryptocurrencies.icryptocurrency import (

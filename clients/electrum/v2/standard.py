@@ -9,7 +9,7 @@ from hdwallet.mnemonics import (
 from hdwallet.seeds import ElectrumV2Seed
 from hdwallet.hds import ElectrumV2HD
 from hdwallet.derivations import ElectrumDerivation
-from hdwallet.const import (
+from hdwallet.consts import (
     PUBLIC_KEY_TYPES, MODES
 )
 

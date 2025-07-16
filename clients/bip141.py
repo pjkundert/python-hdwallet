@@ -9,7 +9,7 @@ from hdwallet.mnemonics.bip39 import (
 from hdwallet.seeds.bip39 import BIP39Seed
 from hdwallet.cryptocurrencies import Bitcoin as Cryptocurrency
 from hdwallet.derivations import CustomDerivation
-from hdwallet.const import SEMANTICS
+from hdwallet.consts import SEMANTICS
 from hdwallet.hds import BIP141HD
 
 

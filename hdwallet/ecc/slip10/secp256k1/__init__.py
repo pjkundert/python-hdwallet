@@ -1,12 +1,12 @@
 #!/usr/bin/env python3
 
-# Copyright © 2020-2024, Meheret Tesfaye Batu <meherett.batu@gmail.com>
+# Copyright © 2020-2025, Meheret Tesfaye Batu <meherett.batu@gmail.com>
 # Distributed under the MIT software license, see the accompanying
 # file COPYING or https://opensource.org/license/mit
 
 from ecdsa.ecdsa import generator_secp256k1
 
-from ....const import SLIP10_SECP256K1_CONST
+from ....consts import SLIP10_SECP256K1_CONST
 from ...iecc import IEllipticCurveCryptography
 from .point import (
     SLIP10Secp256k1Point, SLIP10Secp256k1PointCoincurve, SLIP10Secp256k1PointECDSA

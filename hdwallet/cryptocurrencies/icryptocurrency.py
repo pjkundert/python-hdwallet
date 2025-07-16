@@ -9,7 +9,7 @@ from typing import (
 )
 
 from ..ecc import IEllipticCurveCryptography
-from ..const import (
+from ..consts import (
     Info, WitnessVersions, Entropies, Mnemonics, Seeds, HDs, Addresses, AddressTypes, AddressPrefixes, Networks, Params, XPrivateKeyVersions, XPublicKeyVersions
 )
 

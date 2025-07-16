@@ -6,7 +6,7 @@
 
 from ..slip44 import CoinTypes
 from ..ecc import SLIP10Ed25519MoneroECC
-from ..const import (
+from ..consts import (
     Info, Entropies, Mnemonics, Seeds, HDs, Addresses, AddressTypes, Networks, Params
 )
 from .icryptocurrency import (

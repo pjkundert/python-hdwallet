@@ -14,8 +14,8 @@ from hdwallet.hds import (
 from hdwallet.derivations import (
     IDerivation, CustomDerivation, BIP44Derivation, BIP49Derivation, BIP84Derivation
 )
-from hdwallet.const import PUBLIC_KEY_TYPES
-from hdwallet.libs.base58 import encode, decode
+from hdwallet.consts import PUBLIC_KEY_TYPES
+from hdwallet.libs.base58 import encode
 from hdwallet.utils import get_bytes
 from hdwallet import HDWallet
 
@@ -29,7 +29,7 @@ import base58
 standards: dict = {
     "solana": {
         "hd": BIP32HD,
-        "derivation": CustomDerivation(path=f"m/44'/{Solana.COIN_TYPE}'/0'/0'")
+        "derivation": CustomDerivation(path=Solana.DEFAULT_PATH)
     },
     "ethereum": {
         "hd": BIP44HD,

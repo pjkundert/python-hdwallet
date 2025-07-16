@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-# Copyright © 2020-2024, Meheret Tesfaye Batu <meherett.batu@gmail.com>
+# Copyright © 2020-2025, Meheret Tesfaye Batu <meherett.batu@gmail.com>
 # Distributed under the MIT software license, see the accompanying
 # file COPYING or https://opensource.org/license/mit
 
@@ -18,7 +18,7 @@ from ...derivations import (
     IDerivation, ElectrumDerivation
 )
 from ...cryptocurrencies import Bitcoin
-from ...const import (
+from ...consts import (
     PUBLIC_KEY_TYPES, MODES, WIF_TYPES
 )
 from ...exceptions import (

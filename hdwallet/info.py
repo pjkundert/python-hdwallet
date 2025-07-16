@@ -7,7 +7,7 @@
 from typing import List
 
 __name__: str = "hdwallet"
-__version__: str = "v3.4.0"
+__version__: str = "v3.5.0b1"
 __license__: str = "MIT"
 __author__: str = "Meheret Tesfaye Batu"
 __email__: str = "meherett.batu@gmail.com"
@@ -24,8 +24,8 @@ __keywords__: List[str] = [
     "cryptocurrencies", "bitcoin", "ethereum", "cryptography", "cli", "cip1852"  # Other keywords
 ]
 __websites__: List[str] = [
-    "https://hdwallet-io.org",
-    "https://hdwallet-io.gitbook.io/hdwallet",
+    "https://talonlab.org",
+    "https://talonlab.gitbook.io/hdwallet",
     __documentation__,
     "https://hdwallet.online",
     "https://hd.wallet",  # On Web3 domain

@@ -8,7 +8,7 @@
 from hdwallet.hds import ElectrumV1HD
 from hdwallet.cryptocurrencies import Bitcoin as Cryptocurrency
 from hdwallet.derivations import ElectrumDerivation
-from hdwallet.const import PUBLIC_KEY_TYPES
+from hdwallet.consts import PUBLIC_KEY_TYPES
 
 
 def test_electrum_v1_hd(data):

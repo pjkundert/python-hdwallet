@@ -1,5 +1,9 @@
 #!/usr/bin/env python3
 
+# Copyright © 2020-2025, Meheret Tesfaye Batu <meherett.batu@gmail.com>
+# Distributed under the MIT software license, see the accompanying
+# file COPYING or https://opensource.org/license/mit
+
 from typing import Any
 from ecdsa import VerifyingKey
 from ecdsa.ecdsa import curve_secp256k1
@@ -9,7 +13,7 @@ from ecdsa import (
 
 import coincurve
 
-from ....const import SLIP10_SECP256K1_CONST
+from ....consts import SLIP10_SECP256K1_CONST
 from ...iecc import (
     IPoint, IPublicKey
 )

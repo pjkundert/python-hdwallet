@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-# Copyright © 2020-2024, Meheret Tesfaye Batu <meherett.batu@gmail.com>
+# Copyright © 2020-2025, Meheret Tesfaye Batu <meherett.batu@gmail.com>
 # Distributed under the MIT software license, see the accompanying
 # file COPYING or https://opensource.org/license/mit
 
@@ -12,7 +12,7 @@ from ..libs.base58 import ensure_string
 from ..libs.segwit_bech32 import (
     segwit_encode, segwit_decode
 )
-from ..const import PUBLIC_KEY_TYPES
+from ..consts import PUBLIC_KEY_TYPES
 from ..ecc import (
     IPublicKey, SLIP10Secp256k1PublicKey, validate_and_get_public_key
 )
