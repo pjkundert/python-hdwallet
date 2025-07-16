@@ -56,7 +56,7 @@ class MoneroHD(IHD):
 
         try:
             if not isinstance(network, str) and issubclass(network, INetwork):
-                network = network.__name__.lower()
+                network = network.NAME
             if not Monero.NETWORKS.is_network(network=network):
                 raise NetworkError(
                     f"Wrong {Monero.NAME} network",
@@ -353,7 +353,7 @@ class MoneroHD(IHD):
         return MoneroAddress.encode(
             spend_public_key=self._spend_public_key,
             view_public_key=self._view_public_key,
-            network=self._network.__name__.lower(),
+            network=self._network.NAME,
             address_type=Monero.ADDRESS_TYPES.STANDARD,
             payment_id=None
         )
@@ -369,7 +369,7 @@ class MoneroHD(IHD):
         return MoneroAddress.encode(
             spend_public_key=self._spend_public_key,
             view_public_key=self._view_public_key,
-            network=self._network.__name__.lower(),
+            network=self._network.NAME,
             address_type=Monero.ADDRESS_TYPES.INTEGRATED,
             payment_id=get_bytes(payment_id)
         )
@@ -403,7 +403,7 @@ class MoneroHD(IHD):
         return MoneroAddress.encode(
             spend_public_key=spend_public_key,
             view_public_key=view_public_key,
-            network=self._network.__name__.lower(),
+            network=self._network.NAME,
             address_type="sub-address",
             payment_id=None
         )

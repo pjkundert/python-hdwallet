@@ -34,7 +34,7 @@ from .keys import (
     deserialize, is_valid_key
 )
 from .exceptions import (
-    Error, NetworkError, AddressError, CryptocurrencyError, XPrivateKeyError, XPublicKeyError, PrivateKeyError, PublicKeyError
+    Error, NetworkError, AddressError, CryptocurrencyError, XPrivateKeyError, PrivateKeyError
 )
 from .utils import (
     get_bytes, exclude_keys
@@ -175,7 +175,7 @@ class HDWallet:
 
         try:
             if not isinstance(network, str) and issubclass(network, INetwork):
-                network = network.name()
+                network = network.NAME
             if not self._cryptocurrency.NETWORKS.is_network(network=network):
                 raise NetworkError(
                     f"Wrong {self._cryptocurrency.NAME} network",
@@ -270,7 +270,7 @@ class HDWallet:
                 mode=self._mode, public_key_type=self._public_key_type, wif_prefix=self._network.WIF_PREFIX
             )
         elif hd.name() == "Monero":
-            self._hd = hd(network=self._network.name())
+            self._hd = hd(network=self._network.NAME)
 
     def from_entropy(self, entropy: IEntropy) -> "HDWallet":
         """
@@ -769,7 +769,7 @@ class HDWallet:
         :rtype: str
         """
 
-        return self._network.name()
+        return self._network.NAME
 
     def entropy(self) -> Optional[str]:
         """
@@ -1407,7 +1407,7 @@ class HDWallet:
                 minor=minor, major=major
             )
 
-    def address(self, address: Optional[Union[str, Type[IAddress]]] = None, **kwargs) -> str:
+    def address(self, address: Optional[Union[str, Type[IAddress]]] = None, **kwargs) -> Optional[str]:
         """
         Get the address associated with the HD wallet.
 
@@ -1437,7 +1437,7 @@ class HDWallet:
 
         if self._hd.name() == "Cardano":
             return self._hd.address(
-                network=self._network.name(), **kwargs
+                network=self._network.NAME, **kwargs
             )
         elif self._hd.name() in "Electrum-V1":
             return self._hd.address(
@@ -1470,7 +1470,7 @@ class HDWallet:
                     script_address_prefix=getattr(
                         self._network, f"{kwargs.get('address_type', self._address_type).upper()}_SCRIPT_ADDRESS_PREFIX"
                     ),
-                    network_type=self._network.name(),
+                    network_type=self._network.NAME,
                     public_key_type=self.public_key_type(),
                     hrp=self._network.HRP
                 )
@@ -1478,7 +1478,7 @@ class HDWallet:
                 public_key=self.public_key(),
                 public_key_address_prefix=self._network.PUBLIC_KEY_ADDRESS_PREFIX,
                 script_address_prefix=self._network.SCRIPT_ADDRESS_PREFIX,
-                network_type=self._network.name(),
+                network_type=self._network.NAME,
                 public_key_type=self.public_key_type(),
                 hrp=self._network.HRP,
                 address_type=kwargs.get(
@@ -1503,7 +1503,7 @@ class HDWallet:
         if exclude is None:
             exclude = { }
 
-        _derivation: dict = { }
+        derivation: dict = { }
 
         if self._derivation:
             if self._derivation.name() in [
@@ -1547,14 +1547,14 @@ class HDWallet:
                     depth=self.depth(),
                     index=self.index()
                 )
-            _derivation.update(
+            derivation.update(
                 at=_at
             )
 
         if self._hd.name() in [
             "BIP32", "BIP44", "BIP49", "BIP84", "BIP86", "BIP141", "Cardano"
         ]:
-            _derivation.update(
+            derivation.update(
                 xprivate_key=self.xprivate_key(),
                 xpublic_key=self.xpublic_key(),
                 private_key=self.private_key(),
@@ -1568,9 +1568,9 @@ class HDWallet:
                 parent_fingerprint=self.parent_fingerprint()
             )
             if self._hd.name() == "Cardano":
-                del _derivation["wif"]
-                del _derivation["uncompressed"]
-                del _derivation["compressed"]
+                del derivation["wif"]
+                del derivation["uncompressed"]
+                del derivation["compressed"]
 
             if (
                 self._cryptocurrency.ADDRESSES.length() > 1 or
@@ -1613,40 +1613,40 @@ class HDWallet:
                         address_prefix=self._cryptocurrency.ADDRESS_PREFIXES.TZ3
                     )
                 elif self._hd.name() == "BIP44":
-                    _derivation["address"] = self.address(address="P2PKH")
+                    derivation["address"] = self.address(address="P2PKH")
                 elif self._hd.name() == "BIP49":
-                    _derivation["address"] = self.address(address="P2WPKH-In-P2SH")
+                    derivation["address"] = self.address(address="P2WPKH-In-P2SH")
                 elif self._hd.name() == "BIP84":
-                    _derivation["address"] = self.address(address="P2WPKH")
+                    derivation["address"] = self.address(address="P2WPKH")
                 elif self._hd.name() == "BIP86":
-                    _derivation["address"] = self.address(address="P2TR")
+                    derivation["address"] = self.address(address="P2TR")
                 elif self._hd.name() == "BIP141":
                     if self._semantic == SEMANTICS.P2WPKH:
-                        _derivation["address"] = self.address(address="P2WPKH")
+                        derivation["address"] = self.address(address="P2WPKH")
                     elif self._semantic == SEMANTICS.P2WPKH_IN_P2SH:
-                        _derivation["address"] = self.address(address="P2WPKH-In-P2SH")
+                        derivation["address"] = self.address(address="P2WPKH-In-P2SH")
                     elif self._semantic == SEMANTICS.P2WSH:
-                        _derivation["address"] = self.address(address="P2WSH")
+                        derivation["address"] = self.address(address="P2WSH")
                     elif self._semantic == SEMANTICS.P2WSH_IN_P2SH:
-                        _derivation["address"] = self.address(address="P2WSH-In-P2SH")
+                        derivation["address"] = self.address(address="P2WSH-In-P2SH")
                 else:
                     for address in self._cryptocurrency.ADDRESSES.get_addresses():
                         addresses[address.lower().replace("-", "_")] = self.address(address=address)
                 if addresses:
-                    _derivation["addresses"] = addresses
+                    derivation["addresses"] = addresses
             else:
                 if (
                     self._cryptocurrency.NAME == "Cardano" and
                     self._cardano_type in ["shelley-icarus", "shelley-ledger"]
                 ):
-                    _derivation["address"] = self.address(
+                    derivation["address"] = self.address(
                         address_type=self._address_type, staking_public_key=self._kwargs.get("staking_public_key")
                     )
                 else:
-                    _derivation["address"] = self.address()
+                    derivation["address"] = self.address()
 
         elif self._hd.name() in ["Electrum-V1", "Electrum-V2"]:
-            _derivation.update(
+            derivation.update(
                 private_key=self.private_key(),
                 wif=self.wif(),
                 public_key=self.public_key(),
@@ -1655,15 +1655,15 @@ class HDWallet:
                 address=self.address()
             )
         elif self._hd.name() == "Monero":
-            _derivation.update(
+            derivation.update(
                 sub_address=self.sub_address()
             )
 
         if "at" in exclude:
-            del _derivation["at"]
+            del derivation["at"]
 
         if "root" in exclude:
-            return exclude_keys(_derivation, exclude)
+            return exclude_keys(derivation, exclude)
 
         _root: dict = dict(
             cryptocurrency=self.cryptocurrency(),
@@ -1737,7 +1737,7 @@ class HDWallet:
                 )
 
         if "derivation" not in exclude:
-            _root["derivation"] = _derivation
+            _root["derivation"] = derivation
 
         return exclude_keys(_root, exclude)
 
@@ -1759,7 +1759,9 @@ class HDWallet:
         _derivations: List[dict] = []
 
         def drive(*args) -> List[str]:
-            def drive_helper(derivations, current_derivation: List[Tuple[int, bool]] = []) -> List[str]:
+            def drive_helper(derivations, current_derivation: Optional[List[Tuple[int, bool]]] = None) -> List[str]:
+                if current_derivation is None:
+                    current_derivation = []
                 if not derivations:
 
                     if self._derivation.name() in [
