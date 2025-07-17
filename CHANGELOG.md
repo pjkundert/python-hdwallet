@@ -1,5 +1,18 @@
 # Changelog
 
+## [v3.5.0](https://github.com/hdwallet-io/python-hdwallet/tree/v3.5.0) (2025-07-17)
+
+[Full Changelog](https://github.com/hdwallet-io/python-hdwallet/compare/v3.4.0...v3.5.0)
+
+**New Additions:**
+
+- Add: `SEMANTICS`, `DEFAULT_SEMANTIC`, `DEFAUT_PATH` & `SUPPORT_BIP38` values in all cryptocurrencies. 
+- Add: `NAME` value in all networks. 
+
+**Enhancements:**
+
+- Refactor: renamed `const` to `consts`
+
 ## [v3.4.0](https://github.com/hdwallet-io/python-hdwallet/tree/v3.4.0) (2025-03-15)
 
 [Full Changelog](https://github.com/hdwallet-io/python-hdwallet/compare/v3.3.0...v3.4.0)
@@ -12,8 +25,8 @@
 
 **New Additions:**
 
-- Add: ``is_valid`` function for validating entropies & seeds hex string
-- Add: ``is_valid_key`` function for validating extended(x)-keys string
+- Add: `is_valid` function for validating entropies & seeds hex string
+- Add: `is_valid_key` function for validating extended(x)-keys string
 
 **Fix Bugs:**
 
@@ -124,12 +137,12 @@ We are pleased to announce the release of **python-hdwallet v3.0.0**, a comprehe
 
 **New Features:**
 
-- Full support for entropy generation and mnemonic phrase creation for: ``Algorand``, ``Electrum-V1``, ``Electrum-V2``, ``Monero``
--  Add new Elliptic Curve Cryptography's (ECCs): ``Kholaw-Ed25519``, ``SLIP10-Ed25519``, ``SLIP10-Ed25519-Blake2b``, ``SLIP10-Ed25519-Monero``, ``SLIP10-Nist256p1`` algorithms.
-- Add support for seed generation specific to: ``Algorand``, ``Cardano``,  ``Electrum-V1``, ``Electrum-V2``, ``Monero``
-- Extended support for Hierarchical Deterministic structures, including: ``BIP86``, ``Cardano``, ``Electrum-V1``, ``Electrum-V2``, ``Monero``
-- Support for advanced derivations: ``BIP86``, ``CIP1852``, ``Electrum``, ``Monero``, ``HDW (Our own derivation method)`` 
-- Comprehensive support for generating addresses across a wide range of protocols and formats: ``Algorand``, ``Aptos``, ``Avalanche``, ``Cardano``, ``Cosmos``, ``EOS``, ``Ergo``, ``Ethereum``, ``Filecoin``, ``Harmony``, ``Icon``, ``Injective``, ``Monero``, ``MultiversX``, ``Nano``, ``Near``, ``Neo``, ``OKT-Chain``, ``P2TR``, ``Ripple``, ``Solana``, ``Stellar``, ``Sui``, ``Tezos``, ``Tron``, ``XinFin``, ``Zilliqa``
+- Full support for entropy generation and mnemonic phrase creation for: `Algorand`, `Electrum-V1`, `Electrum-V2`, `Monero`
+-  Add new Elliptic Curve Cryptography's (ECCs): `Kholaw-Ed25519`, `SLIP10-Ed25519`, `SLIP10-Ed25519-Blake2b`, `SLIP10-Ed25519-Monero`, `SLIP10-Nist256p1` algorithms.
+- Add support for seed generation specific to: `Algorand`, `Cardano`,  `Electrum-V1`, `Electrum-V2`, `Monero`
+- Extended support for Hierarchical Deterministic structures, including: `BIP86`, `Cardano`, `Electrum-V1`, `Electrum-V2`, `Monero`
+- Support for advanced derivations: `BIP86`, `CIP1852`, `Electrum`, `Monero`, `HDW (Our own derivation method)` 
+- Comprehensive support for generating addresses across a wide range of protocols and formats: `Algorand`, `Aptos`, `Avalanche`, `Cardano`, `Cosmos`, `EOS`, `Ergo`, `Ethereum`, `Filecoin`, `Harmony`, `Icon`, `Injective`, `Monero`, `MultiversX`, `Nano`, `Near`, `Neo`, `OKT-Chain`, `P2TR`, `Ripple`, `Solana`, `Stellar`, `Sui`, `Tezos`, `Tron`, `XinFin`, `Zilliqa`
 - BIP38: Secure, password-protected private key handling
 
 **New Cryptocurrencies:**
