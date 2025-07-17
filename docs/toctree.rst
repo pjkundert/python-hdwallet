@@ -6,7 +6,7 @@ HDWallet
     :maxdepth: 3
 
     Overview <index.rst>
-    install.rst
+    installation.rst
     cli.rst
     Supported Cryptocurrencies <cryptocurrencies.rst>
 
@@ -22,6 +22,6 @@ HDWallet
     HD's <hds.rst>
     Addresses <addresses.rst>
     HDWallet <hdwallet.rst>
-    Consts <const.rst>
+    Consts <consts.rst>
     Crypto <crypto.rst>
     Utils <utils.rst>

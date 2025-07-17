@@ -22,8 +22,7 @@ Hierarchical Deterministic Wallet
 .. |Coverage Status| image:: https://coveralls.io/repos/github/hdwallet-io/python-hdwallet/badge.svg?branch=master
    :target: https://coveralls.io/github/hdwallet-io/python-hdwallet?branch=master
 
-Python-based library for the implementation of a Hierarchical Deterministic (HD) Wallet generator supporting more than 200 cryptocurrencies.
-It allows the handling of multiple coins, multiple accounts, external and internal chains per account, and millions of addresses per chain.
+Python-based library implementing a Hierarchical Deterministic (HD) Wallet generator for 200+ cryptocurrencies.
 
 .. epigraph::
 
@@ -39,7 +38,7 @@ It allows the handling of multiple coins, multiple accounts, external and intern
    * - Components
      - Protocols
    * - Cryptocurrencies
-     - `#supported-cryptocurrencies <cryptocurrencies.html>`_
+     - `#supported-cryptocurrencies <https://hdwallet.io/cryptocurrencies>`_
    * - Entropies
      - ``Algorand``, ``BIP39``, ``Electrum-V1``, ``Electrum-V2``, ``Monero``
    * - Mnemonics
