@@ -12,6 +12,7 @@ from ..utils import (
     normalize_index, normalize_derivation, index_tuple_to_string
 )
 from ..exceptions import DerivationError
+from ..cryptocurrencies import Cardano
 from .iderivation import IDerivation
 
 
@@ -42,19 +43,17 @@ class CIP1852Derivation(IDerivation):  # https://github.com/cardano-foundation/C
     """
 
     _purpose: Tuple[int, bool] = (1852, True)
+
     _coin_type: Tuple[int, bool]
     _account: Union[Tuple[int, bool], Tuple[int, int, bool]]
     _role: Tuple[int, bool]
     _address: Union[Tuple[int, bool], Tuple[int, int, bool]]
-    roles: Dict[str, int] = {
-        "external-chain": 0, "internal-chain": 1, "staking-key": 2
-    }
 
     def __init__(
         self,
-        coin_type: Union[str, int] = 1815,
+        coin_type: Union[str, int] = Cardano.COIN_TYPE,
         account: Union[str, int, Tuple[int, int]] = 0,
-        role: Union[str, int] = "external-chain",
+        role: Union[str, int] = ROLES.EXTERNAL_CHAIN,
         address: Union[str, int, Tuple[int, int]] = 0
     ) -> None:
         """
@@ -70,20 +69,12 @@ class CIP1852Derivation(IDerivation):  # https://github.com/cardano-foundation/C
         :param address: The address index for the derivation path. Default is 0.
         :type address: Union[str, int, Tuple[int, int]]
         """
-
         super(CIP1852Derivation, self).__init__()
-
-        excepted_role = [*self.roles.keys(), *self.roles.values(), *map(str, self.roles.values())]
-
-        if role not in excepted_role:
-            raise DerivationError(
-                f"Bad {self.name()} role index", expected=excepted_role, got=role
-            )
 
         self._coin_type = normalize_index(index=coin_type, hardened=True)
         self._account = normalize_index(index=account, hardened=True)
         self._role = normalize_index(
-            index=(self.roles[role] if role in self.roles.keys() else role), hardened=False
+            index=self.get_role_value(role=role, name_only=False), hardened=False
         )
         self._address = normalize_index(index=address, hardened=False)
         self._path, self._indexes, self._derivations = normalize_derivation(path=(
@@ -104,6 +95,26 @@ class CIP1852Derivation(IDerivation):  # https://github.com/cardano-foundation/C
         """
 
         return "CIP1852"
+
+    def get_role_value(self, role: Union[str, int], name_only: bool = False):
+        if isinstance(role, (list, tuple)):
+            raise DerivationError(
+                "Bad role instance", expected="int | str", got=type(role).__name__
+            )
+        external_change = [ROLES.EXTERNAL_CHAIN, 0, '0']
+        internal_change = [ROLES.INTERNAL_CHAIN, 1, '1']
+        staking_key = [ROLES.STAKING_KEY, 2, '2']
+        expected_role = external_change + internal_change + staking_key
+        if role not in expected_role:
+            raise DerivationError(
+                f"Bad {self.name()} role index", expected=expected_role, got=role
+            )
+        if role in external_change:
+            return ROLES.EXTERNAL_CHAIN if name_only else 0
+        if role in internal_change:
+            return ROLES.INTERNAL_CHAIN if name_only else 1
+        if role in staking_key:
+            return ROLES.STAKING_KEY if name_only else 2
 
     def from_coin_type(self, coin_type: Union[str, int]) -> "CIP1852Derivation":
         """
@@ -157,12 +168,8 @@ class CIP1852Derivation(IDerivation):  # https://github.com/cardano-foundation/C
         :rtype: CIP1852Derivation
         """
 
-        if role not in [*self.roles.keys(), 0, "0", 1, "1", 2, "2"]:
-            raise DerivationError(
-                f"Bad {self.name()} role index", expected=[*self.roles.keys(), 0, "0", 1, "1", 2, "2"], got=role
-            )
         self._role = normalize_index(
-            index=(self.roles[role] if role in self.roles.keys() else role), hardened=False
+            index=self.get_role_value(role=role, name_only=False), hardened=False
         )
         self._path, self._indexes, self._derivations = normalize_derivation(path=(
             f"m/{index_tuple_to_string(index=self._purpose)}/"
@@ -203,7 +210,9 @@ class CIP1852Derivation(IDerivation):  # https://github.com/cardano-foundation/C
         """
 
         self._account = normalize_index(index=0, hardened=True)
-        self._role = normalize_index(index=self.roles["external-chain"], hardened=False)
+        self._role = normalize_index(
+            index=self.get_role_value(role=ROLES.EXTERNAL_CHAIN, name_only=False), hardened=False
+        )
         self._address = normalize_index(index=0, hardened=False)
         self._path, self._indexes, self._derivations = normalize_derivation(path=(
             f"m/{index_tuple_to_string(index=self._purpose)}/"
@@ -246,20 +255,16 @@ class CIP1852Derivation(IDerivation):  # https://github.com/cardano-foundation/C
             self._account[1] if len(self._account) == 3 else self._account[0]
         )
 
-    def role(self) -> str:
+    def role(self, name_only: bool = True) -> str:
         """
         Retrieves the role associated with the current instance.
 
+        :param name_only: Return the role name if True, or its index if False.
+        :type name_only: bool
         :return: The role string.
         :rtype: str
         """
-
-        _role: Optional[str] = None
-        for key, value in self.roles.items():
-            if value == self._role[0]:
-                _role = key
-                break
-        return _role
+        return self.get_role_value(role=self._role[0], name_only=name_only)
 
     def address(self) -> int:
         """

@@ -12,6 +12,7 @@ from ..utils import (
     normalize_index, normalize_derivation, index_tuple_to_string
 )
 from ..exceptions import DerivationError
+from ..cryptocurrencies import Bitcoin
 from .iderivation import IDerivation
 
 
@@ -39,19 +40,17 @@ class BIP44Derivation(IDerivation):  # https://github.com/bitcoin/bips/blob/mast
     """
 
     _purpose: Tuple[int, bool] = (44, True)
+
     _coin_type: Tuple[int, bool]
     _account: Union[Tuple[int, bool], Tuple[int, int, bool]]
     _change: Tuple[int, bool]
     _address: Union[Tuple[int, bool], Tuple[int, int, bool]]
-    changes: Dict[str, int] = {
-        "external-chain": 0, "internal-chain": 1
-    }
 
     def __init__(
         self,
-        coin_type: Union[str, int] = 0,
+        coin_type: Union[str, int] = Bitcoin.COIN_TYPE,
         account: Union[str, int, Tuple[int, int]] = 0,
-        change: Union[str, int] = "external-chain",
+        change: Union[str, int] = CHANGES.EXTERNAL_CHAIN,
         address: Union[str, int, Tuple[int, int]] = 0
     ) -> None:
         """
@@ -70,17 +69,10 @@ class BIP44Derivation(IDerivation):  # https://github.com/bitcoin/bips/blob/mast
         """
         super(BIP44Derivation, self).__init__()
 
-        excepted_change = [*self.changes.keys(), *self.changes.values(), *map(str, self.changes.values())]
-
-        if change not in excepted_change:
-            raise DerivationError(
-                f"Bad {self.name()} change index", expected=excepted_change, got=change
-            )
-
         self._coin_type = normalize_index(index=coin_type, hardened=True)
         self._account = normalize_index(index=account, hardened=True)
         self._change = normalize_index(
-            index=(self.changes[change] if change in self.changes.keys() else change), hardened=False
+            index=self.get_change_value(change=change, name_only=False), hardened=False
         )
         self._address = normalize_index(index=address, hardened=False)
         self._path, self._indexes, self._derivations = normalize_derivation(path=(
@@ -101,6 +93,23 @@ class BIP44Derivation(IDerivation):  # https://github.com/bitcoin/bips/blob/mast
         """
 
         return "BIP44"
+
+    def get_change_value(self, change: Union[str, int], name_only: bool = False):
+        if isinstance(change, (list, tuple)):
+            raise DerivationError(
+                "Bad change instance", expected ="int | str", got=type(change).__name__
+            )
+        external_change = [CHANGES.EXTERNAL_CHAIN, 0, '0']
+        internal_change = [CHANGES.INTERNAL_CHAIN, 1, '1']
+        expected_change = external_change + internal_change
+        if change not in expected_change:
+            raise DerivationError(
+                f"Bad {self.name()} change index", expected=expected_change, got=change
+            )
+        if change in external_change:
+            return CHANGES.EXTERNAL_CHAIN if name_only else 0
+        if change in internal_change:
+            return CHANGES.INTERNAL_CHAIN if name_only else 1
 
     def from_coin_type(self, coin_type: Union[str, int]) -> "BIP44Derivation":
         """
@@ -157,12 +166,8 @@ class BIP44Derivation(IDerivation):  # https://github.com/bitcoin/bips/blob/mast
         :rtype: BIP44Derivation
         """
 
-        if change not in [*self.changes.keys(), 0, "0", 1, "1"]:
-            raise DerivationError(
-                f"Bad {self.name()} change index", expected=[*self.changes.keys(), 0, "0", 1, "1"], got=change
-            )
         self._change = normalize_index(
-            index=(self.changes[change] if change in self.changes.keys() else change), hardened=False
+            index=self.get_change_value(change=change, name_only=False), hardened=False
         )
         self._path, self._indexes, self._derivations = normalize_derivation(path=(
             f"m/{index_tuple_to_string(index=self._purpose)}/"
@@ -204,7 +209,9 @@ class BIP44Derivation(IDerivation):  # https://github.com/bitcoin/bips/blob/mast
         """
 
         self._account = normalize_index(index=0, hardened=True)
-        self._change = normalize_index(index=self.changes["external-chain"], hardened=False)
+        self._change = normalize_index(
+            index=self.get_change_value(change=CHANGES.EXTERNAL_CHAIN, name_only=False), hardened=False
+        )
         self._address = normalize_index(index=0, hardened=False)
         self._path, self._indexes, self._derivations = normalize_derivation(path=(
             f"m/{index_tuple_to_string(index=self._purpose)}/"
@@ -241,12 +248,9 @@ class BIP44Derivation(IDerivation):  # https://github.com/bitcoin/bips/blob/mast
 
     def account(self) -> int:
         """
-        Retrieve the account value from the object's `_account` attribute.
+        Retrieve the account from the object.
 
-        Checks the length of `_account`. If it equals 3, returns the second
-        element; otherwise, returns the first element.
-
-        :return: The account value stored in `_account`.
+        :return: The account value.
         :rtype: int
         """
 
@@ -254,23 +258,16 @@ class BIP44Derivation(IDerivation):  # https://github.com/bitcoin/bips/blob/mast
             self._account[1] if len(self._account) == 3 else self._account[0]
         )
 
-    def change(self) -> str:
+    def change(self, name_only: bool = True) -> str:
         """
-        Retrieve the change value from the object's changes dictionary.
+        Get the change value.
 
-        Iterates through the `changes` dictionary, and if a value matches the first element of `_change`,
-        sets the corresponding key as the change value.
-
-        :return: The key from the `changes` dictionary that corresponds to the `_change` value, or `None` if not found.
+        :param name_only: Return the change name if True, or its index if False.
+        :type name_only: bool
+        :return: Change name or index.
         :rtype: str
         """
-
-        _change: Optional[str] = None
-        for key, value in self.changes.items():
-            if value == self._change[0]:
-                _change = key
-                break
-        return _change
+        return self.get_change_value(change=self._change[0], name_only=name_only)
 
     def address(self) -> int:
         """
