@@ -13,15 +13,13 @@ import unicodedata
 from ..crypto import pbkdf2_hmac_sha512
 from ..exceptions import MnemonicError
 from ..utils import bytes_to_string
-from ..mnemonics import (
-    IMnemonic, BIP39Mnemonic
-)
+from ..mnemonics import IMnemonic
 from .iseed import ISeed
 
 
-class SLP39Seed(ISeed):
-    """This class transmits the seed collected from SLIP-39 recovery.  This entropy is used directly
-    to produce hierarchical deterministic wallets, unlike for BIP39, where the original entropy is
+class SLIP39Seed(ISeed):
+    """This class transmits a seed collected from SLIP-39 recovery.  This entropy is used /directly/
+    to produce hierarchical deterministic wallets, unlike for BIP39 where the original entropy is
     hashed and extended to 512 bits before being used.  The 3 valid seed sizes are 128, 256 and 512
     bits.
 
@@ -44,11 +42,17 @@ class SLP39Seed(ISeed):
 
     @classmethod
     def from_mnemonic(cls, mnemonic: Union[str, IMnemonic], passphrase: Optional[str] = None) -> str:
-        """
-        Converts a mnemonic phrase to its corresponding seed.
+        """Converts a mnemonic phrase to its corresponding seed.
 
-        The Mnemonic representation for SLIP-39 seeds is simple hex.  SLIP-39 seeds may be encrypted by
-        their own passphrase; this passphrase is the BIP-39 seed passphrase.
+        The Mnemonic representation for SLIP-39 seeds is simple hex.
+
+        To support the backup and recovery of BIP-39 mnemonic phrases to/from SLIP-39, we accept a
+        BIP39 IMnemonic, and recover the underlying (original) entropy encoded by the BIP-39
+        mnemonic phrase.  In other words, you may supply a 12-word BIP39 Mnemonic like "zoo zoo
+        ... zoo wrong", and recover the original seed entropy 0xffff...ff.  For SLIP-39 HD wallet
+        derivations, this seed entropy is used /directly/ to derive the wallets, unlike for BIP-39
+        which hashes the entropy to extend it to 512 bits and uses the extended entropy to derive
+        the wallets.
 
         :param mnemonic: The mnemonic phrase to be decoded. Can be a string or an instance of `IMnemonic`.
         :type mnemonic: Union[str, IMnemonic]
@@ -58,17 +62,7 @@ class SLP39Seed(ISeed):
 
         :return: The decoded seed as a string.
         :rtype: str
+
         """
-
-        mnemonic = (
-            mnemonic.mnemonic() if isinstance(mnemonic, IMnemonic) else mnemonic
-        )
-        if not BIP39Mnemonic.is_valid(mnemonic=mnemonic):
-            raise MnemonicError(f"Invalid {cls.name()} mnemonic words")
-
-        salt: str = unicodedata.normalize("NFKD", (
-            (cls.seed_salt_modifier + passphrase) if passphrase else cls.seed_salt_modifier
-        ))
-        return bytes_to_string(pbkdf2_hmac_sha512(
-            password=mnemonic, salt=salt, iteration_num=cls.seed_pbkdf2_rounds
-        ))
+        assert passphrase is None, "No encryption"
+        return mnemonic.decode() if isinstance(mnemonic, IMnemonic) else mnemonic
