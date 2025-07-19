@@ -13,7 +13,7 @@ class SLIP39_ENTROPY_STRENGTHS:
     """
     ONE_HUNDRED_TWENTY_EIGHT: int = 128
     TWO_HUNDRED_FIFTY_SIX: int = 256
-    FIVE_HUNDRED_TWELVE: int = 256
+    FIVE_HUNDRED_TWELVE: int = 512
 
 
 class SLIP39Entropy(IEntropy):
