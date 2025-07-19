@@ -24,17 +24,17 @@ class BIP86HD(BIP44HD):
     _derivation: BIP86Derivation
 
     def __init__(
-        self, ecc: Type[IEllipticCurveCryptography], public_key_type: str = PUBLIC_KEY_TYPES.COMPRESSED, **kwargs
+        self, ecc: Type[IEllipticCurveCryptography], public_key_type: str = PUBLIC_KEY_TYPES.COMPRESSED,  **kwargs
     ) -> None:
         """
-            Initialize a BIP86HD instance.
+        Initialize a BIP86HD instance.
 
-            :param ecc: The type of elliptic curve cryptography to be used.
-            :type ecc: Type[IEllipticCurveCryptography]
+        :param ecc: The type of elliptic curve cryptography to be used.
+        :type ecc: Type[IEllipticCurveCryptography]
 
-            :param public_key_type: The type of public key compression (default: COMPRESSED).
-            :type public_key_type: str
-            """
+        :param public_key_type: The type of public key compression (default: COMPRESSED).
+        :type public_key_type: str
+        """
 
         super(BIP86HD, self).__init__(ecc=ecc, public_key_type=public_key_type, **kwargs)
 

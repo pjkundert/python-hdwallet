@@ -28,13 +28,13 @@ Python-based library implementing a Hierarchical Deterministic (HD) Wallet gener
 
     This library offers a flexible and scalable solution for developers integrating multi-currency wallet functionality. It adheres to standard protocols for compatibility with other wallets and services, and provides features like secure seed generation, robust key management, and streamlined account control. By simplifying blockchain interactions, it enhances the developer experience and strengthens end-user security.
 
-    For JavaScript/TypeScript support, explore `hdwallet.js <https://github.com/hdwallet-io/hdwallet.js>`_, the official port of this library. Try it live at https://hdwallet.online, our interactive web playground.
+    For TypeScript/JavaScript support, explore `hdwallet.js <https://github.com/hdwallet-io/hdwallet.js>`_, the official port of this library. Try it live at https://hdwallet.online, our interactive web playground.
 
 .. list-table::
    :widths: 30 200
    :header-rows: 1
 
-   * - Components
+   * - Features
      - Protocols
    * - Cryptocurrencies
      - `#supported-cryptocurrencies <https://hdwallet.io/cryptocurrencies>`_

@@ -97,7 +97,7 @@ for address_type in ["legacy", "nested-segwit", "native-segwit"]:
         derivation=standards["bitcoin"][address_type]["derivation"],
         public_key_type=PUBLIC_KEY_TYPES.COMPRESSED
     )
-    print(f"{bitcoin_hdwallet.cryptocurrency()} ({bitcoin_hdwallet.symbol()}) {address_type.title()} wallet:", json.dumps(dict(
+    print(f"{bitcoin_hdwallet.cryptocurrency()} ({bitcoin_hdwallet.symbol()}) {address_type} wallet:", json.dumps(dict(
         path=bitcoin_hdwallet.path(),
         wif=bitcoin_hdwallet.wif(),
         private_key=bitcoin_hdwallet.private_key(),

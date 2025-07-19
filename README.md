@@ -11,7 +11,7 @@ Python-based library implementing a Hierarchical Deterministic (HD) Wallet gener
 
 > This library offers a flexible and scalable solution for developers integrating multi-currency wallet functionality. It adheres to standard protocols for compatibility with other wallets and services, and provides features like secure seed generation, robust key management, and streamlined account control. By simplifying blockchain interactions, it enhances the developer experience and strengthens end-user security.
 > 
-> For JavaScript/TypeScript support, explore [hdwallet.js](https://github.com/hdwallet-io/hdwallet.js), the official port of this library. Try it live at https://hdwallet.online, our interactive web playground.
+> For TypeScript/JavaScript support, explore [hdwallet.js](https://github.com/hdwallet-io/hdwallet.js), the official port of this library. Try it live at https://hdwallet.online, our interactive web playground.
 
 | Features                      | Protocols                                                                                                                                                                                                                                                                                                                                           |
 |:------------------------------|:----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
@@ -351,7 +351,7 @@ for address_type in ["legacy", "nested-segwit", "native-segwit"]:
         derivation=standards["bitcoin"][address_type]["derivation"],
         public_key_type=PUBLIC_KEY_TYPES.COMPRESSED
     )
-    print(f"{bitcoin_hdwallet.cryptocurrency()} ({bitcoin_hdwallet.symbol()}) {address_type.title()} wallet:", json.dumps(dict(
+    print(f"{bitcoin_hdwallet.cryptocurrency()} ({bitcoin_hdwallet.symbol()}) {address_type} wallet:", json.dumps(dict(
         path=bitcoin_hdwallet.path(),
         wif=bitcoin_hdwallet.wif(),
         private_key=bitcoin_hdwallet.private_key(),
@@ -370,7 +370,7 @@ Solana (SOL) wallet: {
     "path": "m/44'/501'/0'/0'",
     "base58": "27npWoNE4HfmLeQo1TyWcW7NEA28qnsnDK7kcttDQEWrCWnro83HMJ97rMmpvYYZRwDAvG4KRuB7hTBacvwD7bgi",
     "private_key": "37df573b3ac4ad5b522e064e25b63ea16bcbe79d449e81a0268d1047948bb445",
-    "public_key": "00f036276246a75b9de3349ed42b15e232f6518fc20f5fcd4f1d64e81f9bd258f7",
+    "public_key": "f036276246a75b9de3349ed42b15e232f6518fc20f5fcd4f1d64e81f9bd258f7",
     "address": "HAgk14JpMQLgt6rVgv7cBQFJWFto5Dqxi472uT3DKpqk"
 }
 Ethereum (ETH) wallet: {
@@ -379,21 +379,21 @@ Ethereum (ETH) wallet: {
     "public_key": "0237b0bb7a8288d38ed49a524b5dc98cff3eb5ca824c9f9dc0dfdb3d9cd600f299",
     "address": "0x9858EfFD232B4033E47d90003D41EC34EcaEda94"
 }
-Bitcoin (BTC) Legacy wallet: {
+Bitcoin (BTC) legacy wallet: {
     "path": "m/44'/0'/0'/0/0",
     "wif": "L4p2b9VAf8k5aUahF1JCJUzZkgNEAqLfq8DDdQiyAprQAKSbu8hf",
     "private_key": "e284129cc0922579a535bbf4d1a3b25773090d28c909bc0fed73b5e0222cc372",
     "public_key": "03aaeb52dd7494c361049de67cc680e83ebcbbbdbeb13637d92cd845f70308af5e",
     "address": "1LqBGSKuX5yYUonjxT5qGfpUsXKYYWeabA"
 }
-Bitcoin (BTC) Nested-Segwit wallet: {
+Bitcoin (BTC) nested-segwit wallet: {
     "path": "m/49'/0'/0'/0/0",
     "wif": "KyvHbRLNXfXaHuZb3QRaeqA5wovkjg4RuUpFGCxdH5UWc1Foih9o",
     "private_key": "508c73a06f6b6c817238ba61be232f5080ea4616c54f94771156934666d38ee3",
     "public_key": "039b3b694b8fc5b5e07fb069c783cac754f5d38c3e08bed1960e31fdb1dda35c24",
     "address": "37VucYSaXLCAsxYyAPfbSi9eh4iEcbShgf"
 }
-Bitcoin (BTC) Native-Segwit wallet: {
+Bitcoin (BTC) native-segwit wallet: {
     "path": "m/84'/0'/0'/0/0",
     "wif": "KyZpNDKnfs94vbrwhJneDi77V6jF64PWPF8x5cdJb8ifgg2DUc9d",
     "private_key": "4604b4b710fe91f584fff084e1a9159fe4f8408fff380596a604948474ce4fa3",
