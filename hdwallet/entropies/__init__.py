@@ -15,6 +15,9 @@ from .algorand import (
 from .bip39 import (
     BIP39Entropy, BIP39_ENTROPY_STRENGTHS
 )
+from .slip39 import (
+    SLIP39Entropy, SLIP39_ENTROPY_STRENGTHS
+)
 from .electrum import (
     ElectrumV1Entropy, ELECTRUM_V1_ENTROPY_STRENGTHS,
     ElectrumV2Entropy, ELECTRUM_V2_ENTROPY_STRENGTHS
@@ -41,6 +44,8 @@ class ENTROPIES:
     +--------------+-------------------------------------------------------------+
     | BIP39        |  :class:`hdwallet.entropies.bip39.BIP39Entropy`             |
     +--------------+-------------------------------------------------------------+
+    | SLIP39       |  :class:`hdwallet.entropies.bip39.SLIP39Entropy`            |
+    +--------------+-------------------------------------------------------------+
     | Electrum-V1  |  :class:`hdwallet.entropies.electrum.v1.ElectrumV1Entropy`  |
     +--------------+-------------------------------------------------------------+
     | Electrum-V2  | :class:`hdwallet.entropies.electrum.v2.ElectrumV2Entropy`   |
@@ -52,6 +57,7 @@ class ENTROPIES:
     dictionary: Dict[str, Type[IEntropy]] = {
         AlgorandEntropy.name(): AlgorandEntropy,
         BIP39Entropy.name(): BIP39Entropy,
+        SLIP39Entropy.name(): SLIP39Entropy,
         ElectrumV1Entropy.name(): ElectrumV1Entropy,
         ElectrumV2Entropy.name(): ElectrumV2Entropy,
         MoneroEntropy.name(): MoneroEntropy
@@ -116,6 +122,7 @@ __all__: List[str] = [
     "IEntropy",
     "ALGORAND_ENTROPY_STRENGTHS",
     "BIP39_ENTROPY_STRENGTHS",
+    "SLIP39_ENTROPY_STRENGTHS",
     "ELECTRUM_V1_ENTROPY_STRENGTHS",
     "ELECTRUM_V2_ENTROPY_STRENGTHS",
     "MONERO_ENTROPY_STRENGTHS",
