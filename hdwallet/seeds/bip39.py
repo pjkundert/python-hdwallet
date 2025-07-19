@@ -26,8 +26,14 @@ class BIP39Seed(ISeed):
     phrases and converting them into a binary seed used for hierarchical
     deterministic wallets.
 
+    The supplied passphrase is always used in converting the original entropy (encoded in the BIP-39
+    mnemonic phrase) into the seed used to derive HD wallets.  This differs from SLIP-39, which
+    always uses the original entropy directly (without modificiation) to derive HD wallets, and only
+    uses a passphrase to produce (and recover) SLIP-39 mnemonic shares.
+
     .. note::
         This class inherits from the ``ISeed`` class, thereby ensuring that all functions are accessible.
+
     """
 
     seed_salt_modifier: str = "mnemonic"

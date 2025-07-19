@@ -499,7 +499,7 @@ def get_bytes(data: AnyStr, unhexlify: bool = True) -> bytes:
         else:
             return bytes(data, 'utf-8')
     else:
-        raise TypeError("Agreement must be either 'bytes' or 'string'!")
+        raise TypeError("Agreement must be either 'bytes' or 'str'!")
 
 
 def bytes_reverse(data: bytes) -> bytes:
@@ -518,27 +518,29 @@ def bytes_reverse(data: bytes) -> bytes:
     return bytes(tmp)
 
 
-def bytes_to_string(data: Union[bytes, str]) -> str:
+def bytes_to_string(data: AnyStr, unhexlify: Optional[bool] = None) -> str:
     """
-    Convert bytes or string data to a hexadecimal string representation.
+    Convert bytes or string (hexadecimal, or UTF-8 decoded) data to a hexadecimal string representation.
+
+    If the default unhexlify == None is provided, will attempt to auto-detect non-empty hex strings, and
+    thus reject hex strings of accidentally odd length instead of accepting them as UTF-8 encoded binary data.
 
     :param data: The bytes or string data to convert to hexadecimal string.
     :type data: Union[bytes, str]
+    :param unhexlify: Flag indicating whether to interpret strings as hexadecimal (default None).
+    :type unhexlify: Optional[bool]
 
-    :return: The hexadecimal string representation of the input data.
+    :return: The hexadecimal string representation of the input data, empty if no data.
     :rtype: str
+
     """
 
     if not data:
         return ''
-    try:
-        bytes.fromhex(data)
-        return data
-    except (ValueError, TypeError):
-        pass
-    if not isinstance(data, bytes):
-        data = bytes(data, 'utf-8')
-    return data.hex()
+    if unhexlify is None:
+        unhexlify = isinstance(data, str) and all(c in string.hexdigits for c in data)
+    binary = get_bytes(data, unhexlify=unhexlify)
+    return binary.hex()
 
 
 def bytes_to_integer(data: bytes, endianness: Literal["little", "big"] = "big", signed: bool = False) -> int:
