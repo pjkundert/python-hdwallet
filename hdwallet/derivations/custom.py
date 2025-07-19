@@ -106,10 +106,9 @@ class CustomDerivation(IDerivation):
             raise DerivationError("Bad index instance", expected=int, got=type(index))
 
         self._indexes.append(index + 0x80000000) if hardened else self._indexes.append(index)
-        self._path += (
-            (f"{index}'" if hardened else f"{index}")
-            if self._path == "m/" else
-            (f"/{index}'" if hardened else f"/{index}")
+        path = f"{index}'" if hardened else f"{index}"
+        self.from_path(
+            f"{self._path}{path}" if self._path == "m/" else f"{self._path}/{path}"
         )
         return self
 
