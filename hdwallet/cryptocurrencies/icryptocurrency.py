@@ -8,7 +8,7 @@ from typing import (
     Optional, List, Type
 )
 
-from ..ecc import IEllipticCurveCryptography
+from ..eccs import IEllipticCurveCryptography
 from ..consts import (
     Info, WitnessVersions, Entropies, Mnemonics, Seeds, HDs, Addresses, AddressTypes, AddressPrefixes, Networks, Params, XPrivateKeyVersions, XPublicKeyVersions
 )

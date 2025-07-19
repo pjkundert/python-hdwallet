@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-from hdwallet.ecc import (
+from hdwallet.eccs import (
     IPrivateKey, IPublicKey, KholawEd25519PrivateKey
 )
 from hdwallet.addresses.cardano import CardanoAddress

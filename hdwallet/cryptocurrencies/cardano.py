@@ -7,7 +7,7 @@
 from typing import List
 
 from ..slip44 import CoinTypes
-from ..ecc import KholawEd25519ECC
+from ..eccs import KholawEd25519ECC
 from ..consts import (
     Info, NestedNamespace, Entropies, Mnemonics, Seeds, HDs, Addresses, AddressTypes, Networks, Params, XPrivateKeyVersions, XPublicKeyVersions
 )

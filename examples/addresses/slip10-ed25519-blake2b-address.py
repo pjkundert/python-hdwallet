@@ -1,6 +1,6 @@
     #!/usr/bin/env python3
 
-from hdwallet.ecc import (
+from hdwallet.eccs import (
     IPrivateKey, IPublicKey, SLIP10Ed25519Blake2bPrivateKey, SLIP10Ed25519Blake2bPublicKey
 )
 from hdwallet.addresses.nano import NanoAddress

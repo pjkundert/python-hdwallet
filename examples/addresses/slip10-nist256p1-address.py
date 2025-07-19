@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-from hdwallet.ecc import (
+from hdwallet.eccs import (
     IPrivateKey, IPublicKey, SLIP10Nist256p1PrivateKey
 )
 from hdwallet.addresses.neo import NeoAddress

@@ -5,7 +5,7 @@
 # file COPYING or https://opensource.org/license/mit
 
 from ..slip44 import CoinTypes
-from ..ecc import SLIP10Nist256p1ECC
+from ..eccs import SLIP10Nist256p1ECC
 from ..consts import (
     Info, Entropies, Mnemonics, Seeds, HDs, Addresses, Networks, Params, XPrivateKeyVersions, XPublicKeyVersions
 )

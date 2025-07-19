@@ -5,7 +5,7 @@
 # file COPYING or https://opensource.org/license/mit
 
 from hdwallet.slip44 import CoinTypes
-from hdwallet.ecc import SLIP10Secp256k1ECC
+from hdwallet.eccs import SLIP10Secp256k1ECC
 from hdwallet.consts import (
     Info, Entropies, Mnemonics, Seeds, HDs, Addresses, Networks, XPrivateKeyVersions, XPublicKeyVersions
 )

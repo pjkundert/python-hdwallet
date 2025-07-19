@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-# Copyright © 2020-2024, Meheret Tesfaye Batu <meherett.batu@gmail.com>
+# Copyright © 2020-2025, Meheret Tesfaye Batu <meherett.batu@gmail.com>
 # Distributed under the MIT software license, see the accompanying
 # file COPYING or https://opensource.org/license/mit
 
@@ -11,7 +11,7 @@ from typing import (
 import hashlib
 import cbor2
 
-from ..ecc import (
+from ..eccs import (
     IEllipticCurveCryptography, IPoint, IPublicKey, KholawEd25519ECC, KholawEd25519PrivateKey
 )
 from ..seeds import ISeed

@@ -12,7 +12,7 @@ from ..libs.base58 import (
     ensure_string, check_encode
 )
 from ..consts import PUBLIC_KEY_TYPES
-from ..ecc import (
+from ..eccs import (
     IPublicKey, SLIP10Secp256k1PublicKey, validate_and_get_public_key
 )
 from ..crypto import (

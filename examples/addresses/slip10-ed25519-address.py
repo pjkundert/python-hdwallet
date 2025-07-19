@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-from hdwallet.ecc import (
+from hdwallet.eccs import (
     IPrivateKey, IPublicKey, SLIP10Ed25519PrivateKey
 )
 from hdwallet.addresses import (

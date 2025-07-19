@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 
 from hdwallet.cryptocurrencies import Monero
-from hdwallet.ecc import (
+from hdwallet.eccs import (
     SLIP10Ed25519MoneroPrivateKey, SLIP10Ed25519MoneroPublicKey, IPrivateKey, IPublicKey
 )
 

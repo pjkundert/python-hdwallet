@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-# Copyright © 2020-2024, Meheret Tesfaye Batu <meherett.batu@gmail.com>
+# Copyright © 2020-2025, Meheret Tesfaye Batu <meherett.batu@gmail.com>
 # Distributed under the MIT software license, see the accompanying
 # file COPYING or https://opensource.org/license/mit
 
@@ -12,7 +12,7 @@ from ..libs.ripemd160 import ripemd160
 from ..libs.bech32 import (
     bech32_encode, bech32_decode
 )
-from ..ecc import (
+from ..eccs import (
     IPublicKey, SLIP10Secp256k1PublicKey, validate_and_get_public_key
 )
 from ..cryptocurrencies import Cosmos

@@ -9,7 +9,7 @@ from typing import (
 )
 
 from ..cryptocurrencies import Bitcoin
-from ..ecc import IEllipticCurveCryptography
+from ..eccs import IEllipticCurveCryptography
 from ..consts import PUBLIC_KEY_TYPES
 from ..addresses import P2WPKHInP2SHAddress
 from ..exceptions import DerivationError

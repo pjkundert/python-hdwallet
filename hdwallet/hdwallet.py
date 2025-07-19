@@ -21,7 +21,7 @@ from .seeds import (
 from .hds import (
     IHD, HDS
 )
-from .ecc import (
+from .eccs import (
     IPrivateKey, IPublicKey
 )
 from .consts import (

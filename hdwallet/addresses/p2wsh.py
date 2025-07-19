@@ -13,7 +13,7 @@ from ..libs.segwit_bech32 import (
     segwit_encode
 )
 from ..consts import PUBLIC_KEY_TYPES
-from ..ecc import (
+from ..eccs import (
     IPublicKey, SLIP10Secp256k1PublicKey, validate_and_get_public_key
 )
 from ..cryptocurrencies import Bitcoin

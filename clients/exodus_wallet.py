@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 
 from hdwallet import HDWallet
-from hdwallet.ecc import SLIP10Secp256k1ECC
+from hdwallet.eccs import SLIP10Secp256k1ECC
 from hdwallet.seeds.bip39 import BIP39Seed
 from hdwallet.cryptocurrencies import (
     Algorand, Solana, Stellar, Neo

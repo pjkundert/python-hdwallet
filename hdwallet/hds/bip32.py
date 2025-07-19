@@ -15,7 +15,7 @@ import struct
 
 from ..libs.ripemd160 import ripemd160
 from ..libs.base58 import check_decode
-from ..ecc import (
+from ..eccs import (
     IPoint, IPublicKey, IPrivateKey, IEllipticCurveCryptography, KholawEd25519PrivateKey
 )
 from ..seeds import ISeed

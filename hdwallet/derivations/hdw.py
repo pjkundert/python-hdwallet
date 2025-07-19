@@ -8,7 +8,7 @@ from typing import (
     Tuple, Union, Optional, Type
 )
 
-from ..ecc import (
+from ..eccs import (
     IEllipticCurveCryptography,
     SLIP10Secp256k1ECC,
     SLIP10Ed25519ECC,
@@ -31,22 +31,6 @@ class HDWDerivation(IDerivation):
 
     .. note::
         This class inherits from the ``IDerivation`` class, thereby ensuring that all functions are accessible.
-
-    +------------------------+------------------------+
-    | Name                   | Value                  |
-    +========================+========================+
-    | SLIP10_Secp256k1       | SLIP10-Secp256k1       |
-    +------------------------+------------------------+
-    | SLIP10_Ed25519         | SLIP10-Ed25519         |
-    +------------------------+------------------------+
-    | SLIP10_Nist256p1       | SLIP10-Nist256p1       |
-    +------------------------+------------------------+
-    | KHOLAW_ED25519         | Kholaw-Ed25519         |
-    +------------------------+------------------------+ 
-    | SLIP10_Ed25519_Blake2b | SLIP10-Ed25519-Blake2b |
-    +------------------------+------------------------+
-    | SLIP10_Ed25519_Monero  | SLIP10-Ed25519-Monero  |
-    +------------------------+------------------------+
     """
 
     _account: Union[Tuple[int, bool], Tuple[int, int, bool]]

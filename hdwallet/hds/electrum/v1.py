@@ -8,7 +8,7 @@ from typing import (
     Union, Optional
 )
 
-from ...ecc import (
+from ...eccs import (
     IPublicKey, IPrivateKey, SLIP10Secp256k1ECC, SLIP10Secp256k1PrivateKey, SLIP10Secp256k1PublicKey
 )
 from ...seeds import ISeed

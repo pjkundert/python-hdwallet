@@ -1,28 +1,17 @@
 #!/usr/bin/env python3
 
-# Copyright © 2020-2024, Meheret Tesfaye Batu <meherett.batu@gmail.com>
+# Copyright © 2020-2025, Meheret Tesfaye Batu <meherett.batu@gmail.com>
 #             2024, Eyoel Tadesse <eyoel_tadesse@proton.me>
 # Distributed under the MIT software license, see the accompanying
 # file COPYING or https://opensource.org/license/mit
 
-import json
-import os
 import pytest
 
-from hdwallet.derivations.hdw import (
-    HDWDerivation, ECCS
-)
+from hdwallet.derivations.hdw import HDWDerivation
 from hdwallet.exceptions import DerivationError
 
 
-def test_bip44_derivation(data):
-
-    assert ECCS.SLIP10_Secp256k1 == "SLIP10-Secp256k1"
-    assert ECCS.SLIP10_Ed25519 == "SLIP10-Ed25519"
-    assert ECCS.SLIP10_Nist256p1 == "SLIP10-Nist256p1"
-    assert ECCS.KHOLAW_ED25519 == "Kholaw-Ed25519"
-    assert ECCS.SLIP10_Ed25519_Blake2b == "SLIP10-Ed25519-Blake2b"
-    assert ECCS.SLIP10_Ed25519_Monero == "SLIP10-Ed25519-Monero"
+def test_hdw_derivation(data):
 
     derivation = HDWDerivation()
     assert derivation.name() == data["derivations"]["HDW"]["default"]["name"]

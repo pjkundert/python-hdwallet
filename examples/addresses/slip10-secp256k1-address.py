@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-from hdwallet.ecc import (
+from hdwallet.eccs import (
     IPrivateKey, IPublicKey, SLIP10Secp256k1PrivateKey
 )
 from hdwallet.consts import PUBLIC_KEY_TYPES
