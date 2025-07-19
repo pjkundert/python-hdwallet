@@ -5,27 +5,23 @@
 # file COPYING or https://opensource.org/license/mit
 
 from typing import (
-    Tuple, Union, Optional, Dict, Type
+    Tuple, Union, Optional, Type
 )
 
 from ..ecc import (
-    ECCS as EllipticCurveCryptographies, IEllipticCurveCryptography
+    IEllipticCurveCryptography,
+    SLIP10Secp256k1ECC,
+    SLIP10Ed25519ECC,
+    SLIP10Nist256p1ECC,
+    KholawEd25519ECC,
+    SLIP10Ed25519Blake2bECC,
+    SLIP10Ed25519MoneroECC
 )
 from ..utils import (
     normalize_index, normalize_derivation, index_tuple_to_string
 )
 from ..exceptions import DerivationError
 from .iderivation import IDerivation
-
-
-class ECCS:
-
-    SLIP10_Secp256k1: str = "SLIP10-Secp256k1"
-    SLIP10_Ed25519: str = "SLIP10-Ed25519"
-    SLIP10_Nist256p1: str = "SLIP10-Nist256p1"
-    KHOLAW_ED25519: str = "Kholaw-Ed25519"
-    SLIP10_Ed25519_Blake2b: str = "SLIP10-Ed25519-Blake2b"
-    SLIP10_Ed25519_Monero: str = "SLIP10-Ed25519-Monero"
 
 
 class HDWDerivation(IDerivation):
@@ -56,19 +52,11 @@ class HDWDerivation(IDerivation):
     _account: Union[Tuple[int, bool], Tuple[int, int, bool]]
     _ecc: Tuple[int, bool]
     _address: Union[Tuple[int, bool], Tuple[int, int, bool]]
-    eccs: Dict[str, int] = {
-        "SLIP10-Secp256k1": 0,
-        "SLIP10-Ed25519": 1,
-        "SLIP10-Nist256p1": 2,
-        "Kholaw-Ed25519": 3,
-        "SLIP10-Ed25519-Blake2b": 4,
-        "SLIP10-Ed25519-Monero": 5
-    }
 
     def __init__(
         self,
         account: Union[str, int, Tuple[int, int]] = 0,
-        ecc: Optional[Union[str, int, Type[IEllipticCurveCryptography]]] = "SLIP10-Secp256k1",
+        ecc: Optional[Union[str, int, Type[IEllipticCurveCryptography]]] = SLIP10Secp256k1ECC,
         address: Union[str, int, Tuple[int, int]] = 0
     ) -> None:
         """
@@ -85,21 +73,9 @@ class HDWDerivation(IDerivation):
         """
         super(HDWDerivation, self).__init__()
 
-        self.excepted_ecc = [
-            *self.eccs.keys(),
-            *self.eccs.values(),
-            *EllipticCurveCryptographies.classes(),
-            *map(str, self.eccs.values())
-        ]
-        if ecc not in self.excepted_ecc:
-            raise DerivationError(
-                f"Bad {self.name()} ecc index", expected=self.excepted_ecc, got=ecc
-            )
-        ecc = ecc if type(ecc) in [str, int] else ecc.NAME
-
         self._account = normalize_index(index=account, hardened=True)
         self._ecc = normalize_index(
-            index=(self.eccs[ecc] if ecc in self.eccs.keys() else ecc), hardened=False
+            index=self.get_ecc_value(ecc=ecc, name_only=False), hardened=False
         )
         self._address = normalize_index(index=address, hardened=False)
         self._path, self._indexes, self._derivations = normalize_derivation(path=(
@@ -120,6 +96,47 @@ class HDWDerivation(IDerivation):
 
         return "HDW"
 
+    def get_ecc_value(
+        self, ecc: Union[str, int, Type[IEllipticCurveCryptography]], name_only: bool = False
+    ):
+
+        if isinstance(ecc, IEllipticCurveCryptography):
+            curve = ecc.NAME
+        elif isinstance(ecc, type) and issubclass(ecc, IEllipticCurveCryptography):
+            curve = ecc.NAME
+        else:
+            curve = ecc
+
+        slip10_secp256k1 = [SLIP10Secp256k1ECC.NAME, 0, '0']
+        slip10_ed25519 = [SLIP10Ed25519ECC.NAME, 1, '1']
+        slip10_nist256p1 = [SLIP10Nist256p1ECC.NAME, 2, '2']
+        kholaw_ed25519 = [KholawEd25519ECC.NAME, 3, '3']
+        slip10_ed25519_blake2b = [SLIP10Ed25519Blake2bECC.NAME, 4, '4']
+        slip10_ed25519_monero = [SLIP10Ed25519MoneroECC.NAME, 5, '5']
+
+        expected_ecc = (
+            slip10_secp256k1 + slip10_ed25519 + slip10_nist256p1 +
+            kholaw_ed25519 + slip10_ed25519_blake2b + slip10_ed25519_monero
+        )
+
+        if curve not in expected_ecc:
+            raise DerivationError(
+            f"Bad {self.name()} ECC index",
+                expected=expected_ecc, got=curve
+            )
+
+        if curve in slip10_secp256k1:
+            return SLIP10Secp256k1ECC.NAME if name_only else 0
+        if curve in slip10_ed25519:
+            return SLIP10Ed25519ECC.NAME if name_only else 1
+        if curve in slip10_nist256p1:
+            return SLIP10Nist256p1ECC.NAME if name_only else 2
+        if curve in kholaw_ed25519:
+            return KholawEd25519ECC.NAME if name_only else 3
+        if curve in slip10_ed25519_blake2b:
+            return SLIP10Ed25519Blake2bECC.NAME if name_only else 4
+        if curve in slip10_ed25519_monero:
+            return SLIP10Ed25519MoneroECC.NAME if name_only else 5
 
     def from_account(self, account: Union[str, int, Tuple[int, int]]) -> "HDWDerivation":
         """
@@ -154,13 +171,8 @@ class HDWDerivation(IDerivation):
         :rtype: HDWDerivation
         """
 
-        if ecc not in self.excepted_ecc:
-            raise DerivationError(
-                f"Bad {self.name()} ecc index", expected=self.excepted_ecc, got=ecc
-            )
-        ecc = ecc if type(ecc) in [str, int] else ecc.NAME
         self._ecc = normalize_index(
-            index=(self.eccs[ecc] if ecc in self.eccs.keys() else ecc), hardened=False
+            index=self.get_ecc_value(ecc=ecc, name_only=False), hardened=False
         )
         self._path, self._indexes, self._derivations = normalize_derivation(path=(
             f"m/"
@@ -224,23 +236,19 @@ class HDWDerivation(IDerivation):
             self._account[1] if len(self._account) == 3 else self._account[0]
         )
 
-    def ecc(self) -> str:
+    def ecc(self, name_only: bool = True) -> str:
         """
         Retrieve the ecc value from the object's eccs dictionary.
 
         Iterates through the `eccs` dictionary, and if a value matches the first element of `_ecc`,
         sets the corresponding key as the ecc value.
 
+        :param name_only: Return the ECC name if True, or its index if False.
+        :type name_only: bool
         :return: The key from the `eccs` dictionary that corresponds to the `_ecc` value, or `None` if not found.
         :rtype: str
         """
-
-        _ecc: Optional[str] = None
-        for key, value in self.eccs.items():
-            if value == self._ecc[0]:
-                _ecc = key
-                break
-        return _ecc
+        return self.get_ecc_value(ecc=self._ecc[0], name_only=name_only)
 
     def address(self) -> int:
         """
