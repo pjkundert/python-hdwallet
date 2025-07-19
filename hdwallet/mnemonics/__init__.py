@@ -54,8 +54,7 @@ class MNEMONICS:
         BIP39Mnemonic.name(): BIP39Mnemonic,
         ElectrumV1Mnemonic.name(): ElectrumV1Mnemonic,
         ElectrumV2Mnemonic.name(): ElectrumV2Mnemonic,
-        MoneroMnemonic.name(): MoneroMnemonic,
-        SLIP39Mnemonic.name(): SLIP39Mnemonic
+        MoneroMnemonic.name(): MoneroMnemonic
     }
 
     @classmethod

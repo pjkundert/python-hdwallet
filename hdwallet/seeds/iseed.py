@@ -52,7 +52,7 @@ class ISeed(ABC):
 
         return isinstance(seed, str) and bool(re.fullmatch(
             r'^[0-9a-fA-F]+$', seed
-        )) and len(seed) == cls.length
+        )) and len(seed) * 4 == cls.length
 
     def seed(self) -> str:
         """
