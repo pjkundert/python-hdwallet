@@ -26,5 +26,5 @@ def test_slip39_seeds(data):
                 pass
             assert SLIP39Seed.from_mnemonic(
                 mnemonic = mnemonic
-            ) == data["seeds"]["SLIP39"][words][lang]["seed"]
+            ) == data["seeds"]["SLIP39"][words][lang]["non-passphrase-seed"]
 
