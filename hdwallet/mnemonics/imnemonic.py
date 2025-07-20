@@ -62,6 +62,16 @@ class IMnemonic(ABC):
 
         return " ".join(self._mnemonic)
 
+    def mnemonic_type(self) -> str:
+        """
+        Retrieves the type of the mnemonic.
+
+        :return: The type of the mnemonic.
+        :rtype: str
+        """
+
+        raise NotImplemented
+
     def language(self) -> str:
         """
         Get the formatted language value.
@@ -69,10 +79,7 @@ class IMnemonic(ABC):
         :return: The formatted language string where each part is capitalized.
         :rtype: str
         """
-        language: str = ""
-        for index, _ in enumerate(self._language.split("-")):
-            language += _.title() if index == 0 else f"-{_.title()}"
-        return language
+        return self._language
 
     def words(self) -> int:
         """
@@ -89,7 +96,7 @@ class IMnemonic(ABC):
 
     @classmethod
     @abstractmethod
-    def from_entropy(cls, entropy: Union[str, bytes, IEntropy], language: str) -> str:
+    def from_entropy(cls, entropy: Union[str, bytes, IEntropy], language: str, **kwargs) -> str:
         pass
 
     @classmethod
