@@ -42,7 +42,7 @@ class ElectrumV1Seed(ISeed):
         return "Electrum-V1"
 
     @classmethod
-    def from_mnemonic(cls, mnemonic: Union[str, IMnemonic]) -> str:
+    def from_mnemonic(cls, mnemonic: Union[str, IMnemonic], **kwargs) -> str:
         """
         Converts an Electrum V1 mnemonic phrase to its corresponding hashed entropy.
 

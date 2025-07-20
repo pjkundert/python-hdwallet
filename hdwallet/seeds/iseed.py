@@ -66,5 +66,5 @@ class ISeed(ABC):
 
     @classmethod
     @abstractmethod
-    def from_mnemonic(cls, mnemonic: Union[str, IMnemonic]) -> str:
+    def from_mnemonic(cls, mnemonic: Union[str, IMnemonic], **kwargs) -> str:
         pass
