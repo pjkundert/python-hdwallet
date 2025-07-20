@@ -398,6 +398,38 @@ class CardanoHD(BIP32HD):
             )
         return self
 
+    def root_xprivate_key(
+        self, version: Union[bytes, int] = Cardano.NETWORKS.MAINNET.XPRIVATE_KEY_VERSIONS.P2PKH, encoded: bool = True
+    ) -> Optional[str]:
+        """
+        Generates the root extended private key (xprv) in serialized format.
+
+        :param version: The version bytes for the extended key. Defaults to Bitcoin mainnet P2PKH version.
+        :type version: Union[bytes, int]
+        :param encoded: Whether to return the key in encoded format. Defaults to True.
+        :type encoded: bool
+
+        :return: The root extended private key (xprv) in serialized format, or None if the chain code is not set.
+        :rtype: Optional[str]
+        """
+        return super(CardanoHD, self).root_xprivate_key(version=version, encoded=encoded)
+
+    def xprivate_key(
+        self, version: Union[bytes, int] = Cardano.NETWORKS.MAINNET.XPRIVATE_KEY_VERSIONS.P2PKH, encoded: bool = True
+    ) -> Optional[str]:
+        """
+        Retrieves the extended private key (xprivate key) as a serialized string.
+
+        :param version: The version bytes or integer version of the xprivate key.
+        :type version: Union[bytes, int]
+        :param encoded: Flag indicating whether the key should be encoded.
+        :type encoded: bool
+
+        :return: The serialized xprivate key as a string, or None if the private key or chain code is not set.
+        :rtype: Optional[str]
+        """
+        return super(CardanoHD, self).xprivate_key(version=version, encoded=encoded)
+
     def path_key(self) -> Optional[str]:
         """
         Derives a path key based on the current CardanoHD instance.
