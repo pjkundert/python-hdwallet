@@ -504,9 +504,25 @@
         "12": {
             "english": {
                 "mnemonic": "zoo zoo zoo zoo zoo zoo zoo zoo zoo zoo zoo wrong",
-                "seed": "ffffffffffffffffffffffffffffffff"
+                "non-passphrase-seed": "ffffffffffffffffffffffffffffffff",
+                "passphrases": null
+            },
+            "hex 128": {
+                "mnemonic": "ffffffffffffffffffffffffffffffff",
+                "non-passphrase-seed": "ffffffffffffffffffffffffffffffff",
+                "passphrases": null
+            },
+            "hex 256": {
+                "mnemonic": "ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff",
+                "non-passphrase-seed": "ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff",
+                "passphrases": null
+            },
+            "hex 512": {
+                "mnemonic": "ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff",
+                "non-passphrase-seed": "ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff",
+                "passphrases": null
             }
-	}
+        }
     },
     "Cardano": {
         "12": {
