@@ -18,3 +18,18 @@ hdwallet: HDWallet = HDWallet(
 )
 
 print(json.dumps(hdwallet.dump(exclude={"indexes"}), indent=4, ensure_ascii=False))
+
+# print("Cryptocurrency:", hdwallet.cryptocurrency())
+# print("Symbol:", hdwallet.symbol())
+# print("Network:", hdwallet.network())
+# print("Coin Type:", hdwallet.coin_type())
+# print("ECC:", hdwallet.ecc())
+# print("HD:", hdwallet.hd())
+# print("Semantic:", hdwallet.semantic())
+# print("Public Key Type:", hdwallet.public_key_type())
+# print("Public Key:", hdwallet.public_key())
+# print("Uncompressed:", hdwallet.uncompressed())
+# print("Compressed:", hdwallet.compressed())
+# print("Hash:", hdwallet.hash())
+# print("Fingerprint:", hdwallet.fingerprint())
+# print("Address:", hdwallet.address())

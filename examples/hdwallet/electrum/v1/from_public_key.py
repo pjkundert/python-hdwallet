@@ -24,3 +24,16 @@ hdwallet: HDWallet = HDWallet(
 
 # print(json.dumps(hdwallet.dump(exclude={"indexes"}), indent=4, ensure_ascii=False))
 print(json.dumps(hdwallet.dumps(exclude={"indexes"}), indent=4, ensure_ascii=False))
+
+# print("Cryptocurrency:", hdwallet.cryptocurrency())
+# print("Symbol:", hdwallet.symbol())
+# print("Network:", hdwallet.network())
+# print("Coin Type:", hdwallet.coin_type())
+# print("ECC:", hdwallet.ecc())
+# print("HD:", hdwallet.hd())
+# print("Master Public Key:", hdwallet.master_public_key())
+# print("Public Key Type:", hdwallet.public_key_type())
+# print("Public Key:", hdwallet.public_key())
+# print("Uncompressed:", hdwallet.uncompressed())
+# print("Compressed:", hdwallet.compressed())
+# print("Address:", hdwallet.address())
