@@ -12,6 +12,7 @@ from typing import (
 )
 
 import os
+import unicodedata
 
 from ..exceptions import MnemonicError
 from ..entropies import IEntropy
@@ -204,12 +205,12 @@ class IMnemonic(ABC):
     @classmethod
     def is_valid_words(cls, words: int) -> bool:
         """
-        Checks if the given words is valid.
+        Checks if the given number of words is valid.
 
-        :param words: The words to check.
+        :param words: The number of words to check.
         :type words: int
 
-        :return: True if the strength is valid, False otherwise.
+        :return: True if the number of mnemonic words is valid, False otherwise.
         :rtype: bool
         """
 
@@ -218,13 +219,17 @@ class IMnemonic(ABC):
     @classmethod
     def normalize(cls, mnemonic: Union[str, List[str]]) -> List[str]:
         """
+
         Normalizes the given mnemonic by splitting it into a list of words if it is a string.
+        Resilient to extra whitespace and down-cases uppercase symbols.
 
         :param mnemonic: The mnemonic value, which can be a single string of words or a list of words.
         :type mnemonic: Union[str, List[str]]
 
         :return: A list of words from the mnemonic.
         :rtype: List[str]
-        """
 
-        return mnemonic.split() if isinstance(mnemonic, str) else mnemonic
+        """
+        mnemonic: list = mnemonic.split() if isinstance(mnemonic, str) else mnemonic
+        return list(map(lambda _: unicodedata.normalize("NFKD", _.lower()), mnemonic))
+

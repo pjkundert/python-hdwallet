@@ -500,6 +500,14 @@
             }
         }
     },
+    "SLIP39": {
+        "12": {
+            "english": {
+                "mnemonic": "zoo zoo zoo zoo zoo zoo zoo zoo zoo zoo zoo wrong",
+                "seed": "ffffffffffffffffffffffffffffffff"
+            }
+	}
+    },
     "Cardano": {
         "12": {
             "byron-icarus": {
