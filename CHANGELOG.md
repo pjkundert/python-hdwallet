@@ -1,17 +1,29 @@
 # Changelog
 
-## [v3.5.0](https://github.com/hdwallet-io/python-hdwallet/tree/v3.5.0) (2025-07-17)
+## [v3.5.1](https://github.com/hdwallet-io/python-hdwallet/tree/v3.5.1) (2025-07-20)
 
-[Full Changelog](https://github.com/hdwallet-io/python-hdwallet/compare/v3.4.0...v3.5.0)
+[Full Changelog](https://github.com/hdwallet-io/python-hdwallet/compare/v3.4.0...v3.5.1)
 
 **New Additions:**
 
 - Add: `SEMANTICS`, `DEFAULT_SEMANTIC`, `DEFAUT_PATH` & `SUPPORT_BIP38` values in all cryptocurrencies. 
 - Add: `NAME` value in all networks. 
+- Add: `name_only` param for change, role, and ecc indexes on derivation
 
 **Enhancements:**
 
+- Change: getting `raw` of Point to `raw_encode`
+- Modify: ECC implementation for `HDWDerivation`
+- Modify: return language value & `from_entropy` funcs of all Mnemonics
+- Refactor: renamed `ecc` to `eccs`
 - Refactor: renamed `const` to `consts`
+
+**Fix Bugs:**
+
+- Fix: `version` of CardanoHD `root_xprivate_key` & `xprivate_key` functions
+- Fix: Unknown arg name for all Seed `from_mnemonic` functions
+- Fix: `from_index` function setup of `CustomDerivation`
+- Fix: `public_key_type` of Electrum-V2 HD segwit-address
 
 ## [v3.4.0](https://github.com/hdwallet-io/python-hdwallet/tree/v3.4.0) (2025-03-15)
 
