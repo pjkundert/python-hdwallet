@@ -381,7 +381,8 @@ class ElectrumV2HD(IHD):
             return P2WPKHAddress.encode(
                 public_key=self.public_key(),
                 hrp=hrp,
-                witness_version=witness_version
+                witness_version=witness_version,
+                public_key_type=self._public_key_type
             )
         raise AddressError(
             f"Invalid {self.name()} mode", expected=MODES.get_modes(), got=self._mode
