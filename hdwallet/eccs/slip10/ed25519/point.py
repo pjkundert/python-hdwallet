@@ -130,16 +130,6 @@ class SLIP10Ed25519Point(IPoint):
             self._x, self._y = point_bytes_to_coord(self.point)
         return self._y
 
-    def raw(self) -> bytes:
-        """
-        Retrieves the raw bytes representation of the signing key.
-
-        :return: Raw bytes of the signing key.
-        :rtype: bytes
-        """
-
-        return self.raw_decoded()
-
     def raw_encoded(self) -> bytes:
         """
         Returns the raw encoded point data.

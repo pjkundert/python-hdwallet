@@ -44,7 +44,7 @@ class SLIP10Nist256p1Point(IPoint):
         return "SLIP10-Nist256p1"
 
     @classmethod
-    def from_bytes(cls, point: bytes) -> "SLIP10Nist256p1Point":
+    def from_bytes(cls, point: bytes) -> IPoint:
         """
         Create an instance of SLIP10Nist256p1Point from bytes encoding.
 
@@ -70,7 +70,7 @@ class SLIP10Nist256p1Point(IPoint):
             )
 
     @classmethod
-    def from_coordinates(cls, x: int, y: int) -> "SLIP10Nist256p1Point":
+    def from_coordinates(cls, x: int, y: int) -> IPoint:
         """
         Create an instance of SLIP10Nist256p1Point from x and y coordinates.
 
@@ -122,16 +122,6 @@ class SLIP10Nist256p1Point(IPoint):
         """
 
         return self.point.y()
-
-    def raw(self) -> bytes:
-        """
-        Get the raw bytes representation of the elliptic curve point.
-
-        :return: Raw bytes representation of the elliptic curve point.
-        :rtype: bytes
-        """
-
-        return self.raw_decoded()
 
     def raw_encoded(self) -> bytes:
         """

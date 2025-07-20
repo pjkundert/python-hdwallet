@@ -118,16 +118,6 @@ class SLIP10Secp256k1PointCoincurve(IPoint):
 
         return self.public_key.point()[1]
 
-    def raw(self) -> bytes:
-        """
-        Returns the raw bytes representation.
-
-        :return: The raw bytes of the public key.
-        :rtype: bytes
-        """
-
-        return self.raw_decoded()
-
     def raw_encoded(self) -> bytes:
         """
         Returns the encoded raw bytes representation of the public key, including any necessary prefix.
@@ -304,16 +294,6 @@ class SLIP10Secp256k1PointECDSA(IPoint):
         """
 
         return self.point.y()
-
-    def raw(self) -> bytes:
-        """
-        Returns the raw bytes representation of the point.
-
-        :return: The raw bytes representation of the point.
-        :rtype: bytes
-        """
-
-        return self.raw_decoded()
 
     def raw_encoded(self) -> bytes:
         """

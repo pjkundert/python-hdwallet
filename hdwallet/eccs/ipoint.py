@@ -70,7 +70,6 @@ class IPoint(ABC):
         :rtype: int
         """
 
-    @abstractmethod
     def raw(self) -> bytes:
         """
         Get the raw byte representation of the object.
@@ -78,6 +77,7 @@ class IPoint(ABC):
         :return: The raw byte representation of the object.
         :rtype: bytes
         """
+        return self.raw_encoded()
 
     @abstractmethod
     def raw_encoded(self) -> bytes:
