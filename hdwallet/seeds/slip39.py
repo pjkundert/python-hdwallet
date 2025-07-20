@@ -10,9 +10,6 @@ from typing import (
 
 import unicodedata
 
-from ..crypto import pbkdf2_hmac_sha512
-from ..exceptions import MnemonicError
-from ..utils import bytes_to_string
 from ..mnemonics import IMnemonic
 from .iseed import ISeed
 
@@ -64,5 +61,5 @@ class SLIP39Seed(ISeed):
         :rtype: str
 
         """
-        assert passphrase is None, "No encryption"
-        return mnemonic.decode() if isinstance(mnemonic, IMnemonic) else mnemonic
+
+        return mnemonic.decode(mnemonic._mnemonic) if isinstance(mnemonic, IMnemonic) else mnemonic

@@ -57,6 +57,8 @@ class BIP39Seed(ISeed):
         """
         Converts a mnemonic phrase to its corresponding seed.
 
+        BIP39 stretches a prefix + (passphrase or "") + normalized mnemonic to produce the 512-bit seed.
+
         :param mnemonic: The mnemonic phrase to be decoded. Can be a string or an instance of `IMnemonic`.
         :type mnemonic: Union[str, IMnemonic]
 
