@@ -188,6 +188,19 @@ class HDWallet:
                 "Invalid network type", expected=[str, INetwork], got=type(network)
             )
 
+        if hd.name() in [
+            "BIP32", "BIP44", "BIP86", "Cardano"
+        ]:
+            self._semantic = kwargs.get("semantic", self._cryptocurrency.DEFAULT_SEMANTIC)
+        elif hd.name() == "BIP49":
+            self._semantic = kwargs.get("semantic", "p2wpkh-in-p2sh")
+        elif hd.name() in [
+            "BIP84", "BIP141"
+        ]:
+            self._semantic = kwargs.get("semantic", "p2wpkh")
+        else:
+            self._semantic = None
+
         if address is None:  # Use default address
             address = self._cryptocurrency.DEFAULT_ADDRESS
             if hd.name() == "BIP49":
@@ -235,19 +248,6 @@ class HDWallet:
             "staking_public_key": kwargs.get("staking_public_key", None),
             "payment_id": kwargs.get("payment_id", None)
         }
-
-        if hd.name() in [
-            "BIP32", "BIP44", "BIP86", "Cardano"
-        ]:
-            self._semantic = kwargs.get("semantic", self._cryptocurrency.DEFAULT_SEMANTIC)
-        elif hd.name() == "BIP49":
-            self._semantic = kwargs.get("semantic", "p2wpkh-in-p2sh")
-        elif hd.name() in [
-            "BIP84", "BIP141"
-        ]:
-            self._semantic = kwargs.get("semantic", "p2wpkh")
-        else:
-            self._semantic = None
 
         if hd.name() in [
             "BIP32", "BIP44", "BIP49", "BIP84", "BIP86", "BIP141"
@@ -1375,7 +1375,7 @@ class HDWallet:
         if self._hd.name() == "Monero":
             return self._hd.primary_address()
 
-    def integrated_address(self, payment_id: Union[bytes, str]) -> Optional[str]:
+    def integrated_address(self, payment_id: Optional[Union[bytes, str]] = None) -> Optional[str]:
         """
         Get the integrated address associated with the Monero HD wallet.
 
@@ -1387,7 +1387,9 @@ class HDWallet:
         """
 
         if self._hd.name() == "Monero":
-            return self._hd.integrated_address(payment_id=payment_id)
+            return self._hd.integrated_address(
+                payment_id=payment_id if payment_id else self._kwargs.get("payment_id")
+            )
 
     def sub_address(self, minor: Optional[int] = None, major: Optional[int] = None) -> Optional[str]:
         """
@@ -1437,7 +1439,11 @@ class HDWallet:
 
         if self._hd.name() == "Cardano":
             return self._hd.address(
-                network=self._network.NAME, **kwargs
+                network=self._network.NAME,
+                address_type=kwargs.get("address_type", self._address_type),
+                staking_public_key=kwargs.get(
+                    "staking_public_key", self._kwargs.get("staking_public_key")
+                )
             )
         elif self._hd.name() in "Electrum-V1":
             return self._hd.address(
