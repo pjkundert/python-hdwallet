@@ -297,7 +297,7 @@ rules = {
             "cardano-type": "cardano_type",
             "language": "language",
             "seed-client": ("Cardano",),
-            "address-type": ("staking",)
+            # "address-type": ("staking",)
         }
     },
     "Electrum-V1": {

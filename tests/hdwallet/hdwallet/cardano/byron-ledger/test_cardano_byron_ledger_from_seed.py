@@ -23,7 +23,8 @@ def test_byron_ledger_from_seed(data):
             data["hdwallet"]["Cardano"]["byron-ledger"]["hd"]
         ),
         network=data["hdwallet"]["Cardano"]["byron-ledger"]["network"],
-        cardano_type=data["hdwallet"]["Cardano"]["byron-ledger"]["cardano_type"]
+        cardano_type=data["hdwallet"]["Cardano"]["byron-ledger"]["cardano_type"],
+        address_type=cryptocurrency.ADDRESS_TYPES.PUBLIC_KEY
     ).from_seed(
         seed=CardanoSeed(
             seed=data["hdwallet"]["Cardano"]["byron-ledger"]["seed"]

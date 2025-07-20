@@ -22,7 +22,8 @@ def test_byron_legacy_from_xprivate_key(data):
             data["hdwallet"]["Cardano"]["byron-legacy"]["hd"]
         ),
         network=data["hdwallet"]["Cardano"]["byron-legacy"]["network"],
-        cardano_type=data["hdwallet"]["Cardano"]["byron-legacy"]["cardano_type"]
+        cardano_type=data["hdwallet"]["Cardano"]["byron-legacy"]["cardano_type"],
+        address_type=cryptocurrency.ADDRESS_TYPES.PUBLIC_KEY
     ).from_xprivate_key(
         xprivate_key=data["hdwallet"]["Cardano"]["byron-legacy"]["root_xprivate_key"],
         strict=data["hdwallet"]["Cardano"]["byron-legacy"]["strict"]

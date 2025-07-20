@@ -22,7 +22,8 @@ def test_byron_icarus_from_xprivate_key(data):
             data["hdwallet"]["Cardano"]["byron-icarus"]["hd"]
         ),
         network=data["hdwallet"]["Cardano"]["byron-icarus"]["network"],
-        cardano_type=data["hdwallet"]["Cardano"]["byron-icarus"]["cardano_type"]
+        cardano_type=data["hdwallet"]["Cardano"]["byron-icarus"]["cardano_type"],
+        address_type=cryptocurrency.ADDRESS_TYPES.PUBLIC_KEY
     ).from_xprivate_key(
         xprivate_key=data["hdwallet"]["Cardano"]["byron-icarus"]["root_xprivate_key"],
         strict=data["hdwallet"]["Cardano"]["byron-icarus"]["strict"]

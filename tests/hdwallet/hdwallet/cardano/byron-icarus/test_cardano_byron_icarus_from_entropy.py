@@ -24,7 +24,8 @@ def test_byron_icarus_from_entropy(data):
         ),
         network=data["hdwallet"]["Cardano"]["byron-icarus"]["network"],
         language=data["hdwallet"]["Cardano"]["byron-icarus"]["language"].lower(),
-        cardano_type=data["hdwallet"]["Cardano"]["byron-icarus"]["cardano_type"]
+        cardano_type=data["hdwallet"]["Cardano"]["byron-icarus"]["cardano_type"],
+        address_type=cryptocurrency.ADDRESS_TYPES.PUBLIC_KEY
     ).from_entropy(
         entropy=BIP39Entropy(
             entropy=data["hdwallet"]["Cardano"]["byron-icarus"]["entropy"]

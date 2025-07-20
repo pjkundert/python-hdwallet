@@ -54,8 +54,8 @@ def test_slip10_secp256k1_ecc_point_coincurve(data):
         assert isinstance(point.underlying_object(), PublicKey)
         assert point.x() == data["eccs"]["SLIP10-Secp256k1"][public_key_type]["point"]["x"]
         assert point.y() == data["eccs"]["SLIP10-Secp256k1"][public_key_type]["point"]["y"]
-        assert point.raw_encoded() == get_bytes(data["eccs"]["SLIP10-Secp256k1"][public_key_type]["point"]["encode"])
-        assert point.raw() == point.raw_decoded() == get_bytes(data["eccs"]["SLIP10-Secp256k1"][public_key_type]["point"]["decode"])
+        assert point.raw() == point.raw_encoded() == get_bytes(data["eccs"]["SLIP10-Secp256k1"][public_key_type]["point"]["encode"])
+        assert point.raw_decoded() == get_bytes(data["eccs"]["SLIP10-Secp256k1"][public_key_type]["point"]["decode"])
         # Test from coordinate
         point = SLIP10Secp256k1PointCoincurve.from_coordinates(
             x=data["eccs"]["SLIP10-Secp256k1"][public_key_type]["point"]["x"],
@@ -66,8 +66,8 @@ def test_slip10_secp256k1_ecc_point_coincurve(data):
         assert isinstance(point.underlying_object(), PublicKey)
         assert point.x() == data["eccs"]["SLIP10-Secp256k1"][public_key_type]["point"]["x"]
         assert point.y() == data["eccs"]["SLIP10-Secp256k1"][public_key_type]["point"]["y"]
-        assert point.raw_encoded() == get_bytes(data["eccs"]["SLIP10-Secp256k1"][public_key_type]["point"]["encode"])
-        assert point.raw() == point.raw_decoded() == get_bytes(data["eccs"]["SLIP10-Secp256k1"][public_key_type]["point"]["decode"])
+        assert point.raw() == point.raw_encoded() == get_bytes(data["eccs"]["SLIP10-Secp256k1"][public_key_type]["point"]["encode"])
+        assert point.raw_decoded() == get_bytes(data["eccs"]["SLIP10-Secp256k1"][public_key_type]["point"]["decode"])
 
         for number in range(2, 50):
             point_add, point_radd, point_mul, point_rmul = (
@@ -139,8 +139,8 @@ def test_slip10_secp256k1_ecc_point_ecdsa(data):
         assert isinstance(point.underlying_object(), PointJacobi)
         assert point.x() == data["eccs"]["SLIP10-Secp256k1"][public_key_type]["point"]["x"]
         assert point.y() == data["eccs"]["SLIP10-Secp256k1"][public_key_type]["point"]["y"]
-        assert point.raw_encoded() == get_bytes(data["eccs"]["SLIP10-Secp256k1"][public_key_type]["point"]["encode"])
-        assert point.raw() == point.raw_decoded() == get_bytes(data["eccs"]["SLIP10-Secp256k1"][public_key_type]["point"]["decode"])
+        assert point.raw() == point.raw_encoded() == get_bytes(data["eccs"]["SLIP10-Secp256k1"][public_key_type]["point"]["encode"])
+        assert point.raw_decoded() == get_bytes(data["eccs"]["SLIP10-Secp256k1"][public_key_type]["point"]["decode"])
         # Test from coordinate
         point = SLIP10Secp256k1PointECDSA.from_coordinates(
             x=data["eccs"]["SLIP10-Secp256k1"][public_key_type]["point"]["x"],
@@ -151,8 +151,8 @@ def test_slip10_secp256k1_ecc_point_ecdsa(data):
         assert isinstance(point.underlying_object(), PointJacobi)
         assert point.x() == data["eccs"]["SLIP10-Secp256k1"][public_key_type]["point"]["x"]
         assert point.y() == data["eccs"]["SLIP10-Secp256k1"][public_key_type]["point"]["y"]
-        assert point.raw_encoded() == get_bytes(data["eccs"]["SLIP10-Secp256k1"][public_key_type]["point"]["encode"])
-        assert point.raw() == point.raw_decoded() == get_bytes(data["eccs"]["SLIP10-Secp256k1"][public_key_type]["point"]["decode"])
+        assert point.raw() == point.raw_encoded() == get_bytes(data["eccs"]["SLIP10-Secp256k1"][public_key_type]["point"]["encode"])
+        assert point.raw_decoded() == get_bytes(data["eccs"]["SLIP10-Secp256k1"][public_key_type]["point"]["decode"])
 
         for number in range(2, 50):
             point_add, point_radd, point_mul, point_rmul = (

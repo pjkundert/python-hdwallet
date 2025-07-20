@@ -24,7 +24,8 @@ def test_byron_ledger_from_entropy(data):
         ),
         network=data["hdwallet"]["Cardano"]["byron-ledger"]["network"],
         language=data["hdwallet"]["Cardano"]["byron-ledger"]["language"].lower(),
-        cardano_type=data["hdwallet"]["Cardano"]["byron-ledger"]["cardano_type"]
+        cardano_type=data["hdwallet"]["Cardano"]["byron-ledger"]["cardano_type"],
+        address_type=cryptocurrency.ADDRESS_TYPES.PUBLIC_KEY
     ).from_entropy(
         entropy=BIP39Entropy(
             entropy=data["hdwallet"]["Cardano"]["byron-ledger"]["entropy"]

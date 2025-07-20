@@ -88,7 +88,6 @@ def get_dumps_output(ddict):
 def test_cli_dumps(cli_tester, hd_data):
 
     dumps, derivation, hd, name = hd_data
-
     hd_args = get_hd_args(dumps, rules[hd]["args"])
     for param, rule in rules[hd]["available-methods"].items():
         final_dumps = copy.deepcopy(dumps)
@@ -99,6 +98,11 @@ def test_cli_dumps(cli_tester, hd_data):
             "--hd", hd
         ]
         args.extend(hd_args)
+
+        if name in ["byron-icarus", "byron-ledger", "byron-legacy"]:
+            args.extend(["--address-type", "public-key"])
+        elif name in ["shelley-icarus", "shelley-ledger"]:
+            args.extend(["--address-type", "staking"])
 
         if rule["derivable"]:
             args.extend(get_derivation_args(derivation))

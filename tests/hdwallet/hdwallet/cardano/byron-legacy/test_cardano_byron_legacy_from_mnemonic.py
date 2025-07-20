@@ -24,7 +24,8 @@ def test_byron_legacy_from_mnemonic(data):
         ),
         network=data["hdwallet"]["Cardano"]["byron-legacy"]["network"],
         language=data["hdwallet"]["Cardano"]["byron-legacy"]["language"].lower(),
-        cardano_type=data["hdwallet"]["Cardano"]["byron-legacy"]["cardano_type"]
+        cardano_type=data["hdwallet"]["Cardano"]["byron-legacy"]["cardano_type"],
+        address_type=cryptocurrency.ADDRESS_TYPES.PUBLIC_KEY
     ).from_mnemonic(
         mnemonic=BIP39Mnemonic(
             mnemonic=data["hdwallet"]["Cardano"]["byron-legacy"]["mnemonic"]

@@ -23,7 +23,8 @@ def test_byron_icarus_from_seed(data):
             data["hdwallet"]["Cardano"]["byron-icarus"]["hd"]
         ),
         network=data["hdwallet"]["Cardano"]["byron-icarus"]["network"],
-        cardano_type=data["hdwallet"]["Cardano"]["byron-icarus"]["cardano_type"]
+        cardano_type=data["hdwallet"]["Cardano"]["byron-icarus"]["cardano_type"],
+        address_type=cryptocurrency.ADDRESS_TYPES.PUBLIC_KEY
     ).from_seed(
         seed=CardanoSeed(
             seed=data["hdwallet"]["Cardano"]["byron-icarus"]["seed"]

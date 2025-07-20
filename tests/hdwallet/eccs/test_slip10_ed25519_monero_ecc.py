@@ -41,8 +41,8 @@ def test_slip10_ed25519_monero_ecc_point(data):
         assert isinstance(point.underlying_object(), bytes)
         assert point.x() == data["eccs"]["SLIP10-Ed25519-Monero"][public_key_type]["point"]["x"]
         assert point.y() == data["eccs"]["SLIP10-Ed25519-Monero"][public_key_type]["point"]["y"]
-        assert point.raw_encoded() == get_bytes(data["eccs"]["SLIP10-Ed25519-Monero"][public_key_type]["point"]["encode"])
-        assert point.raw() == point.raw_decoded() == get_bytes(data["eccs"]["SLIP10-Ed25519-Monero"][public_key_type]["point"]["decode"])
+        assert point.raw() == point.raw_encoded() == get_bytes(data["eccs"]["SLIP10-Ed25519-Monero"][public_key_type]["point"]["encode"])
+        assert point.raw_decoded() == get_bytes(data["eccs"]["SLIP10-Ed25519-Monero"][public_key_type]["point"]["decode"])
         # Test from coordinate
         point = SLIP10Ed25519MoneroPoint.from_coordinates(
             x=data["eccs"]["SLIP10-Ed25519-Monero"][public_key_type]["point"]["x"],
@@ -53,8 +53,8 @@ def test_slip10_ed25519_monero_ecc_point(data):
         assert isinstance(point.underlying_object(), bytes)
         assert point.x() == data["eccs"]["SLIP10-Ed25519-Monero"][public_key_type]["point"]["x"]
         assert point.y() == data["eccs"]["SLIP10-Ed25519-Monero"][public_key_type]["point"]["y"]
-        assert point.raw_encoded() == get_bytes(data["eccs"]["SLIP10-Ed25519-Monero"][public_key_type]["point"]["encode"])
-        assert point.raw() == point.raw_decoded() == get_bytes(data["eccs"]["SLIP10-Ed25519-Monero"][public_key_type]["point"]["decode"])
+        assert point.raw() == point.raw_encoded() == get_bytes(data["eccs"]["SLIP10-Ed25519-Monero"][public_key_type]["point"]["encode"])
+        assert point.raw_decoded() == get_bytes(data["eccs"]["SLIP10-Ed25519-Monero"][public_key_type]["point"]["decode"])
 
         for number in range(2, 50):
             point_add, point_radd, point_mul, point_rmul = (
