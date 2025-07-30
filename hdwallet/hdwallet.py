@@ -189,7 +189,7 @@ class HDWallet:
             )
 
         if hd.name() in [
-            "BIP32", "BIP44", "BIP86", "Cardano"
+            "Algorand", "BIP32", "BIP44", "BIP86", "Cardano"
         ]:
             self._semantic = kwargs.get("semantic", self._cryptocurrency.DEFAULT_SEMANTIC)
         elif hd.name() == "BIP49":
@@ -249,7 +249,9 @@ class HDWallet:
             "payment_id": kwargs.get("payment_id", None)
         }
 
-        if hd.name() in [
+        if hd.name() == "Algorand":
+            self._hd = hd()
+        elif hd.name() in [
             "BIP32", "BIP44", "BIP49", "BIP84", "BIP86", "BIP141"
         ]:
             self._hd = hd(

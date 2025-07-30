@@ -8,7 +8,7 @@ from typing import (
     List, Dict, Type
 )
 
-from ..exceptions import HDError
+from .algorand import AlgorandHD
 from .bip32 import BIP32HD
 from .bip44 import BIP44HD
 from .bip49 import BIP49HD
@@ -20,6 +20,7 @@ from .electrum import (
     ElectrumV1HD, ElectrumV2HD
 )
 from .monero import MoneroHD
+from ..exceptions import HDError
 from .ihd import IHD
 
 
@@ -35,6 +36,8 @@ class HDS:
     +--------------+--------------------------------------------------+
     | Name         | Class                                            |
     +==============+==================================================+
+    | Algorand     | :class:`hdwallet.hds.algorand.AlgorandHD`        |
+    +--------------+--------------------------------------------------+
     | BIP32        | :class:`hdwallet.hds.bip32.BIP32HD`              |
     +--------------+--------------------------------------------------+
     | BIP44        | :class:`hdwallet.hds.bip44.BIP44HD`              |
@@ -59,6 +62,7 @@ class HDS:
     """
 
     dictionary: Dict[str, Type[IHD]] = {
+        AlgorandHD.name(): AlgorandHD,
         BIP32HD.name(): BIP32HD,
         BIP44HD.name(): BIP44HD,
         BIP49HD.name(): BIP49HD,

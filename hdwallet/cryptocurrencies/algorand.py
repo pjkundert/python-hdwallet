@@ -5,7 +5,7 @@
 # file COPYING or https://opensource.org/license/mit
 
 from ..slip44 import CoinTypes
-from ..eccs import SLIP10Ed25519ECC
+from ..eccs import KholawEd25519ECC
 from ..consts import (
     Info, Entropies, Mnemonics, Seeds, HDs, Addresses, Networks, Params, XPrivateKeyVersions, XPublicKeyVersions
 )
@@ -18,7 +18,7 @@ class Mainnet(INetwork):
 
     NAME = "mainnet"
     XPRIVATE_KEY_VERSIONS = XPrivateKeyVersions({
-        "P2PKH": 0x0488ade4
+        "P2PKH": 0x0f4331d4
     })
     XPUBLIC_KEY_VERSIONS = XPublicKeyVersions({
         "P2PKH": 0x0488b21e
@@ -37,7 +37,7 @@ class Algorand(ICryptocurrency):
             "https://www.algorand.com"
         ]
     })
-    ECC = SLIP10Ed25519ECC
+    ECC = KholawEd25519ECC
     COIN_TYPE = CoinTypes.Algorand
     SUPPORT_BIP38 = False
     NETWORKS = Networks({
@@ -53,10 +53,10 @@ class Algorand(ICryptocurrency):
     SEEDS = Seeds((
         {"ALGORAND": "Algorand"}, "BIP39"
     ))
-    HDS = HDs({
-        "BIP32", "BIP44"
-    })
-    DEFAULT_HD = HDS.BIP44
+    HDS = HDs((
+        {"ALGORAND": "Algorand"}, "BIP32", "BIP44"
+    ))
+    DEFAULT_HD = HDS.ALGORAND
     DEFAULT_PATH = f"m/44'/{COIN_TYPE}'/0'/0/0"
     ADDRESSES = Addresses({
         "ALGORAND": "Algorand"
