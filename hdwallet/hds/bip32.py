@@ -1046,13 +1046,13 @@ class BIP32HD(IHD):
         return self._strict
 
     def address(
-            self,
-            address: str = Bitcoin.ADDRESSES.P2PKH,
-            public_key_address_prefix: int = Bitcoin.NETWORKS.MAINNET.PUBLIC_KEY_ADDRESS_PREFIX,
-            script_address_prefix: int = Bitcoin.NETWORKS.MAINNET.SCRIPT_ADDRESS_PREFIX,
-            hrp: str = Bitcoin.NETWORKS.MAINNET.HRP,
-            witness_version: int = Bitcoin.NETWORKS.MAINNET.WITNESS_VERSIONS.P2WPKH,
-            **kwargs
+        self,
+        address: str = Bitcoin.ADDRESSES.P2PKH,
+        public_key_address_prefix: int = Bitcoin.NETWORKS.MAINNET.PUBLIC_KEY_ADDRESS_PREFIX,
+        script_address_prefix: int = Bitcoin.NETWORKS.MAINNET.SCRIPT_ADDRESS_PREFIX,
+        hrp: str = Bitcoin.NETWORKS.MAINNET.HRP,
+        witness_version: int = Bitcoin.NETWORKS.MAINNET.WITNESS_VERSIONS.P2WPKH,
+        **kwargs
     ) -> str:
         """
         Generates an address based on the specified address type and parameters.
