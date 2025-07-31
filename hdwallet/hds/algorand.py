@@ -12,9 +12,9 @@ import hmac
 import hashlib
 
 from ..eccs import KholawEd25519ECC
-from ..seeds import ISeed
 from ..addresses import AlgorandAddress
 from ..cryptocurrencies import Algorand
+from ..seeds import ISeed
 from ..exceptions import (
     Error, SeedError, DerivationError
 )
@@ -97,7 +97,7 @@ class AlgorandHD(BIP32HD):
         self._strict = True
         self.__update__()
         return self
-    
+
     def drive(self, index: int) -> Optional["AlgorandHD"]:
         """
         Drives the AlgorandHD instance forward along the derivation path by deriving a child key at the given index.
@@ -111,65 +111,96 @@ class AlgorandHD(BIP32HD):
 
         G = 9  # Peikert's suggestion for 8 levels of derivation security
         index_bytes = integer_to_bytes(index, 4, endianness="little")
-
-        if self._private_key is None:
-            raise DerivationError("Private key required for Ed25519-K derivation")
-
-        kL = self._private_key.raw()[:32]
-        kR = self._private_key.raw()[32:]
         cc = self._chain_code
 
+        if cc is None:
+            raise DerivationError("Chain code is not set")
+
+        # Hardened derivation requires private key
         if index & 0x80000000:
+            if self._private_key is None:
+                raise DerivationError("Private key required for hardened derivation")
+
+            kL = self._private_key.raw()[:32]
+            kR = self._private_key.raw()[32:]
+
             data = bytes([0x00]) + kL + kR + index_bytes
             z = hmac.new(cc, data, hashlib.sha512).digest()
             data = bytes([0x01]) + kL + kR + index_bytes
             child_cc = hmac.new(cc, data, hashlib.sha512).digest()[32:]
+
+            zL, zR = z[:32], z[32:]
+
+            def trunc_256_minus_g_bits(buf: bytes, g: int) -> bytes:
+                if g < 0 or g > 256:
+                    raise ValueError("g must be between 0 and 256")
+                out = bytearray(buf)
+                remaining = g
+                for i in range(len(out) - 1, -1, -1):
+                    if remaining >= 8:
+                        out[i] = 0
+                        remaining -= 8
+                    elif remaining > 0:
+                        out[i] &= (0xFF >> remaining)
+                        break
+                return bytes(out)
+
+            truncated_zL = trunc_256_minus_g_bits(zL, G)
+            kL_int = bytes_to_integer(kL, endianness="little")
+            zL_int = bytes_to_integer(truncated_zL, endianness="little")
+            child_kL_int = kL_int + (8 * zL_int)
+
+            if child_kL_int >= 2 ** 255:
+                raise DerivationError("zL * 8 + kL exceeds Ed25519 scalar limit")
+
+            child_kL = integer_to_bytes(child_kL_int, 32, endianness="little")
+            child_kR = integer_to_bytes(
+                (bytes_to_integer(kR, "little") + bytes_to_integer(zR, "little")) % (2 ** 256),
+                32, "little"
+            )
+
+            child_key = self._ecc.PRIVATE_KEY.from_bytes(child_kL + child_kR)
+            self._private_key = child_key
+            self._public_key = child_key.public_key()
+
+        # Non-hardened derivation (public key supported)
         else:
-            A = self._private_key.public_key().raw_compressed()[1:]
+            if self._public_key is None:
+                raise DerivationError("Public key is required for non-hardened derivation")
+
+            A = self._public_key.raw_compressed()[1:]
             data = bytes([0x02]) + A + index_bytes
             z = hmac.new(cc, data, hashlib.sha512).digest()
             data = bytes([0x03]) + A + index_bytes
             child_cc = hmac.new(cc, data, hashlib.sha512).digest()[32:]
 
-        zL, zR = z[:32], z[32:]
+            zL = z[:32]
 
-        def trunc_256_minus_g_bits(buf: bytes, g: int) -> bytes:
-            if g < 0 or g > 256:
-                raise ValueError("g must be between 0 and 256")
-            out = bytearray(buf)
-            remaining = g
-            for i in range(len(out) - 1, -1, -1):
-                if remaining >= 8:
-                    out[i] = 0
-                    remaining -= 8
-                elif remaining > 0:
-                    out[i] &= (0xFF >> remaining)
-                    break
-            return bytes(out)
+            def trunc_256_minus_g_bits(buf: bytes, g: int) -> bytes:
+                if g < 0 or g > 256:
+                    raise ValueError("g must be between 0 and 256")
+                out = bytearray(buf)
+                remaining = g
+                for i in range(len(out) - 1, -1, -1):
+                    if remaining >= 8:
+                        out[i] = 0
+                        remaining -= 8
+                    elif remaining > 0:
+                        out[i] &= (0xFF >> remaining)
+                        break
+                return bytes(out)
 
-        truncated_zL = trunc_256_minus_g_bits(zL, G)
+            truncated_zL = trunc_256_minus_g_bits(zL, G)
+            scalar = 8 * bytes_to_integer(truncated_zL, "little")
+            new_point = self._public_key.point() + (self._ecc.GENERATOR * scalar)
+            self._public_key = self._ecc.PUBLIC_KEY.from_point(new_point)
 
-        kL_int = bytes_to_integer(kL, endianness="little")
-        zL_int = bytes_to_integer(truncated_zL, endianness="little")
-        child_kL_int = kL_int + (8 * zL_int)
-
-        if child_kL_int >= 2 ** 255:
-            raise DerivationError("zL * 8 + kL exceeds Ed25519 scalar limit")
-
-        child_kL = integer_to_bytes(child_kL_int, 32, endianness="little")
-        child_kR = integer_to_bytes((
-            bytes_to_integer(kR, "little") + bytes_to_integer(zR, "little")
-        ) % (2 ** 256),32, "little")
-
-        child_key = self._ecc.PRIVATE_KEY.from_bytes(child_kL + child_kR)
-
+        self._chain_code = child_cc
         self._parent_fingerprint = get_bytes(self.fingerprint())
-        self._private_key, self._public_key, self._chain_code = (
-            child_key, child_key.public_key(), child_cc
-        )
-        self._depth, self._index, self._fingerprint = (
-            (self._depth + 1), index, get_bytes(self.fingerprint())
-        )
+        self._depth += 1
+        self._index = index
+        self._fingerprint = get_bytes(self.fingerprint())
+
         return self
 
     def root_xprivate_key(
