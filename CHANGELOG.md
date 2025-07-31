@@ -1,5 +1,24 @@
 # Changelog
 
+## [v3.6.0](https://github.com/hdwallet-io/python-hdwallet/tree/v3.6.0) (2025-07-31)
+
+[Full Changelog](https://github.com/hdwallet-io/python-hdwallet/compare/v3.5.1...v3.6.0)
+
+**New Cryptocurrencies:**
+
+| Name                     | Symbol | Coin Type | Networks  |
+|:-------------------------|:------:|:---------:|:---------:|
+| [Base](https://base.org) |  BASE  |    60     | `mainnet` |
+
+**New Additions:**
+
+- Add: Algorand foundation xHD (AlgorandHD) implementation
+
+**Enhancements:**
+
+- Modify: BIP32 HD to accept custom ECC on HDWallet class
+- Change: default Algorand cryptocurrency ECC to `Kholaw-Ed25519`
+
 ## [v3.5.1](https://github.com/hdwallet-io/python-hdwallet/tree/v3.5.1) (2025-07-20)
 
 [Full Changelog](https://github.com/hdwallet-io/python-hdwallet/compare/v3.4.0...v3.5.1)
