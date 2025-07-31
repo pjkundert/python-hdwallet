@@ -4,6 +4,7 @@ from hdwallet import HDWallet
 from hdwallet.mnemonics.algorand import (
     AlgorandMnemonic, ALGORAND_MNEMONIC_LANGUAGES, ALGORAND_MNEMONIC_WORDS
 )
+from hdwallet.eccs import SLIP10Ed25519ECC
 from hdwallet.seeds.algorand import AlgorandSeed
 from hdwallet.cryptocurrencies import Algorand as Cryptocurrency
 from hdwallet.hds import BIP44HD
@@ -26,6 +27,7 @@ seed: str = AlgorandSeed.from_mnemonic(
 
 # Initialize Algorand HDWallet
 hdwallet: HDWallet = HDWallet(
+    ecc=SLIP10Ed25519ECC,
     cryptocurrency=Cryptocurrency,
     hd=BIP44HD,
     network=Cryptocurrency.NETWORKS.MAINNET,
