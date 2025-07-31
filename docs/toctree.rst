@@ -18,7 +18,7 @@ HDWallet
     Mnemonics <mnemonics.rst>
     Seeds <seeds.rst>
     Derivations <derivations.rst>
-    ECCs <ecc.rst>
+    ECCs <eccs.rst>
     HD's <hds.rst>
     Addresses <addresses.rst>
     HDWallet <hdwallet.rst>
