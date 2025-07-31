@@ -19,7 +19,8 @@ hdwallet: HDWallet = HDWallet(
     hd=CardanoHD,
     language=BIP39_MNEMONIC_LANGUAGES.CZECH,
     cardano_type=Cryptocurrency.TYPES.BYRON_ICARUS,
-    passphrase="meherett"
+    address_type=Cryptocurrency.ADDRESS_TYPES.REDEMPTION,
+    passphrase=None
 ).from_entropy(
     entropy=BIP39Entropy(
         entropy=BIP39Entropy.generate(
@@ -58,7 +59,6 @@ print(json.dumps(hdwallet.dumps(exclude={"indexes"}), indent=4, ensure_ascii=Fal
 # print("Root Chain Code:", hdwallet.root_chain_code())
 # print("Root Public Key:", hdwallet.root_public_key())
 # print("Strict:", hdwallet.strict())
-# print("Public Key Type:", hdwallet.public_key_type())
 # print("Path:", hdwallet.path())
 # print("Depth:", hdwallet.depth())
 # print("Indexes:", hdwallet.indexes())
@@ -68,8 +68,6 @@ print(json.dumps(hdwallet.dumps(exclude={"indexes"}), indent=4, ensure_ascii=Fal
 # print("Private Key:", hdwallet.private_key())
 # print("Chain Code:", hdwallet.chain_code())
 # print("Public Key:", hdwallet.public_key())
-# print("Uncompressed:", hdwallet.uncompressed())
-# print("Compressed:", hdwallet.compressed())
 # print("Hash:", hdwallet.hash())
 # print("Fingerprint:", hdwallet.fingerprint())
 # print("Parent Fingerprint:", hdwallet.parent_fingerprint())
