@@ -1075,7 +1075,6 @@
             "root_chain_code": "1b88f3efb562e6d354bb60cc86e951881cfa2efd8b25f5682b85f00978c83af5",
             "root_public_key": "008c7eee4141ecb2481066cfb2c178b7100497f76ed53fbae417c8a92c49385c38",
             "strict": true,
-            "public_key_type": "compressed",
             "derivations": [
                 {
                     "at": {
@@ -1154,7 +1153,6 @@
             "root_chain_code": "e2a8861279f6b5836b6f9794599926cf656879a4b540cc42d1271082e9718a57",
             "root_public_key": "006e775855ec2f1b95bfe8b5278f203f81d14688b789a6d4ca18d8688d80c82943",
             "strict": true,
-            "public_key_type": "compressed",
             "derivations": [
                 {
                     "at": {
@@ -1234,7 +1232,6 @@
             "root_public_key": "003ac7e2918f8565adf9c16b25bb147a260e35bd1f7f4bc10839dbcf5ee5d53906",
             "path_key": "aaf5ba7df4510e29d1128b4dd75c67fd9c93118b0944a6f04c93149bbae7c676",
             "strict": true,
-            "public_key_type": "compressed",
             "derivations": [
                 {
                     "at": {
@@ -1313,7 +1310,6 @@
             "root_chain_code": "1b88f3efb562e6d354bb60cc86e951881cfa2efd8b25f5682b85f00978c83af5",
             "root_public_key": "008c7eee4141ecb2481066cfb2c178b7100497f76ed53fbae417c8a92c49385c38",
             "strict": true,
-            "public_key_type": "compressed",
             "derivations": [
                 {
                     "at": {
@@ -1392,7 +1388,6 @@
             "root_chain_code": "e2a8861279f6b5836b6f9794599926cf656879a4b540cc42d1271082e9718a57",
             "root_public_key": "006e775855ec2f1b95bfe8b5278f203f81d14688b789a6d4ca18d8688d80c82943",
             "strict": true,
-            "public_key_type": "compressed",
             "derivations": [
                 {
                     "at": {

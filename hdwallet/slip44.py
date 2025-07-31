@@ -23,6 +23,7 @@ class CoinTypes:  # https://github.com/satoshilabs/slips/blob/master/slip-0044.m
     Axe: int = 4242
     Axelar: int = 118  # Cosmos
     BandProtocol: int = 494
+    Base: int = 60  # Ethereum
     Bata: int = 89
     BeetleCoin: int = 800
     BelaCoin: int = 73

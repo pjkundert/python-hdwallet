@@ -27,6 +27,7 @@ from .avian import Avian
 from .axe import Axe
 from .axelar import Axelar
 from .bandprotocol import BandProtocol
+from .base import Base
 from .bata import Bata
 from .beetlecoin import BeetleCoin
 from .belacoin import BelaCoin
@@ -243,6 +244,7 @@ class CRYPTOCURRENCIES:
         Axe.NAME: Axe,
         Axelar.NAME: Axelar,
         BandProtocol.NAME: BandProtocol,
+        Base.NAME: Base,
         Bata.NAME: Bata,
         BeetleCoin.NAME: BeetleCoin,
         BelaCoin.NAME: BelaCoin,

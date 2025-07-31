@@ -146,6 +146,14 @@ This library simplifies the process of generating a new HDWallet's for:
     - ``BIP44`` ``BIP32``
     - ❌
     - ``Cosmos``
+  * - `Base <https://base.org>`_
+    - BASE
+    - 60
+    - ``mainnet``
+    - SLIP10-Secp256k1
+    - ``BIP44`` ``BIP32``
+    - ❌
+    - ``Ethereum``
   * - `Bata <https://github.com/BTA-BATA/Bataoshi>`_
     - BTA
     - 89

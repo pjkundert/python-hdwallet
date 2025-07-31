@@ -2,7 +2,7 @@ Cryptocurrency         Symbol    Coin Type            Networks                  
 --------------------  --------  -----------  --------------------------  ----------------------
 Adcoin                  ACC         161               mainnet               SLIP10-Secp256k1
 Akash-Network           AKT         118               mainnet               SLIP10-Secp256k1
-Algorand                ALGO        283               mainnet                SLIP10-Ed25519
+Algorand                ALGO        283               mainnet                Kholaw-Ed25519
 Anon                    ANON        220               mainnet               SLIP10-Secp256k1
 Aptos                   APT         637               mainnet                SLIP10-Ed25519
 Arbitrum                ARB         60                mainnet               SLIP10-Secp256k1
@@ -16,6 +16,7 @@ Avian                   AVN         921               mainnet               SLIP
 Axe                     AXE        4242               mainnet               SLIP10-Secp256k1
 Axelar                  AXL         118               mainnet               SLIP10-Secp256k1
 Band-Protocol           BAND        494               mainnet               SLIP10-Secp256k1
+Base                    BASE        60                mainnet               SLIP10-Secp256k1
 Bata                    BTA         89                mainnet               SLIP10-Secp256k1
 Beetle-Coin             BEET        800               mainnet               SLIP10-Secp256k1
 Bela-Coin               BELA        73                mainnet               SLIP10-Secp256k1
