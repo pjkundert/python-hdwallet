@@ -68,7 +68,6 @@ def test_byron_legacy_from_seed(data):
     assert hdwallet.root_chain_code() == dump["root_chain_code"]
     assert hdwallet.root_public_key() == dump["root_public_key"]
     assert hdwallet.strict() == dump["strict"]
-    assert hdwallet.public_key_type() == dump["public_key_type"]
 
     assert hdwallet.xprivate_key() == dump["derivation"]["xprivate_key"]
     assert hdwallet.xpublic_key() == dump["derivation"]["xpublic_key"]

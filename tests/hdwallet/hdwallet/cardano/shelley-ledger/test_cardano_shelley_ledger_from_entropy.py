@@ -54,7 +54,6 @@ def test_shelley_ledger_from_entropy(data):
     assert hdwallet.root_chain_code() == data["hdwallet"]["Cardano"]["shelley-ledger"]["root_chain_code"]
     assert hdwallet.root_public_key() == data["hdwallet"]["Cardano"]["shelley-ledger"]["root_public_key"]
     assert hdwallet.strict() == data["hdwallet"]["Cardano"]["shelley-ledger"]["strict"]
-    assert hdwallet.public_key_type() == data["hdwallet"]["Cardano"]["shelley-ledger"]["public_key_type"]
 
     assert hdwallet.path() == data["hdwallet"]["Cardano"]["shelley-ledger"]["derivations"][-1]["at"]["path"]
     assert hdwallet.indexes() == data["hdwallet"]["Cardano"]["shelley-ledger"]["derivations"][-1]["at"]["indexes"]

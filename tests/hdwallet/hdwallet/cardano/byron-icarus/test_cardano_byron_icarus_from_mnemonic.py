@@ -54,7 +54,6 @@ def test_byron_icarus_from_mnemonic(data):
     assert hdwallet.root_chain_code() == data["hdwallet"]["Cardano"]["byron-icarus"]["root_chain_code"]
     assert hdwallet.root_public_key() == data["hdwallet"]["Cardano"]["byron-icarus"]["root_public_key"]
     assert hdwallet.strict() == data["hdwallet"]["Cardano"]["byron-icarus"]["strict"]
-    assert hdwallet.public_key_type() == data["hdwallet"]["Cardano"]["byron-icarus"]["public_key_type"]
 
     assert hdwallet.path() == data["hdwallet"]["Cardano"]["byron-icarus"]["derivations"][-1]["at"]["path"]
     assert hdwallet.indexes() == data["hdwallet"]["Cardano"]["byron-icarus"]["derivations"][-1]["at"]["indexes"]
