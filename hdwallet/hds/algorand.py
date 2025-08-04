@@ -161,6 +161,7 @@ class AlgorandHD(BIP32HD):
 
             child_key = self._ecc.PRIVATE_KEY.from_bytes(child_kL + child_kR)
             self._private_key = child_key
+            self._parent_fingerprint = get_bytes(self.fingerprint())
             self._public_key = child_key.public_key()
 
         # Non-hardened derivation (public key supported)
@@ -193,10 +194,10 @@ class AlgorandHD(BIP32HD):
             truncated_zL = trunc_256_minus_g_bits(zL, G)
             scalar = 8 * bytes_to_integer(truncated_zL, "little")
             new_point = self._public_key.point() + (self._ecc.GENERATOR * scalar)
+            self._parent_fingerprint = get_bytes(self.fingerprint())
             self._public_key = self._ecc.PUBLIC_KEY.from_point(new_point)
 
         self._chain_code = child_cc
-        self._parent_fingerprint = get_bytes(self.fingerprint())
         self._depth += 1
         self._index = index
         self._fingerprint = get_bytes(self.fingerprint())
