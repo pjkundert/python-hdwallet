@@ -55,7 +55,6 @@ print("Depth:", bip32_hd.depth())
 print("Path:", bip32_hd.path())
 print("Index:", bip32_hd.index())
 print("Indexes:", bip32_hd.indexes())
-print("getStrict:", bip32_hd.strict())
 print("Address:", bip32_hd.address(
     address=Cryptocurrency.ADDRESSES.P2TR
 ))
