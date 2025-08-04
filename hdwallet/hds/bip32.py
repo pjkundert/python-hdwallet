@@ -47,7 +47,6 @@ from .ihd import IHD
 
 class BIP32HD(IHD):
 
-    _ecc: IEllipticCurveCryptography
     _seed: Optional[bytes] = None
     _hmac: Optional[bytes] = None
     _root_private_key: Optional[IPrivateKey] = None

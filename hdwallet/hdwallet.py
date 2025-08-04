@@ -22,7 +22,7 @@ from .hds import (
     IHD, HDS
 )
 from .eccs import (
-    IPrivateKey, IPublicKey
+    IPrivateKey, IPublicKey, IEllipticCurveCryptography
 )
 from .consts import (
     PUBLIC_KEY_TYPES, SEMANTICS, MODES
@@ -59,6 +59,7 @@ class HDWallet:
     _address: Type[IAddress]
     _address_type: Optional[str] = None
     _address_prefix: Optional[str] = None
+    _ecc: Type[IEllipticCurveCryptography]
 
     _entropy: Optional[IEntropy] = None
     _language: Optional[str] = None
@@ -109,6 +110,7 @@ class HDWallet:
                 "Invalid cryptocurrency sub-class", expected=Type[ICryptocurrency], got=type(cryptocurrency)
             )
         self._cryptocurrency = cryptocurrency()
+        self._ecc = kwargs.get("ecc", self._cryptocurrency.ECC)
 
         if hd is None:  # Use default hd
             hd = HDS.hd(self._cryptocurrency.DEFAULT_HD)
@@ -255,7 +257,7 @@ class HDWallet:
             "BIP32", "BIP44", "BIP49", "BIP84", "BIP86", "BIP141"
         ]:
             self._hd = hd(
-                ecc=kwargs.get("ecc", cryptocurrency.ECC),
+                ecc=self._ecc,
                 public_key_type=self._public_key_type,
                 semantic=self._semantic,
                 coin_type=self._cryptocurrency.COIN_TYPE,
@@ -648,7 +650,7 @@ class HDWallet:
         +----------------+-------------------------------------------------------------------------------------------------------+
         """
 
-        if self._hd.name() in ["Cardano", "Monero"]:
+        if self._hd.name() in ["Algorand", "Cardano", "Monero"]:
             raise Error(f"WIF isn't supported by {self._hd.name()} HD")
         if self._network.WIF_PREFIX is None:
             raise Error(f"WIF isn't supported by {self._cryptocurrency.NAME} cryptocurrency")
@@ -875,7 +877,7 @@ class HDWallet:
         :rtype: str
         """
 
-        return self._cryptocurrency.ECC.NAME
+        return self._hd._ecc.NAME
 
     def hd(self) -> str:
         """

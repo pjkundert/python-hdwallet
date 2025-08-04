@@ -8,15 +8,17 @@ from typing import (
     Union, List, Optional
 )
 
+from ..eccs import IEllipticCurveCryptography
 from ..derivations import IDerivation
 
 
 class IHD:
 
+    _ecc: IEllipticCurveCryptography
     _derivation: IDerivation
 
     def __init__(self, **kwargs) -> None:
-        pass
+        self._ecc = kwargs.get("ecc")
 
     @classmethod
     def name(cls) -> str:

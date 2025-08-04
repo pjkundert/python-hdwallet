@@ -52,7 +52,9 @@ class MoneroHD(IHD):
         :param kwargs: Additional optional parameters:
         """
 
-        super().__init__(**kwargs)
+        super(MoneroHD, self).__init__(
+            ecc=SLIP10Ed25519MoneroECC, **kwargs
+        )
 
         try:
             if not isinstance(network, str) and issubclass(network, INetwork):

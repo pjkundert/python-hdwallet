@@ -12,6 +12,7 @@ from ...addresses import (
     P2PKHAddress, P2WPKHAddress
 )
 from ...seeds import ISeed
+from ...eccs import SLIP10Secp256k1ECC
 from ...derivations import CustomDerivation
 from ...wif import private_key_to_wif
 from ...derivations import (
@@ -51,7 +52,9 @@ class ElectrumV2HD(IHD):
         :param kwargs: Additional keyword arguments.
         """
 
-        super(ElectrumV2HD, self).__init__(**kwargs)
+        super(ElectrumV2HD, self).__init__(
+            ecc=SLIP10Secp256k1ECC, **kwargs
+        )
 
         if mode not in MODES.get_modes():
             raise Error(

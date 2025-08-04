@@ -53,7 +53,9 @@ class ElectrumV1HD(IHD):
 
         :param kwargs: Additional keyword arguments:
         """
-        super(ElectrumV1HD, self).__init__(public_key_type=public_key_type, **kwargs)
+        super(ElectrumV1HD, self).__init__(
+            ecc=SLIP10Secp256k1ECC, public_key_type=public_key_type, **kwargs
+        )
 
         if public_key_type == PUBLIC_KEY_TYPES.UNCOMPRESSED:
             self._wif_type = WIF_TYPES.WIF
