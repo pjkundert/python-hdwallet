@@ -23,9 +23,7 @@ from hdwallet import HDWallet
 mnemonic: BIP39Mnemonic = BIP39Mnemonic(
     mnemonic="abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon about"
 )
-import base58
 
-# Phantom wallet standards
 standards: dict = {
     "solana": {
         "hd": BIP32HD,
