@@ -1,5 +1,17 @@
 # Changelog
 
+## [v3.6.1](https://github.com/hdwallet-io/python-hdwallet/tree/v3.6.1) (2025-08-04)
+
+[Full Changelog](https://github.com/hdwallet-io/python-hdwallet/compare/v3.6.0...v3.6.1)
+
+**Enhancements:**
+
+- Update: retrieve ECC name from HD class in HDWallet
+
+**Fix Bugs:**
+
+- Fix: parent-fingerprint of AlgorandHD implementation
+
 ## [v3.6.0](https://github.com/hdwallet-io/python-hdwallet/tree/v3.6.0) (2025-07-31)
 
 [Full Changelog](https://github.com/hdwallet-io/python-hdwallet/compare/v3.5.1...v3.6.0)
