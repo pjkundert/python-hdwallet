@@ -54,7 +54,8 @@ class MNEMONICS:
         BIP39Mnemonic.name(): BIP39Mnemonic,
         ElectrumV1Mnemonic.name(): ElectrumV1Mnemonic,
         ElectrumV2Mnemonic.name(): ElectrumV2Mnemonic,
-        MoneroMnemonic.name(): MoneroMnemonic
+        MoneroMnemonic.name(): MoneroMnemonic,
+        "SLIP39": BIP39Mnemonic,
     }
 
     @classmethod
@@ -120,7 +121,6 @@ __all__: List[str] = [
     "ELECTRUM_V1_MNEMONIC_WORDS", "ELECTRUM_V1_MNEMONIC_LANGUAGES",
     "ELECTRUM_V2_MNEMONIC_WORDS", "ELECTRUM_V2_MNEMONIC_LANGUAGES", "ELECTRUM_V2_MNEMONIC_TYPES",
     "MONERO_MNEMONIC_WORDS", "MONERO_MNEMONIC_LANGUAGES",
-    "SLIP39_MNEMONIC_WORDS", "SLIP39_MNEMONIC_LANGUAGES",
     "MNEMONICS"
 ] + [
     cls.__name__ for cls in MNEMONICS.classes()

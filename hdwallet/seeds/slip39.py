@@ -11,6 +11,7 @@ from typing import (
 import unicodedata
 
 from ..mnemonics import IMnemonic
+from ..mnemonics.bip39 import BIP39Mnemonic
 from .iseed import ISeed
 
 
@@ -39,17 +40,18 @@ class SLIP39Seed(ISeed):
 
     @classmethod
     def from_mnemonic(cls, mnemonic: Union[str, IMnemonic], passphrase: Optional[str] = None) -> str:
-        """Converts a mnemonic phrase to its corresponding seed.
+        """Converts a mnemonic phrase to its corresponding raw entropy.
 
         The Mnemonic representation for SLIP-39 seeds is simple hex.
 
         To support the backup and recovery of BIP-39 mnemonic phrases to/from SLIP-39, we accept a
-        BIP39 IMnemonic, and recover the underlying (original) entropy encoded by the BIP-39
-        mnemonic phrase.  In other words, you may supply a 12-word BIP39 Mnemonic like "zoo zoo
-        ... zoo wrong", and recover the original seed entropy 0xffff...ff.  For SLIP-39 HD wallet
-        derivations, this seed entropy is used /directly/ to derive the wallets, unlike for BIP-39
-        which hashes the entropy to extend it to 512 bits and uses the extended entropy to derive
-        the wallets.
+        BIP39 IMnemonic or mnemonic phrase, and recover the underlying (original) entropy encoded by
+        the BIP-39 mnemonic phrase.
+
+        In other words, you may supply a 12-word BIP39 Mnemonic like "zoo zoo ... zoo wrong", and
+        recover the original seed entropy 0xffff...ff.  For SLIP-39 HD wallet derivations, this seed
+        entropy is used /directly/ to derive the wallets, unlike for BIP-39 which hashes the entropy
+        to extend it to 512 bits and uses the extended entropy to derive the wallets.
 
         :param mnemonic: The mnemonic phrase to be decoded. Can be a string or an instance of `IMnemonic`.
         :type mnemonic: Union[str, IMnemonic]
@@ -62,4 +64,24 @@ class SLIP39Seed(ISeed):
 
         """
 
-        return mnemonic.decode(mnemonic._mnemonic) if isinstance(mnemonic, IMnemonic) else mnemonic
+        if not isinstance(mnemonic, IMnemonic):
+            # Not an IMnemonic; must be a str.  Try the supported mnemonic encodings we'll allow for
+            # SLIP39 seeds, converting the mnemonic phrase to an IMnemonic if recognized.
+            #
+            # TODO: Eventually add SLIP-39.
+            allowed_entropy = [
+                BIP39Mnemonic,
+                # SLIP39Mnemonic, ...
+            ]
+
+            for M in allowed_entropy:
+                if M.is_valid(mnemonic):
+                    mnemonic = M(mnemonic=mnemonic)
+                    break
+            else:
+                raise EntropyError(
+                    "Invalid entropy instance", expected=[str, ] + allowed_entropy, got=type(mnemonic)
+                )
+
+        # Some kind of IMnemonic (eg. a BIP39Mnemonic); get and return its raw entropy as hex
+        return mnemonic.decode(mnemonic.mnemonic())

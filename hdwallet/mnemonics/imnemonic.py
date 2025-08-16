@@ -12,6 +12,7 @@ from typing import (
 )
 
 import os
+import string
 import unicodedata
 
 from ..exceptions import MnemonicError
@@ -219,9 +220,13 @@ class IMnemonic(ABC):
     @classmethod
     def normalize(cls, mnemonic: Union[str, List[str]]) -> List[str]:
         """
-
         Normalizes the given mnemonic by splitting it into a list of words if it is a string.
         Resilient to extra whitespace and down-cases uppercase symbols.
+
+        Recognizes hex strings (raw entropy), and attempts to normalize them as appropriate for the
+        IMnemonic-derived class using 'from_entropy'.  Thus, all IMnemonics can accept either
+        mnemonic strings, or raw hex-encoded entropy, if they use the IMnemonic.normalize base
+        method in their derived 'decode' and 'is_valid' implementations.
 
         :param mnemonic: The mnemonic value, which can be a single string of words or a list of words.
         :type mnemonic: Union[str, List[str]]
@@ -230,6 +235,9 @@ class IMnemonic(ABC):
         :rtype: List[str]
 
         """
-        mnemonic: list = mnemonic.split() if isinstance(mnemonic, str) else mnemonic
+        if isinstance(mnemonic, str):
+            if all(c in string.hexdigits for c in mnemonic.strip()):
+               mnemonic: str = cls.from_entropy(mnemonic, language="english")
+            mnemonic: list = mnemonic.split()
         return list(map(lambda _: unicodedata.normalize("NFKD", _.lower()), mnemonic))
 
