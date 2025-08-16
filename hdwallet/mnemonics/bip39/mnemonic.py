@@ -217,7 +217,7 @@ class BIP39Mnemonic(IMnemonic):
         :rtype: str
         """
 
-        entropy: bytes = get_bytes(entropy)
+        entropy: bytes = get_bytes(entropy, unhexlify=True)
         if not BIP39Entropy.is_valid_bytes_strength(len(entropy)):
             raise EntropyError(
                 "Wrong entropy strength", expected=BIP39Entropy.strengths, got=(len(entropy) * 8)

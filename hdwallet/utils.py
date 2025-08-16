@@ -519,11 +519,11 @@ def bytes_reverse(data: bytes) -> bytes:
 
 
 def bytes_to_string(data: AnyStr, unhexlify: Optional[bool] = None) -> str:
-    """
-    Convert bytes or string (hexadecimal, or UTF-8 decoded) data to a hexadecimal string representation.
+    """Convert bytes or string (hexadecimal, or UTF-8 decoded) data to a hexadecimal string representation.
 
-    If the default unhexlify == None is provided, will attempt to auto-detect non-empty hex strings, and
-    thus reject hex strings of accidentally odd length instead of accepting them as UTF-8 encoded binary data.
+    If the default unhexlify == None is provided, will attempt to auto-detect non-empty hex strings,
+    and thus reject hex strings of accidentally odd length instead of accepting them (surprisingly
+    and almost certainly incorrectly!) as UTF-8 encoded binary data.
 
     :param data: The bytes or string data to convert to hexadecimal string.
     :type data: Union[bytes, str]

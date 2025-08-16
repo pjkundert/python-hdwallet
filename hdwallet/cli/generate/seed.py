@@ -10,7 +10,7 @@ import sys
 
 from ...mnemonics import MNEMONICS
 from ...seeds import (
-    ISeed, BIP39Seed, CardanoSeed, ElectrumV2Seed, SEEDS
+    ISeed, BIP39Seed, SLIP39Seed, CardanoSeed, ElectrumV2Seed, SEEDS
 )
 
 
@@ -26,7 +26,7 @@ def generate_seed(**kwargs) -> None:
             ), err=True)
             sys.exit()
 
-        if kwargs.get("client") == "Electrum-V2":
+        if kwargs.get("client") == ElectrumV2Seed.name():
             if not MNEMONICS.mnemonic(name="Electrum-V2").is_valid(
                 mnemonic=kwargs.get("mnemonic"), mnemonic_type=kwargs.get("mnemonic_type")
             ):
@@ -35,13 +35,20 @@ def generate_seed(**kwargs) -> None:
         else:
             mnemonic_name: str = "BIP39" if kwargs.get("client") == CardanoSeed.name() else kwargs.get("client")
             if not MNEMONICS.mnemonic(name=mnemonic_name).is_valid(mnemonic=kwargs.get("mnemonic")):
-                click.echo(click.style(f"Invalid {mnemonic_name} mnemonic"), err=True)
+                click.echo(click.style(f"Invalid {mnemonic_name} mnemonic {kwargs.get('mnemonic')!r}"), err=True)
                 sys.exit()
 
 
         if kwargs.get("client") == BIP39Seed.name():
             seed: ISeed = BIP39Seed(
                 seed=BIP39Seed.from_mnemonic(
+                    mnemonic=kwargs.get("mnemonic"),
+                    passphrase=kwargs.get("passphrase")
+                )
+            )
+        elif kwargs.get("client") == SLIP39Seed.name():
+            seed: ISeed = SLIP39Seed(
+                seed=SLIP39Seed.from_mnemonic(
                     mnemonic=kwargs.get("mnemonic"),
                     passphrase=kwargs.get("passphrase")
                 )

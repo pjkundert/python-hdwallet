@@ -21,6 +21,7 @@ VENV			= $(CURDIR)-$(VERSION)-$(PYTHON_V)
 
 # Force export of variables that might be set from command line
 export VENV_OPTS	?=
+export NIX_OPTS		?=
 
 # Put it first so that "make" without argument is like "make help".
 help:
@@ -37,7 +38,7 @@ $(WHEEL):		FORCE
 
 # Install from wheel, including all optional extra dependencies (doesn't include dev)
 install:		$(WHEEL) FORCE
-	$(PYTHON) -m pip install $<[cli,docs,tests]
+	$(PYTHON) -m pip install --force-reinstall $<[cli,docs,tests]
 
 # Install from requirements/*; eg. install-dev
 install-%:  		FORCE
