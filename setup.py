@@ -58,7 +58,8 @@ setup(
     extras_require=dict(
         cli=get_requirements(name="requirements/cli"),
         docs=get_requirements(name="requirements/docs"),
-        tests=get_requirements(name="requirements/tests")
+        tests=get_requirements(name="requirements/tests"),
+        slip39=get_requirements(name="requirements/slip39")
     ),
     classifiers=[
         "Development Status :: 5 - Production/Stable",
