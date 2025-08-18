@@ -38,11 +38,15 @@ $(WHEEL):		FORCE
 
 # Install from wheel, including all optional extra dependencies (doesn't include dev)
 install:		$(WHEEL) FORCE
-	$(PYTHON) -m pip install --force-reinstall $<[cli,docs,tests]
+	$(PYTHON) -m pip install --force-reinstall $<[slip39,cli,docs,tests]
 
 # Install from requirements/*; eg. install-dev
 install-%:  		FORCE
 	$(PYTHON) -m pip install -r requirements/$*.txt
+
+
+unit-%:
+	$(PYTHON) -m pytest -k $*
 
 # 
 # Nix and VirtualEnv build, install and activate

@@ -36,8 +36,12 @@ def generate_seed(**kwargs) -> None:
             mnemonic_name: str = "BIP39" if kwargs.get("client") == CardanoSeed.name() else kwargs.get("client")
             if not MNEMONICS.mnemonic(name=mnemonic_name).is_valid(mnemonic=kwargs.get("mnemonic")):
                 click.echo(click.style(f"Invalid {mnemonic_name} mnemonic {kwargs.get('mnemonic')!r}"), err=True)
+                try:
+                    MNEMONICS.mnemonic(name=mnemonic_name).decode(mnemonic=kwargs.get("mnemonic"))
+                except Exception as exc:
+                    import traceback
+                    click.echo(f"{traceback.format_exc()}")
                 sys.exit()
-
 
         if kwargs.get("client") == BIP39Seed.name():
             seed: ISeed = BIP39Seed(
