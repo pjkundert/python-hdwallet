@@ -10,8 +10,10 @@ from typing import (
 
 import unicodedata
 
+from ..exceptions import EntropyError
 from ..mnemonics import IMnemonic
 from ..mnemonics.bip39 import BIP39Mnemonic
+from ..mnemonics.slip39 import SLIP39Mnemonic
 from .iseed import ISeed
 
 
@@ -67,11 +69,9 @@ class SLIP39Seed(ISeed):
         if not isinstance(mnemonic, IMnemonic):
             # Not an IMnemonic; must be a str.  Try the supported mnemonic encodings we'll allow for
             # SLIP39 seeds, converting the mnemonic phrase to an IMnemonic if recognized.
-            #
-            # TODO: Eventually add SLIP-39.
             allowed_entropy = [
                 BIP39Mnemonic,
-                # SLIP39Mnemonic, ...
+                SLIP39Mnemonic, #  ...
             ]
 
             for M in allowed_entropy:

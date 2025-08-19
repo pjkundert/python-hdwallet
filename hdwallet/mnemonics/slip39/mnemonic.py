@@ -6,7 +6,7 @@
 
 import re
 from typing import (
-    Union, Dict, List, Optional, Tuple
+    Union, Dict, Iterable, List, Optional, Tuple
 )
 
 from ...entropies import (
@@ -15,10 +15,16 @@ from ...entropies import (
 from ...exceptions import (
     Error, EntropyError, MnemonicError, ChecksumError
 )
+from ...utils import (
+    get_bytes,
+    bytes_to_string,
+)
 from ..imnemonic import IMnemonic
 
-from shamir_mnemonic import split_ems, group_ems_mnemonics
+from shamir_mnemonic import generate_mnemonics
 from shamir_mnemonic.constants import MAX_SHARE_COUNT
+from shamir_mnemonic.recovery import RecoveryState, Share
+
 
 class SLIP39_MNEMONIC_WORDS:
 
@@ -58,7 +64,6 @@ def group_parser( group_spec, size_default: Optional[int]=None ) -> Tuple[str,Tu
         if size_default:
             size		= size_default
         elif require:
-            print( f"Deducing size from require {require!r}" )
             require		= int( require )
             size		= int( require / group_parser.REQUIRED_RATIO + 0.5 )
             if size == 1 or require == 1:
@@ -73,7 +78,7 @@ def group_parser( group_spec, size_default: Optional[int]=None ) -> Tuple[str,Tu
             require		= size
     require			= int(require)
     if size < 1 or require > size or ( require == 1 and size > 1 ):
-        raise ValueError( f"Impossible group specification from {group_spec!r}: {name,(require,size)!r}" )
+        raise ValueError( f"Impossible group specification from {group_spec!r} w/ default size {size_default!r}: {name,(require,size)!r}" )
 
     return name,(require,size)
 
@@ -104,15 +109,28 @@ group_parser.RE			= re.compile( # noqa E305
 
 def language_parser(language: str) -> Dict[Tuple[str,Tuple[int,int]],Dict[Union[str,int],Tuple[int,int]]]:
     """
-    Parse a SLIP-39 language dialect specification.
+    Parse a SLIP-39 language dialect specification.  
+
+            optional          sep    default comma-separated mnemonic 
+         name a secret spec          group thresholds (optional if no /)
+        --------------------- --- -------------------------------------- -
+
+       "Name threshold/groups"
+        ^^^^^^^^^^^^^^^^^^^^^
+        - no separator or commas, must be a secret encoding specification
+
+                                 "group1 thresh1/mnems1, g2(t2/n1) ..."
+                                  ^^^^^^^^^^^^^^^^^^^^^  ^^^^^^^^^
+        - commas; can't be a secret encoding spec, so must be group specs
 
         Name threshold/groups [;: group1 thresh1/mnems1, g2(t2/n1) ... ]
         ^^^^^^^^^^^^^^^^^^^^^     ^^^^^^^^^^^^^^^^^^^^^  ^^^^^^^^^
-            optional          sep    default comma-separated mnemonic 
-         name a groups spec          group thresholds (optional if no /)
+        - separator; must be both a secret encoding spec, and 0 or more group specs
+        - spec(s) may be partial, eg. "3" (size) or "3/" (threshold
+          - sensible defaults are deduced for missing specs, if possible
 
     {
-      ("name",(threshold/groups)): {
+      ("Name",(threshold/groups)): {
         "group1": (thresh1/mnems1),
         "g2":     (t2/n2),
       }
@@ -124,14 +142,14 @@ def language_parser(language: str) -> Dict[Tuple[str,Tuple[int,int]],Dict[Union[
     if not s_match and language.strip():
         raise ValueError( f"Invalid SLIP-39 specification: {language!r}" )
 
-    groups_spec			= s_match and s_match.group("groups") or ",,,"
-    groups_list			= groups_spec.split(",")
+
+    groups			= s_match and s_match.group("groups") or ""
+    groups_list			= groups.strip().split(",")
     secret			= s_match and s_match.group("secret") or ""
     s_size_default		= len(groups_list) if groups_list else None
     s_name,(s_thresh,s_size)	= group_parser(secret, size_default=s_size_default)
     groups_list		       += [''] * (s_size - len(groups_list))  # default any missing group specs
 
-    print( f"Parsing {language!r} SLIP-39 spec {s_name,(s_thresh,s_size)!r} w/ groups: {groups_list!r}" )
     g_names,g_sizes		= [],[]
     for group in groups_list:
         # Default size inferred from Fibonacci sequence of mnemonics required by default
@@ -145,7 +163,6 @@ def language_parser(language: str) -> Dict[Tuple[str,Tuple[int,int]],Dict[Union[
         g_names.append(g_name)
         g_sizes.append(g_dims)
 
-    print( f"Group specs: {g_sizes!r}" )
     return { (s_name.strip(),(s_thresh,s_size)): dict(zip(g_names,g_sizes)) }
 
 language_parser.REQUIRED_RATIO	= 1/2
@@ -153,15 +170,22 @@ language_parser.RE		= re.compile(
     r"""
         ^
         \s*
-        (?:
-            (?P<secret> [^\[<{;:]* )
-            \s*
-            [\[<{;:]
+        (?P<secret>		# Any single name and/or spec w/ no separator or comma
+            (
+                [\w\s]* \d* \s* /? \s* \d*
+            )
         )?
-        \s*
-        (?P<groups> [^\]>}]* )
-        [\]>}]?
-        \s*
+        \s* [\[<{;:]? \s*	# An optional separator or bracket may appear before group spec(s)
+        (?P<groups>		# The group spec(s), comma separated
+            (
+                [\w\s]* \d* \s* /? \s* \d*
+            )
+            (
+                \s* ,
+                [\w\s]* \d* \s* /? \s* \d*
+            )*
+        )?
+        \s* [\]>}]? \s*		# And optionally a trailing inverse bracket
         $
     """, re.VERBOSE)
 
@@ -208,6 +232,12 @@ class SLIP39Mnemonic(IMnemonic):
     ]
     wordlist_path: Dict[str, str] = {
     }
+
+
+    def __init__(self, mnemonic: Union[str, List[str]], **kwargs) -> None:
+        super().__init__(mnemonic, **kwargs)
+        # We know that normalize has already validated _mnemonic's length
+        self._words, = filter(lambda l: len(self._mnemonic) % l == 0, self.words_list)
 
     @classmethod
     def name(cls) -> str:
@@ -279,147 +309,172 @@ class SLIP39Mnemonic(IMnemonic):
         )
 
     @classmethod
-    def encode(cls, entropy: Union[str, bytes], language: str) -> str:
+    def encode(
+        cls,
+        entropy: Union[str, bytes],
+        language: str,
+        passphrase: str = "",
+        extendable: bool = True,
+        iteration_exponent: int = 1,
+        tabulate: bool = False,
+    ) -> str:
         """
         Encodes entropy into a mnemonic phrase.
 
-        This method converts a given entropy value into a mnemonic phrase according to the specified language.
+        This method converts a given entropy value into a mnemonic phrase according to the specified
+        language.
+
+        SLIP-39 mnemonics include a password.  This is normally empty, and is not well supported
+        even on Trezor devices.  It is better to use SLIP-39 to encode a BIP-39 Mnemonic's entropy
+        and then (after recovering it from SLIP-39), use a BIP-39 passphrase (which is well
+        supported across all devices), or use the "Passphrase Wallet" feature of your hardware wallet
+        device.
 
         :param entropy: The entropy to encode into a mnemonic phrase.
         :type entropy: Union[str, bytes]
         :param language: The language for the mnemonic phrase.
         :type language: str
+        :param passphrase: The SLIP-39 passphrase (default: "")
+        :type passphrase: str
 
         :return: The encoded mnemonic phrase.
         :rtype: str
+
         """
-
         entropy: bytes = get_bytes(entropy, unhexlify=True)
-        if not BIP39Entropy.is_valid_bytes_strength(len(entropy)):
+        if not SLIP39Entropy.is_valid_bytes_strength(len(entropy)):
             raise EntropyError(
-                "Wrong entropy strength", expected=BIP39Entropy.strengths, got=(len(entropy) * 8)
+                "Wrong entropy strength", expected=SLIP39Entropy.strengths, got=(len(entropy) * 8)
             )
 
-        entropy_binary_string: str = bytes_to_binary_string(get_bytes(entropy), len(entropy) * 8)
-        entropy_hash_binary_string: str = bytes_to_binary_string(sha256(entropy), 32 * 8)
-        mnemonic_bin: str = entropy_binary_string + entropy_hash_binary_string[:len(entropy) // 4]
+        ((s_name,(s_thresh,s_size)),groups), = language_parser(language).items()
+        assert s_size == len(groups)
+        group_mnemonics: Sequence[Sequence[str]] = generate_mnemonics(
+            group_threshold = s_thresh,
+            groups = groups.values(),
+            master_secret = entropy,
+            passphrase = passphrase.encode('UTF-8'),
+            extendable = extendable,
+            iteration_exponent = iteration_exponent,
+        )
 
-        mnemonic: List[str] = []
-        words_list: List[str] = cls.normalize(cls.get_words_list_by_language(language=language))
-        if len(words_list) != cls.words_list_number:
-            raise Error(
-                "Invalid number of loaded words list", expected=cls.words_list_number, got=len(words_list)
-            )
+        return "\n".join(sum(group_mnemonics, []))
 
-        for index in range(len(mnemonic_bin) // cls.word_bit_length):
-            word_bin: str = mnemonic_bin[index * cls.word_bit_length:(index + 1) * cls.word_bit_length]
-            word_index: int = binary_string_to_integer(word_bin)
-            mnemonic.append(words_list[word_index])
-
-        return " ".join(cls.normalize(mnemonic))
 
     @classmethod
     def decode(
-        cls, mnemonic: str, checksum: bool = False, words_list: Optional[List[str]] = None, words_list_with_index: Optional[dict] = None
+        cls, mnemonic: str, passphrase: str = "",
     ) -> str:
         """
         Decodes a mnemonic phrase into its corresponding entropy.
 
-        This method converts a given mnemonic phrase back into its original entropy value.
-        It also verifies the checksum to ensure the mnemonic is valid.
+        This method converts a given mnemonic phrase back into its original entropy value.  It
+        verifies several internal hashes to ensure the mnemonic and decoding is valid.  However, the
+        passphrase has no verification; all derived entropies are considered equivalently valid (you
+        can use several passphrases to recover multiple, distinct sets of entropy.)  So, it is
+        solely your responsibility to remember your correct passphrase(s).
 
         :param mnemonic: The mnemonic phrase to decode.
         :type mnemonic: str
-        :param checksum: Whether to include the checksum in the returned entropy.
-        :type checksum: bool
-        :param words_list: Optional list of words used to decode the mnemonic. If not provided, the method will use the default word list for the language detected.
-        :type words_list: Optional[List[str]]
-        :param words_list_with_index: Optional dictionary mapping words to their indices for decoding. If not provided, the method will use the default mapping.
-        :type words_list_with_index: Optional[dict]
+        :param passphrase: The SLIP-39 passphrase (default: "")
+        :type passphrase: str
 
         :return: The decoded entropy as a string.
         :rtype: str
+
         """
+        mnemonic_list: List[str] = cls.normalize(mnemonic)
+        mnemonic_words, = filter(lambda words: len(mnemonic_list) % words == 0, cls.words_list)
+        mnemonic_chunks: Iterable[List[str]] = zip(*[iter(mnemonic_list)] * mnemonic_words)
+        mnemonic: Iterable[str] = map(" ".join, mnemonic_chunks)
+        recovery = RecoveryState()
+        try:
+            while not recovery.is_complete():
+                recovery.add_share(Share.from_mnemonic(next(mnemonic)))
+            return bytes_to_string(recovery.recover(passphrase.encode('UTF-8')))
+        except Exception as exc:
+            raise MnemonicError(f"Failed to recover SLIP-39 Mnemonics", detail=exc)
 
-        words: list = cls.normalize(mnemonic)
-        if len(words) not in cls.words_list:
-            raise MnemonicError("Invalid mnemonic words count", expected=cls.words_list, got=len(words))
 
-        if not words_list or not words_list_with_index:
-            words_list, language = cls.find_language(mnemonic=words)
-            if len(words_list) != cls.words_list_number:
-                raise Error(
-                    "Invalid number of loaded words list", expected=cls.words_list_number, got=len(words_list)
-                )
-            words_list_with_index: dict = {
-                words_list[i]: i for i in range(len(words_list))
-            }
-
-        if len(words_list) != cls.words_list_number:
-            raise Error(
-                "Invalid number of loaded words list", expected=cls.words_list_number, got=len(words_list)
+    NORMALIZE			= re.compile(
+        r"""
+            ^
+            (
+                [\w\d\s]* [^\w\d\s]	# Group 1 {
+            )?
+            (
+                [\w\s]*			# word word ...	
             )
-
-        mnemonic_bin: str = "".join(map(
-            lambda word: integer_to_binary_string(
-                words_list_with_index[word], cls.word_bit_length
-            ), words
-        ))
-
-        mnemonic_bit_length: int = len(mnemonic_bin)
-        checksum_length: int = mnemonic_bit_length // 33
-        checksum_bin: str = mnemonic_bin[-checksum_length:]
-        entropy: bytes = binary_string_to_bytes(
-            mnemonic_bin[:-checksum_length], checksum_length * 8
-        )
-        entropy_hash_bin: str = bytes_to_binary_string(
-            sha256(entropy), 32 * 8
-        )
-        checksum_bin_got: str = entropy_hash_bin[:checksum_length]
-        if checksum_bin != checksum_bin_got:
-            raise ChecksumError(
-                "Invalid checksum", expected=checksum_bin, got=checksum_bin_got
-            )
-
-        if checksum:
-            pad_bit_len: int = (
-                mnemonic_bit_length
-                if mnemonic_bit_length % 8 == 0 else
-                mnemonic_bit_length + (8 - mnemonic_bit_length % 8)
-            )
-            return bytes_to_string(
-                binary_string_to_bytes(mnemonic_bin, pad_bit_len // 4)
-            )
-        return bytes_to_string(entropy)
+            $
+        """, re.VERBOSE )
 
     @classmethod
-    def is_valid(
-        cls,
-        mnemonic: Union[str, List[str]],
-        words_list: Optional[List[str]] = None,
-        words_list_with_index: Optional[dict] = None
-    ) -> bool:
+    def find_language(
+        cls, mnemonic: List[str], wordlist_path: Optional[Dict[str, str]] = None
+    ) -> Union[str, Tuple[List[str], str]]:
+        return [],""
+
+
+    @classmethod
+    def get_words_list_by_language(
+        cls, language: str, wordlist_path: Optional[Dict[str, str]] = None
+    ) -> List[str]:
+        return []
+
+    
+    @classmethod
+    def normalize(cls, mnemonic: Union[str, List[str]]) -> List[str]:
+        """Filter the supplied lines of mnemonics, rejecting groups of mnemonics not evenly divisible by
+        one of the recognized SLIP-39 mnemonic lengths.
+
+        Also accepts a single hex raw entropy value (converting it into a simple single-mnemonic
+        (1/1 groups) SLIP-39 encoding).
+
+        Filter out any prefixes consisting of word/space symbols followed by a single non-word/space
+        symbol, before any number of Mnemonic word/space symbols:
+
+                    Group  1 { word word ...
+                    Group  2 ╭ word word ...
+                             ╰ word word ...
+                    Group  3 ┌ word word ...
+                             ├ word word ...
+                             └ word word ...
+                    ^^^^^^^^ ^ ^^^^^^^^^^...
+                           | | |
+           word/digit/space* | word/space*
+                             |
+                  single non-word/digit/space
+
         """
-        Validates a mnemonic phrase.
+        errors			= []
+        if isinstance( mnemonic, str ):
+            mnemonic_list: List[str] = []
+            mnemonic_lines = filter(None, mnemonic.strip().split("\n"))
 
-        This method checks whether the provided mnemonic phrase is valid by attempting to decode it.
-        If the decoding is successful without raising any errors, the mnemonic is considered valid.
+            for line_no,m in enumerate( map( cls.NORMALIZE.match, mnemonic_lines)):
+                pref,mnem	= m.groups()
+                if not mnem:  # Blank lines or lines without Mnemonic skipped
+                    continue
+                mnem		= super().normalize(mnem)
+                if len(mnem) in cls.words_list:
+                    mnemonic_list.extend(mnem)
+                else:
+                    errors.append( f"@L{line_no}; odd {len(mnem)}-word mnemonic ignored" )
+        else:
+            mnemonic_list: List[str] = mnemonic
 
-        :param mnemonic: The mnemonic phrase to validate. It can be a string or a list of words.
-        :type mnemonic: Union[str, List[str]]
-        :param words_list: Optional list of words to be used for validation. If not provided, the method will use the default word list.
-        :type words_list: Optional[List[str]]
-        :param words_list_with_index: Optional dictionary mapping words to their indices for validation. If not provided, the method will use the default mapping.
-        :type words_list_with_index: Optional[dict]
-
-        :return: True if the mnemonic phrase is valid, False otherwise.
-        :rtype: bool
-        """
-
-        try:
-            cls.decode(
-                mnemonic=mnemonic, words_list=words_list, words_list_with_index=words_list_with_index
+        word_lengths = list(filter(lambda l: len(mnemonic_list) % l == 0, cls.words_list))
+        if not word_lengths:
+            errors.append( f"Mnemonics not a multiple of valid length, or a single hex entropy value" )
+        if errors:
+            raise MnemonicError(
+                f"Invalid SLIP39 Mnemonics",
+                expected=f"multiple of {', '.join(map(str, cls.words_list))}",
+                got=f"{len(mnemonic_list)} total words",
+                detail="; ".join(errors),
             )
-            return True
-        except (Error, KeyError):
-            return False
+
+        return mnemonic_list
+
+        
+        
