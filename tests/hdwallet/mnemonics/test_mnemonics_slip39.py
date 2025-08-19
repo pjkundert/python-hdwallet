@@ -4,37 +4,43 @@ from hdwallet.mnemonics.slip39.mnemonic import (
 
 
 def test_slip39_language():
-    spec = language_parser("")
+
+    # Any name; no spec --> simplest 1/1 group encoding yielding single mnemonic
+    spec = language_parser("english")
     assert spec == {
-        ("",(2,4)): {
+        ("english",(1,1)): {
             0: (1,1),
-            1: (1,1),
-            2: (2,4),
-            3: (3,6),
         },
     }
 
-    # default secret spec, and a single group w/ default size
-    group = group_parser(" 3 / ", size_default=None)
-    assert group == ("",(3,6))
-    spec = language_parser(" 3 / ")
+    # No name or secret spec, and a single group w/ default size based on group threshold
+    group = group_parser("Name 3 / ", size_default=None)
+    assert group == ("Name",(3,6))
+    spec = language_parser(": Name 3 / ")
     assert spec == {
         ("",(1,1)): {
-            0: (3,6),
+            "Name": (3,6),
         },
     }
-    
+
     # A secret w/ threshold 3 required, of the default 4 groups of fibonacci required mnemonics
-    spec = language_parser(" 3 / [ ] ")
-    assert spec == {
-        ("",(3,4)): {
-            0: (1,1),
-            1: (1,1),
-            2: (2,4),
-            3: (3,6),
-        },
-    }
-    
+    for language in [
+        " 3 / 4 ",
+        " 3 / 4 [ ] ",
+        " 3 / : ,,, ",
+        " 3 / : 1/, 1, 4, 3/ ",
+    ]:
+        spec = language_parser(language)
+        assert spec == {
+            ("",(3,4)): {
+                0: (1,1),
+                1: (1,1),
+                2: (2,4),
+                3: (3,6),
+            },
+        }, f"Language {language} yielded incorrect encoding: {spec!r}"
+
+    # If some group specs are provided, the rest are deduced in a fibonacci-ish sequence
     spec = language_parser("Satoshi Nakamoto 7 [ 2/3 ] ")
     assert spec == {
         ("Satoshi Nakamoto",(4,7)): {
@@ -48,3 +54,10 @@ def test_slip39_language():
         },
     }
     
+def test_slip39_mnemonics():
+    entropy = "ff"*(256//8)
+    mnemonics = SLIP39Mnemonic.encode(entropy=entropy, language="")
+    mnemonics_list = SLIP39Mnemonic.normalize(mnemonics)
+    recovered = SLIP39Mnemonic.decode(mnemonics_list)
+    assert recovered == entropy
+

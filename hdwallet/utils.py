@@ -523,7 +523,8 @@ def bytes_to_string(data: AnyStr, unhexlify: Optional[bool] = None) -> str:
 
     If the default unhexlify == None is provided, will attempt to auto-detect non-empty hex strings,
     and thus reject hex strings of accidentally odd length instead of accepting them (surprisingly
-    and almost certainly incorrectly!) as UTF-8 encoded binary data.
+    and almost certainly incorrectly!) as UTF-8 encoded binary data (get_bytes is resilient to
+    surrounding whitespace, so we must be, too).
 
     :param data: The bytes or string data to convert to hexadecimal string.
     :type data: Union[bytes, str]
@@ -538,7 +539,7 @@ def bytes_to_string(data: AnyStr, unhexlify: Optional[bool] = None) -> str:
     if not data:
         return ''
     if unhexlify is None:
-        unhexlify = isinstance(data, str) and all(c in string.hexdigits for c in data)
+        unhexlify = isinstance(data, str) and all(c in string.hexdigits for c in data.strip())
     binary = get_bytes(data, unhexlify=unhexlify)
     return binary.hex()
 

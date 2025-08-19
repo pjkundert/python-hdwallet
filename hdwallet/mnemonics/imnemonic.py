@@ -228,6 +228,10 @@ class IMnemonic(ABC):
         mnemonic strings, or raw hex-encoded entropy, if they use the IMnemonic.normalize base
         method in their derived 'decode' and 'is_valid' implementations.
 
+        This makes sense for most Mnemonics, which produce an repeatable encoding for the same entropy;
+        Mnemonics that produce different encodings will need alternative implementations.  They should
+        handle raw entropy directly.
+
         :param mnemonic: The mnemonic value, which can be a single string of words or a list of words.
         :type mnemonic: Union[str, List[str]]
 
@@ -238,6 +242,6 @@ class IMnemonic(ABC):
         if isinstance(mnemonic, str):
             if all(c in string.hexdigits for c in mnemonic.strip()):
                mnemonic: str = cls.from_entropy(mnemonic, language="english")
-            mnemonic: list = mnemonic.split()
+            mnemonic: list = mnemonic.strip().split()
         return list(map(lambda _: unicodedata.normalize("NFKD", _.lower()), mnemonic))
 
