@@ -42,7 +42,7 @@ $(WHEEL):		FORCE
 
 # Install from wheel, including all optional extra dependencies (doesn't include dev)
 install:		$(WHEEL) FORCE
-	$(PYTHON) -m pip install --force-reinstall $<[slip39,cli,docs,tests]
+	$(PYTHON) -m pip install --force-reinstall $<[cli,tests,docs]
 
 # Install from requirements/*; eg. install-dev
 install-%:  		FORCE
@@ -86,7 +86,7 @@ $(VENV):
 	@echo; echo "*** Building $@ VirtualEnv..."
 	@rm -rf $@ && $(PYTHON) -m venv $(VENV_OPTS) $@ && sed -i -e '1s:^:. $$HOME/.bashrc\n:' $@/bin/activate \
 	    && source $@/bin/activate \
-	    && make install-dev
+	    && make install-dev install
 
 print-%:
 	@echo $* = $($*)

@@ -521,7 +521,17 @@
                 "mnemonic": "ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff",
                 "non-passphrase-seed": "ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff",
                 "passphrases": null
-            }
+            },
+	    "five-twelve-one-of-one": {
+	      "mnemonic": "edge typical academic academic academic boring radar cluster domestic ticket fumes remove velvet fluff video crazy chest average script universe exhaust remind helpful lamp declare garlic repeat unknown bucket adorn sled adult triumph source divorce premium genre glimpse level listen ancestor wildlife writing document wrist judicial medical detect frost leaves language jerky increase glasses extra alto deploy demand greatest",
+                "non-passphrase-seed": "ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff",
+                "passphrases": null
+            },
+	    "five-twelve-two-of-two": {
+	        "mnemonic": "bracelet cleanup acrobat easy acquire critical exceed agency verify envy story best facility process syndrome discuss health twin ugly spew unknown spider level academic lying large slap venture hairy election legal away negative easel learn item trial miracle hour provide survive pleasure clock acne faint priest loyalty sunlight award forget ambition failure threaten kind dictate lips branch slice space\nbracelet cleanup beard easy acne visitor scroll finger skin trash browser union energy endorse scramble staff sprinkle salt alpha dive sweater pickup cage obtain leader clothes acid dive frozen category desert thorn music western home owner manager apart much hobo march adequate eraser crazy short smith force flame primary phrase sprinkle frost trial crunch fancy piece crunch scroll triumph",
+                "non-passphrase-seed": "ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff",
+                "passphrases": null
+	    }
         }
     },
     "Cardano": {

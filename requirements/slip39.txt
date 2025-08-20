@@ -1,2 +1,0 @@
-#shamir-mnemonic-slip39>=0.4.2,<0.5
-shamir-mnemonic>=0.3,<0.4

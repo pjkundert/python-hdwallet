@@ -26,6 +26,15 @@ from .list.languages import list_languages
 from .list.strengths import list_strengths
 
 
+def process_kwargs(kwargs):
+    """Process mnemonic arguments handling both multiple flags and explicit \\n sequences."""
+    if kwargs.get("mnemonic"):
+        # Join multiple mnemonic arguments, then split on any literal raw r"\n" and rejoin
+        combined = "\n".join(kwargs["mnemonic"])
+        kwargs["mnemonic"] = "\n".join(combined.split(r'\n'))
+    return kwargs
+
+
 def current_version(
     context: click.core.Context, option: click.core.Option, value: bool
 ) -> None:
@@ -124,7 +133,7 @@ def cli_mnemonic(**kwargs) -> None:
     "-c", "--client", type=str, default="BIP39", help="Set Seed client", show_default=True
 )
 @click.option(
-    "-m", "--mnemonic", type=str, default=None, help="Set Seed mnemonic", show_default=True
+    "-m", "--mnemonic", multiple=True, help="Set Seed mnemonic(s)"
 )
 @click.option(
     "-p", "--passphrase", type=str, default=None, help="Set Seed passphrase", show_default=True
@@ -136,7 +145,7 @@ def cli_mnemonic(**kwargs) -> None:
     "-mt", "--mnemonic-type", type=str, default="standard", help="Set Mnemonic type for Electrum-V2", show_default=True
 )
 def cli_seed(**kwargs) -> None:
-    return generate_seed(**kwargs)
+    return generate_seed(**process_kwargs(kwargs))
 
 
 @cli_main.command(
@@ -161,7 +170,7 @@ def cli_seed(**kwargs) -> None:
     "-mc", "--mnemonic-client", type=str, default="BIP39", help="Select Mnemonic client", show_default=True
 )
 @click.option(
-    "-m", "--mnemonic", type=str, default=None, help="Set Master key from Mnemonic words", show_default=True
+    "-m", "--mnemonic", multiple=True, help="Set Master key from mnemonic(s)"
 )
 @click.option(
     "-l", "--language", type=str, default="english", help="Select Language for mnemonic", show_default=True
@@ -269,7 +278,7 @@ def cli_seed(**kwargs) -> None:
     "-ex", "--exclude", type=str, default="", help="Set Exclude keys from dumped", show_default=True
 )
 def cli_dump(**kwargs) -> None:  # cli_dumps(max_content_width=120)
-    return dump(**kwargs)
+    return dump(**process_kwargs(kwargs))
 
 
 @cli_main.command(
@@ -294,7 +303,7 @@ def cli_dump(**kwargs) -> None:  # cli_dumps(max_content_width=120)
     "-mc", "--mnemonic-client", type=str, default="BIP39", help="Select Mnemonic client", show_default=True
 )
 @click.option(
-    "-m", "--mnemonic", type=str, default=None, help="Set Master key from Mnemonic words", show_default=True
+    "-m", "--mnemonic", multiple=True, help="Set Master key from mnemonic(s)"
 )
 @click.option(
     "-l", "--language", type=str, default="english", help="Select Language for mnemonic", show_default=True
@@ -414,7 +423,7 @@ def cli_dump(**kwargs) -> None:  # cli_dumps(max_content_width=120)
     "-de", "--delimiter", type=str, default=" ", help="Set Delimiter for CSV", show_default=True
 )
 def cli_dumps(**kwargs) -> None:  # cli_dumps(max_content_width=120)
-    return dumps(**kwargs)
+    return dumps(**process_kwargs(kwargs))
 
 
 @cli_main.group(

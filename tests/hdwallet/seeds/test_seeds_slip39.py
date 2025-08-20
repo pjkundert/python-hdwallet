@@ -25,11 +25,6 @@ def test_slip39_seeds(data):
             # passphrase, but this is not generally supported by hardware wallets supporting
             # SLIP-39, such as the Trezor.  This is unfortunate, as it prevents backing up BIP-39
             # derived seeds including the passphrase.
-            # try:
-            #     mnemonic = BIP39Mnemonic(mnemonic=mnemonic)
-            # except Exception:
-            #     logging.exception("Failed to interpret %s as BIP-39 Mnemonic", mnemonic)
-            #     pass
             assert SLIP39Seed.from_mnemonic(
                 mnemonic = mnemonic
             ) == data["seeds"]["SLIP39"][words][lang]["non-passphrase-seed"]

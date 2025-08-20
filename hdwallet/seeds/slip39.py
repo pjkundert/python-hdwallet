@@ -44,7 +44,8 @@ class SLIP39Seed(ISeed):
     def from_mnemonic(cls, mnemonic: Union[str, IMnemonic], passphrase: Optional[str] = None) -> str:
         """Converts a mnemonic phrase to its corresponding raw entropy.
 
-        The Mnemonic representation for SLIP-39 seeds is simple hex.
+        The Mnemonic representation for SLIP-39 seeds is simple hex, and must be of the supported
+        SLIP-39 entropy sizes: 128, 256 or 512 bits.
 
         To support the backup and recovery of BIP-39 mnemonic phrases to/from SLIP-39, we accept a
         BIP39 IMnemonic or mnemonic phrase, and recover the underlying (original) entropy encoded by
@@ -69,9 +70,11 @@ class SLIP39Seed(ISeed):
         if not isinstance(mnemonic, IMnemonic):
             # Not an IMnemonic; must be a str.  Try the supported mnemonic encodings we'll allow for
             # SLIP39 seeds, converting the mnemonic phrase to an IMnemonic if recognized.
+            #
+            # TODO: Add other Seed entropy Mnemonics
             allowed_entropy = [
+                SLIP39Mnemonic,
                 BIP39Mnemonic,
-                SLIP39Mnemonic, #  ...
             ]
 
             for M in allowed_entropy:
@@ -80,8 +83,13 @@ class SLIP39Seed(ISeed):
                     break
             else:
                 raise EntropyError(
-                    "Invalid entropy instance", expected=[str, ] + allowed_entropy, got=type(mnemonic)
+                    "Invalid entropy instance", expected=[str, ] + allowed_entropy, got=type(mnemonic),
                 )
 
         # Some kind of IMnemonic (eg. a BIP39Mnemonic); get and return its raw entropy as hex
-        return mnemonic.decode(mnemonic.mnemonic())
+        entropy = mnemonic.decode(mnemonic.mnemonic())
+        if len(entropy) * 4 not in SLIP39Mnemonic.words_to_entropy_strength.values():
+            raise EntropyError(
+                "Invalid entropy size in bits", expected=SLIP39Mnemonic.words_to_entropy_strength.values(), got=len(entropy) * 4,
+            )
+        return entropy
