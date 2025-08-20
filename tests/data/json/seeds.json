@@ -507,17 +507,17 @@
                 "non-passphrase-seed": "ffffffffffffffffffffffffffffffff",
                 "passphrases": null
             },
-            "hex 128": {
+            "hex-one-twenty-eight": {
                 "mnemonic": "ffffffffffffffffffffffffffffffff",
                 "non-passphrase-seed": "ffffffffffffffffffffffffffffffff",
                 "passphrases": null
             },
-            "hex 256": {
+            "hex-two-fifty-six": {
                 "mnemonic": "ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff",
                 "non-passphrase-seed": "ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff",
                 "passphrases": null
             },
-            "hex 512": {
+            "hex-five-twelve": {
                 "mnemonic": "ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff",
                 "non-passphrase-seed": "ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff",
                 "passphrases": null

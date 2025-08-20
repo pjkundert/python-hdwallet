@@ -229,8 +229,10 @@ class SLIP39Mnemonic(IMnemonic):
         SLIP39_MNEMONIC_WORDS.FIFTY_NINE: SLIP39_ENTROPY_STRENGTHS.FIVE_HUNDRED_TWELVE,
     }
     languages: List[str] = [
+        SLIP39_MNEMONIC_LANGUAGES.ENGLISH
     ]
     wordlist_path: Dict[str, str] = {
+        SLIP39_MNEMONIC_LANGUAGES.ENGLISH: "slip39/wordlist/english.txt",
     }
 
 
@@ -248,6 +250,22 @@ class SLIP39Mnemonic(IMnemonic):
         :rtype: str
         """
         return "SLIP39"
+
+    def mnemonic(self) -> str:
+        """
+        Get the mnemonic as a single string.
+
+        SLIP-39 Mnemonics usually have multiple lines.  Iterates the _mnemonic words list by the
+        computed self.words(), joining each length of words by spaces to for a line, and then joins
+        by newlines.
+
+        :return: The mnemonic as a single string joined by spaces and newlines.
+        :rtype: str
+
+        """
+        mnemonic_chunks: Iterable[List[str]] = zip(*[iter(self._mnemonic)] * self._words)
+        mnemonic: Iterable[str] = map(" ".join, mnemonic_chunks)
+        return "\n".join(mnemonic)
 
     @classmethod
     def from_words(cls, words: int, language: str) -> str:
@@ -407,19 +425,6 @@ class SLIP39Mnemonic(IMnemonic):
             )
             $
         """, re.VERBOSE )
-
-    @classmethod
-    def find_language(
-        cls, mnemonic: List[str], wordlist_path: Optional[Dict[str, str]] = None
-    ) -> Union[str, Tuple[List[str], str]]:
-        return [],""
-
-
-    @classmethod
-    def get_words_list_by_language(
-        cls, language: str, wordlist_path: Optional[Dict[str, str]] = None
-    ) -> List[str]:
-        return []
 
     
     @classmethod
