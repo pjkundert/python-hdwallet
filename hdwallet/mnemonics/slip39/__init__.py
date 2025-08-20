@@ -7,10 +7,12 @@
 from typing import List
 
 from .mnemonic import (
-    SLIP39Mnemonic
+    SLIP39Mnemonic, SLIP39_MNEMONIC_WORDS, SLIP39_MNEMONIC_LANGUAGES
 )
 
 
 __all__: List[str] = [
     "SLIP39Mnemonic",
+    "SLIP39_MNEMONIC_WORDS",
+    "SLIP39_MNEMONIC_LANGUAGES"
 ]

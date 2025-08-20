@@ -38,7 +38,6 @@ class SLIP39_MNEMONIC_LANGUAGES:
     ENGLISH: str = "english"
 
 
-
 def group_parser( group_spec, size_default: Optional[int]=None ) -> Tuple[str,Tuple[int,int]]:
     """Parse a SLIP-39 group specification; a name up to the first digit, ( or /, then a
     threshold/count spec:
@@ -109,9 +108,9 @@ group_parser.RE			= re.compile( # noqa E305
 
 def language_parser(language: str) -> Dict[Tuple[str,Tuple[int,int]],Dict[Union[str,int],Tuple[int,int]]]:
     """
-    Parse a SLIP-39 language dialect specification.  
+    Parse a SLIP-39 language dialect specification.
 
-            optional          sep    default comma-separated mnemonic 
+            optional          sep    default comma-separated mnemonic
          name a secret spec          group thresholds (optional if no /)
         --------------------- --- -------------------------------------- -
 
@@ -135,7 +134,6 @@ def language_parser(language: str) -> Dict[Tuple[str,Tuple[int,int]],Dict[Union[
         "g2":     (t2/n2),
       }
     }
-       
 
     """
     s_match			= language_parser.RE.match(language)
@@ -326,6 +324,16 @@ class SLIP39Mnemonic(IMnemonic):
             "Invalid entropy instance", expected=[str, bytes,]+list(ENTROPIES.dictionary.values()), got=type(entropy)
         )
 
+
+    @classmethod
+    def is_valid_language(cls, language: str) -> bool:
+        try:
+            language_parser(language)
+            return True
+        except Exception as exc:
+            return False
+
+
     @classmethod
     def encode(
         cls,
@@ -402,31 +410,47 @@ class SLIP39Mnemonic(IMnemonic):
 
         """
         mnemonic_list: List[str] = cls.normalize(mnemonic)
-        mnemonic_words, = filter(lambda words: len(mnemonic_list) % words == 0, cls.words_list)
-        mnemonic_chunks: Iterable[List[str]] = zip(*[iter(mnemonic_list)] * mnemonic_words)
-        mnemonic: Iterable[str] = map(" ".join, mnemonic_chunks)
-        recovery = RecoveryState()
         try:
-            while not recovery.is_complete():
-                recovery.add_share(Share.from_mnemonic(next(mnemonic)))
-            return bytes_to_string(recovery.recover(passphrase.encode('UTF-8')))
+            mnemonic_words, = filter(lambda words: len(mnemonic_list) % words == 0, cls.words_list)
+            mnemonic_chunks: Iterable[List[str]] = zip(*[iter(mnemonic_list)] * mnemonic_words)
+            mnemonic_lines: Iterable[str] = map(" ".join, mnemonic_chunks)
+            recovery = RecoveryState()
+            for line in mnemonic_lines:
+                recovery.add_share(Share.from_mnemonic(line))
+                if recovery.is_complete():
+                    break
+            else:
+                raise ValueError(
+                    f"Incomplete: found {recovery.groups_complete()}"
+                    + f"/{recovery.parameters.group_threshold} groups and "
+                    + ", ".join(
+                        "/".join(map(lambda x: str(x) if x >= 0 else "?", recovery.group_status(g)))
+                        for g in range(recovery.parameters.group_count)
+                    )
+                    + " mnemonics required"
+                )
+            entropy = bytes_to_string(recovery.recover(passphrase.encode('UTF-8')))
+            return entropy
         except Exception as exc:
-            raise MnemonicError(f"Failed to recover SLIP-39 Mnemonics", detail=exc)
+            raise MnemonicError(f"Failed to recover SLIP-39 Mnemonics", detail=exc) from exc
 
 
     NORMALIZE			= re.compile(
         r"""
             ^
+            \s*
             (
-                [\w\d\s]* [^\w\d\s]	# Group 1 {
+                [\w\d\s]* [^\w\d\s]	# Group 1 { <-- a single non-word/space/digit separator allowed
             )?
+            \s*
             (
-                [\w\s]*			# word word ...	
-            )
+                [\w\s]*\w		# word word ... word <-- must end with non-whitespace (strips whitespace)
+            )?
+            \s*
             $
         """, re.VERBOSE )
 
-    
+
     @classmethod
     def normalize(cls, mnemonic: Union[str, List[str]]) -> List[str]:
         """Filter the supplied lines of mnemonics, rejecting groups of mnemonics not evenly divisible by
@@ -454,9 +478,12 @@ class SLIP39Mnemonic(IMnemonic):
         errors			= []
         if isinstance( mnemonic, str ):
             mnemonic_list: List[str] = []
-            mnemonic_lines = filter(None, mnemonic.strip().split("\n"))
 
-            for line_no,m in enumerate( map( cls.NORMALIZE.match, mnemonic_lines)):
+            for line_no,m in enumerate( map( cls.NORMALIZE.match, mnemonic.split("\n"))):
+                if not m:
+                    errors.append( f"@L{line_no+1}; unrecognized mnemonic ignored" )
+                    continue
+
                 pref,mnem	= m.groups()
                 if not mnem:  # Blank lines or lines without Mnemonic skipped
                     continue
@@ -464,7 +491,7 @@ class SLIP39Mnemonic(IMnemonic):
                 if len(mnem) in cls.words_list:
                     mnemonic_list.extend(mnem)
                 else:
-                    errors.append( f"@L{line_no}; odd {len(mnem)}-word mnemonic ignored" )
+                    errors.append( f"@L{line_no+1}; odd {len(mnem)}-word mnemonic ignored" )
         else:
             mnemonic_list: List[str] = mnemonic
 
@@ -480,6 +507,3 @@ class SLIP39Mnemonic(IMnemonic):
             )
 
         return mnemonic_list
-
-        
-        

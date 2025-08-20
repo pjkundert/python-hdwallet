@@ -12,6 +12,7 @@ from ...mnemonics import (
     IMnemonic,
     AlgorandMnemonic, ALGORAND_MNEMONIC_WORDS, ALGORAND_MNEMONIC_LANGUAGES,
     BIP39Mnemonic, BIP39_MNEMONIC_WORDS, BIP39_MNEMONIC_LANGUAGES,
+    SLIP39Mnemonic, SLIP39_MNEMONIC_WORDS, SLIP39_MNEMONIC_LANGUAGES,
     ElectrumV1Mnemonic, ELECTRUM_V1_MNEMONIC_WORDS, ELECTRUM_V1_MNEMONIC_LANGUAGES,
     ElectrumV2Mnemonic, ELECTRUM_V2_MNEMONIC_WORDS, ELECTRUM_V2_MNEMONIC_LANGUAGES,
     MoneroMnemonic, MONERO_MNEMONIC_WORDS, MONERO_MNEMONIC_LANGUAGES,
@@ -32,6 +33,8 @@ def generate_mnemonic(**kwargs) -> None:
                 language: str = ALGORAND_MNEMONIC_LANGUAGES.ENGLISH
             elif kwargs.get("client") == BIP39Mnemonic.name():
                 language: str = BIP39_MNEMONIC_LANGUAGES.ENGLISH
+            elif kwargs.get("client") == SLIP39Mnemonic.name():
+                language: str = SLIP39_MNEMONIC_LANGUAGES.ENGLISH
             elif kwargs.get("client") == ElectrumV1Mnemonic.name():
                 language: str = ELECTRUM_V1_MNEMONIC_LANGUAGES.ENGLISH
             elif kwargs.get("client") == ElectrumV2Mnemonic.name():
@@ -46,6 +49,8 @@ def generate_mnemonic(**kwargs) -> None:
                 words: int = ALGORAND_MNEMONIC_WORDS.TWENTY_FIVE
             elif kwargs.get("client") == BIP39Mnemonic.name():
                 words: int = BIP39_MNEMONIC_WORDS.TWELVE
+            elif kwargs.get("client") == SLIP39Mnemonic.name():
+                words: int = SLIP39_MNEMONIC_WORDS.TWENTY
             elif kwargs.get("client") == ElectrumV1Mnemonic.name():
                 words: int = ELECTRUM_V1_MNEMONIC_WORDS.TWELVE
             elif kwargs.get("client") == ElectrumV2Mnemonic.name():
@@ -55,7 +60,7 @@ def generate_mnemonic(**kwargs) -> None:
         else:
             words: int = kwargs.get("words")
 
-        if not MNEMONICS.mnemonic(name=kwargs.get("client")).is_valid_language(language=language):
+        if not MNEMONICS.mnemonic(name=kwargs.get("client")).is_valid_language(language):
             click.echo(click.style(
                 f"Wrong {kwargs.get('client')} mnemonic language, "
                 f"(expected={MNEMONICS.mnemonic(name=kwargs.get('client')).languages}, got='{language}')"

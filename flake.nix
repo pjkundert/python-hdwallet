@@ -36,14 +36,14 @@
             openssh
             bash
             bash-completion
-            
+
             # All Python versions with packages
             #python310Env
             python311Env
             python312Env
             python313Env
           ];
-          
+
           shellHook = ''
             echo "Welcome to the multi-Python development environment!"
             echo "Available Python interpreters:"
