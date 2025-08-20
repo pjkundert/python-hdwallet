@@ -56,8 +56,13 @@ def test_slip39_language():
     
 def test_slip39_mnemonics():
     entropy = "ff"*(256//8)
-    mnemonics = SLIP39Mnemonic.encode(entropy=entropy, language="")
-    mnemonics_list = SLIP39Mnemonic.normalize(mnemonics)
-    recovered = SLIP39Mnemonic.decode(mnemonics_list)
+    mnemonic = SLIP39Mnemonic.encode(entropy=entropy, language="")
+    mnemonic_list = SLIP39Mnemonic.normalize(mnemonic)
+    recovered = SLIP39Mnemonic.decode(mnemonic_list)
     assert recovered == entropy
+
+    slip39 = SLIP39Mnemonic(mnemonic)
+    assert slip39._mnemonic == mnemonic_list
+    assert slip39.mnemonic() == mnemonic
+
 

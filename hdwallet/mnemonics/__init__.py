@@ -15,6 +15,9 @@ from .algorand import (
 from .bip39 import (
     BIP39Mnemonic, BIP39_MNEMONIC_WORDS, BIP39_MNEMONIC_LANGUAGES
 )
+from .slip39 import (
+    SLIP39Mnemonic
+)
 from .electrum import (
     ElectrumV1Mnemonic, ELECTRUM_V1_MNEMONIC_WORDS, ELECTRUM_V1_MNEMONIC_LANGUAGES,
     ElectrumV2Mnemonic, ELECTRUM_V2_MNEMONIC_WORDS, ELECTRUM_V2_MNEMONIC_LANGUAGES, ELECTRUM_V2_MNEMONIC_TYPES
@@ -55,7 +58,7 @@ class MNEMONICS:
         ElectrumV1Mnemonic.name(): ElectrumV1Mnemonic,
         ElectrumV2Mnemonic.name(): ElectrumV2Mnemonic,
         MoneroMnemonic.name(): MoneroMnemonic,
-        "SLIP39": BIP39Mnemonic,
+        SLIP39Mnemonic.name(): SLIP39Mnemonic,
     }
 
     @classmethod

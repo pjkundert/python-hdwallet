@@ -80,6 +80,7 @@ def test_cli_seed(data, cli_tester):
                     cli = cli_tester.invoke(
                         cli_main, cli_args
                     )
+                    print( f"cli output: {cli.output}" )
                     output = json.loads(cli.output)
 
                     assert output["client"] == client

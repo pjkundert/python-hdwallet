@@ -115,8 +115,10 @@ class IMnemonic(ABC):
     def get_words_list_by_language(
         cls, language: str, wordlist_path: Optional[Dict[str, str]] = None
     ) -> List[str]:
-        """
-        Retrieves the word list for the specified language.
+        """Retrieves the standardized (normal form KD, lower-cased) word list for the specified language.
+
+        We do not want to use 'normalize' to do this, because normalization of Mnemonics may have
+        additional functionality beyond just ensuring symbol and case standardization.
 
         :param language: The language for which to get the word list.
         :type language: str
@@ -125,12 +127,15 @@ class IMnemonic(ABC):
 
         :return: A list of words for the specified language.
         :rtype: List[str]
+
         """
 
         wordlist_path = cls.wordlist_path if wordlist_path is None else wordlist_path
         with open(os.path.join(os.path.dirname(__file__), wordlist_path[language]), "r", encoding="utf-8") as fin:
             words_list: List[str] = [
-                word.strip() for word in fin.readlines() if word.strip() != "" and not word.startswith("#")
+                unicodedata.normalize("NFKD", word.lower())
+                for word in map(str.strip, fin.readlines())
+                if word and not word.startswith("#")
             ]
         return words_list
 
@@ -152,10 +157,8 @@ class IMnemonic(ABC):
 
         for language in cls.languages:
             try:
-                words_list: list = cls.normalize(
-                    cls.get_words_list_by_language(
-                        language=language, wordlist_path=wordlist_path
-                    )
+                words_list: List[str] = cls.get_words_list_by_language(
+                    language=language, wordlist_path=wordlist_path
                 )
                 words_list_with_index: dict = {
                     words_list[i]: i for i in range(len(words_list))
@@ -240,8 +243,8 @@ class IMnemonic(ABC):
 
         """
         if isinstance(mnemonic, str):
-            if all(c in string.hexdigits for c in mnemonic.strip()):
+            if ( len(mnemonic.strip()) * 4 in cls.words_to_entropy_strength.values()
+                 and all(c in string.hexdigits for c in mnemonic.strip())):
                mnemonic: str = cls.from_entropy(mnemonic, language="english")
             mnemonic: list = mnemonic.strip().split()
         return list(map(lambda _: unicodedata.normalize("NFKD", _.lower()), mnemonic))
-

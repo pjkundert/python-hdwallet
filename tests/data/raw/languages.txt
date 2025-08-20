@@ -46,3 +46,6 @@ Russian
 Spanish
 
 
+SLIP39 Languages
+------------------
+English
