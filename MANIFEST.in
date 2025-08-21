@@ -1,7 +1,6 @@
 include LICENSE
 include README.md
 include requirements.txt
-include requirements/slip39.txt
 include requirements/cli.txt
 include requirements/tests.txt
 include requirements/docs.txt

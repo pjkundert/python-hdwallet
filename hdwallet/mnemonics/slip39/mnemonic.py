@@ -6,14 +6,14 @@
 
 import re
 from typing import (
-    Union, Dict, Iterable, List, Optional, Tuple
+    Union, Dict, Iterable, List, Optional, Sequence, Tuple
 )
 
 from ...entropies import (
-    IEntropy, SLIP39Entropy, SLIP39_ENTROPY_STRENGTHS
+    ENTROPIES, IEntropy, SLIP39Entropy, SLIP39_ENTROPY_STRENGTHS
 )
 from ...exceptions import (
-    Error, EntropyError, MnemonicError, ChecksumError
+    EntropyError, MnemonicError
 )
 from ...utils import (
     get_bytes,
@@ -38,7 +38,7 @@ class SLIP39_MNEMONIC_LANGUAGES:
     ENGLISH: str = "english"
 
 
-def group_parser( group_spec, size_default: Optional[int]=None ) -> Tuple[str,Tuple[int,int]]:
+def group_parser( group_spec, size_default: Optional[int] = None) -> Tuple[str, Tuple[int, int]]:
     """Parse a SLIP-39 group specification; a name up to the first digit, ( or /, then a
     threshold/count spec:
 
@@ -79,7 +79,8 @@ def group_parser( group_spec, size_default: Optional[int]=None ) -> Tuple[str,Tu
     if size < 1 or require > size or ( require == 1 and size > 1 ):
         raise ValueError( f"Impossible group specification from {group_spec!r} w/ default size {size_default!r}: {name,(require,size)!r}" )
 
-    return name,(require,size)
+    return (name, (require, size))
+
 
 group_parser.REQUIRED_RATIO	= 1/2
 group_parser.RE			= re.compile( # noqa E305
@@ -106,7 +107,7 @@ group_parser.RE			= re.compile( # noqa E305
     """, re.VERBOSE )
 
 
-def language_parser(language: str) -> Dict[Tuple[str,Tuple[int,int]],Dict[Union[str,int],Tuple[int,int]]]:
+def language_parser(language: str) -> Dict[Tuple[str, Tuple[int, int]], Dict[Union[str, int], Tuple[int, int]]]:
     """
     Parse a SLIP-39 language dialect specification.
 
@@ -140,28 +141,28 @@ def language_parser(language: str) -> Dict[Tuple[str,Tuple[int,int]],Dict[Union[
     if not s_match and language.strip():
         raise ValueError( f"Invalid SLIP-39 specification: {language!r}" )
 
-
     groups			= s_match and s_match.group("groups") or ""
     groups_list			= groups.strip().split(",")
     secret			= s_match and s_match.group("secret") or ""
     s_size_default		= len(groups_list) if groups_list else None
-    s_name,(s_thresh,s_size)	= group_parser(secret, size_default=s_size_default)
+    s_name, (s_thresh, s_size)	= group_parser(secret, size_default=s_size_default)
     groups_list		       += [''] * (s_size - len(groups_list))  # default any missing group specs
 
-    g_names,g_sizes		= [],[]
+    g_names, g_sizes		= [], []
     for group in groups_list:
         # Default size inferred from Fibonacci sequence of mnemonics required by default
         size_default		= None if len(g_sizes) < 2 else min(
             MAX_SHARE_COUNT,
             2 * ( g_sizes[-1][0] + g_sizes[-2][0] )
         )
-        g_name,g_dims		= group_parser(group, size_default=size_default)
+        g_name, g_dims		= group_parser(group, size_default=size_default)
         if not g_name:
             g_name		= len(g_sizes)
         g_names.append(g_name)
         g_sizes.append(g_dims)
 
-    return { (s_name.strip(),(s_thresh,s_size)): dict(zip(g_names,g_sizes)) }
+    return { (s_name.strip(), (s_thresh, s_size)): dict(zip(g_names, g_sizes)) }
+
 
 language_parser.REQUIRED_RATIO	= 1/2
 language_parser.RE		= re.compile(
@@ -233,11 +234,10 @@ class SLIP39Mnemonic(IMnemonic):
         SLIP39_MNEMONIC_LANGUAGES.ENGLISH: "slip39/wordlist/english.txt",
     }
 
-
     def __init__(self, mnemonic: Union[str, List[str]], **kwargs) -> None:
         super().__init__(mnemonic, **kwargs)
         # We know that normalize has already validated _mnemonic's length
-        self._words, = filter(lambda l: len(self._mnemonic) % l == 0, self.words_list)
+        self._words, = filter(lambda w: len(self._mnemonic) % w == 0, self.words_list)
 
     @classmethod
     def name(cls) -> str:
@@ -324,15 +324,13 @@ class SLIP39Mnemonic(IMnemonic):
             "Invalid entropy instance", expected=[str, bytes,]+list(ENTROPIES.dictionary.values()), got=type(entropy)
         )
 
-
     @classmethod
     def is_valid_language(cls, language: str) -> bool:
         try:
             language_parser(language)
             return True
-        except Exception as exc:
+        except Exception:
             return False
-
 
     @classmethod
     def encode(
@@ -373,19 +371,18 @@ class SLIP39Mnemonic(IMnemonic):
                 "Wrong entropy strength", expected=SLIP39Entropy.strengths, got=(len(entropy) * 8)
             )
 
-        ((s_name,(s_thresh,s_size)),groups), = language_parser(language).items()
+        ((s_name, (s_thresh, s_size)), groups), = language_parser(language).items()
         assert s_size == len(groups)
         group_mnemonics: Sequence[Sequence[str]] = generate_mnemonics(
-            group_threshold = s_thresh,
-            groups = groups.values(),
-            master_secret = entropy,
-            passphrase = passphrase.encode('UTF-8'),
-            extendable = extendable,
-            iteration_exponent = iteration_exponent,
+            group_threshold=s_thresh,
+            groups=groups.values(),
+            master_secret=entropy,
+            passphrase=passphrase.encode('UTF-8'),
+            extendable=extendable,
+            iteration_exponent=iteration_exponent,
         )
 
         return "\n".join(sum(group_mnemonics, []))
-
 
     @classmethod
     def decode(
@@ -432,8 +429,7 @@ class SLIP39Mnemonic(IMnemonic):
             entropy = bytes_to_string(recovery.recover(passphrase.encode('UTF-8')))
             return entropy
         except Exception as exc:
-            raise MnemonicError(f"Failed to recover SLIP-39 Mnemonics", detail=exc) from exc
-
+            raise MnemonicError("Failed to recover SLIP-39 Mnemonics", detail=exc) from exc
 
     NORMALIZE			= re.compile(
         r"""
@@ -449,7 +445,6 @@ class SLIP39Mnemonic(IMnemonic):
             \s*
             $
         """, re.VERBOSE )
-
 
     @classmethod
     def normalize(cls, mnemonic: Union[str, List[str]]) -> List[str]:
@@ -479,12 +474,12 @@ class SLIP39Mnemonic(IMnemonic):
         if isinstance( mnemonic, str ):
             mnemonic_list: List[str] = []
 
-            for line_no,m in enumerate( map( cls.NORMALIZE.match, mnemonic.split("\n"))):
+            for line_no, m in enumerate( map( cls.NORMALIZE.match, mnemonic.split("\n"))):
                 if not m:
                     errors.append( f"@L{line_no+1}; unrecognized mnemonic ignored" )
                     continue
 
-                pref,mnem	= m.groups()
+                pref, mnem	= m.groups()
                 if not mnem:  # Blank lines or lines without Mnemonic skipped
                     continue
                 mnem		= super().normalize(mnem)
@@ -495,12 +490,12 @@ class SLIP39Mnemonic(IMnemonic):
         else:
             mnemonic_list: List[str] = mnemonic
 
-        word_lengths = list(filter(lambda l: len(mnemonic_list) % l == 0, cls.words_list))
+        word_lengths = list(filter(lambda w: len(mnemonic_list) % w == 0, cls.words_list))
         if not word_lengths:
-            errors.append( f"Mnemonics not a multiple of valid length, or a single hex entropy value" )
+            errors.append( "Mnemonics not a multiple of valid length, or a single hex entropy value" )
         if errors:
             raise MnemonicError(
-                f"Invalid SLIP39 Mnemonics",
+                "Invalid SLIP39 Mnemonics",
                 expected=f"multiple of {', '.join(map(str, cls.words_list))}",
                 got=f"{len(mnemonic_list)} total words",
                 detail="; ".join(errors),

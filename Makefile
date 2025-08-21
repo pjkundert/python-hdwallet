@@ -31,7 +31,7 @@ export NIX_OPTS		?=
 help:
 	@$(SPHINXBUILD) -M help "$(SOURCEDIR)" "$(BUILDDIR)" $(SPHINXOPTS) $(O)
 
-.PHONY: help wheel install venv Makefile FORCE
+.PHONY: help wheel install test analyze venv Makefile FORCE
 
 
 wheel:			$(WHEEL)
@@ -54,6 +54,11 @@ unit-%:
 
 test:
 	$(PYTEST) $(PYTEST_OPTS) tests
+
+analyze:
+	$(PYTHON) -m flake8 --color never -j 1 --max-line-length=250 \
+	  --ignore=W503,W504,E201,E202,E223,E226 \
+	  hdwallet
 
 # 
 # Nix and VirtualEnv build, install and activate

@@ -9,20 +9,20 @@ from typing import (
 )
 
 from ..exceptions import MnemonicError
-from .algorand import (
+from .algorand import (  # noqa: F401
     AlgorandMnemonic, ALGORAND_MNEMONIC_WORDS, ALGORAND_MNEMONIC_LANGUAGES
 )
-from .bip39 import (
+from .bip39 import (  # noqa: F401
     BIP39Mnemonic, BIP39_MNEMONIC_WORDS, BIP39_MNEMONIC_LANGUAGES
 )
-from .slip39 import (
+from .slip39 import (  # noqa: F401
     SLIP39Mnemonic, SLIP39_MNEMONIC_WORDS, SLIP39_MNEMONIC_LANGUAGES
 )
-from .electrum import (
+from .electrum import (  # noqa: F401
     ElectrumV1Mnemonic, ELECTRUM_V1_MNEMONIC_WORDS, ELECTRUM_V1_MNEMONIC_LANGUAGES,
     ElectrumV2Mnemonic, ELECTRUM_V2_MNEMONIC_WORDS, ELECTRUM_V2_MNEMONIC_LANGUAGES, ELECTRUM_V2_MNEMONIC_TYPES
 )
-from .monero import (
+from .monero import (  # noqa: F401
     MoneroMnemonic, MONERO_MNEMONIC_WORDS, MONERO_MNEMONIC_LANGUAGES
 )
 from .imnemonic import IMnemonic
@@ -44,6 +44,8 @@ class MNEMONICS:
     +--------------+------------------------------------------------------------------------+
     | BIP39        |  :class:`hdwallet.mnemonics.bip39.mnemonic.BIP39Mnemonic`              |
     +--------------+------------------------------------------------------------------------+
+    | SLIP39       |  :class:`hdwallet.mnemonics.slip39.mnemonic.SLIP39Mnemonic`            |
+    +--------------+------------------------------------------------------------------------+
     | Electrum-V1  |  :class:`hdwallet.mnemonics.electrum.v1.mnemonic.ElectrumV1Mnemonic`   |
     +--------------+------------------------------------------------------------------------+
     | Electrum-V2  |  :class:`hdwallet.mnemonics.electrum.v2.mnemonic.ElectrumV2Mnemonic`   |
@@ -55,10 +57,10 @@ class MNEMONICS:
     dictionary: Dict[str, Type[IMnemonic]] = {
         AlgorandMnemonic.name(): AlgorandMnemonic,
         BIP39Mnemonic.name(): BIP39Mnemonic,
+        SLIP39Mnemonic.name(): SLIP39Mnemonic,
         ElectrumV1Mnemonic.name(): ElectrumV1Mnemonic,
         ElectrumV2Mnemonic.name(): ElectrumV2Mnemonic,
         MoneroMnemonic.name(): MoneroMnemonic,
-        SLIP39Mnemonic.name(): SLIP39Mnemonic,
     }
 
     @classmethod
