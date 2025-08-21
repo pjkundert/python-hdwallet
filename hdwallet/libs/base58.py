@@ -27,7 +27,7 @@ def checksum_encode(address, crypto="eth"):
 def string_to_int(data):
     val = 0
 
-    if type(data) == str:
+    if isinstance(data, str):
         data = bytearray(data)
 
     for (i, c) in enumerate(data[::-1]):

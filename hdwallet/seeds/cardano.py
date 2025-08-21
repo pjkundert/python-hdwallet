@@ -109,7 +109,8 @@ class CardanoSeed(ISeed):
 
         if not isinstance(seed, str) or not bool(re.fullmatch(
             r'^[0-9a-fA-F]+$', seed
-        )): return False
+        )):
+            return False
 
         if cardano_type in [Cardano.TYPES.BYRON_ICARUS, Cardano.TYPES.SHELLEY_ICARUS]:
             return len(seed) == cls.lengths[0]
