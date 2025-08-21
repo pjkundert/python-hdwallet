@@ -8,8 +8,6 @@ from typing import (
     Union, Dict, List
 )
 
-import unicodedata
-
 from ...entropies import (
     IEntropy, MoneroEntropy, MONERO_ENTROPY_STRENGTHS
 )

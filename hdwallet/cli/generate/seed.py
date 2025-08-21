@@ -30,12 +30,12 @@ def generate_seed(**kwargs) -> None:
             if not MNEMONICS.mnemonic(name="Electrum-V2").is_valid(
                 mnemonic=kwargs.get("mnemonic"), mnemonic_type=kwargs.get("mnemonic_type")
             ):
-                click.echo(click.style(f"Invalid Electrum-V2 mnemonic"), err=True)
+                click.echo(click.style("Invalid Electrum-V2 mnemonic"), err=True)
                 sys.exit()
         elif kwargs.get("client") != SLIP39Seed.name():  # SLIP39 supports any 128-, 256- or 512-bit Mnemonic
             mnemonic_name: str = "BIP39" if kwargs.get("client") == CardanoSeed.name() else kwargs.get("client")
             if not MNEMONICS.mnemonic(name=mnemonic_name).is_valid(mnemonic=kwargs.get("mnemonic")):
-                click.echo(click.style(f"Invalid {mnemonic_name} mnemonic {kwargs.get('mnemonic')!r}"), err=True)
+                click.echo(click.style(f"Invalid {mnemonic_name} mnemonic"), err=True)
                 sys.exit()
 
         if kwargs.get("client") == BIP39Seed.name():

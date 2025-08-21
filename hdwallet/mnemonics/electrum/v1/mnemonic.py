@@ -8,8 +8,6 @@ from typing import (
     Dict, List, Union, Optional
 )
 
-import unicodedata
-
 from ....entropies import (
     IEntropy, ElectrumV1Entropy, ELECTRUM_V1_ENTROPY_STRENGTHS
 )

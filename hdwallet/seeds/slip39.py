@@ -8,8 +8,6 @@ from typing import (
     Optional, Union
 )
 
-import unicodedata
-
 from ..exceptions import EntropyError
 from ..mnemonics import IMnemonic
 from ..mnemonics.bip39 import BIP39Mnemonic

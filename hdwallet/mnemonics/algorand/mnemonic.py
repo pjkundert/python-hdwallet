@@ -8,14 +8,12 @@ from typing import (
     Union, Dict, List, Optional
 )
 
-import unicodedata
-
 from ...entropies import (
     IEntropy, AlgorandEntropy, ALGORAND_ENTROPY_STRENGTHS
 )
 from ...crypto import sha512_256
 from ...exceptions import (
-    Error, EntropyError, MnemonicError, ChecksumError
+    EntropyError, MnemonicError, ChecksumError
 )
 from ...utils import (
     get_bytes, bytes_to_string, convert_bits

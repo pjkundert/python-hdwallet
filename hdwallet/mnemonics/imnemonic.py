@@ -72,7 +72,7 @@ class IMnemonic(ABC):
         :rtype: str
         """
 
-        raise NotImplemented
+        raise NotImplementedError
 
     def language(self) -> str:
         """
@@ -245,6 +245,6 @@ class IMnemonic(ABC):
         if isinstance(mnemonic, str):
             if ( len(mnemonic.strip()) * 4 in cls.words_to_entropy_strength.values()
                  and all(c in string.hexdigits for c in mnemonic.strip())):
-               mnemonic: str = cls.from_entropy(mnemonic, language="english")
+                mnemonic: str = cls.from_entropy(mnemonic, language="english")
             mnemonic: list = mnemonic.strip().split()
         return list(map(lambda _: unicodedata.normalize("NFKD", _.lower()), mnemonic))
