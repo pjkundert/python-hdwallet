@@ -90,7 +90,7 @@ def path_to_indexes(path: str) -> List[int]:
         return []
     elif path[0:2] != "m/":
         raise DerivationError(
-            f"Bad path format", expected="like this type of path \"m/0'/0\"", got=path
+            "Bad path format", expected="like this type of path \"m/0'/0\"", got=path
         )
 
     indexes: List[int] = []
@@ -139,17 +139,17 @@ def normalize_index(
     if isinstance(index, tuple):
         if len(index) != 2:
             raise DerivationError(
-                f"Bad index length", expected=2, got=len(index)
+                "Bad index length", expected=2, got=len(index)
             )
         elif not isinstance(index[0], int) or not isinstance(index[1], int):
             raise DerivationError(
-                f"Invalid index types",
+                "Invalid index types",
                 expected="both indexes must be integer instance",
                 got=f"{type(index[0])}-{type(index[0])}"
             )
         elif index[0] < 0 or index[1] < 0:
             raise DerivationError(
-                f"Bad index format", expected="both must be non-negative-numbers", got=index
+                "Bad index format", expected="both must be non-negative-numbers", got=index
             )
         elif index[0] > index[1]:
             raise DerivationError(
@@ -175,18 +175,18 @@ def normalize_index(
                 )
             return from_index, to_index, hardened
         raise DerivationError(
-            f"Bad index format", expected="{non-negative-number} | {number}-{number}", got=index
+            "Bad index format", expected="{non-negative-number} | {number}-{number}", got=index
         )
 
     elif isinstance(index, int):
         if index < 0:
             raise DerivationError(
-                f"Bad index format", expected="non-negative-number", got=index
+                "Bad index format", expected="non-negative-number", got=index
             )
         return index, hardened
 
     raise DerivationError(
-        f"Invalid index instance", expected=(str, int, tuple), got=type(index)
+        "Invalid index instance", expected=(str, int, tuple), got=type(index)
     )
 
 
@@ -223,7 +223,7 @@ def normalize_derivation(
             return f"{_path}/", _indexes, _derivations
         elif path[0:2] != "m/":
             raise DerivationError(
-                f"Bad path format", expected="like this type of path \"m/0'/0\"", got=path
+                "Bad path format", expected="like this type of path \"m/0'/0\"", got=path
             )
     elif not path:
         return f"{_path}/", _indexes, _derivations
@@ -778,7 +778,7 @@ def words_to_bytes_chunk(
         words_list[i]: i for i in range(len(words_list))
     }
 
-    word_1_index, word_2_index,  word_3_index = (
+    word_1_index, word_2_index, word_3_index = (
         words_list_with_index[word_1], words_list_with_index[word_2] % words_list_length, words_list_with_index[word_3] % words_list_length
     )
 
