@@ -6,7 +6,7 @@
 
 import re
 from typing import (
-    Union, Dict, Iterable, List, Optional, Sequence, Tuple
+    Union, Dict, Iterable, List, Optional, Sequence, Collection, Tuple
 )
 
 from ...entropies import (
@@ -24,6 +24,8 @@ from ..imnemonic import IMnemonic
 from shamir_mnemonic import generate_mnemonics
 from shamir_mnemonic.constants import MAX_SHARE_COUNT
 from shamir_mnemonic.recovery import RecoveryState, Share
+
+from tabulate import tabulate
 
 
 class SLIP39_MNEMONIC_WORDS:
@@ -80,10 +82,8 @@ def group_parser( group_spec, size_default: Optional[int] = None) -> Tuple[str, 
         raise ValueError( f"Impossible group specification from {group_spec!r} w/ default size {size_default!r}: {name,(require,size)!r}" )
 
     return (name, (require, size))
-
-
-group_parser.REQUIRED_RATIO	= 1/2
-group_parser.RE			= re.compile( # noqa E305
+group_parser.REQUIRED_RATIO	= 1/2  # noqa: E305
+group_parser.RE			= re.compile(
     r"""
         ^
         \s*
@@ -162,9 +162,7 @@ def language_parser(language: str) -> Dict[Tuple[str, Tuple[int, int]], Dict[Uni
         g_sizes.append(g_dims)
 
     return { (s_name.strip(), (s_thresh, s_size)): dict(zip(g_names, g_sizes)) }
-
-
-language_parser.REQUIRED_RATIO	= 1/2
+language_parser.REQUIRED_RATIO	= 1/2  # noqa: E305
 language_parser.RE		= re.compile(
     r"""
         ^
@@ -187,6 +185,96 @@ language_parser.RE		= re.compile(
         \s* [\]>}]? \s*		# And optionally a trailing inverse bracket
         $
     """, re.VERBOSE)
+
+
+def ordinal( num ):
+    q, mod			= divmod( num, 10 )
+    suffix			= q % 10 != 1 and ordinal.suffixes.get(mod) or "th"
+    return f"{num}{suffix}"
+ordinal.suffixes		= {1: "st", 2: "nd", 3: "rd"}  # noqa: E305
+
+
+def tabulate_slip39(
+    groups: Dict[Union[str, int], Tuple[int, int]],
+    group_mnemonics: Sequence[Collection[str]],
+    columns=None,  # default: columnize, but no wrapping
+) -> str:
+    """Return SLIP-39 groups with group names/numbers, a separator, and tabulated mnemonics.
+
+    Mnemonics exceeding 'columns' will be wrapped with no prefix except a continuation character.
+
+    The default behavior (columns is falsey) is to NOT wrap the mnemonics (no columns limit).  If
+    columns is True or 1 (truthy, but not a specific sensible column size), we'll use the
+    tabulate_slip39.default of 20.  Otherwise, we'll use the specified specific columns.
+
+    """
+    if not columns:				# False, None, 0
+        limit			= 0
+    elif int(columns) > 1:			# 2, ...
+        limit			= int(columns)
+    else:					# True, 1
+        limit			= tabulate_slip39.default
+
+    def prefixed( groups, group_mnemonics ):
+        for g, ((name, (threshold, count)), mnemonics) in enumerate( zip( groups.items(), group_mnemonics )):
+            assert count == len( mnemonics )
+            for o, mnem in enumerate( sorted( map( str.split, mnemonics ))):
+                siz		= limit or len( mnem )
+                end		= len( mnem )
+                rows		= ( end + siz - 1 ) // siz
+                for r, col in enumerate( range( 0, end, siz )):
+                    con 	= ''
+                    if count == 1:			# A 1/1
+                        if rows == 1:
+                            sep	= '━'			# on 1 row
+                        elif r == 0:
+                            sep = '┭'			# on multiple rows
+                            con = '╎'
+                        elif r+1 < rows:
+                            sep = '├'
+                            con = '╎'
+                        else:
+                            sep = '└'
+                    elif rows == 1:			# An N/M w/ full row mnemonics
+                        if o == 0:			# on 1 row, 1st mnemonic
+                            sep = '┳'
+                            con = '╏'
+                        elif o+1 < count:
+                            sep = '┣'
+                            con = '╏'
+                        else:
+                            sep = '┗'
+                    else:				# An N/M, but multi-row mnemonics
+                        if o == 0 and r == 0:		# on 1st row, 1st mnemonic
+                            sep = '┳'
+                            con = '╎'
+                        elif r == 0:			# on 1st row, any mnemonic
+                            sep = '┣'
+                            con = '╎'
+                        elif r+1 < rows:		# on mid row, any mnemonic
+                            sep = '├'
+                            con = '╎'
+                        elif o+1 < count:		# on last row, but not last mneonic
+                            sep = '└'
+                            con = '╏'
+                        else:
+                            sep = '└'			# on last row of last mnemonic
+
+                    # Output the prefix and separator + mnemonics
+                    yield [
+                        f"{name} {threshold}/{count} " if o == 0 and col == 0 else ""
+                    ] + [
+                        ordinal(o+1) if col == 0 else ""
+                    ] + [
+                        sep
+                    ] + mnem[col:col+siz]
+
+                    # And if not the last group and mnemonic, but a last row; Add a blank or continuation row
+                    if r+1 == rows and not (g+1 == len(groups) and o+1 == count):
+                        yield ["", "", con] if con else [None]
+
+    return tabulate( prefixed( groups, group_mnemonics ), tablefmt='plain' )
+tabulate_slip39.default		= 20  # noqa: E305
 
 
 class SLIP39Mnemonic(IMnemonic):
@@ -340,7 +428,7 @@ class SLIP39Mnemonic(IMnemonic):
         passphrase: str = "",
         extendable: bool = True,
         iteration_exponent: int = 1,
-        tabulate: bool = False,
+        tabulate: bool = False,  # False disables; any other value causes prefixing/columnization
     ) -> str:
         """
         Encodes entropy into a mnemonic phrase.
@@ -373,7 +461,7 @@ class SLIP39Mnemonic(IMnemonic):
 
         ((s_name, (s_thresh, s_size)), groups), = language_parser(language).items()
         assert s_size == len(groups)
-        group_mnemonics: Sequence[Sequence[str]] = generate_mnemonics(
+        group_mnemonics: Sequence[Collection[str]] = generate_mnemonics(
             group_threshold=s_thresh,
             groups=groups.values(),
             master_secret=entropy,
@@ -382,6 +470,8 @@ class SLIP39Mnemonic(IMnemonic):
             iteration_exponent=iteration_exponent,
         )
 
+        if tabulate is not False:  # None/0 imply no column limits
+            return tabulate_slip39(groups, group_mnemonics, columns=tabulate)
         return "\n".join(sum(group_mnemonics, []))
 
     @classmethod
@@ -436,7 +526,8 @@ class SLIP39Mnemonic(IMnemonic):
             ^
             \s*
             (
-                [\w\d\s]* [^\w\d\s]	# Group 1 { <-- a single non-word/space/digit separator allowed
+                [ \w\d\s()/]*		# Group(1/1) 1st { <-- a single non-word/space/digit separator allowed
+                [^\w\d\s()/]		#  Any symbol not comprising a valid group_parser language symbol
             )?
             \s*
             (
@@ -458,8 +549,10 @@ class SLIP39Mnemonic(IMnemonic):
         symbol, before any number of Mnemonic word/space symbols:
 
                     Group  1 { word word ...
+
                     Group  2 ╭ word word ...
                              ╰ word word ...
+
                     Group  3 ┌ word word ...
                              ├ word word ...
                              └ word word ...
@@ -469,27 +562,41 @@ class SLIP39Mnemonic(IMnemonic):
                              |
                   single non-word/digit/space
 
+
+        Since multi-row mnemonics are possible, we cannot always confirm that the accumulated
+        mnemonic size is valid after every mnemonic row.  We can certainly identify the end of a
+        mnemonic by a blank row (it doesn't make sense to allow a single Mnemonic to be split across
+        blank rows), or the end of input.
+
         """
         errors			= []
         if isinstance( mnemonic, str ):
             mnemonic_list: List[str] = []
 
-            for line_no, m in enumerate( map( cls.NORMALIZE.match, mnemonic.split("\n"))):
+            for line_no, line in enumerate( mnemonic.split("\n")):
+                m = cls.NORMALIZE.match( line )
                 if not m:
-                    errors.append( f"@L{line_no+1}; unrecognized mnemonic ignored" )
+                    errors.append( f"@L{line_no+1}: unrecognized mnemonic line" )
                     continue
 
                 pref, mnem	= m.groups()
-                if not mnem:  # Blank lines or lines without Mnemonic skipped
-                    continue
-                mnem		= super().normalize(mnem)
-                if len(mnem) in cls.words_list:
-                    mnemonic_list.extend(mnem)
+                if mnem:
+                    mnemonic_list.extend( super().normalize( mnem ))
                 else:
-                    errors.append( f"@L{line_no+1}; odd {len(mnem)}-word mnemonic ignored" )
+                    # Blank lines or lines without Mnemonic skipped.  But they do indicate the end
+                    # of a mnemonic!  At this moment, the total accumulated Mnemonic(s) must be
+                    # valid -- or the last one must have been bad.
+                    word_lengths = list(filter(lambda w: len(mnemonic_list) % w == 0, cls.words_list))
+                    if not word_lengths:
+                        errors.append( f"@L{line_no}: odd length mnemonic encountered" )
+                        break
         else:
             mnemonic_list: List[str] = mnemonic
 
+        # Regardless of the Mnemonic source; the total number of words must be a valid multiple of
+        # the SLIP-39 mnemonic word lengths.  Fortunately, the LCM of (20, 33 and 59) is 38940, so
+        # we cannot encounter a sufficient body of mnemonics to ever run into an uncertain SLIP-39
+        # Mnemonic length in words.
         word_lengths = list(filter(lambda w: len(mnemonic_list) % w == 0, cls.words_list))
         if not word_lengths:
             errors.append( "Mnemonics not a multiple of valid length, or a single hex entropy value" )

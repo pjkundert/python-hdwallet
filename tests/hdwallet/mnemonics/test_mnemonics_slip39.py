@@ -1,8 +1,12 @@
+import contextlib
+import pytest
+
 from hdwallet.exceptions import MnemonicError
 from hdwallet.mnemonics.slip39.mnemonic import (
     SLIP39Mnemonic, language_parser, group_parser
 )
 
+import shamir_mnemonic
 
 
 def test_slip39_language():
@@ -126,3 +130,296 @@ def test_slip39_mnemonics():
                 pytest.fail(
                     f"Subset size {subset_size}: Unexpected error type {type(e)}: {e}"
                 )
+
+
+class substitute( contextlib.ContextDecorator ):
+    """The SLIP-39 standard includes random data in portions of the as share.  Replace the random
+    function during testing to get determinism in resultant nmenomics.
+
+    """
+    def __init__( self, thing, attribute, value ):
+        self.thing		= thing
+        self.attribute		= attribute
+        self.value		= value
+        self.saved		= None
+
+    def __enter__( self ):
+        self.saved		= getattr( self.thing, self.attribute )
+        setattr( self.thing, self.attribute, self.value )
+
+    def __exit__( self, *exc ):
+        setattr( self.thing, self.attribute, self.saved )
+
+
+@substitute( shamir_mnemonic.shamir, 'RANDOM_BYTES', lambda n: b'\0' * n )
+def test_slip39_tabulate():
+
+    entropy_128 = "ff"*(128//8)
+    entropy_256 = "ff"*(256//8)
+    entropy_512 = "ff"*(512//8)
+
+    family = "Perry Kundert [ One 1/1, Two 1/1, Fam 2/4, Frens 3/6 ]"
+    assert SLIP39Mnemonic.encode(entropy=entropy_128, language=family, tabulate=None) == """\
+One 1/1    1st  ━  academic  agency  acrobat   romp     course    prune     deadline  umbrella  darkness  salt      bishop    impact    vanish    squeeze   moment    segment   privacy   bolt      making    enjoy
+
+Two 1/1    1st  ━  academic  agency  beard     romp     downtown  inmate    hamster   counter   rainbow   grocery   veteran   decorate  describe  bedroom   disease   suitable  peasant   editor    welfare   spider
+
+Fam 2/4    1st  ┳  academic  agency  ceramic   roster   crystal   critical  forbid    sled      building  glad      legs      angry     enlarge   ting      ranked    round     solution  legend    ending    lips
+                ╏
+           2nd  ┣  academic  agency  ceramic   scared   drink     verdict   funding   dragon    activity  verify    fawn      yoga      devote    perfect   jacket    database  picture   genius    process   pipeline
+                ╏
+           3rd  ┣  academic  agency  ceramic   shadow   avoid     leaf      fantasy   midst     crush     fraction  cricket   taxi      velvet    gasoline  daughter  august    rhythm    excuse    wrist     increase
+                ╏
+           4th  ┗  academic  agency  ceramic   sister   capital   flexible  favorite  grownup   diminish  sidewalk  yelp      blanket   market    class     testify   temple    silent    prevent   born      galaxy
+
+Frens 3/6  1st  ┳  academic  agency  decision  round    academic  academic  academic  academic  academic  academic  academic  academic  academic  academic  academic  academic  academic  phrase    trust     golden
+                ╏
+           2nd  ┣  academic  agency  decision  scatter  desert    wisdom    birthday  fatigue   lecture   detailed  destroy   realize   recover   lilac     genre     venture   jacket    mountain  blessing  pulse
+                ╏
+           3rd  ┣  academic  agency  decision  shaft    birthday  debut     benefit   shame     market    devote    angel     finger    traveler  analysis  pipeline  extra     funding   lawsuit   editor    guilt
+                ╏
+           4th  ┣  academic  agency  decision  skin     category  skin      alpha     observe   artwork   advance   earth     thank     fact      material  sheriff   peaceful  club      evoke     robin     revenue
+                ╏
+           5th  ┣  academic  agency  decision  snake    anxiety   acrobat   inform    home      patrol    alpha     erode     steady    cultural  juice     emerald   reject    flash     license   royal     plunge
+                ╏
+           6th  ┗  academic  agency  decision  spider   earth     woman     gasoline  dryer     civil     deliver   laser     hospital  mountain  wrist     clinic    evidence  database  public    dwarf     lawsuit"""
+
+    assert SLIP39Mnemonic.encode(entropy=entropy_512, language=family, tabulate=None) == """\
+One 1/1    1st  ━  academic  agency  acrobat   romp     acid      airport   meaning   source    sympathy  junction  symbolic  lyrics    install   enjoy     remind    trend     blind     vampire   type      idle      kind      facility  venture   image     inherit   talent    burning   woman     devote    guest     prevent   news      rich      type      unkind    clay      venture   raisin    oasis     crisis    firefly   change    index     hanger    belong    true      floral    fawn      busy      fridge    invasion  member    hesitate  railroad  campus    edge      ocean     woman     spill
+
+Two 1/1    1st  ━  academic  agency  beard     romp     acid      ruler     execute   bishop    tolerate  paid      likely    decent    lips      carbon    exchange  saver     diminish  year      credit    pacific   deliver   treat     pacific   aviation  email     river     paper     being     deadline  hawk      gasoline  nylon     favorite  duration  spine     lungs     mixed     stadium   briefing  prisoner  fragment  submit    material  fatal     ultimate  mixture   sprinkle  genuine   educate   sympathy  anatomy   visual    carbon    station   exceed    enemy     mayor     custody   lyrics
+
+Fam 2/4    1st  ┳  academic  agency  ceramic   roster   academic  lyrics    envelope  tendency  flexible  careful   shelter   often     plunge    headset   educate   freshman  isolate   flea      receiver  hunting   training  tricycle  legal     snapshot  rainbow   pencil    enforce   priority  spine     hesitate  civil     scandal   makeup    privacy   vitamins  platform  inherit   sheriff   relate    evil      breathe   lilac     vitamins  theater   render    patrol    airport   vitamins  clogs     hour      standard  sugar     exceed    shadow    laundry   involve   ticket    public    cargo
+                ╏
+           2nd  ┣  academic  agency  ceramic   scared   academic  western   unknown   daughter  valid     satisfy   remember  toxic     chubby    various   become    pile      craft     taste     group     listen    amazing   phantom   rescue    sugar     patrol    require   discuss   amazing   software  guitar    race      observe   window    medical   sister    fatal     else      species   mule      hesitate  formal    flash     steady    isolate   express   repair    fangs     expand    likely    fumes     evoke     champion  screw     space     imply     dive      yoga      ordinary  rebound
+                ╏
+           3rd  ┣  academic  agency  ceramic   shadow   academic  harvest   rebuild   knit      beard     pickup    corner    clogs     payroll   detailed  tendency  ultimate  sugar     earth     pharmacy  wits      deploy    capacity  fiction   aide      observe   very      breathe   genre     swing     ancient   arcade    juice     guest     leaves    mixture   superior  born      wavy      endorse   lying     omit      coding    angry     bishop    evening   yelp      pitch     satoshi   impact    avoid     username  practice  easy      wavy      scout     credit    emperor   physics   crazy
+                ╏
+           4th  ┗  academic  agency  ceramic   sister   academic  browser   axle      quantity  recover   junk      float     forbid    criminal  premium   puny      boundary  mama      regret    intimate  body      spark     false     hour      aunt      march     typical   grumpy    scene     strategy  award     observe   clinic    bucket    parcel    pink      charity   clothes   that      hand      platform  syndrome  video     clay      medical   rhythm    tracks    writing   junior    spew      dynamic   health    eyebrow   silent    theater   shadow    grasp     garbage   mandate   length
+
+Frens 3/6  1st  ┳  academic  agency  decision  round    academic  academic  academic  academic  academic  academic  academic  academic  academic  academic  academic  academic  academic  academic  academic  academic  academic  academic  academic  academic  academic  academic  academic  academic  academic  academic  academic  academic  academic  academic  academic  academic  academic  academic  academic  academic  academic  academic  academic  academic  academic  academic  academic  academic  academic  academic  academic  academic  academic  academic  academic  academic  fragment  receiver  provide
+                ╏
+           2nd  ┣  academic  agency  decision  scatter  academic  wealthy   health    losing    moisture  display   damage    scout     junk      roster    percent   society   income    lying     bolt      again     privacy   visual    firm      infant    coal      lawsuit   scout     eraser    campus    alpha     force     fragment  obtain    very      acquire   firefly   eyebrow   judicial  primary   pecan     entrance  counter   snake     parking   anxiety   general   strategy  manual    wireless  provide   timber    level     warn      join      frost     episode   primary   percent   maximum
+                ╏
+           3rd  ┣  academic  agency  decision  shaft    acquire   likely    unfair    grill     course    news      fake      bulge     trip      drift     treat     news      manual    corner    game      depart    item      devote    writing   taste     cleanup   leaves    taste     jewelry   speak     fumes     darkness  spider    execute   canyon    legs      unfair    sniff     tackle    actress   laden     kernel    rhythm    smear     ranked    regular   describe  cause     bike      snapshot  scandal   sniff     dress     aspect    task      kidney    wrote     junction  pistol    suitable
+                ╏
+           4th  ┣  academic  agency  decision  skin     acquire   junction  lobe      teammate  require   pajamas   laser     talent    mild      wits      exclude   entrance  yield     pants     epidemic  dilemma   sprinkle  roster    pink      prayer    admit     yelp      building  depend    slim      floral    inherit   luxury    spirit    unhappy   lecture   resident  legend    picture   pregnant  strategy  depict    museum    carpet    biology   quarter   filter    webcam    paid      crisis    industry  desktop   rhyme     vitamins  pharmacy  charity   receiver  mama      research  ticket
+                ╏
+           5th  ┣  academic  agency  decision  snake    acne      intimate  empty     treat     agency    ceiling   destroy   industry  river     machine   editor    standard  prospect  alarm     spider    security  aquatic   satisfy   rapids    inform    very      threaten  withdraw  market    desktop   furl      devote    squeeze   anxiety   lamp      patrol    oasis     grill     regret    artwork   downtown  invasion  shadow    grant     pecan     tidy      gray      credit    amazing   expand    secret    trip      mixed     perfect   remind    best      lobe      adult     airport   penalty
+                ╏
+           6th  ┗  academic  agency  decision  spider   acne      memory    daisy     humidity  nail      bucket    burden    puny      scandal   epidemic  tidy      alarm     satoshi   medal     safari    saver     party     detailed  taxi      acid      spine     obtain    dive      seafood   cradle    focus     heat      makeup    method    mason     patent    sister    dictate   rumor     pajamas   package   early     teammate  race      ajar      unhappy   agency    very      lips      railroad  invasion  avoid     away      frost     romp      exotic    smear     vegan     bolt      nylon"""
+
+    assert SLIP39Mnemonic.encode(entropy=entropy_512, language=family, tabulate=True) == """\
+One 1/1    1st  ┭  academic  agency    acrobat   romp      acid      airport   meaning   source    sympathy  junction  symbolic  lyrics    install   enjoy     remind    trend     blind     vampire   type      idle
+                ├  kind      facility  venture   image     inherit   talent    burning   woman     devote    guest     prevent   news      rich      type      unkind    clay      venture   raisin    oasis     crisis
+                └  firefly   change    index     hanger    belong    true      floral    fawn      busy      fridge    invasion  member    hesitate  railroad  campus    edge      ocean     woman     spill
+
+Two 1/1    1st  ┭  academic  agency    beard     romp      acid      ruler     execute   bishop    tolerate  paid      likely    decent    lips      carbon    exchange  saver     diminish  year      credit    pacific
+                ├  deliver   treat     pacific   aviation  email     river     paper     being     deadline  hawk      gasoline  nylon     favorite  duration  spine     lungs     mixed     stadium   briefing  prisoner
+                └  fragment  submit    material  fatal     ultimate  mixture   sprinkle  genuine   educate   sympathy  anatomy   visual    carbon    station   exceed    enemy     mayor     custody   lyrics
+
+Fam 2/4    1st  ┳  academic  agency    ceramic   roster    academic  lyrics    envelope  tendency  flexible  careful   shelter   often     plunge    headset   educate   freshman  isolate   flea      receiver  hunting
+                ├  training  tricycle  legal     snapshot  rainbow   pencil    enforce   priority  spine     hesitate  civil     scandal   makeup    privacy   vitamins  platform  inherit   sheriff   relate    evil
+                └  breathe   lilac     vitamins  theater   render    patrol    airport   vitamins  clogs     hour      standard  sugar     exceed    shadow    laundry   involve   ticket    public    cargo
+                ╏
+           2nd  ┣  academic  agency    ceramic   scared    academic  western   unknown   daughter  valid     satisfy   remember  toxic     chubby    various   become    pile      craft     taste     group     listen
+                ├  amazing   phantom   rescue    sugar     patrol    require   discuss   amazing   software  guitar    race      observe   window    medical   sister    fatal     else      species   mule      hesitate
+                └  formal    flash     steady    isolate   express   repair    fangs     expand    likely    fumes     evoke     champion  screw     space     imply     dive      yoga      ordinary  rebound
+                ╏
+           3rd  ┣  academic  agency    ceramic   shadow    academic  harvest   rebuild   knit      beard     pickup    corner    clogs     payroll   detailed  tendency  ultimate  sugar     earth     pharmacy  wits
+                ├  deploy    capacity  fiction   aide      observe   very      breathe   genre     swing     ancient   arcade    juice     guest     leaves    mixture   superior  born      wavy      endorse   lying
+                └  omit      coding    angry     bishop    evening   yelp      pitch     satoshi   impact    avoid     username  practice  easy      wavy      scout     credit    emperor   physics   crazy
+                ╏
+           4th  ┣  academic  agency    ceramic   sister    academic  browser   axle      quantity  recover   junk      float     forbid    criminal  premium   puny      boundary  mama      regret    intimate  body
+                ├  spark     false     hour      aunt      march     typical   grumpy    scene     strategy  award     observe   clinic    bucket    parcel    pink      charity   clothes   that      hand      platform
+                └  syndrome  video     clay      medical   rhythm    tracks    writing   junior    spew      dynamic   health    eyebrow   silent    theater   shadow    grasp     garbage   mandate   length
+
+Frens 3/6  1st  ┳  academic  agency    decision  round     academic  academic  academic  academic  academic  academic  academic  academic  academic  academic  academic  academic  academic  academic  academic  academic
+                ├  academic  academic  academic  academic  academic  academic  academic  academic  academic  academic  academic  academic  academic  academic  academic  academic  academic  academic  academic  academic
+                └  academic  academic  academic  academic  academic  academic  academic  academic  academic  academic  academic  academic  academic  academic  academic  academic  fragment  receiver  provide
+                ╏
+           2nd  ┣  academic  agency    decision  scatter   academic  wealthy   health    losing    moisture  display   damage    scout     junk      roster    percent   society   income    lying     bolt      again
+                ├  privacy   visual    firm      infant    coal      lawsuit   scout     eraser    campus    alpha     force     fragment  obtain    very      acquire   firefly   eyebrow   judicial  primary   pecan
+                └  entrance  counter   snake     parking   anxiety   general   strategy  manual    wireless  provide   timber    level     warn      join      frost     episode   primary   percent   maximum
+                ╏
+           3rd  ┣  academic  agency    decision  shaft     acquire   likely    unfair    grill     course    news      fake      bulge     trip      drift     treat     news      manual    corner    game      depart
+                ├  item      devote    writing   taste     cleanup   leaves    taste     jewelry   speak     fumes     darkness  spider    execute   canyon    legs      unfair    sniff     tackle    actress   laden
+                └  kernel    rhythm    smear     ranked    regular   describe  cause     bike      snapshot  scandal   sniff     dress     aspect    task      kidney    wrote     junction  pistol    suitable
+                ╏
+           4th  ┣  academic  agency    decision  skin      acquire   junction  lobe      teammate  require   pajamas   laser     talent    mild      wits      exclude   entrance  yield     pants     epidemic  dilemma
+                ├  sprinkle  roster    pink      prayer    admit     yelp      building  depend    slim      floral    inherit   luxury    spirit    unhappy   lecture   resident  legend    picture   pregnant  strategy
+                └  depict    museum    carpet    biology   quarter   filter    webcam    paid      crisis    industry  desktop   rhyme     vitamins  pharmacy  charity   receiver  mama      research  ticket
+                ╏
+           5th  ┣  academic  agency    decision  snake     acne      intimate  empty     treat     agency    ceiling   destroy   industry  river     machine   editor    standard  prospect  alarm     spider    security
+                ├  aquatic   satisfy   rapids    inform    very      threaten  withdraw  market    desktop   furl      devote    squeeze   anxiety   lamp      patrol    oasis     grill     regret    artwork   downtown
+                └  invasion  shadow    grant     pecan     tidy      gray      credit    amazing   expand    secret    trip      mixed     perfect   remind    best      lobe      adult     airport   penalty
+                ╏
+           6th  ┣  academic  agency    decision  spider    acne      memory    daisy     humidity  nail      bucket    burden    puny      scandal   epidemic  tidy      alarm     satoshi   medal     safari    saver
+                ├  party     detailed  taxi      acid      spine     obtain    dive      seafood   cradle    focus     heat      makeup    method    mason     patent    sister    dictate   rumor     pajamas   package
+                └  early     teammate  race      ajar      unhappy   agency    very      lips      railroad  invasion  avoid     away      frost     romp      exotic    smear     vegan     bolt      nylon"""
+    
+    mnemonics = SLIP39Mnemonic.encode(entropy=entropy_512, language=family, tabulate=10)
+    assert mnemonics == """\
+One 1/1    1st  ┭  academic  agency    acrobat   romp      acid      airport   meaning   source    sympathy  junction
+                ├  symbolic  lyrics    install   enjoy     remind    trend     blind     vampire   type      idle
+                ├  kind      facility  venture   image     inherit   talent    burning   woman     devote    guest
+                ├  prevent   news      rich      type      unkind    clay      venture   raisin    oasis     crisis
+                ├  firefly   change    index     hanger    belong    true      floral    fawn      busy      fridge
+                └  invasion  member    hesitate  railroad  campus    edge      ocean     woman     spill
+
+Two 1/1    1st  ┭  academic  agency    beard     romp      acid      ruler     execute   bishop    tolerate  paid
+                ├  likely    decent    lips      carbon    exchange  saver     diminish  year      credit    pacific
+                ├  deliver   treat     pacific   aviation  email     river     paper     being     deadline  hawk
+                ├  gasoline  nylon     favorite  duration  spine     lungs     mixed     stadium   briefing  prisoner
+                ├  fragment  submit    material  fatal     ultimate  mixture   sprinkle  genuine   educate   sympathy
+                └  anatomy   visual    carbon    station   exceed    enemy     mayor     custody   lyrics
+
+Fam 2/4    1st  ┳  academic  agency    ceramic   roster    academic  lyrics    envelope  tendency  flexible  careful
+                ├  shelter   often     plunge    headset   educate   freshman  isolate   flea      receiver  hunting
+                ├  training  tricycle  legal     snapshot  rainbow   pencil    enforce   priority  spine     hesitate
+                ├  civil     scandal   makeup    privacy   vitamins  platform  inherit   sheriff   relate    evil
+                ├  breathe   lilac     vitamins  theater   render    patrol    airport   vitamins  clogs     hour
+                └  standard  sugar     exceed    shadow    laundry   involve   ticket    public    cargo
+                ╏
+           2nd  ┣  academic  agency    ceramic   scared    academic  western   unknown   daughter  valid     satisfy
+                ├  remember  toxic     chubby    various   become    pile      craft     taste     group     listen
+                ├  amazing   phantom   rescue    sugar     patrol    require   discuss   amazing   software  guitar
+                ├  race      observe   window    medical   sister    fatal     else      species   mule      hesitate
+                ├  formal    flash     steady    isolate   express   repair    fangs     expand    likely    fumes
+                └  evoke     champion  screw     space     imply     dive      yoga      ordinary  rebound
+                ╏
+           3rd  ┣  academic  agency    ceramic   shadow    academic  harvest   rebuild   knit      beard     pickup
+                ├  corner    clogs     payroll   detailed  tendency  ultimate  sugar     earth     pharmacy  wits
+                ├  deploy    capacity  fiction   aide      observe   very      breathe   genre     swing     ancient
+                ├  arcade    juice     guest     leaves    mixture   superior  born      wavy      endorse   lying
+                ├  omit      coding    angry     bishop    evening   yelp      pitch     satoshi   impact    avoid
+                └  username  practice  easy      wavy      scout     credit    emperor   physics   crazy
+                ╏
+           4th  ┣  academic  agency    ceramic   sister    academic  browser   axle      quantity  recover   junk
+                ├  float     forbid    criminal  premium   puny      boundary  mama      regret    intimate  body
+                ├  spark     false     hour      aunt      march     typical   grumpy    scene     strategy  award
+                ├  observe   clinic    bucket    parcel    pink      charity   clothes   that      hand      platform
+                ├  syndrome  video     clay      medical   rhythm    tracks    writing   junior    spew      dynamic
+                └  health    eyebrow   silent    theater   shadow    grasp     garbage   mandate   length
+
+Frens 3/6  1st  ┳  academic  agency    decision  round     academic  academic  academic  academic  academic  academic
+                ├  academic  academic  academic  academic  academic  academic  academic  academic  academic  academic
+                ├  academic  academic  academic  academic  academic  academic  academic  academic  academic  academic
+                ├  academic  academic  academic  academic  academic  academic  academic  academic  academic  academic
+                ├  academic  academic  academic  academic  academic  academic  academic  academic  academic  academic
+                └  academic  academic  academic  academic  academic  academic  fragment  receiver  provide
+                ╏
+           2nd  ┣  academic  agency    decision  scatter   academic  wealthy   health    losing    moisture  display
+                ├  damage    scout     junk      roster    percent   society   income    lying     bolt      again
+                ├  privacy   visual    firm      infant    coal      lawsuit   scout     eraser    campus    alpha
+                ├  force     fragment  obtain    very      acquire   firefly   eyebrow   judicial  primary   pecan
+                ├  entrance  counter   snake     parking   anxiety   general   strategy  manual    wireless  provide
+                └  timber    level     warn      join      frost     episode   primary   percent   maximum
+                ╏
+           3rd  ┣  academic  agency    decision  shaft     acquire   likely    unfair    grill     course    news
+                ├  fake      bulge     trip      drift     treat     news      manual    corner    game      depart
+                ├  item      devote    writing   taste     cleanup   leaves    taste     jewelry   speak     fumes
+                ├  darkness  spider    execute   canyon    legs      unfair    sniff     tackle    actress   laden
+                ├  kernel    rhythm    smear     ranked    regular   describe  cause     bike      snapshot  scandal
+                └  sniff     dress     aspect    task      kidney    wrote     junction  pistol    suitable
+                ╏
+           4th  ┣  academic  agency    decision  skin      acquire   junction  lobe      teammate  require   pajamas
+                ├  laser     talent    mild      wits      exclude   entrance  yield     pants     epidemic  dilemma
+                ├  sprinkle  roster    pink      prayer    admit     yelp      building  depend    slim      floral
+                ├  inherit   luxury    spirit    unhappy   lecture   resident  legend    picture   pregnant  strategy
+                ├  depict    museum    carpet    biology   quarter   filter    webcam    paid      crisis    industry
+                └  desktop   rhyme     vitamins  pharmacy  charity   receiver  mama      research  ticket
+                ╏
+           5th  ┣  academic  agency    decision  snake     acne      intimate  empty     treat     agency    ceiling
+                ├  destroy   industry  river     machine   editor    standard  prospect  alarm     spider    security
+                ├  aquatic   satisfy   rapids    inform    very      threaten  withdraw  market    desktop   furl
+                ├  devote    squeeze   anxiety   lamp      patrol    oasis     grill     regret    artwork   downtown
+                ├  invasion  shadow    grant     pecan     tidy      gray      credit    amazing   expand    secret
+                └  trip      mixed     perfect   remind    best      lobe      adult     airport   penalty
+                ╏
+           6th  ┣  academic  agency    decision  spider    acne      memory    daisy     humidity  nail      bucket
+                ├  burden    puny      scandal   epidemic  tidy      alarm     satoshi   medal     safari    saver
+                ├  party     detailed  taxi      acid      spine     obtain    dive      seafood   cradle    focus
+                ├  heat      makeup    method    mason     patent    sister    dictate   rumor     pajamas   package
+                ├  early     teammate  race      ajar      unhappy   agency    very      lips      railroad  invasion
+                └  avoid     away      frost     romp      exotic    smear     vegan     bolt      nylon"""
+
+
+    # Now test recovery from the prefixed mnemonics.  First, normalize should work, giving us a
+    # straight list of all Mnemonics, of a length divisible by a valid SLIP-39 Mnemonic word length;
+    # in this case 59 (for 512-bit secrets).
+    import json
+    normalized = SLIP39Mnemonic.normalize( mnemonics )
+    normalized_json = json.dumps(
+        [
+            " ".join(normalized[col:col+59])
+            for col in range(0,len(normalized),59)
+        ], indent=4
+    )
+    #print( normalized_json )
+    assert normalized_json  == """[
+    "academic agency acrobat romp acid airport meaning source sympathy junction symbolic lyrics install enjoy remind trend blind vampire type idle kind facility venture image inherit talent burning woman devote guest prevent news rich type unkind clay venture raisin oasis crisis firefly change index hanger belong true floral fawn busy fridge invasion member hesitate railroad campus edge ocean woman spill",
+    "academic agency beard romp acid ruler execute bishop tolerate paid likely decent lips carbon exchange saver diminish year credit pacific deliver treat pacific aviation email river paper being deadline hawk gasoline nylon favorite duration spine lungs mixed stadium briefing prisoner fragment submit material fatal ultimate mixture sprinkle genuine educate sympathy anatomy visual carbon station exceed enemy mayor custody lyrics",
+    "academic agency ceramic roster academic lyrics envelope tendency flexible careful shelter often plunge headset educate freshman isolate flea receiver hunting training tricycle legal snapshot rainbow pencil enforce priority spine hesitate civil scandal makeup privacy vitamins platform inherit sheriff relate evil breathe lilac vitamins theater render patrol airport vitamins clogs hour standard sugar exceed shadow laundry involve ticket public cargo",
+    "academic agency ceramic scared academic western unknown daughter valid satisfy remember toxic chubby various become pile craft taste group listen amazing phantom rescue sugar patrol require discuss amazing software guitar race observe window medical sister fatal else species mule hesitate formal flash steady isolate express repair fangs expand likely fumes evoke champion screw space imply dive yoga ordinary rebound",
+    "academic agency ceramic shadow academic harvest rebuild knit beard pickup corner clogs payroll detailed tendency ultimate sugar earth pharmacy wits deploy capacity fiction aide observe very breathe genre swing ancient arcade juice guest leaves mixture superior born wavy endorse lying omit coding angry bishop evening yelp pitch satoshi impact avoid username practice easy wavy scout credit emperor physics crazy",
+    "academic agency ceramic sister academic browser axle quantity recover junk float forbid criminal premium puny boundary mama regret intimate body spark false hour aunt march typical grumpy scene strategy award observe clinic bucket parcel pink charity clothes that hand platform syndrome video clay medical rhythm tracks writing junior spew dynamic health eyebrow silent theater shadow grasp garbage mandate length",
+    "academic agency decision round academic academic academic academic academic academic academic academic academic academic academic academic academic academic academic academic academic academic academic academic academic academic academic academic academic academic academic academic academic academic academic academic academic academic academic academic academic academic academic academic academic academic academic academic academic academic academic academic academic academic academic academic fragment receiver provide",
+    "academic agency decision scatter academic wealthy health losing moisture display damage scout junk roster percent society income lying bolt again privacy visual firm infant coal lawsuit scout eraser campus alpha force fragment obtain very acquire firefly eyebrow judicial primary pecan entrance counter snake parking anxiety general strategy manual wireless provide timber level warn join frost episode primary percent maximum",
+    "academic agency decision shaft acquire likely unfair grill course news fake bulge trip drift treat news manual corner game depart item devote writing taste cleanup leaves taste jewelry speak fumes darkness spider execute canyon legs unfair sniff tackle actress laden kernel rhythm smear ranked regular describe cause bike snapshot scandal sniff dress aspect task kidney wrote junction pistol suitable",
+    "academic agency decision skin acquire junction lobe teammate require pajamas laser talent mild wits exclude entrance yield pants epidemic dilemma sprinkle roster pink prayer admit yelp building depend slim floral inherit luxury spirit unhappy lecture resident legend picture pregnant strategy depict museum carpet biology quarter filter webcam paid crisis industry desktop rhyme vitamins pharmacy charity receiver mama research ticket",
+    "academic agency decision snake acne intimate empty treat agency ceiling destroy industry river machine editor standard prospect alarm spider security aquatic satisfy rapids inform very threaten withdraw market desktop furl devote squeeze anxiety lamp patrol oasis grill regret artwork downtown invasion shadow grant pecan tidy gray credit amazing expand secret trip mixed perfect remind best lobe adult airport penalty",
+    "academic agency decision spider acne memory daisy humidity nail bucket burden puny scandal epidemic tidy alarm satoshi medal safari saver party detailed taxi acid spine obtain dive seafood cradle focus heat makeup method mason patent sister dictate rumor pajamas package early teammate race ajar unhappy agency very lips railroad invasion avoid away frost romp exotic smear vegan bolt nylon"
+]"""
+    # So decode should simply work, ignoring all the Group specification language prefixes and
+    # separator/continuation symbols.
+    assert SLIP39Mnemonic.decode( mnemonics ) == entropy_512
+
+    # And invalid ones should note why they failed.  First, a valid one:
+    assert SLIP39Mnemonic.decode( """\
+One 1/1    1st  ┭  academic  agency    acrobat   romp      acid      airport   meaning   source    sympathy  junction  symbolic  lyrics    install   enjoy     remind    trend     blind     vampire   type      idle
+                ├  kind      facility  venture   image     inherit   talent    burning   woman     devote    guest     prevent   news      rich      type      unkind    clay      venture   raisin    oasis     crisis
+                └  firefly   change    index     hanger    belong    true      floral    fawn      busy      fridge    invasion  member    hesitate  railroad  campus    edge      ocean     woman     spill
+
+Two 1/1    1st  ┭  academic  agency    beard     romp      acid      ruler     execute   bishop    tolerate  paid      likely    decent    lips      carbon    exchange  saver     diminish  year      credit    pacific
+                ├  deliver   treat     pacific   aviation  email     river     paper     being     deadline  hawk      gasoline  nylon     favorite  duration  spine     lungs     mixed     stadium   briefing  prisoner
+                └  fragment  submit    material  fatal     ultimate  mixture   sprinkle  genuine   educate   sympathy  anatomy   visual    carbon    station   exceed    enemy     mayor     custody   lyrics
+        """) == entropy_512
+
+    # Missing last word of 1st Mnemonic (on line 3):
+    with pytest.raises(MnemonicError, match="@L3: odd length mnemonic encountered"):
+        SLIP39Mnemonic.decode( """\
+One 1/1    1st  ┭  academic  agency    acrobat   romp      acid      airport   meaning   source    sympathy  junction  symbolic  lyrics    install   enjoy     remind    trend     blind     vampire   type      idle
+                ├  kind      facility  venture   image     inherit   talent    burning   woman     devote    guest     prevent   news      rich      type      unkind    clay      venture   raisin    oasis     crisis
+                └  firefly   change    index     hanger    belong    true      floral    fawn      busy      fridge    invasion  member    hesitate  railroad  campus    edge      ocean     woman
+
+Two 1/1    1st  ┭  academic  agency    beard     romp      acid      ruler     execute   bishop    tolerate  paid      likely    decent    lips      carbon    exchange  saver     diminish  year      credit    pacific
+                ├  deliver   treat     pacific   aviation  email     river     paper     being     deadline  hawk      gasoline  nylon     favorite  duration  spine     lungs     mixed     stadium   briefing  prisoner
+                └  fragment  submit    material  fatal     ultimate  mixture   sprinkle  genuine   educate   sympathy  anatomy   visual    carbon    station   exceed    enemy     mayor     custody   lyrics
+        """)
+
+    # Funky lines
+    with pytest.raises(MnemonicError, match="@L4: unrecognized mnemonic line"):
+        SLIP39Mnemonic.decode( """\
+One 1/1    1st  ┭  academic  agency    acrobat   romp      acid      airport   meaning   source    sympathy  junction  symbolic  lyrics    install   enjoy     remind    trend     blind     vampire   type      idle
+                ├  kind      facility  venture   image     inherit   talent    burning   woman     devote    guest     prevent   news      rich      type      unkind    clay      venture   raisin    oasis     crisis
+                └  firefly   change    index     hanger    belong    true      floral    fawn      busy      fridge    invasion  member    hesitate  railroad  campus    edge      ocean     woman     spill
+# we don't support comments so this Mnemonic will fail due to invalid symbols
+Two 1/1    1st  ┭  academic  agency    beard     romp      acid      ruler     execute   bishop    tolerate  paid      likely    decent    lips      carbon    exchange  saver     diminish  year      credit    pacific
+                ├  deliver   treat     pacific   aviation  email     river     paper     being     deadline  hawk      gasoline  nylon     favorite  duration  spine     lungs     mixed     stadium   briefing  prisoner
+                └  fragment  submit    material  fatal     ultimate  mixture   sprinkle  genuine   educate   sympathy  anatomy   visual    carbon    station   exceed    enemy     mayor     custody   lyrics
+        """)
+
+    # Bad Mnemonic words
+    with pytest.raises(MnemonicError, match="Failed to recover SLIP-39 Mnemonics Invalid mnemonic word 'we'."):
+        SLIP39Mnemonic.decode( """\
+One 1/1    1st  ┭  academic  agency    acrobat   romp      acid      airport   meaning   source    sympathy  junction  symbolic  lyrics    install   enjoy     remind    trend     blind     vampire   type      idle
+                ├  kind      facility  venture   image     inherit   talent    burning   woman     devote    guest     prevent   news      rich      type      unkind    clay      venture   raisin    oasis     crisis
+                └  firefly   change    index     hanger    belong    true      floral    fawn      busy      fridge    invasion  member    hesitate  railroad  campus    edge      ocean     woman     spill
+# we do not support comments so this Mnemonic will fail due to bad mnemonic words even though it happens to be the right length
+# we do not support comments so this Mnemonic will fail due to bad mnemonic words even though it happens to be the right length
+# because we purposely expertly accidentally made this line eleven words long
+Two 1/1    1st  ┭  academic  agency    beard     romp      acid      ruler     execute   bishop    tolerate  paid      likely    decent    lips      carbon    exchange  saver     diminish  year      credit    pacific
+                ├  deliver   treat     pacific   aviation  email     river     paper     being     deadline  hawk      gasoline  nylon     favorite  duration  spine     lungs     mixed     stadium   briefing  prisoner
+                └  fragment  submit    material  fatal     ultimate  mixture   sprinkle  genuine   educate   sympathy  anatomy   visual    carbon    station   exceed    enemy     mayor     custody   lyrics
+        """)
