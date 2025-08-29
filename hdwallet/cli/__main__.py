@@ -105,13 +105,29 @@ def cli_entropy(**kwargs) -> None:
     "-l", "--language", type=str, default=None, help="Set Mnemonic language", show_default=True
 )
 @click.option(
+    "-p", "--passphrase", type=str, default=None, help="Set Mnemonic passphrase for SLIP39", show_default=True
+)
+@click.option(
+    "-t", "--tabulate", type=int, default=False, help="Set Mnemonic tabulation SLIP39", show_default=True
+)
+# Sources of entropy for the mnemonic; raw 'entropy', 'words', or another 'mnemonic' of 'mnemonic_type'
+@click.option(
     "-e", "--entropy", type=str, default=None, help="Set Mnemonic entropy", show_default=True
 )
 @click.option(
     "-w", "--words", type=int, default=None, help="Set Mnemonic words", show_default=True
 )
 @click.option(
+    "-mc", "--mnemonic-client", type=str, default="BIP39", help="Select entropy Mnemonic client", show_default=True
+)
+@click.option(
+    "-m", "--mnemonic", multiple=True, help="Set entropy Mnemonic(s)"
+)
+@click.option(
     "-mt", "--mnemonic-type", type=str, default="standard", help="Set Mnemonic type for Electrum-V2", show_default=True
+)
+@click.option(
+    "-mp", "--mnemonic-passphrase", type=str, default=None, help="Set entropy Mnemonic passphrase", show_default=True
 )
 @click.option(
     "-max", "--max-attempts", type=int, default=(10 ** 60), help="Set Max attempts for Electrum-V2", show_default=True

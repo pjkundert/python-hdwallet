@@ -278,8 +278,7 @@ tabulate_slip39.default		= 20  # noqa: E305
 
 
 class SLIP39Mnemonic(IMnemonic):
-    """
-    Implements the SLIP39 standard, allowing the creation of mnemonic phrases for
+    """Implements the SLIP39 standard, allowing the creation of mnemonic phrases for
     recovering deterministic keys.
 
     Here are available ``SLP39_MNEMONIC_WORDS``:
@@ -301,6 +300,31 @@ class SLIP39Mnemonic(IMnemonic):
     +=======================+======================+
     | ENGLISH               | english              |
     +-----------------------+----------------------+
+
+
+    For SLIP-39, the language word dictionary is always the same (english) so is ignored (simply
+    used as a label for the generated SLIP-39), but the rest of the language string specifies
+    the "dialect" (threshold of groups required/generated, and the threshold of mnemonics
+    required/generated in each group).
+
+    The default is 1/1: 1/1 (a single group of 1 required, with 1/1 mnemonic required) by supplying
+    a language without further specific secret recovery or group recovery details:
+
+        ""
+        "english"
+        "Any Label"
+
+    The default progression of group mnemonics required/provided is fibonacci over required:
+
+      - A threshold is 1/2 the specified number of groups/mnemonics (rounded up), and
+      - groups of 1/1, 1/1, 2/4 and 3/6, ... mnemonics
+
+    All of these language specifications produce the same 2/4 group SLIP-39 encoding:
+
+        "Johnson 2/4"
+        "2: 1/1, 1/1, 2/4, 3/6"
+        "Johnson 2/4: Home 1/1, Office 1/1, Fam 2/4, Frens 3/6"
+
     """
 
     word_bit_length: int = 10
@@ -323,10 +347,15 @@ class SLIP39Mnemonic(IMnemonic):
     }
 
     def __init__(self, mnemonic: Union[str, List[str]], **kwargs) -> None:
+        # Record the mnemonics, and the specified language.  Computes _words simply for a standard
+        # single-phrase mnemonic.  The language string supplied will 
         super().__init__(mnemonic, **kwargs)
-        # We know that normalize has already validated _mnemonic's length
+        # We know that normalize has already validated _mnemonic's length.  Compute the per-mnemonic
+        # words for SLIP-39.
         self._words, = filter(lambda w: len(self._mnemonic) % w == 0, self.words_list)
-
+        # If a certain tabulation is desired for human readability, remember it.
+        self._tabulate = kwargs.get("tabulate", False)
+    
     @classmethod
     def name(cls) -> str:
         """
@@ -349,6 +378,51 @@ class SLIP39Mnemonic(IMnemonic):
         :rtype: str
 
         """
+        if self._tabulate is not False:
+            # Output the mnemonics with their language details and desired tabulation.  We'll need
+            # to re-deduce the SLIP-39 secret and group specs from _language.  Only if we successfully
+            # compute the same number of expected mnemonics, will we assume that everything
+            # is OK (someone hasn't created a SLIP39Mnemonic by hand with a custom _language and _mnemonics),
+            # and we'll output the re-
+            ((s_name, (s_thresh, s_size)), groups), = language_parser(language).items()
+            mnemonic = iter( self._mnemonics )
+            try:
+                group_mnemonics: List[List[str]] =[
+                    [
+                        " ".join( next( mnemonic ) for _ in range( self._words ))
+                        for _ in range( g_size )
+                    ]
+                    for (_g_name, (_g_thresh, g_size)) in groups.items()
+                ]
+            except StopIteration:
+                # Too few mnemonics for SLIP-39 deduced from _language?  Ignore and carry on with
+                # simple mnemonics output.
+                pass
+            else:
+                extras = list(mnemonic)
+                if not extras:
+                    # Exactly consumed all _mnemonics according to SLIP-39 language spec!  Success?
+                    # One final check; all group_mnemonics should have a common prefix.
+                    def common( strings: List[str] ) -> str:
+                        prefix = None
+                        for s in strings:
+                            if common is None:
+                                prefix 	= s
+                                continue
+                            for i, (cp, cs) in zip(prefix, s):
+                                if cp != cs:
+                                    prefix = prefix[:i]
+                            if not prefix:
+                                break
+                        return prefix
+                    
+                    if all( map( common, group_mnemonics )):
+                        return tabulate_slip39( groups, group_mnemonics, columns=self._tabulate )
+
+                # Either no common prefix in some group; Invalid deduction of group specs
+                # vs. mnemonics., or left-over Mnemonics!  Fall through and render it the
+                # old-fashioned way...
+            
         mnemonic_chunks: Iterable[List[str]] = zip(*[iter(self._mnemonic)] * self._words)
         mnemonic: Iterable[str] = map(" ".join, mnemonic_chunks)
         return "\n".join(mnemonic)
@@ -358,22 +432,6 @@ class SLIP39Mnemonic(IMnemonic):
         """Generates a mnemonic phrase from a specified number of words.
 
         This method generates a mnemonic phrase based on the specified number of words and language.
-        For SLIP-39, the language word dictionary is always the same (english) so is ignored (simply
-        used as a label for the generated SLIP-39), but the rest of the language string specifies
-        the "dialect" (threshold of groups required/generated, and the threshold of mnemonics
-        required/generated in each group).
-
-        The default is:
-
-          - A threshold is 1/2 the specified number of groups/mnemonics (rounded up), and
-          - 4 groups of 1, 1, 4 and 6 mnemonics
-
-        All of these language specifications produce the same 2/4 group SLIP-39 encoding:
-
-            ""
-            "Johnson"
-            "2: 1/1, 1/1, 2/4, 3/6"
-            "Johnson 2/4: Home 1/1, Office 1/1, Fam 2/4, Frens 3/6"
 
         :param words: The number of words for the mnemonic phrase.
         :type words: int

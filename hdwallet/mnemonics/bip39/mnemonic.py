@@ -228,7 +228,7 @@ class BIP39Mnemonic(IMnemonic):
         mnemonic_bin: str = entropy_binary_string + entropy_hash_binary_string[:len(entropy) // 4]
 
         mnemonic: List[str] = []
-        words_list: List[str] = cls.normalize(cls.get_words_list_by_language(language=language))
+        words_list: List[str] = cls.get_words_list_by_language(language=language)  # Already NFC normalized
         if len(words_list) != cls.words_list_number:
             raise Error(
                 "Invalid number of loaded words list", expected=cls.words_list_number, got=len(words_list)
@@ -239,11 +239,16 @@ class BIP39Mnemonic(IMnemonic):
             word_index: int = binary_string_to_integer(word_bin)
             mnemonic.append(words_list[word_index])
 
-        return " ".join(cls.normalize(mnemonic))
+        return " ".join(mnemonic)  # Words from wordlist are already properly normalized
 
     @classmethod
     def decode(
-        cls, mnemonic: str, checksum: bool = False, words_list: Optional[List[str]] = None, words_list_with_index: Optional[dict] = None
+        cls,
+        mnemonic: str,
+        language: Optional[str],
+        checksum: bool = False,
+        words_list: Optional[List[str]] = None,
+        words_list_with_index: Optional[Dict[str, int]] = None,
     ) -> str:
         """
         Decodes a mnemonic phrase into its corresponding entropy.
@@ -253,6 +258,8 @@ class BIP39Mnemonic(IMnemonic):
 
         :param mnemonic: The mnemonic phrase to decode.
         :type mnemonic: str
+        :param language: The preferred language of the mnemonic phrase
+        :type language: Optional[str]
         :param checksum: Whether to include the checksum in the returned entropy.
         :type checksum: bool
         :param words_list: Optional list of words used to decode the mnemonic. If not provided, the method will use the default word list for the language detected.
@@ -264,19 +271,16 @@ class BIP39Mnemonic(IMnemonic):
         :rtype: str
         """
 
-        words: list = cls.normalize(mnemonic)
+        words: list = cls.normalize(mnemonic, language=language)
         if len(words) not in cls.words_list:
             raise MnemonicError("Invalid mnemonic words count", expected=cls.words_list, got=len(words))
 
         if not words_list or not words_list_with_index:
-            words_list, language = cls.find_language(mnemonic=words)
-            if len(words_list) != cls.words_list_number:
+            words_list_with_index, language = cls.find_language(mnemonic=words, language=language)
+            if len(set(words_list_with_index.values())) != cls.words_list_number:
                 raise Error(
                     "Invalid number of loaded words list", expected=cls.words_list_number, got=len(words_list)
                 )
-            words_list_with_index: dict = {
-                words_list[i]: i for i in range(len(words_list))
-            }
 
         if len(words_list) != cls.words_list_number:
             raise Error(
