@@ -74,9 +74,13 @@ class BIP39Seed(ISeed):
         if not BIP39Mnemonic.is_valid(mnemonic=mnemonic):
             raise MnemonicError(f"Invalid {cls.name()} mnemonic words")
 
+        # Normalize mnemonic to NFD for seed generation as required by BIP-39 specification
+        normalized_mnemonic: str = BIP39Mnemonic.normalize_for_seed(mnemonic)
+        
+        # Salt normalization should use NFKD as per BIP-39 specification  
         salt: str = unicodedata.normalize("NFKD", (
             (cls.seed_salt_modifier + passphrase) if passphrase else cls.seed_salt_modifier
         ))
         return bytes_to_string(pbkdf2_hmac_sha512(
-            password=mnemonic, salt=salt, iteration_num=cls.seed_pbkdf2_rounds
+            password=normalized_mnemonic, salt=salt, iteration_num=cls.seed_pbkdf2_rounds
         ))
