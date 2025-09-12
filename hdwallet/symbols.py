@@ -38,6 +38,8 @@ AXE: str = "AXE"
 AXL: str = "AXL"
 # Band-Protocol
 BAND: str = "BAND"
+# Base
+BASE: str = "BASE"
 # Bata
 BTA: str = "BTA"
 # Beetle Coin
