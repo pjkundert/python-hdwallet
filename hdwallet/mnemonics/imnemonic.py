@@ -224,8 +224,8 @@ class WordIndices( Mapping ):
             # The key'th word (or IndexError)
             return self._words[key], key, set()
 
-        *_, (_, node) = self._trie.find( key, complete=Trie )
-        if node is None:
+        terminal, prefix, node = self._trie.search( key, complete=Trie )
+        if not terminal:
             # We're nowhere in the Trie with this word
             raise KeyError(f"{key} does not match any word")
 
@@ -466,7 +466,7 @@ class IMnemonic(ABC):
 
         language_words_indices: Dict[str, Dict[str, int]] = {}
         quality: Dict[str, int] = {}  # How many language symbols were matched
-        for candidate, words_list, words_indices in cls.all_wordslist_indices( wordlist_path=wordlist_path ):
+        for candidate, words_list, words_indices in cls.all_words_indices( wordlist_path=wordlist_path ):
             language_words_indices[candidate] = words_indices
             quality[candidate] = 0
             try:
@@ -475,8 +475,8 @@ class IMnemonic(ABC):
                 for word in mnemonic:
                     word_composed = unicodedata.normalize( "NFKC", word )
                     try:
-                        words_indices[word_composed]
-                        quality[candidate] += len( word_composed )
+                        word, index, options = words_indices[word_composed]
+                        quality[candidate] += len( word )
                     except KeyError as ex:
                         raise MnemonicError(f"Unable to find word {word}") from ex
 
@@ -499,9 +499,9 @@ class IMnemonic(ABC):
         if not quality:
             raise MnemonicError(f"Unrecognized language for mnemonic '{mnemonic}'")
 
-        (matches, candidate), *rest = sorted(( (m, c) for c, m in quality.items()), reverse=True )
-        if rest and matches == rest[0][0]:
-            raise MnemonicError(f"Ambiguous language for mnemonic '{mnemonic}'; specify a preferred language")
+        (candidate, matches), *worse = sorted(quality.items(), key=lambda k_v: k_v[1], reverse=True )
+        if worse and matches == worse[0][1]:
+            raise MnemonicError(f"Ambiguous languages {', '.join(c for c, w in worse)} or {candidate} for mnemonic; specify a preferred language")
 
         return language_words_indices[candidate], candidate
 

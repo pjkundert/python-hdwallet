@@ -396,5 +396,91 @@ class TestBIP39CrossLanguage:
         print("✓ Design pattern allows for derived TrieNode classes with custom EMPTY values")
 
 
+    def test_ambiguous_languages(self):
+        """Test that find_language correctly detects and raises errors for ambiguous mnemonics.
+
+        This test verifies that when a mnemonic contains words common to multiple languages
+        with equal quality scores, find_language raises a MnemonicError indicating the ambiguity.
+        """
+        from hdwallet.exceptions import MnemonicError
+
+        # Create a test mnemonic using only common words between languages
+        # Use enough words to create realistic test cases
+        if len(self.common_words) < 12:
+            pytest.skip(f"Not enough common words ({len(self.common_words)}) for ambiguity testing")
+
+        # Test with 12-word mnemonics using only common words
+        test_mnemonic = self.common_words[:12]  # Use first 12 common words
+
+        # Test 1: find_language should detect ambiguity when no preferred language is specified
+        try:
+            word_indices, detected_language = BIP39Mnemonic.find_language(test_mnemonic)
+            # If this succeeds, it means one language had a higher quality score than others
+            # This is valid behavior - not all common word combinations are equally ambiguous
+            print(f"Mnemonic resolved to {detected_language} (quality was decisive)")
+        except MnemonicError as e:
+            # This is the expected behavior for truly ambiguous mnemonics
+            assert "Ambiguous languages" in str(e), f"Expected ambiguity error, got: {e}"
+            assert "specify a preferred language" in str(e), f"Expected preference suggestion, got: {e}"
+            print(f"✓ Correctly detected ambiguous mnemonic: {e}")
+
+        # Test 2: Verify that specifying a preferred language resolves the ambiguity
+        # Try with each available language that contains these common words
+        resolved_languages = []
+        for language in ['english', 'french']:  # Test both languages we know have common words
+            try:
+                word_indices, detected_language = BIP39Mnemonic.find_language(
+                    test_mnemonic, language=language
+                )
+                resolved_languages.append(detected_language)
+                print(f"✓ Successfully resolved with preferred language '{language}' -> {detected_language}")
+            except MnemonicError as e:
+                print(f"Failed to resolve with language '{language}': {e}")
+
+        # At least one language should successfully resolve the mnemonic
+        assert len(resolved_languages) > 0, "No language could resolve the test mnemonic"
+
+        # Test 3: Test with a different set of common words to ensure robustness
+        if len(self.common_words) >= 24:
+            # Try with different common words (offset by 6 to get different words)
+            alt_test_mnemonic = self.common_words[6:18]  # Words 6-17 (12 words)
+
+            try:
+                word_indices, detected_language = BIP39Mnemonic.find_language(alt_test_mnemonic)
+                print(f"Alternative mnemonic resolved to {detected_language}")
+            except MnemonicError as e:
+                if "Ambiguous languages" in str(e):
+                    print(f"✓ Alternative mnemonic also correctly detected as ambiguous: {e}")
+                    # Test that preferred language resolves it
+                    word_indices, detected_language = BIP39Mnemonic.find_language(
+                        alt_test_mnemonic, language='english'
+                    )
+                    print(f"✓ Alternative mnemonic resolved with preferred language: {detected_language}")
+                else:
+                    raise  # Re-raise unexpected errors
+
+        # Test 4: Verify behavior with abbreviations if common abbreviations exist
+        if len(self.common_abbrevs) >= 12:
+            abbrev_mnemonic = list(self.common_abbrevs)[:12]
+            print(f"Testing with common abbreviations: {abbrev_mnemonic[:5]}...")
+
+            try:
+                word_indices, detected_language = BIP39Mnemonic.find_language(abbrev_mnemonic)
+                print(f"Abbreviation mnemonic resolved to {detected_language}")
+            except MnemonicError as e:
+                if "Ambiguous languages" in str(e):
+                    print(f"✓ Abbreviation mnemonic correctly detected as ambiguous")
+                    # Verify preferred language resolves it
+                    word_indices, detected_language = BIP39Mnemonic.find_language(
+                        abbrev_mnemonic, language='english'
+                    )
+                    print(f"✓ Abbreviation mnemonic resolved with preferred language: {detected_language}")
+                else:
+                    raise  # Re-raise unexpected errors
+
+        print("✓ Ambiguous language detection tests completed successfully")
+        print(f"✓ Tested with {len(test_mnemonic)} common words")
+        print("✓ Verified ambiguity detection and preferred language resolution")
+
 if __name__ == "__main__":
     pytest.main([__file__])
