@@ -7,8 +7,11 @@
 from abc import (
     ABC, abstractmethod
 )
+from collections.abc import (
+    Mapping
+)
 from typing import (
-    Union, Dict, Set, List, Tuple, Optional
+    Any, Callable, Union, Dict, Generator, List, Set, Tuple, Optional
 )
 
 import os
@@ -19,6 +22,243 @@ from collections import defaultdict
 
 from ..exceptions import MnemonicError
 from ..entropies import IEntropy
+
+
+class TrieError(Exception):
+    pass
+
+
+class Ambiguous(TrieError):
+    def __init__(self, message, word: str, options: Set[str]):
+        super().__init__( message )
+        self.word = word
+        self.options = options
+
+
+class TrieNode:
+    # Associates a value with a node in a trie.
+    #
+    # The EMPTY marker indicates that a word ending in this TrieNode was not inserted into the True;
+    # replace with something that will never be provided as a word's 'value', preferably something
+    # "Falsey".  An insert defaults to PRESENT, preferably something "Truthy".
+    EMPTY = None
+    PRESENT = True
+    def __init__(self):
+        self.children = defaultdict(self.__class__)
+        self.value = self.__class__.EMPTY
+
+
+class Trie:
+
+    def __init__(self, root=None):
+        """
+        Initialize your data structure here.
+        """
+        self.root = root if root is not None else TrieNode()
+
+    def insert(self, word: str, value: Optional[Any] = None) -> None:
+        """
+        Inserts a 'word' into the Trie, associated with 'value'.
+        """
+        current = self.root
+        for letter in word:
+            current = current.children[letter]
+        assert current.value is current.EMPTY, \
+            f"Attempt to re-insert {word!r}; already present with value {current.value!r}"
+        current.value = current.PRESENT if value is None else value
+
+    def find(self, word: str, current: Optional[TrieNode] = None) -> Generator[Tuple[str, Optional[TrieNode]], None, None]:
+        """Finds all the TrieNode that match the word, optionally from the provided 'current' node.
+
+        If the word isn't in the current Trie, terminates by producing None for the TrieNode.
+
+        """
+        if current is None:
+            current = self.root
+        yield current.value is not current.EMPTY, '', current
+
+        for letter in word:
+            current = current.children.get(letter)
+            if current is None:
+                yield False, '', None
+                break
+            yield current.value is not current.EMPTY, letter, current
+
+    def complete(self, current: TrieNode) -> Generator[Tuple[str, TrieNode], None, None]:
+        """Generate (<completed>, key, node) tuples along an unambiguous path starting from after
+        the current TrieNode, until the next terminal TrieNode is encountered.
+
+        Continues until a non-EMPTY value is found, or the path becomes ambiguous.  Tests for a
+        terminal value *after* transitioning, so we can use .complete to move from unique terminal
+        node to unique terminal node, eg.  'ad' --> 'add' --> 'addict'
+
+        Will only yield candidates that are on an unambiguous path; the final candidate's terminal
+        flag must be evaluated to determine if it indicates a completed word was found.
+
+        """
+        terminal = False
+        while current is not None and not terminal and len( current.children ) == 1:
+            # Follow unique path until we hit ambiguity or a terminal (non-empty) node
+            (key, current), = current.children.items()
+            terminal = current.value is not current.EMPTY
+            yield terminal, key, current
+
+    def search(self, word: str, current: Optional[TrieNode] = None, complete: bool = False) -> Tuple[str, Optional[TrieNode]]:
+        """Returns the matched stem, and associated TrieNode if the word is in the trie (otherwise None)
+
+        If 'complete' and 'word' is an unambiguous abbreviation of some word with a non-EMPTY value,
+        return the node.
+
+        The word could be complete and have a non-EMPTY TrieNode.value, but also could be a prefix
+        of other words, so the caller may need to consult the return TrieNode.children.
+
+        """
+        stem = ''
+        for terminal, c, current in self.find( word, current=current ):
+            stem += c
+        if complete and current is not None and current.value is current.EMPTY:
+            for terminal, c, current in self.complete( current=current ):
+                stem += c
+        return terminal, stem, current
+
+    def __contains__(self, word: str) -> bool:
+        """True iff 'word' has been associated with (or is a unique prefix of) a value in the trie."""
+        _, _, result = self.search(word, complete=True)
+        return result is not None
+
+    def startswith(self, prefix: str) -> bool:
+        """
+        Returns if there is any word(s) in the trie that start with the given prefix.
+        """
+        _, _, result = self.search(prefix)
+        return result is not None
+
+    def scan(
+        self,
+        prefix: str = '',
+        current: Optional[TrieNode] = None,
+        depth: int = 0,
+        predicate: Optional[Callable[[TrieNode], bool]] = None, # default: terminal
+    ) -> Generator[Tuple[str, TrieNode], None, None]:
+        """Yields all strings and their TrieNode that match 'prefix' and satisfy 'predicate' (or are
+        terminal), in depth-first order.
+
+        Optionally start from the provided 'current' node.
+
+        Any strings that are only prefixes for other string(s) will have node.value == node.EMPTY
+        (be non-terminal).
+
+        """
+        *_, (terminal, _, current) = self.find(prefix, current=current)
+        if current is None:
+            return
+
+        satisfied = terminal if predicate is None else predicate( current )
+        if satisfied:
+            yield prefix, current
+
+        if not depth or depth > 1:
+            for char, child in current.children.items():
+                for suffix, found in self.scan( current=child, depth=max(0, depth-1), predicate=predicate ):
+                    yield prefix + char + suffix, found
+
+
+def unmark( word_composed: str ) -> str:
+    """This word may contain composite characters with accents like "é" that decompose "e" + "'".
+    Most mnemonic encodings require that mnemonic words without accents match the accented word.
+    Remove the non-character symbols.
+
+    """
+    return ''.join(
+        c
+        for c in unicodedata.normalize( "NFD", word_composed )
+        if not unicodedata.category( c ).startswith('M')
+    )
+
+
+class WordIndices( Mapping ):
+    """Holds a Sequence of Mnemonic words, and is indexable either by int (returning the original
+    word), or by the original word (with or without Unicode "Marks") or a unique abbreviations,
+    returning the int index.
+
+    For non-unique prefixes, indexing returns a Set[str] of next character options.
+
+    """
+    def __init__(self, sequence):
+        """Insert a sequence of Unicode words (and optionally value(s)) into a Trie, making the
+        "unmarked" version an alias of the regular Unicode version.
+
+        """
+        self._trie = Trie()
+        self._words = []
+        for i, word in enumerate( sequence ):
+            self._words.append( word )
+            self._trie.insert( word, i )
+
+            word_unmarked = unmark( word )
+            if word == word_unmarked or len( word ) != len( word_unmarked ):
+                # If the word has no marks, or if the unmarked word doesn't have the same number of
+                # glyphs, we can't "alias" it.
+                #print( f"Not inserting {word!r}; unmarked {word_unmarked!r} identical or incompatible" )
+                continue
+            # Traverse the TrieNodes representing 'word'.  Each character in word and word_unmarked
+            # is joined by the TrieNode which contains it in .children, and we should never get a
+            # None (lose the plot) because we've just inserted 'word'!  This will just be idempotent
+            # unless c_u != c.
+            #print( f"Inserting {word:10} alias: {word_unmarked}" )
+            for c, c_u, (_, _, n) in zip( word, word_unmarked, self._trie.find( word )):
+                assert c in n.children
+                n.children[c_u] = n.children[c]
+
+    def __getitem__(self, key: Tuple[int, str]):
+        """A Mapping to find a word by spelling or index, returning a value Tuple consisting of:
+            - The canonical word 'str', and
+            - The index value, and
+            - the set of options available from the end of word, if any
+
+        If no such 'int' index exists, raises IndexError.  If no word(s) are possible starting from
+        the given 'str', raises KeyError.
+
+        """
+        if isinstance( key, int ):
+            # The key'th word (or IndexError)
+            return self._words[key], key, set()
+
+        *_, (_, node) = self._trie.find( key, complete=Trie )
+        if node is None:
+            # We're nowhere in the Trie with this word
+            raise KeyError(f"{key} does not match any word")
+
+        return self._words[node.value], node.value, set(node.children)
+
+    def __len__(self):
+        return self._words
+
+    def __iter__(self):
+        return iter( self._words )
+
+    def keys(self):
+        return self._words
+
+    def values(self):
+        return map( self.__getitem__, self._words )
+
+    def items(self):
+        return zip( self._words, self.values() )
+
+    def abbreviations(self):
+        """All unique abbreviations of words in the Trie.  Scans the Trie, identifying each prefix
+        that uniquely abbreviates a word."""
+        def unique( current ):
+            terminal = False
+            for terminal, _, complete in self._trie.complete( current ):
+                pass
+            return terminal
+
+        for abbrev, node in self._trie.scan( predicate=unique ):
+            if node.value is node.EMPTY:
+                # Only abbreviations (not terminal words) that led to a unique terminal word
+                yield abbrev
 
 
 class IMnemonic(ABC):
@@ -149,85 +389,21 @@ class IMnemonic(ABC):
         return words_list
 
     @classmethod
-    def all_wordslist_indices(
+    def all_words_indices(
         cls, wordlist_path: Optional[Dict[str, str]] = None
-    ) -> Tuple[str, List[str], Dict[str, int]]:
-        """Yields each 'candidate' language, its NFKC-normalized 'words_list', and its
-        'word_indices' dict including optional accents and all unique abbreviations.
+    ) -> Tuple[str, List[str], WordIndices]:
+        """Yields each 'candidate' language, its NFKC-normalized words List, and its WordIndices
+        Mapping supporting indexing by 'int' word index, or 'str' with optional accents and all
+        unique abbreviations.
 
         """
-        def abbreviated_indices( word_indices ):
-            """We will support all unambiguous abbreviations; even down to less than 4 characters
-            (the typically guaranteed /minimum/ unambiguous word size in most Mnemonic encodings.)
-            This is because Mnemonic inputs often support the absolute minimum input required to
-            uniquely identify a mnemonic word in a specified language.
-
-            """
-            def min_disambiguating_length(word1: str, word2: str):
-                """Find the minimum length needed to disambiguate word1 from word2.  Since the words
-                cannot be the same, they must differ at a valid index, or one must be longer, so the
-                resultant index is always a valid index into at least the longer of the two words.
-
-                """
-                assert word1 != word2, \
-                    f"Cannot disambiguate empty or identical words"
-                for j in range(min(len(word1), len(word2))):
-                    if word1[j] != word2[j]:
-                        return j + 1
-                # One is a prefix of the other; first non-prefix character disambiguates
-                return j + 1
-
-            words_sorted = sorted( word_indices )
-
-            pair_disambiguation = list(
-                min_disambiguating_length( w1, w2 )
-                for w1, w2 in zip( words_sorted[0:], words_sorted[1:] )
-            )
-            for i in range( len( words_sorted ) - 2 ):
-                beg = min(
-                    pair_disambiguation[i-1 if i > 0 else i],
-                    pair_disambiguation[i],
-                    pair_disambiguation[i+1]
-                )
-                end = min(
-                    len( words_sorted[i-1 if i > 0 else i] ),
-                    len( words_sorted[i] ),
-                    len( words_sorted[i+1] )
-                )
-                for length in range( beg, end - 1):
-                    abbrev = words_sorted[i][:length]
-                    assert abbrev not in words_sorted, \
-                        f"Found {abbrev} in {words_sorted!r}"
-                    yield abbrev, word_indices[words_sorted[i]]
-
         for candidate in wordlist_path.keys() if wordlist_path else cls.languages:
             # Normalized NFC, so characters and accents are combined
             words_list: List[str] = cls.get_words_list_by_language(
                 language=candidate, wordlist_path=wordlist_path
             )
-            word_indices: Dict[str,int] = {
-                words_list[i]: i for i in range(len( words_list ))
-            }
-
-            def unmark( word_composed ):
-                """This word may contain composite characters with accents like "é" that decompose "e
-                + '".  Most mnemonic encodings require that mnemonic words without accents match
-                the accented word.  Remove the non-character symbols."""
-                return ''.join(
-                    c
-                    for c in unicodedata.normalize( "NFD", word_composed )
-                    if not unicodedata.category( c ).startswith('M')
-                )
-
-            word_indices_unmarked = {
-                unmark( word_composed ): i
-                for word_composed, i in word_indices.items()
-            }
-            word_indices.update( word_indices_unmarked )
-
-            word_indices_abbreviated = dict( abbreviated_indices( word_indices ))
-            word_indices.update( word_indices_abbreviated )
-
+            print( f"Language {candidate!r} has {len(words_list)} words" )
+            word_indices = WordIndices( words_list )
             yield candidate, words_list, word_indices
 
     @classmethod
@@ -288,7 +464,7 @@ class IMnemonic(ABC):
 
         """
 
-        language_words_indices: Dict[str, Dict[str, int]]
+        language_words_indices: Dict[str, Dict[str, int]] = {}
         quality: Dict[str, int] = {}  # How many language symbols were matched
         for candidate, words_list, words_indices in cls.all_wordslist_indices( wordlist_path=wordlist_path ):
             language_words_indices[candidate] = words_indices
