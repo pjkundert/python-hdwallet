@@ -9,7 +9,7 @@ import pytest
 
 from hdwallet.mnemonics.bip39 import BIP39Mnemonic
 from hdwallet.mnemonics.imnemonic import Trie, TrieNode
-
+from hdwallet.exceptions import ChecksumError
 
 class TestBIP39CrossLanguage:
     """Test BIP39 mnemonics that work in both English and French languages.
@@ -66,11 +66,11 @@ class TestBIP39CrossLanguage:
 
         # Load all specified languages
         language_data = {}
-        for language, words, words_indices in BIP39Mnemonic.all_words_indices():
+        for language, words, indices in BIP39Mnemonic.language_words_indices():
             language_data[language] = dict(
                 words = words,
-                indices = words_indices,
-                abbrevs = set( words_indices.abbreviations() ),
+                indices = indices,
+                abbrevs = set( indices.abbreviations() ),
             )
             if language not in languages:
                 continue
@@ -93,9 +93,9 @@ class TestBIP39CrossLanguage:
             print(f"{lang.capitalize()} words: {len(data['words'])}")
 
         print(f"Common words found: {len(cls.common_words)}")
-        print(f"First 20 common words: {cls.common_words[:20]}")
+        print(f"First 20 common words: {sorted(cls.common_words)[:20]}")
         print(f"Common abbrevs found: {len(cls.common_abbrevs)}")
-        print(f"First 20 common abbrevs: {cls.common_abbrevs[:20]}")
+        print(f"First 20 common abbrevs: {sorted(cls.common_abbrevs)[:20]}")
 
     def create_random_mnemonic_from_common_words(self, word_count: int) -> str:
         """Create a random mnemonic using only common words."""
@@ -127,8 +127,10 @@ class TestBIP39CrossLanguage:
                 successful_both_languages.append(mnemonic)
                 print(f"{words}-word common mnemonics {' '.join(mnemonic)!r}")
 
-            except Exception as exc:
+            except ChecksumError as exc:
                 # Skip invalid mnemonics (e.g., checksum failures)
+                #import traceback
+                #print( f"Failed to decode: {traceback.format_exc()}" )
                 continue
 
         success_rate = len(successful_both_languages) / total_attempts

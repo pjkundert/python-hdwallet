@@ -74,8 +74,8 @@ class BIP39Seed(ISeed):
         if not BIP39Mnemonic.is_valid(mnemonic=mnemonic):
             raise MnemonicError(f"Invalid {cls.name()} mnemonic words")
 
-        # Normalize mnemonic to NFD for seed generation as required by BIP-39 specification
-        normalized_mnemonic: str = BIP39Mnemonic.normalize_for_seed(mnemonic)
+        # Normalize mnemonic to NFKD for seed generation as required by BIP-39 specification
+        normalized_mnemonic: str = unicodedata.normalize("NFKD", mnemonic)
         
         # Salt normalization should use NFKD as per BIP-39 specification  
         salt: str = unicodedata.normalize("NFKD", (

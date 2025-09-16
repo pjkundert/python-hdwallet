@@ -5,7 +5,7 @@
 # file COPYING or https://opensource.org/license/mit
 
 from typing import (
-    Union, Dict, List, Optional
+    Union, Dict, List, Mapping, Optional
 )
 
 from ...entropies import (
@@ -208,6 +208,8 @@ class BIP39Mnemonic(IMnemonic):
 
         This method converts a given entropy value into a mnemonic phrase according to the specified language.
 
+        It is NFC normalized for presentation, and must be NFKD normalized before conversion to a BIP-39 seed.
+
         :param entropy: The entropy to encode into a mnemonic phrase.
         :type entropy: Union[str, bytes]
         :param language: The language for the mnemonic phrase.
@@ -239,16 +241,15 @@ class BIP39Mnemonic(IMnemonic):
             word_index: int = binary_string_to_integer(word_bin)
             mnemonic.append(words_list[word_index])
 
-        return " ".join(mnemonic)  # Words from wordlist are already properly normalized
+        return " ".join(mnemonic)  # Words from wordlist are already normalized NFD for encoding
 
     @classmethod
     def decode(
         cls,
         mnemonic: str,
-        language: Optional[str],
+        language: Optional[str] = None,
         checksum: bool = False,
-        words_list: Optional[List[str]] = None,
-        words_list_with_index: Optional[Dict[str, int]] = None,
+        words_list_with_index: Optional[Mapping[str, int]] = None,
     ) -> str:
         """
         Decodes a mnemonic phrase into its corresponding entropy.
@@ -271,21 +272,16 @@ class BIP39Mnemonic(IMnemonic):
         :rtype: str
         """
 
-        words: list = cls.normalize(mnemonic, language=language)
+        words: list = cls.normalize(mnemonic)
         if len(words) not in cls.words_list:
             raise MnemonicError("Invalid mnemonic words count", expected=cls.words_list, got=len(words))
 
-        if not words_list or not words_list_with_index:
+        if not words_list_with_index:
             words_list_with_index, language = cls.find_language(mnemonic=words, language=language)
             if len(set(words_list_with_index.values())) != cls.words_list_number:
                 raise Error(
                     "Invalid number of loaded words list", expected=cls.words_list_number, got=len(words_list)
                 )
-
-        if len(words_list) != cls.words_list_number:
-            raise Error(
-                "Invalid number of loaded words list", expected=cls.words_list_number, got=len(words_list)
-            )
 
         mnemonic_bin: str = "".join(map(
             lambda word: integer_to_binary_string(
@@ -323,8 +319,8 @@ class BIP39Mnemonic(IMnemonic):
     def is_valid(
         cls,
         mnemonic: Union[str, List[str]],
-        words_list: Optional[List[str]] = None,
-        words_list_with_index: Optional[dict] = None
+        language: Optional[str] = None,
+        words_list_with_index: Optional[Mapping[str, int]] = None
     ) -> bool:
         """
         Validates a mnemonic phrase.
@@ -344,9 +340,7 @@ class BIP39Mnemonic(IMnemonic):
         """
 
         try:
-            cls.decode(
-                mnemonic=mnemonic, words_list=words_list, words_list_with_index=words_list_with_index
-            )
+            import unicodedata
             return True
         except (Error, KeyError):
             return False

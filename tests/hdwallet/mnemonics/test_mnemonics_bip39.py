@@ -8,6 +8,7 @@
 import json
 import os
 import pytest
+import unicodedata
 
 from hdwallet.mnemonics.bip39.mnemonic import (
     BIP39Mnemonic, BIP39_MNEMONIC_LANGUAGES, BIP39_MNEMONIC_WORDS
@@ -43,15 +44,18 @@ def test_bip39_mnemonics(data):
         assert BIP39Mnemonic.is_valid_words(words=__["words"])
 
         for language in __["languages"].keys():
-
             assert BIP39Mnemonic.is_valid_language(language=language)
-            assert BIP39Mnemonic.is_valid(mnemonic=__["languages"][language])
+            # A BIP-39 Mnemonic must have a preferred language, to be deterministically decoded in all cases.
+            print( f"BIP39 {language} Mnemonic: {BIP39Mnemonic.normalize(__['languages'][language])}" )
+            assert BIP39Mnemonic.is_valid(mnemonic=__["languages"][language], language=language)
 
             mnemonic = BIP39Mnemonic.from_words(words=__["words"], language=language)
             assert len(mnemonic.split()) == __["words"]
             assert BIP39Mnemonic(mnemonic=mnemonic).language().lower() == language
 
-            assert BIP39Mnemonic.from_entropy(entropy=__["entropy"], language=language) == __["languages"][language]
+            # We assume NF[K]C encoding for Mnemonics we generate/normalize, so ensure that the
+            # reference mnemonic is in the same form
+            assert BIP39Mnemonic.from_entropy(entropy=__["entropy"], language=language) == unicodedata.normalize("NFKC", __["languages"][language])
             assert BIP39Mnemonic.decode(mnemonic=__["languages"][language]) == __["entropy"]
 
             mnemonic = BIP39Mnemonic(mnemonic=__["languages"][language])
