@@ -7,11 +7,11 @@
 from abc import (
     ABC, abstractmethod
 )
-from collections.abc import (
-    Mapping
+from collections import (
+    abc
 )
 from typing import (
-    Any, Callable, Union, Dict, Generator, List, Set, Tuple, Optional
+    Any, Callable, Dict, Generator, List, Mapping, Optional, Set, Tuple, Union
 )
 
 import os
@@ -162,6 +162,48 @@ class Trie:
                 for suffix, found in self.scan( current=child, depth=max(0, depth-1), predicate=predicate ):
                     yield prefix + char + suffix, found
 
+    def dump_lines(
+        self,
+        current: Optional[TrieNode] = None,
+        indent: int = 6,
+        level: int = 0
+    ) -> List[str]:
+        """Output the Trie and its mapped values in a human-comprehensible form."""
+        if current is None:
+            current = self.root
+
+        # There can be multiple routes to the same child (ie. glyphs with/without marks)
+        kids = defaultdict(set)
+        for char, child in current.children.items():
+            kids[child].add(char)
+
+        result = []
+        if kids and current.value != current.EMPTY:
+            # The present node is both a terminal word (eg. "add"), AND has children (eg. "addict", ...)
+            result = [ "" ]
+        for i, (child, chars) in enumerate(kids.items()):
+            first, *rest = self.dump_lines( child, indent=indent, level=level+1 )
+            result.append( f"{' ' * (bool(result) or bool(i)) * level * indent}{'/'.join( chars ):{indent}}{first}" )
+            result.extend( rest )
+
+        if not result:
+            # No kids AND current value == current.EMPTY!  This is a degenerate Trie, but support it.
+            result = [""]
+        if current.value != current.EMPTY:
+            result[0] += f"{' ' * max(0, 10 - level) * indent} == {current.value}"
+        return result
+
+    def dump(
+        self,
+        current: Optional[TrieNode] = None,
+        indent: int = 6,
+        level: int = 0
+    ) -> str:
+        return '\n'.join(self.dump_lines( current=current, indent=indent, level=level ))
+
+    def __str__(self):
+        return self.dump()
+
 
 def unmark( word_composed: str ) -> str:
     """This word may contain composite characters with accents like "é" that decompose "e" + "'".
@@ -176,12 +218,11 @@ def unmark( word_composed: str ) -> str:
     )
 
 
-class WordIndices( Mapping ):
-    """Holds a Sequence of Mnemonic words, and is indexable either by int (returning the original
-    word), or by the original word (with or without Unicode "Marks") or a unique abbreviations,
-    returning the int index.
+class WordIndices( abc.Mapping ):
+    """A Mapping which holds a Sequence of Mnemonic words.
 
-    For non-unique prefixes, indexing returns a Set[str] of next character options.
+    Indexable either by int (returning the original word), or by the original word (with or without
+    Unicode "Marks") or a unique abbreviations, returning the int index.
 
     """
     def __init__(self, sequence):
@@ -193,25 +234,38 @@ class WordIndices( Mapping ):
         self._words = []
         for i, word in enumerate( sequence ):
             self._words.append( word )
-            self._trie.insert( word, i )
-
             word_unmarked = unmark( word )
+
+            self._trie.insert( word_unmarked, i )
+
             if word == word_unmarked or len( word ) != len( word_unmarked ):
                 # If the word has no marks, or if the unmarked word doesn't have the same number of
                 # glyphs, we can't "alias" it.
-                #print( f"Not inserting {word!r}; unmarked {word_unmarked!r} identical or incompatible" )
                 continue
-            # Traverse the TrieNodes representing 'word'.  Each character in word and word_unmarked
-            # is joined by the TrieNode which contains it in .children, and we should never get a
-            # None (lose the plot) because we've just inserted 'word'!  This will just be idempotent
-            # unless c_u != c.
-            #print( f"Inserting {word:10} alias: {word_unmarked}" )
-            for c, c_u, (_, _, n) in zip( word, word_unmarked, self._trie.find( word )):
-                assert c in n.children
-                n.children[c_u] = n.children[c]
 
-    def __getitem__(self, key: Tuple[int, str]):
-        """A Mapping to find a word by spelling or index, returning a value Tuple consisting of:
+            # Traverse the TrieNodes representing 'word_unmarked'.  Each glyph in word and
+            # word_unmarked is joined by the TrieNode which contains it in .children, and we should
+            # never get a None (lose the plot) because we've just inserted 'word'!  This will
+            # "alias" each glyph with a mark, to the .children entry for the non-marked glyph.
+            for c, c_un, (_, _, n) in zip( word, word_unmarked, self._trie.find( word )):
+                if c != c_un:
+                    if c in n.children and c_un in n.children:
+                        assert n.children[c_un] is n.children[c], \
+                            f"Attempting to alias {c_un!r} to {c!r} but already exists as a non-alias"
+                    n.children[c] = n.children[c_un]
+
+    def __getitem__(self, key: Union[str, int]) -> int:
+        """A Mapping from "word" to index, or the reverse.
+
+        Any unique abbreviation with/without UTF-8 "Marks" is accepted.  We keep this return value
+        simple, to make WordIndices work similarly to a Dict[str, int] of mnemonic word/index pairs.
+
+        """
+        word, index, _ = self.get_details(key)
+        return index if isinstance( key, str ) else word
+
+    def get_details(self, key: Union[int, str]) -> Tuple[str, int, Set[str]]:
+        """Provide a word (or unique prefix) or an index, and returns a value Tuple consisting of:
             - The canonical word 'str', and
             - The index value, and
             - the set of options available from the end of word, if any
@@ -227,12 +281,12 @@ class WordIndices( Mapping ):
         terminal, prefix, node = self._trie.search( key, complete=Trie )
         if not terminal:
             # We're nowhere in the Trie with this word
-            raise KeyError(f"{key} does not match any word")
+            raise KeyError(f"{key!r} does not match any word")
 
         return self._words[node.value], node.value, set(node.children)
 
     def __len__(self):
-        return self._words
+        return len( self._words )
 
     def __iter__(self):
         return iter( self._words )
@@ -247,8 +301,11 @@ class WordIndices( Mapping ):
         return zip( self._words, self.values() )
 
     def abbreviations(self):
-        """All unique abbreviations of words in the Trie.  Scans the Trie, identifying each prefix
-        that uniquely abbreviates a word."""
+        """All unique abbreviations of words in the Trie.
+
+        Scans the Trie, identifying each prefix that uniquely abbreviates a word.
+
+        """
         def unique( current ):
             terminal = False
             for terminal, _, complete in self._trie.complete( current ):
@@ -259,6 +316,9 @@ class WordIndices( Mapping ):
             if node.value is node.EMPTY:
                 # Only abbreviations (not terminal words) that led to a unique terminal word
                 yield abbrev
+
+    def __str__(self):
+        return str(self._trie)
 
 
 class IMnemonic(ABC):
@@ -363,8 +423,9 @@ class IMnemonic(ABC):
     ) -> List[str]:
         """Retrieves the standardized (NFC normalized, lower-cased) word list for the specified language.
 
-        Uses NFC normalization for internal processing consistency. BIP-39 wordlists are stored in NFD
-        format but we normalize to NFC for internal word comparisons and lookups.
+        Uses NFC normalization for internal processing consistency. BIP-39 wordlists are generally
+        stored in NFD format (with some exceptions like russian) but we normalize to NFC for
+        internal word comparisons and lookups, and for display.
 
         We do not want to use 'normalize' to do this, because normalization of Mnemonics may have
         additional functionality beyond just ensuring symbol and case standardization.
@@ -380,16 +441,21 @@ class IMnemonic(ABC):
         """
 
         wordlist_path = cls.wordlist_path if wordlist_path is None else wordlist_path
+        words_list: List[str] = []
         with open(os.path.join(os.path.dirname(__file__), wordlist_path[language]), "r", encoding="utf-8") as fin:
-            words_list: List[str] = [
-                unicodedata.normalize("NFC", word.lower())
-                for word in map(str.strip, fin.readlines())
-                if word and not word.startswith("#")
-            ]
+            for word in map( str.lower, map( str.strip, fin )):
+                if not word or word.startswith("#"):
+                    continue
+                word_nfc = unicodedata.normalize("NFKC", word)
+                word_nfkd = unicodedata.normalize( "NFKD", word_nfc)
+                assert word == word_nfkd or word == word_nfc, \
+                    f"Original {language} word {word!r} failed to round-trip through NFC: {word_nfc!r} / NFKD: {word_nfkd!r}"
+                words_list.append(word_nfc)
+
         return words_list
 
     @classmethod
-    def all_words_indices(
+    def language_words_indices(
         cls, wordlist_path: Optional[Dict[str, str]] = None
     ) -> Tuple[str, List[str], WordIndices]:
         """Yields each 'candidate' language, its NFKC-normalized words List, and its WordIndices
@@ -402,7 +468,6 @@ class IMnemonic(ABC):
             words_list: List[str] = cls.get_words_list_by_language(
                 language=candidate, wordlist_path=wordlist_path
             )
-            print( f"Language {candidate!r} has {len(words_list)} words" )
             word_indices = WordIndices( words_list )
             yield candidate, words_list, word_indices
 
@@ -412,7 +477,7 @@ class IMnemonic(ABC):
             mnemonic: List[str],
             wordlist_path: Optional[Dict[str, str]] = None,
             language: Optional[str] = None,
-    ) -> Tuple[Dict[str, int], str]:
+    ) -> Tuple[Mapping[str, int], str]:
         """Finds the language of the given mnemonic by checking against available word list(s),
         preferring the specified 'language' if one is supplied.  If a 'wordlist_path' dict of
         {language: path} is supplied, its languages are used.  If a 'language' (optional) is
@@ -436,7 +501,7 @@ class IMnemonic(ABC):
         a different seed and therefore different derived wallets -- a match to multiple languages
         with the same quality and with no preferred 'language' leads to an Exception.
 
-        Even the final word (whchi encodes some checksum bits) cannot determine the language with
+        Even the final word (which encodes some checksum bits) cannot determine the language with
         finality, because it is only a statistical checksum!  For 128-bit 12-word encodings, only 4
         bits of checksum are represented.  Therefore, there is a 1/16 chance that any entropy that
         encodes to words in both languages will *also* have the same 4 bits of checksum!  24-word
@@ -448,7 +513,7 @@ class IMnemonic(ABC):
         cryptographic keys.
 
 
-        The returned Dict[str, int] contains all accepted word -> index mappings, including all
+        The returned Mapping[str, int] contains all accepted word -> index mappings, including all
         acceptable abbreviations, with and without character accents.  This is typically the
         expected behavior for most Mnemonic encodings ('café' == 'cafe' for Mnemonic word matching).
 
@@ -460,25 +525,25 @@ class IMnemonic(ABC):
         :type mnemonic: Optional[str]
 
         :return: A tuple containing the language's word indices and the language name.
-        :rtype: Tuple[Dict[str, int], str]
+        :rtype: Tuple[[str, int], str]
 
         """
 
-        language_words_indices: Dict[str, Dict[str, int]] = {}
-        quality: Dict[str, int] = {}  # How many language symbols were matched
-        for candidate, words_list, words_indices in cls.all_words_indices( wordlist_path=wordlist_path ):
-            language_words_indices[candidate] = words_indices
-            quality[candidate] = 0
+        language_indices: Dict[str, Mapping[str, int]] = {}
+        quality: Dict[str, int] = defaultdict(int)  # How many language symbols were matched
+        for candidate, words_list, words_indices in cls.language_words_indices( wordlist_path=wordlist_path ):
+            language_indices[candidate] = words_indices
             try:
                 # Check for exact matches and unique abbreviations, ensuring comparison occurs in
                 # composite "NFKC" normalized characters.
                 for word in mnemonic:
                     word_composed = unicodedata.normalize( "NFKC", word )
                     try:
-                        word, index, options = words_indices[word_composed]
-                        quality[candidate] += len( word )
+                        index = words_indices[word_composed]
                     except KeyError as ex:
                         raise MnemonicError(f"Unable to find word {word}") from ex
+                    word_canonical = words_indices[index]
+                    quality[candidate] += len( word_canonical )
 
                 if candidate == language:
                     # All words exactly matched word with or without accents, complete or uniquely
@@ -503,7 +568,7 @@ class IMnemonic(ABC):
         if worse and matches == worse[0][1]:
             raise MnemonicError(f"Ambiguous languages {', '.join(c for c, w in worse)} or {candidate} for mnemonic; specify a preferred language")
 
-        return language_words_indices[candidate], candidate
+        return language_indices[candidate], candidate
 
 
     @classmethod
