@@ -8,8 +8,8 @@ from typing import List, Set
 import pytest
 
 from hdwallet.mnemonics.bip39 import BIP39Mnemonic
-from hdwallet.mnemonics.imnemonic import Trie, TrieNode
-from hdwallet.exceptions import ChecksumError
+from hdwallet.mnemonics.imnemonic import Trie, TrieNode, WordIndices
+from hdwallet.exceptions import ChecksumError, MnemonicError
 
 class TestBIP39CrossLanguage:
     """Test BIP39 mnemonics that work in both English and French languages.
@@ -66,10 +66,11 @@ class TestBIP39CrossLanguage:
 
         # Load all specified languages
         language_data = {}
-        for language, words, indices in BIP39Mnemonic.language_words_indices():
+        for language, words, indices in BIP39Mnemonic.wordlist_indices():
             language_data[language] = dict(
-                words = words,
                 indices = indices,
+                words = set( indices.keys() ),
+                unique = set( indices.unique() ),
                 abbrevs = set( indices.abbreviations() ),
             )
             if language not in languages:
@@ -77,20 +78,22 @@ class TestBIP39CrossLanguage:
 
             # Set class attributes for backward compatibility
             setattr(cls, f"{language}_words", language_data[language]['words'])
+            setattr(cls, f"{language}_unique", language_data[language]['unique'])
             setattr(cls, f"{language}_indices", language_data[language]['indices'])
             setattr(cls, f"{language}_abbrevs", language_data[language]['abbrevs'])
 
         # Find common words across all languages - only process requested languages
         requested_data = {lang: language_data[lang] for lang in languages if lang in language_data}
-        all_word_sets = [set(data['words']) for data in requested_data.values()]
+        all_word_sets = [data['unique'] for data in requested_data.values()]
         all_abbrev_lists = [data['abbrevs'] for data in requested_data.values()]
 
-        cls.common_words = list(set.intersection(*all_word_sets)) if all_word_sets else []
-        cls.common_abbrevs = list(set.intersection(*all_abbrev_lists)) if all_abbrev_lists else []
+        cls.common_words = set.intersection(*all_word_sets) if all_word_sets else set()
+        cls.common_abbrevs = set.intersection(*all_abbrev_lists) if all_abbrev_lists else set()
 
-        # Print statistics
+        # Print statistics.  Given that UTF-8 marks may or may not be supplied, there may be more
+        # unique words than the 2048 base UTF-8 BIP-39 words in the language.
         for lang, data in requested_data.items():
-            print(f"{lang.capitalize()} words: {len(data['words'])}")
+            print(f"{lang.capitalize()} UTF-8 words base: {len(data['words'])} unique: {len(data['unique'])}, abbreviations: {len(data['abbrevs'])}")
 
         print(f"Common words found: {len(cls.common_words)}")
         print(f"First 20 common words: {sorted(cls.common_words)[:20]}")
@@ -102,7 +105,7 @@ class TestBIP39CrossLanguage:
         if len(self.common_words) < word_count:
             raise ValueError(f"Not enough common words ({len(self.common_words)}) to create {word_count}-word mnemonic")
 
-        selected_words = random.choices(self.common_words, k=word_count)
+        selected_words = random.choices(list(self.common_words), k=word_count)
         return selected_words
 
     def test_common_words_exist(self):
@@ -110,9 +113,11 @@ class TestBIP39CrossLanguage:
         assert len(self.common_words) > 0, "No common words found between English and French wordlists"
 
     def dual_language_N_word_mnemonics(self, words=12, expected_rate=1/16, total_attempts=1000):
-        """Test N-word mnemonics that work in both English and French."""
-        successful_both_languages: List[List[str]] = []
+        """Test N-word mnemonics that work in both English and French.
 
+        Actual rate for 2 languages will be expected_rate ^ 2."""
+        successful_both_languages: List[List[str]] = []
+        successful_english: int = 0
         for _ in range(total_attempts):
             try:
                 # Generate a random N-word mnemonic from common words
@@ -132,39 +137,63 @@ class TestBIP39CrossLanguage:
                 #import traceback
                 #print( f"Failed to decode: {traceback.format_exc()}" )
                 continue
-
+        
         success_rate = len(successful_both_languages) / total_attempts
 
-        print(f"{words}-word mnemonics: {len(successful_both_languages)}/{total_attempts} successful ({success_rate:.4f})")
-        print(f"Expected rate: ~{expected_rate:.4f}")
+        print(f"{words}-word mnemonics: {len(successful_both_languages)}/{total_attempts} successful ({success_rate:.6f})")
+        print(f"Expected rate: ~{expected_rate:.6f} ^ 2 == {expected_rate ** 2:.6f}")
 
-        # Assert we found at least some successful mnemonics
-        assert success_rate > 0, f"No {words}-word mnemonics worked in both languages"
+        # These rates are too small to test, in the small samples we're likely to use
 
-        # The success rate should be roughly around the expected rate, but due to
-        # randomness and limited common words, we'll accept a broader range
-        tolerance = 0.5  # 50% tolerance due to statistical variance
-        assert expected_rate * (1 - tolerance) < success_rate < expected_rate * (1 + tolerance), \
-            f"Success rate {success_rate:.4f} not in expected range around {expected_rate:.4f}"
+        # # Assert we found at least some successful mnemonics
+        # assert success_rate > 0, f"No {words}-word mnemonics worked in both languages"
+
+        # # The success rate should be roughly around the expected rate, but due to
+        # # randomness and limited common words, we'll accept a broader range
+        # tolerance = 0.5  # 50% tolerance due to statistical variance
+        # assert expected_rate * (1 - tolerance) < success_rate < expected_rate * (1 + tolerance), \
+        #     f"Success rate {success_rate:.6f} not in expected range around {expected_rate:.4f}"
         return successful_both_languages
 
     def test_cross_language_12_word_mnemonics(self):
-        """Test 12-word mnemonics that work in both English and French."""
-        candidates = self.dual_language_N_word_mnemonics(words=12, expected_rate=1/16, total_attempts=1000)
+        """Test 12-word mnemonics that work in both English and French.
+
+        For example:
+            'ocean correct rival double theme village crucial veteran salon tunnel question minute'
+            'puzzle mobile video pelican bicycle ocean effort train junior brave effort theme'
+            'elegant cruel science guide fortune nation humble lecture ozone dragon question village'
+            'innocent prison romance jaguar voyage depart fruit crucial video salon reunion fatigue'
+            'position dragon correct question figure notable service vague civil public distance emotion'
+
+        """
+        with pytest.raises(MnemonicError, match="Ambiguous languages french or english"):
+            BIP39Mnemonic.decode(
+                'ocean correct rival double theme village crucial veteran salon tunnel question minute'
+            )
+        candidates = self.dual_language_N_word_mnemonics(words=12, expected_rate=1/16)
 
     def test_cross_language_24_word_mnemonics(self):
-        """Test 24-word mnemonics that work in both English and French."""
-        candidates = self.dual_language_N_word_mnemonics(words=24, expected_rate=1/256, total_attempts=5000)
+        """Test 24-word mnemonics that work in both English and French.
+
+        For example:
+            'pelican pelican minute intact science figure vague civil badge rival pizza fatal sphere nation simple ozone canal talent emotion wagon ozone valve voyage angle'
+            'pizza intact noble fragile piece suspect legal badge vital guide coyote volume nature wagon badge festival danger train desert intact opinion veteran romance metal'
+        """
+        with pytest.raises(MnemonicError, match="Ambiguous languages french or english"):
+            BIP39Mnemonic.decode(
+                'pelican pelican minute intact science figure vague civil badge rival pizza fatal'
+                ' sphere nation simple ozone canal talent emotion wagon ozone valve voyage angle'
+            )
+
+        candidates = self.dual_language_N_word_mnemonics(words=24, expected_rate=1/256)
 
     def test_wordlist_properties(self):
         """Test basic properties of the wordlists."""
         # Verify wordlist sizes
-        assert len(self.english_words) == 2048, f"English wordlist should have 2048 words, got {len(self.english_words)}"
-        assert len(self.french_words) == 2048, f"French wordlist should have 2048 words, got {len(self.french_words)}"
-
-        # Verify no duplicates within each wordlist
-        assert len(set(self.english_words)) == len(self.english_words), "English wordlist contains duplicates"
-        assert len(set(self.french_words)) == len(self.french_words), "French wordlist contains duplicates"
+        assert len(self.english_words) == 2048, f"English base wordlist should have 2048 words, got {len(self.english_words)}"
+        assert len(self.english_unique) == 2048, f"English full unique wordlist should have 2048 words, got {len(self.english_unique)}"
+        assert len(self.french_words) == 2048, f"French base wordlist should have 2048 words, got {len(self.french_words)}"
+        assert len(self.french_unique) == 2774, f"French full unique wordlist should have 2774 words, got {len(self.french_unique)}"
 
         # Verify common words list properties
         assert len(self.common_words) > 0, "No common words found"
@@ -398,6 +427,28 @@ class TestBIP39CrossLanguage:
         print("✓ Design pattern allows for derived TrieNode classes with custom EMPTY values")
 
 
+        test_indices = WordIndices(test_words)
+        assert str(test_indices) == """\
+a     b     a     n     d     o     n                        == 0
+            i     l     i     t     y                        == 1
+            l     e                                          == 2
+            o     u     t                                    == 3
+                  v     e                                    == 4
+            s     e     n     t                              == 5
+                  o     r     b                              == 6
+                  t     r     a     c     t                  == 7
+                  u     r     d                              == 8
+            u     s     e                                    == 9
+      d     d                                                == 10
+                  i     c     t                              == 11
+                  r     e     s     s                        == 12
+            j     u     s     t                              == 13
+      c     c     e     s     s                              == 14
+                  i     d     e     n     t                  == 15
+                  o     u     n     t                        == 16
+                  u     s     e                              == 17
+            h     i     e     v     e                        == 18"""
+        
     def test_ambiguous_languages(self):
         """Test that find_language correctly detects and raises errors for ambiguous mnemonics.
 
@@ -412,7 +463,7 @@ class TestBIP39CrossLanguage:
             pytest.skip(f"Not enough common words ({len(self.common_words)}) for ambiguity testing")
 
         # Test with 12-word mnemonics using only common words
-        test_mnemonic = self.common_words[:12]  # Use first 12 common words
+        test_mnemonic = list(self.common_words)[:12]  # Use first 12 common words
 
         # Test 1: find_language should detect ambiguity when no preferred language is specified
         try:
@@ -445,7 +496,7 @@ class TestBIP39CrossLanguage:
         # Test 3: Test with a different set of common words to ensure robustness
         if len(self.common_words) >= 24:
             # Try with different common words (offset by 6 to get different words)
-            alt_test_mnemonic = self.common_words[6:18]  # Words 6-17 (12 words)
+            alt_test_mnemonic = list(self.common_words)[6:18]  # Words 6-17 (12 words)
 
             try:
                 word_indices, detected_language = BIP39Mnemonic.find_language(alt_test_mnemonic)
@@ -483,6 +534,61 @@ class TestBIP39CrossLanguage:
         print("✓ Ambiguous language detection tests completed successfully")
         print(f"✓ Tested with {len(test_mnemonic)} common words")
         print("✓ Verified ambiguity detection and preferred language resolution")
+
+
+def test_bip39_korean():
+    # Confirm that UTF-8 Mark handling works in other languages (particularly Korean)
+    (_, korean_nfc, korean_indices), = BIP39Mnemonic.wordlist_indices(
+        dict(
+            korean = BIP39Mnemonic.wordlist_path["korean"]
+        )
+    )
+    korean_nfc_20 = "\n".join(korean_nfc[:20])
+    #print( korean_nfc_20 )
+    assert korean_nfc_20 == """\
+가격
+가끔
+가난
+가능
+가득
+가르침
+가뭄
+가방
+가상
+가슴
+가운데
+가을
+가이드
+가입
+가장
+가정
+가족
+가죽
+각오
+각자"""
+    korean_trie_20 = "\n".join(korean_indices._trie.dump_lines()[:20])
+    print(korean_trie_20)
+    assert korean_trie_20 == """\
+가     격                                                      == 0
+      끔                                                      == 1
+      난                                                      == 2
+      능                                                      == 3
+      득                                                      == 4
+      르     침                                                == 5
+      뭄                                                      == 6
+      방                                                      == 7
+      상                                                      == 8
+      슴                                                      == 9
+      운     데                                                == 10
+      을                                                      == 11
+      이     드                                                == 12
+      입                                                      == 13
+      장                                                      == 14
+      정                                                      == 15
+      족                                                      == 16
+      죽                                                      == 17
+각     오                                                      == 18
+      자                                                      == 19"""
 
 if __name__ == "__main__":
     pytest.main([__file__])

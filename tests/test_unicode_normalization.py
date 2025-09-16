@@ -8,6 +8,42 @@ from typing import Dict, List, Tuple, Set
 import pytest
 
 
+def remove_accents_safe(text: str) -> str:
+    """Remove accents from Latin/Cyrillic/Greek scripts, preserve other scripts.
+
+    Not the correct approach; doesn't work for eg. Korean, where NFD expands unicodedata.category
+    "Lo" (Letter other) symbols to simply more "Lo" symbols.
+
+    """
+    text_nfd = unicodedata.normalize('NFD', text)
+    result = []
+    for char in text_nfd:
+        category = unicodedata.category(char)
+        if category.startswith('M'):  # Mark (combining) characters
+            if result and self._is_latin_cyrillic_greek_script(result[-1]):
+                continue  # Skip accent marks on Latin/Cyrillic/Greek characters
+        result.append(char)
+    return ''.join(result)
+
+def remove_accents_safe(text: str) -> str:
+    """Remove accents from texts if the removed Marks leave the same number of resultant Letter glyphs.
+
+    Normalizes all incoming text to NFC for consistency (may be raw NFD eg. from BIP-39 word lists)
+
+    """
+    text_nfc = unicodedata.normalize('NFC', text)
+    text_nfd = unicodedata.normalize('NFD', text_nfc)
+    result = []
+    for char in text_nfd:
+        category = unicodedata.category(char)
+        if category.startswith('M'):  # Mark (combining) characters
+            continue  # Skip accent marks
+        result.append(char)
+    if len(result) == len(text_nfc):
+        return ''.join(result)
+    return text_nfc
+        
+
 @dataclass
 class CharacterInfo:
     """Information about a single Unicode character."""
@@ -310,29 +346,6 @@ class TestUnicodeNormalization:
         This could be useful for fuzzy matching when exact Unicode matches fail.
         """
         
-        def remove_accents_safe(text: str) -> str:
-            """Remove accents from Latin/Cyrillic/Greek scripts, preserve other scripts."""
-            
-            # First normalize to NFD to separate base characters from combining diacritics
-            nfd_text = unicodedata.normalize('NFD', text)
-            
-            result = []
-            for char in nfd_text:
-                # Get the Unicode category and script information
-                category = unicodedata.category(char)
-                
-                # Skip combining characters (accents) for Latin, Cyrillic, Greek scripts
-                if category.startswith('M'):  # Mark (combining) characters
-                    # Only remove combining marks that are typically accent marks
-                    # Check if the previous character was from a script we want to modify
-                    if result and self._is_latin_cyrillic_greek_script(result[-1]):
-                        # Skip this combining character (remove the accent)
-                        continue
-                
-                # Keep the base character
-                result.append(char)
-            
-            return ''.join(result)
         
         print("\n=== Accent Removal Tests ===")
         
@@ -489,18 +502,6 @@ class TestUnicodeNormalization:
     def test_accent_removal_with_bip39_words(self):
         """Test accent removal specifically with BIP-39 words from accented languages."""
         
-        def remove_accents_safe(text: str) -> str:
-            """Remove accents from Latin/Cyrillic/Greek scripts, preserve other scripts."""
-            nfd_text = unicodedata.normalize('NFD', text)
-            result = []
-            for char in nfd_text:
-                category = unicodedata.category(char)
-                if category.startswith('M'):  # Mark (combining) characters
-                    if result and self._is_latin_cyrillic_greek_script(result[-1]):
-                        continue  # Skip accent marks on Latin/Cyrillic/Greek characters
-                result.append(char)
-            return ''.join(result)
-        
         print("\n=== BIP-39 Word Accent Removal Tests ===")
         
         # Test with actual French BIP-39 words (using our test words from setup_class)
@@ -536,7 +537,8 @@ class TestUnicodeNormalization:
             print(f"  '{original}' -> '{deaccented}'")
             assert deaccented == expected, f"Expected '{expected}', got '{deaccented}'"
         
-        # Test that non-Latin scripts are unchanged
+        # Test that non-Latin scripts are unchanged, unless removing the Marks leaves the same
+        # number of Letter category glyphs/symbols.
         non_latin_examples = [
             '中文',      # Chinese
             'あいう',    # Japanese Hiragana
@@ -1160,7 +1162,3 @@ class TestUnicodeNormalization:
             print(f"\nRECOMMENDATION: Carefully validate NFKC normalization in BIP-39 implementations")
         else:
             print(f"No obvious security concerns found with NFKC normalization")
-
-
-if __name__ == "__main__":
-    pytest.main([__file__, "-v", "-s"])

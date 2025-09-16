@@ -104,7 +104,39 @@
                 "spanish": "zona rama nuca carbón atar artista meta funda avena sonido baile educar ostra ruido juzgar chivo octavo lector brillo ingenio hora yeso sonido helio",
                 "turkish": "zorlu siroz paraşüt defter bavul baca obez kapı beyoğlu tesir bodrum gusül polat tabaka masum doruk peçete mercek coğrafya liyakat kurmay zihinsel tesir köstebek"
             }
-        }
+        },
+        {
+	  "name": "BIP39",
+          "entropy": "98e612eaa0de01e80d1f99be9d52be46",
+	  "words": 12,
+	  "languages": {
+	    "english": "ocean correct rival double theme village crucial veteran salon tunnel question minute"
+	  }
+	},
+        {
+	  "name": "BIP39",
+          "entropy": "a9a70f43a52ea9f60ef7ccd57e37164e",
+	  "words": 12,
+	  "languages": {
+	    "french": "ocean correct rival double theme village crucial veteran salon tunnel question minute"
+	  }
+	},
+        {
+	  "name": "BIP39",
+          "entropy": "a2544a353acc0eac3c294c11775696a9cd1726b244f4211bad237b29e9e23d80",
+	  "words": 24,
+	  "languages": {
+	    "english": "pelican pelican minute intact science figure vague civil badge rival pizza fatal sphere nation simple ozone canal talent emotion wagon ozone valve voyage angle"
+	  }
+	},
+        {
+	  "name": "BIP39",
+          "entropy": "b536a67341dd7ecd3d599317da1eea31be1f45774d81287cdd477f9b03ecbfb8",
+	  "words": 24,
+	  "languages": {
+	    "french": "pelican pelican minute intact science figure vague civil badge rival pizza fatal sphere nation simple ozone canal talent emotion wagon ozone valve voyage angle"
+	  }
+	}
     ],
     "Electrum-V1": [
         {
