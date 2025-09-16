@@ -241,7 +241,8 @@ class BIP39Mnemonic(IMnemonic):
             word_index: int = binary_string_to_integer(word_bin)
             mnemonic.append(words_list[word_index])
 
-        return " ".join(mnemonic)  # Words from wordlist are already normalized NFD for encoding
+        # Words from wordlist are normalized NFC for display
+        return " ".join(mnemonic)
 
     @classmethod
     def decode(
@@ -314,33 +315,3 @@ class BIP39Mnemonic(IMnemonic):
                 binary_string_to_bytes(mnemonic_bin, pad_bit_len // 4)
             )
         return bytes_to_string(entropy)
-
-    @classmethod
-    def is_valid(
-        cls,
-        mnemonic: Union[str, List[str]],
-        language: Optional[str] = None,
-        words_list_with_index: Optional[Mapping[str, int]] = None
-    ) -> bool:
-        """
-        Validates a mnemonic phrase.
-
-        This method checks whether the provided mnemonic phrase is valid by attempting to decode it.
-        If the decoding is successful without raising any errors, the mnemonic is considered valid.
-
-        :param mnemonic: The mnemonic phrase to validate. It can be a string or a list of words.
-        :type mnemonic: Union[str, List[str]]
-        :param words_list: Optional list of words to be used for validation. If not provided, the method will use the default word list.
-        :type words_list: Optional[List[str]]
-        :param words_list_with_index: Optional dictionary mapping words to their indices for validation. If not provided, the method will use the default mapping.
-        :type words_list_with_index: Optional[dict]
-
-        :return: True if the mnemonic phrase is valid, False otherwise.
-        :rtype: bool
-        """
-
-        try:
-            import unicodedata
-            return True
-        except (Error, KeyError):
-            return False

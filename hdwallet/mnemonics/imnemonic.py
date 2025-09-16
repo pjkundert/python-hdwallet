@@ -236,17 +236,17 @@ class WordIndices( abc.Mapping ):
             self._words.append( word )
             word_unmarked = unmark( word )
 
-            self._trie.insert( word_unmarked, i )
-
             if word == word_unmarked or len( word ) != len( word_unmarked ):
                 # If the word has no marks, or if the unmarked word doesn't have the same number of
-                # glyphs, we can't "alias" it.
+                # glyphs, we can't "alias" it; insert the original word with NFC "combined" glyphs.
+                self._trie.insert( word, i )
                 continue
 
             # Traverse the TrieNodes representing 'word_unmarked'.  Each glyph in word and
             # word_unmarked is joined by the TrieNode which contains it in .children, and we should
             # never get a None (lose the plot) because we've just inserted 'word'!  This will
             # "alias" each glyph with a mark, to the .children entry for the non-marked glyph.
+            self._trie.insert( word_unmarked, i )
             for c, c_un, (_, _, n) in zip( word, word_unmarked, self._trie.find( word )):
                 if c != c_un:
                     if c in n.children and c_un in n.children:
@@ -300,8 +300,13 @@ class WordIndices( abc.Mapping ):
     def items(self):
         return zip( self._words, self.values() )
 
+    def unique(self):
+        """All full unique words in the Trie, with/without UTF-8 Marks."""
+        for word, _node in self._trie.scan():
+            yield word
+
     def abbreviations(self):
-        """All unique abbreviations of words in the Trie.
+        """All unique abbreviations of words in the Trie, with/without UTF-8 Marks.
 
         Scans the Trie, identifying each prefix that uniquely abbreviates a word.
 
@@ -336,8 +341,10 @@ class IMnemonic(ABC):
     wordlist_path: Dict[str, str]
 
     def __init__(self, mnemonic: Union[str, List[str]], **kwargs) -> None:
-        """
-        Initialize an instance of IMnemonic with a mnemonic.
+        """Initialize an instance of IMnemonic with a mnemonic.
+
+        Converts the provided Mnemonics (abbreviated or missing UTF-8 Marks) to canonical Mnemonic
+        words in display-able UTF-8 "NFC" form.
 
         :param mnemonic: The mnemonic to initialize with, which can be a string or a list of strings.
         :type mnemonic: Union[str, List[str]]
@@ -345,16 +352,24 @@ class IMnemonic(ABC):
 
         :return: No return
         :rtype: NoneType
+
         """
 
-        self._mnemonic: List[str] = self.normalize(mnemonic)
-        if not self.is_valid(self._mnemonic, **kwargs):
-            raise MnemonicError("Invalid mnemonic words")
-        # Attempt to unambiguously determine the Mnemonic's language using the preferred 'language'
-        # optionally provided.
-        self._word_indices, self._language = self.find_language(self._mnemonic, language=kwargs.get("language"))
+        mnemonic_list: List[str] = self.normalize(mnemonic)
+        # Attempt to unambiguously determine the Mnemonic's language using any preferred 'language'
+        self._word_indices, self._language = self.find_language(mnemonic_list, language=kwargs.get("language"))
         self._mnemonic_type = kwargs.get("mnemonic_type", None)
+        # We now know with certainty that the list of Mnemonic words was valid in some language.
+        # However, they may have been abbreviations, or had optional UTF-8 Marks removed.  So, use
+        # the _word_indices twice, to map from str (matching word) -> int (index) -> str (canonical
+        self._mnemonic: List[str] = [
+            self._word_indices[self._word_indices[w]]
+            for w in mnemonic_list
+        ]
         self._words = len(self._mnemonic)
+        # We have the canonical Mnemonic words.  Decode them, preserving the real MnemonicError
+        # details if the words do not form a valid Mnemonic.
+        self.decode(self._mnemonic, **kwargs)
 
     @classmethod
     def name(cls) -> str:
@@ -455,7 +470,7 @@ class IMnemonic(ABC):
         return words_list
 
     @classmethod
-    def language_words_indices(
+    def wordlist_indices(
         cls, wordlist_path: Optional[Dict[str, str]] = None
     ) -> Tuple[str, List[str], WordIndices]:
         """Yields each 'candidate' language, its NFKC-normalized words List, and its WordIndices
@@ -463,7 +478,7 @@ class IMnemonic(ABC):
         unique abbreviations.
 
         """
-        for candidate in wordlist_path.keys() if wordlist_path else cls.languages:
+        for candidate in (wordlist_path.keys() if wordlist_path else cls.languages):
             # Normalized NFC, so characters and accents are combined
             words_list: List[str] = cls.get_words_list_by_language(
                 language=candidate, wordlist_path=wordlist_path
@@ -531,7 +546,7 @@ class IMnemonic(ABC):
 
         language_indices: Dict[str, Mapping[str, int]] = {}
         quality: Dict[str, int] = defaultdict(int)  # How many language symbols were matched
-        for candidate, words_list, words_indices in cls.language_words_indices( wordlist_path=wordlist_path ):
+        for candidate, words_list, words_indices in cls.wordlist_indices( wordlist_path=wordlist_path ):
             language_indices[candidate] = words_indices
             try:
                 # Check for exact matches and unique abbreviations, ensuring comparison occurs in
@@ -541,7 +556,9 @@ class IMnemonic(ABC):
                     try:
                         index = words_indices[word_composed]
                     except KeyError as ex:
-                        raise MnemonicError(f"Unable to find word {word}") from ex
+                        if candidate in quality:
+                            quality.pop(candidate)
+                        raise MnemonicError(f"Unable to find word {word} in {candidate}") from ex
                     word_canonical = words_indices[index]
                     quality[candidate] += len( word_canonical )
 
@@ -566,17 +583,21 @@ class IMnemonic(ABC):
 
         (candidate, matches), *worse = sorted(quality.items(), key=lambda k_v: k_v[1], reverse=True )
         if worse and matches == worse[0][1]:
+            # There are more than one matching candidate languages -- and they are both equivalent
+            # in quality.  We cannot know (or guess) the language with any certainty.
             raise MnemonicError(f"Ambiguous languages {', '.join(c for c, w in worse)} or {candidate} for mnemonic; specify a preferred language")
 
         return language_indices[candidate], candidate
 
 
     @classmethod
-    def is_valid(cls, mnemonic: Union[str, List[str]], **kwargs) -> bool:
+    def is_valid(cls, mnemonic: Union[str, List[str]], language: Optional[str] = None, **kwargs) -> bool:
         """
         Checks if the given mnemonic is valid.
 
         :param mnemonic: The mnemonic to check.
+        :type mnemonic: str
+        :param language: The preferred language of the mnemonic.
         :type mnemonic: str
         :param kwargs: Additional keyword arguments.
 
@@ -585,7 +606,7 @@ class IMnemonic(ABC):
         """
 
         try:
-            cls.decode(mnemonic=mnemonic, **kwargs)
+            cls.decode(mnemonic=mnemonic, language=language, **kwargs)
             return True
         except (ValueError, MnemonicError):
             return False
