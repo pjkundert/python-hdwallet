@@ -44,9 +44,9 @@ $(WHEEL):		FORCE
 install:		$(WHEEL) FORCE
 	$(PYTHON) -m pip install --force-reinstall $<[cli,tests,docs]
 
-# Install from requirements/*; eg. install-dev
+# Install from requirements/*; eg. install-dev, always getting the latest version
 install-%:  		FORCE
-	$(PYTHON) -m pip install -r requirements/$*.txt
+	$(PYTHON) -m pip install --upgrade -r requirements/$*.txt
 
 
 unit-%:

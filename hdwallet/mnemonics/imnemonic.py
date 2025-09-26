@@ -356,9 +356,12 @@ class IMnemonic(ABC):
         """
 
         mnemonic_list: List[str] = self.normalize(mnemonic)
-        # Attempt to unambiguously determine the Mnemonic's language using any preferred 'language'
+
+        # Attempt to unambiguously determine the Mnemonic's language using any preferred 'language'.
+        # Raises a MnemonicError if the words are not valid.
         self._word_indices, self._language = self.find_language(mnemonic_list, language=kwargs.get("language"))
         self._mnemonic_type = kwargs.get("mnemonic_type", None)
+
         # We now know with certainty that the list of Mnemonic words was valid in some language.
         # However, they may have been abbreviations, or had optional UTF-8 Marks removed.  So, use
         # the _word_indices twice, to map from str (matching word) -> int (index) -> str (canonical
@@ -367,6 +370,7 @@ class IMnemonic(ABC):
             for w in mnemonic_list
         ]
         self._words = len(self._mnemonic)
+
         # We have the canonical Mnemonic words.  Decode them, preserving the real MnemonicError
         # details if the words do not form a valid Mnemonic.
         self.decode(self._mnemonic, **kwargs)
@@ -434,7 +438,7 @@ class IMnemonic(ABC):
 
     @classmethod
     def get_words_list_by_language(
-        cls, language: str, wordlist_path: Optional[Dict[str, str]] = None
+        cls, language: str, wordlist_path: Optional[Dict[str, Union[str, List[str]]]] = None
     ) -> List[str]:
         """Retrieves the standardized (NFC normalized, lower-cased) word list for the specified language.
 
@@ -445,10 +449,20 @@ class IMnemonic(ABC):
         We do not want to use 'normalize' to do this, because normalization of Mnemonics may have
         additional functionality beyond just ensuring symbol and case standardization.
 
+        Supports wordlist_path containing either a path:
+
+            {'language': '/some/path'},
+
+        or the words_list content:
+
+            {'language': ['words', 'list', ...]}
+
+        Ignores blank lines and # ... comments
+
         :param language: The language for which to get the word list.
         :type language: str
-        :param wordlist_path: Optional dictionary mapping language names to file paths of their word lists.
-        :type wordlist_path: Optional[Dict[str, str]]
+        :param wordlist_path: Optional dictionary mapping language names to file paths of their word lists, or the words list.
+        :type wordlist_path: Optional[Dict[str, Tuple[str, List[str]]]
 
         :return: A list of words for the specified language, normalized to NFC form.
         :rtype: List[str]
@@ -456,22 +470,33 @@ class IMnemonic(ABC):
         """
 
         wordlist_path = cls.wordlist_path if wordlist_path is None else wordlist_path
+
+        # May provide a filesystem path str, or a List-like sequence of words
+        if isinstance( wordlist_path[language], str ):
+            with open(os.path.join(os.path.dirname(__file__), wordlist_path[language]), "r", encoding="utf-8") as fin:
+                words_list_raw: List[str] = list( fin )
+        else:
+            words_list_raw: List[str] = list( wordlist_path[language] )
+
+        # Ensure any words are provided in either NFKC or NFKD form.  This eliminates words lists
+        # where the provided word is not in standard NFC or NFD form, down-cases them and removes
+        # any leading/trailing whitespace, then ignores empty lines or full-line comments (trailing
+        # comments are not supported).
         words_list: List[str] = []
-        with open(os.path.join(os.path.dirname(__file__), wordlist_path[language]), "r", encoding="utf-8") as fin:
-            for word in map( str.lower, map( str.strip, fin )):
-                if not word or word.startswith("#"):
-                    continue
-                word_nfc = unicodedata.normalize("NFKC", word)
-                word_nfkd = unicodedata.normalize( "NFKD", word_nfc)
-                assert word == word_nfkd or word == word_nfc, \
-                    f"Original {language} word {word!r} failed to round-trip through NFC: {word_nfc!r} / NFKD: {word_nfkd!r}"
-                words_list.append(word_nfc)
+        for word in map( str.lower, map( str.strip, words_list_raw )):
+            if not word or word.startswith("#"):
+                continue
+            word_nfc = unicodedata.normalize("NFKC", word)
+            word_nfkd = unicodedata.normalize( "NFKD", word_nfc)
+            assert word == word_nfkd or word == word_nfc, \
+                f"Original {language} word {word!r} failed to round-trip through NFC: {word_nfc!r} / NFKD: {word_nfkd!r}"
+            words_list.append(word_nfc)
 
         return words_list
 
     @classmethod
     def wordlist_indices(
-        cls, wordlist_path: Optional[Dict[str, str]] = None
+        cls, wordlist_path: Optional[Dict[str, Union[str, List[str]]]] = None,
     ) -> Tuple[str, List[str], WordIndices]:
         """Yields each 'candidate' language, its NFKC-normalized words List, and its WordIndices
         Mapping supporting indexing by 'int' word index, or 'str' with optional accents and all
@@ -575,12 +600,13 @@ class IMnemonic(ABC):
             except (MnemonicError, ValueError):
                 continue
 
-        # No unambiguous match to any preferred language found.  Select the best available.  Sort by
-        # the number of characters matched (more is better - less ambiguous).  This is a statistical
-        # method; it is still dangerous, and we should fail instead of returning a bad guess!
+        # No unambiguous match to any preferred language found (or no language matched all words).
         if not quality:
-            raise MnemonicError(f"Unrecognized language for mnemonic '{mnemonic}'")
+            raise MnemonicError(f"Invalid mnemonic words")
 
+        # Select the best available.  Sort by the number of characters matched (more is better -
+        # less ambiguous).  This is a statistical method; it is still dangerous, and we should fail
+        # instead of returning a bad guess!
         (candidate, matches), *worse = sorted(quality.items(), key=lambda k_v: k_v[1], reverse=True )
         if worse and matches == worse[0][1]:
             # There are more than one matching candidate languages -- and they are both equivalent
@@ -645,6 +671,10 @@ class IMnemonic(ABC):
         Resilient to extra whitespace, compatibility characters such as full-width symbols,
         decomposed characters and accents, and down-cases uppercase symbols using NFKC
         normalization.
+
+        This does not canonicalize the Mnemonic, because we do not know the language, nor can we
+        reliably deduce it without a preferred language (since Mnemonics may be valid in multiple
+        languages).
 
         Recognizes hex strings (raw entropy), and attempts to normalize them as appropriate for the
         IMnemonic-derived class using 'from_entropy'.  Thus, all IMnemonics can accept either

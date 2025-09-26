@@ -534,19 +534,22 @@ class SLIP39Mnemonic(IMnemonic):
 
     @classmethod
     def decode(
-        cls, mnemonic: str, passphrase: str = "",
+        cls, mnemonic: str, passphrase: str = "", language: Optional[str] = None,
     ) -> str:
-        """
-        Decodes a mnemonic phrase into its corresponding entropy.
+        """Decodes SLIP-39 mnemonic phrases into its corresponding entropy.
 
         This method converts a given mnemonic phrase back into its original entropy value.  It
-        verifies several internal hashes to ensure the mnemonic and decoding is valid.  However, the
-        passphrase has no verification; all derived entropies are considered equivalently valid (you
-        can use several passphrases to recover multiple, distinct sets of entropy.)  So, it is
-        solely your responsibility to remember your correct passphrase(s).
+        verifies several internal hashes to ensure the mnemonic and decoding is valid.
+
+        The passphrase has no verification; all derived entropies are considered equivalently valid
+        (you can use several passphrases to recover multiple, distinct sets of entropy.)  So, it is
+        solely your responsibility to remember your correct passphrase(s): this is a design feature
+        of SLIP-39.  The default "extendable" SLIP-39 
 
         :param mnemonic: The mnemonic phrase to decode.
         :type mnemonic: str
+        :param language: The preferred language of the mnemonic phrase
+        :type language: Optional[str]
         :param passphrase: The SLIP-39 passphrase (default: "")
         :type passphrase: str
 
@@ -556,6 +559,9 @@ class SLIP39Mnemonic(IMnemonic):
         """
         mnemonic_list: List[str] = cls.normalize(mnemonic)
         try:
+            if language and language not in cls.languages:
+                raise ValueError( f"Invalid SLIP-39 language: {language}" )
+
             mnemonic_words, = filter(lambda words: len(mnemonic_list) % words == 0, cls.words_list)
             mnemonic_chunks: Iterable[List[str]] = zip(*[iter(mnemonic_list)] * mnemonic_words)
             mnemonic_lines: Iterable[str] = map(" ".join, mnemonic_chunks)
@@ -574,10 +580,10 @@ class SLIP39Mnemonic(IMnemonic):
                     )
                     + " mnemonics required"
                 )
-            entropy = bytes_to_string(recovery.recover(passphrase.encode('UTF-8')))
-            return entropy
+            entropy: str = bytes_to_string(recovery.recover(passphrase.encode('UTF-8')))
         except Exception as exc:
             raise MnemonicError("Failed to recover SLIP-39 Mnemonics", detail=exc) from exc
+        return entropy
 
     NORMALIZE			= re.compile(
         r"""
