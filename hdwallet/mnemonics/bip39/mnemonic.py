@@ -250,6 +250,7 @@ class BIP39Mnemonic(IMnemonic):
         mnemonic: str,
         language: Optional[str] = None,
         checksum: bool = False,
+        words_list: Optional[List[str]] = None,
         words_list_with_index: Optional[Mapping[str, int]] = None,
     ) -> str:
         """
@@ -277,8 +278,13 @@ class BIP39Mnemonic(IMnemonic):
         if len(words) not in cls.words_list:
             raise MnemonicError("Invalid mnemonic words count", expected=cls.words_list, got=len(words))
 
+        # May optionally provide a word<->index Mapping, or a language + words_list; if neither, the Mnemonic defaults are used.
         if not words_list_with_index:
-            words_list_with_index, language = cls.find_language(mnemonic=words, language=language)
+            wordlist_path: Optional[Dict[str, Union[str, List[str]]]] = None
+            if words_list:
+                assert language, f"Must provide language with words_list"
+                wordlist_path = { language: words_list }
+            words_list_with_index, language = cls.find_language(mnemonic=words, language=language, wordlist_path=wordlist_path)
             if len(set(words_list_with_index.values())) != cls.words_list_number:
                 raise Error(
                     "Invalid number of loaded words list", expected=cls.words_list_number, got=len(words_list)
