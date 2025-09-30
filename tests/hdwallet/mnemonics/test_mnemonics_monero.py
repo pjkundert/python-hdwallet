@@ -42,10 +42,7 @@ def test_monero_mnemonics(data):
         for language in __["languages"].keys():
             print( f"Monero {language} mnemonics:" )
             assert MoneroMnemonic.is_valid_language(language=language)
-            try:
-                print( MoneroMnemonic.decode(mnemonic=__["languages"][language], language=language) )
-            except Exception as exc:
-                print( exc )
+
             assert MoneroMnemonic.is_valid(mnemonic=__["languages"][language], language=language)
 
             mnemonic = MoneroMnemonic.from_words(words=__["words"], language=language)

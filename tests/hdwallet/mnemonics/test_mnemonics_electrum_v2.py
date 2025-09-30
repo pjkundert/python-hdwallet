@@ -8,6 +8,7 @@
 import json
 import os
 import pytest
+import unicodedata
 
 from hdwallet.mnemonics.electrum.v2.mnemonic import (
     ElectrumV2Mnemonic, ELECTRUM_V2_MNEMONIC_LANGUAGES, ELECTRUM_V2_MNEMONIC_WORDS
@@ -36,11 +37,7 @@ def test_electrum_v2_mnemonics(data):
 
                 assert ElectrumV2Mnemonic.is_valid_language(language=language)
                 mnemonic_words=__["mnemonic-types"][mnemonic_type][language]["mnemonic"]
-                try:
-                    print( ElectrumV2Mnemonic.decode(mnemonic=mnemonic_words, language=language, mnemonic_type=mnemonic_type) )
-                except Exception as exc:
-                    import traceback
-                    print( f"Failed for {mnemonic_words}: {traceback.format_exc()}" )
+
                 assert ElectrumV2Mnemonic.is_valid(
                     mnemonic=mnemonic_words, language=language, mnemonic_type=mnemonic_type
                 )
@@ -51,7 +48,7 @@ def test_electrum_v2_mnemonics(data):
 
                 assert ElectrumV2Mnemonic.from_entropy(
                     entropy=__["entropy-not-suitable"], mnemonic_type=mnemonic_type, language=language
-                ) == __["mnemonic-types"][mnemonic_type][language]["mnemonic"]
+                ) == unicodedata.normalize("NFC", __["mnemonic-types"][mnemonic_type][language]["mnemonic"])
 
                 assert ElectrumV2Mnemonic.decode(
                     mnemonic=__["mnemonic-types"][mnemonic_type][language]["mnemonic"], language=language, mnemonic_type=mnemonic_type

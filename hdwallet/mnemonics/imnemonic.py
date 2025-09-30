@@ -530,10 +530,10 @@ class IMnemonic(ABC):
 
     @classmethod
     def find_language(
-            cls,
-            mnemonic: List[str],
-            wordlist_path: Optional[Dict[str, Union[str, List[str]]]] = None,
-            language: Optional[str] = None,
+        cls,
+        mnemonic: List[str],
+        wordlist_path: Optional[Dict[str, Union[str, List[str]]]] = None,
+        language: Optional[str] = None,
     ) -> Tuple[Mapping[str, int], str]:
         """Finds the language of the given mnemonic by checking against available word list(s),
         preferring the specified 'language' if one is supplied.  If a 'wordlist_path' dict of
@@ -615,10 +615,10 @@ class IMnemonic(ABC):
                 # preferred language (or no preferred language was specified).  Keep track of its
                 # quality of match, but carry on testing other candidate languages.
             except (MnemonicError, ValueError) as exc:
-                print(
-                    f"Unrecognized mnemonic: {exc}"
-                    # f" w/ indices:\n{words_indices}"
-                )
+                # print(
+                #     f"Unrecognized mnemonic: {exc}"
+                #     # f" w/ indices:\n{words_indices}"
+                # )
                 continue
 
         # No unambiguous match to any preferred language found (or no language matched all words).
@@ -658,10 +658,10 @@ class IMnemonic(ABC):
             cls.decode(mnemonic=mnemonic, language=language, **kwargs)
             return True
         except (ValueError, MnemonicError, ChecksumError) as exc:
-            print(
-                f"Invalid mnemonic: {exc}"
-                # f" w/ indices:\n{words_indices}"
-            )
+            # print(
+            #     f"Invalid mnemonic: {exc}"
+            #     # f" w/ indices:\n{words_indices}"
+            # )
             return False
 
     @classmethod
