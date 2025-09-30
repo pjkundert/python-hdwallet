@@ -8,6 +8,8 @@ from typing import (
     Dict, List, Mapping, Union, Optional
 )
 
+import unicodedata
+
 from ....entropies import (
     IEntropy, ElectrumV2Entropy, ELECTRUM_V2_ENTROPY_STRENGTHS
 )
@@ -302,9 +304,9 @@ class ElectrumV2Mnemonic(IMnemonic):
                 "Invalid number of loaded words list", expected=cls.words_list_number, got=len(words_list)
             )
 
-        # Produces mnemonics of valid length, even if entropy has trailing zero value
-        while entropy > 0 or len(mnemonic) not in set(self.words_list):
-            word_index: int = entropy % cls.words_list_numbrer
+        # Produces mnemonics of valid length, even if entropy has trailing zero bits
+        while entropy > 0 or len(mnemonic) not in set(cls.words_list):
+            word_index: int = entropy % cls.words_list_number
             entropy //= cls.words_list_number
             mnemonic.append(words_list[word_index])
 
@@ -410,8 +412,10 @@ class ElectrumV2Mnemonic(IMnemonic):
     def is_type(
         cls, mnemonic: Union[str, List[str]], mnemonic_type: str = ELECTRUM_V2_MNEMONIC_TYPES.STANDARD
     ) -> bool:
-        """
-        Checks if the given mnemonic matches the specified mnemonic type.
+        """Checks if the given mnemonic matches the specified mnemonic type.
+
+        All seed derivation related functions require NFKD Unicode normalization;
+        <IMnemonic>.normalize returns an NFC-normalized list of mnemonic words.
 
         :param mnemonic: The mnemonic phrase to check.
         :type mnemonic: str or List[str]
@@ -420,9 +424,10 @@ class ElectrumV2Mnemonic(IMnemonic):
 
         :return: True if the mnemonic matches the specified type, False otherwise.
         :rtype: bool
+
         """
         return bytes_to_string(hmac_sha512(
-            b"Seed version", " ".join(cls.normalize(mnemonic))
+            b"Seed version", unicodedata.normalize("NFKD", " ".join(cls.normalize(mnemonic)))
         )).startswith(
             cls.mnemonic_types[mnemonic_type]
         )
