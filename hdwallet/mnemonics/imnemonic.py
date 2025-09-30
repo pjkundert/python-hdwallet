@@ -20,7 +20,7 @@ import unicodedata
 
 from collections import defaultdict
 
-from ..exceptions import MnemonicError
+from ..exceptions import MnemonicError, ChecksumError
 from ..entropies import IEntropy
 
 
@@ -221,8 +221,24 @@ def unmark( word_composed: str ) -> str:
 class WordIndices( abc.Mapping ):
     """A Mapping which holds a Sequence of Mnemonic words.
 
-    Indexable either by int (returning the original word), or by the original word (with or without
-    Unicode "Marks") or a unique abbreviations, returning the int index.
+    Acts like a basic { "word": index, ... } dict but with additional word flexibility.
+
+    Also behaves like a ["word", "word", ...] list for iteration and indexing.
+
+    Indexable either by int (returning the original canonical word), or by the original word (with
+    or without Unicode "Marks") or a unique abbreviations, returning the int index.
+
+    The base mapping is str -> int, and keys()/iter() returns the canonical Mnemonic words.
+
+    The index value for a certain mnemonic word (with our without "Marks") or an abbreviation
+    thereof can be obtained:
+
+        <WordIndices>[str(word)]
+
+    The canonical mnemonic word in "NFC" form at a certain index can be obtained via:
+
+        <WordIndices>[int(index)]
+        <WordIndices>.keys()[int(index)]
 
     """
     def __init__(self, sequence):
@@ -364,10 +380,11 @@ class IMnemonic(ABC):
 
         # We now know with certainty that the list of Mnemonic words was valid in some language.
         # However, they may have been abbreviations, or had optional UTF-8 Marks removed.  So, use
-        # the _word_indices twice, to map from str (matching word) -> int (index) -> str (canonical
+        # the _word_indices mapping twice, from str (matching word/abbrev) -> int (index) -> str
+        # (canonical word)
         self._mnemonic: List[str] = [
-            self._word_indices[self._word_indices[w]]
-            for w in mnemonic_list
+            self._word_indices[self._word_indices[word]]
+            for word in mnemonic_list
         ]
         self._words = len(self._mnemonic)
 
@@ -443,17 +460,17 @@ class IMnemonic(ABC):
         """Retrieves the standardized (NFC normalized, lower-cased) word list for the specified language.
 
         Uses NFC normalization for internal processing consistency. BIP-39 wordlists are generally
-        stored in NFD format (with some exceptions like russian) but we normalize to NFC for
+        stored in NFD format (with some exceptions like russian) but we normalize to NFC (for
         internal word comparisons and lookups, and for display.
 
         We do not want to use 'normalize' to do this, because normalization of Mnemonics may have
         additional functionality beyond just ensuring symbol and case standardization.
 
-        Supports wordlist_path containing either a path:
+        Supports wordlist_path mapping language to either a path:
 
             {'language': '/some/path'},
 
-        or the words_list content:
+        or to the language's actual words_list data:
 
             {'language': ['words', 'list', ...]}
 
@@ -515,7 +532,7 @@ class IMnemonic(ABC):
     def find_language(
             cls,
             mnemonic: List[str],
-            wordlist_path: Optional[Dict[str, str]] = None,
+            wordlist_path: Optional[Dict[str, Union[str, List[str]]]] = None,
             language: Optional[str] = None,
     ) -> Tuple[Mapping[str, int], str]:
         """Finds the language of the given mnemonic by checking against available word list(s),
@@ -559,8 +576,8 @@ class IMnemonic(ABC):
 
         :param mnemonic: The mnemonic to check, represented as a list of words.
         :type mnemonic: List[str]
-        :param wordlist_path: Optional dictionary mapping language names to file paths of their word lists.
-        :type wordlist_path: Optional[Dict[str, str]]
+        :param wordlist_path: Optional dictionary mapping language names to file paths of their word lists, or the word list.
+        :type wordlist_path: Optional[Dict[str, Union[str, List[str]]]]
         :param language: The preferred language, used if valid and mnemonic matches.
         :type mnemonic: Optional[str]
 
@@ -584,7 +601,7 @@ class IMnemonic(ABC):
                         if candidate in quality:
                             quality.pop(candidate)
                         raise MnemonicError(f"Unable to find word {word} in {candidate}") from ex
-                    word_canonical = words_indices[index]
+                    word_canonical = words_indices.keys()[index]
                     quality[candidate] += len( word_canonical )
 
                 if candidate == language:
@@ -597,12 +614,16 @@ class IMnemonic(ABC):
                 # found to be unique abbreviations of words in the candidate, but it isn't the
                 # preferred language (or no preferred language was specified).  Keep track of its
                 # quality of match, but carry on testing other candidate languages.
-            except (MnemonicError, ValueError):
+            except (MnemonicError, ValueError) as exc:
+                print(
+                    f"Unrecognized mnemonic: {exc}"
+                    # f" w/ indices:\n{words_indices}"
+                )
                 continue
 
         # No unambiguous match to any preferred language found (or no language matched all words).
         if not quality:
-            raise MnemonicError(f"Invalid mnemonic words")
+            raise MnemonicError(f"Invalid {cls.name()} mnemonic words")
 
         # Select the best available.  Sort by the number of characters matched (more is better -
         # less ambiguous).  This is a statistical method; it is still dangerous, and we should fail
@@ -615,11 +636,12 @@ class IMnemonic(ABC):
 
         return language_indices[candidate], candidate
 
-
     @classmethod
     def is_valid(cls, mnemonic: Union[str, List[str]], language: Optional[str] = None, **kwargs) -> bool:
-        """
-        Checks if the given mnemonic is valid.
+        """Checks if the given mnemonic is valid.
+
+        Catches mnemonic-validity related Exceptions and returns False, but lets others through;
+        asserts, hdwallet.exceptions.Error, general programming errors, etc.
 
         :param mnemonic: The mnemonic to check.
         :type mnemonic: str
@@ -629,12 +651,17 @@ class IMnemonic(ABC):
 
         :return: True if the strength is valid, False otherwise.
         :rtype: bool
+
         """
 
         try:
             cls.decode(mnemonic=mnemonic, language=language, **kwargs)
             return True
-        except (ValueError, MnemonicError):
+        except (ValueError, MnemonicError, ChecksumError) as exc:
+            print(
+                f"Invalid mnemonic: {exc}"
+                # f" w/ indices:\n{words_indices}"
+            )
             return False
 
     @classmethod
@@ -695,6 +722,6 @@ class IMnemonic(ABC):
         if isinstance(mnemonic, str):
             if ( len(mnemonic.strip()) * 4 in cls.words_to_entropy_strength.values()
                  and all(c in string.hexdigits for c in mnemonic.strip())):
-                mnemonic: str = cls.from_entropy(mnemonic, language="english")
+                mnemonic: str = cls.from_entropy(mnemonic, language=cls.languages[0])
             mnemonic: List[str] = mnemonic.strip().split()
         return list(unicodedata.normalize("NFKC", word.lower()) for word in mnemonic)

@@ -5,7 +5,7 @@
 # file COPYING or https://opensource.org/license/mit
 
 from typing import (
-    Union, Dict, List
+    Union, Dict, List, Optional
 )
 
 from ...entropies import (
@@ -114,40 +114,40 @@ class MoneroMnemonic(IMnemonic):
         MONERO_MNEMONIC_WORDS.TWENTY_FIVE: MONERO_ENTROPY_STRENGTHS.TWO_HUNDRED_FIFTY_SIX
     }
     languages: List[str] = [
-        MONERO_MNEMONIC_LANGUAGES.CHINESE_SIMPLIFIED,
-        MONERO_MNEMONIC_LANGUAGES.DUTCH,
         MONERO_MNEMONIC_LANGUAGES.ENGLISH,
         MONERO_MNEMONIC_LANGUAGES.FRENCH,
+        MONERO_MNEMONIC_LANGUAGES.SPANISH,
         MONERO_MNEMONIC_LANGUAGES.GERMAN,
+        MONERO_MNEMONIC_LANGUAGES.DUTCH,
         MONERO_MNEMONIC_LANGUAGES.ITALIAN,
-        MONERO_MNEMONIC_LANGUAGES.JAPANESE,
-        MONERO_MNEMONIC_LANGUAGES.PORTUGUESE,
         MONERO_MNEMONIC_LANGUAGES.RUSSIAN,
-        MONERO_MNEMONIC_LANGUAGES.SPANISH
+        MONERO_MNEMONIC_LANGUAGES.PORTUGUESE,
+        MONERO_MNEMONIC_LANGUAGES.JAPANESE,
+        MONERO_MNEMONIC_LANGUAGES.CHINESE_SIMPLIFIED,
     ]
     language_unique_prefix_lengths: Dict[str, int] = {
-        MONERO_MNEMONIC_LANGUAGES.CHINESE_SIMPLIFIED: 1,
-        MONERO_MNEMONIC_LANGUAGES.DUTCH: 4,
         MONERO_MNEMONIC_LANGUAGES.ENGLISH: 3,
         MONERO_MNEMONIC_LANGUAGES.FRENCH: 4,
-        MONERO_MNEMONIC_LANGUAGES.GERMAN: 4,
-        MONERO_MNEMONIC_LANGUAGES.ITALIAN: 4,
-        MONERO_MNEMONIC_LANGUAGES.JAPANESE: 4,
-        MONERO_MNEMONIC_LANGUAGES.PORTUGUESE: 4,
         MONERO_MNEMONIC_LANGUAGES.SPANISH: 4,
-        MONERO_MNEMONIC_LANGUAGES.RUSSIAN: 4
+        MONERO_MNEMONIC_LANGUAGES.GERMAN: 4,
+        MONERO_MNEMONIC_LANGUAGES.DUTCH: 4,
+        MONERO_MNEMONIC_LANGUAGES.ITALIAN: 4,
+        MONERO_MNEMONIC_LANGUAGES.RUSSIAN: 4,
+        MONERO_MNEMONIC_LANGUAGES.PORTUGUESE: 4,
+        MONERO_MNEMONIC_LANGUAGES.JAPANESE: 4,
+        MONERO_MNEMONIC_LANGUAGES.CHINESE_SIMPLIFIED: 1,
     }
     wordlist_path: Dict[str, str] = {
-        MONERO_MNEMONIC_LANGUAGES.CHINESE_SIMPLIFIED: "monero/wordlist/chinese_simplified.txt",
-        MONERO_MNEMONIC_LANGUAGES.DUTCH: "monero/wordlist/dutch.txt",
         MONERO_MNEMONIC_LANGUAGES.ENGLISH: "monero/wordlist/english.txt",
         MONERO_MNEMONIC_LANGUAGES.FRENCH: "monero/wordlist/french.txt",
+        MONERO_MNEMONIC_LANGUAGES.SPANISH: "monero/wordlist/spanish.txt",
         MONERO_MNEMONIC_LANGUAGES.GERMAN: "monero/wordlist/german.txt",
+        MONERO_MNEMONIC_LANGUAGES.DUTCH: "monero/wordlist/dutch.txt",
         MONERO_MNEMONIC_LANGUAGES.ITALIAN: "monero/wordlist/italian.txt",
-        MONERO_MNEMONIC_LANGUAGES.JAPANESE: "monero/wordlist/japanese.txt",
-        MONERO_MNEMONIC_LANGUAGES.PORTUGUESE: "monero/wordlist/portuguese.txt",
         MONERO_MNEMONIC_LANGUAGES.RUSSIAN: "monero/wordlist/russian.txt",
-        MONERO_MNEMONIC_LANGUAGES.SPANISH: "monero/wordlist/spanish.txt"
+        MONERO_MNEMONIC_LANGUAGES.PORTUGUESE: "monero/wordlist/portuguese.txt",
+        MONERO_MNEMONIC_LANGUAGES.JAPANESE: "monero/wordlist/japanese.txt",
+        MONERO_MNEMONIC_LANGUAGES.CHINESE_SIMPLIFIED: "monero/wordlist/chinese_simplified.txt",
     }
 
     @classmethod
@@ -257,13 +257,20 @@ class MoneroMnemonic(IMnemonic):
         return " ".join(cls.normalize(mnemonic))
 
     @classmethod
-    def decode(cls, mnemonic: str, **kwargs) -> str:
+    def decode(
+        cls,
+        mnemonic: str,
+        language: Optional[str] = None,
+        **kwargs
+    ) -> str:
         """
         Decodes a mnemonic phrase into entropy data.
 
         :param mnemonic: The mnemonic phrase to decode.
         :type mnemonic: str
-        :param kwargs: Additional keyword arguments (language, checksum).
+        :param language: The preferred mnemonic language.
+        :type language: str
+        :param kwargs: Additional keyword arguments (checksum).
 
         :return: The decoded entropy data.
         :rtype: str
@@ -273,10 +280,10 @@ class MoneroMnemonic(IMnemonic):
         if len(words) not in cls.words_list:
             raise MnemonicError("Invalid mnemonic words count", expected=cls.words_list, got=len(words))
 
-        words_list, language = cls.find_language(mnemonic=words)
-        if len(words_list) != cls.words_list_number:
+        words_list_with_index, language = cls.find_language(mnemonic=words, language=language)
+        if len(words_list_with_index) != cls.words_list_number:
             raise Error(
-                "Invalid number of loaded words list", expected=cls.words_list_number, got=len(words_list)
+                "Invalid number of loaded words list", expected=cls.words_list_number, got=len(words_list_with_index)
             )
 
         if len(words) in cls.words_checksum:
@@ -295,6 +302,6 @@ class MoneroMnemonic(IMnemonic):
         for index in range(len(words) // 3):
             word_1, word_2, word_3 = words[index * 3:(index * 3) + 3]
             entropy += words_to_bytes_chunk(
-                word_1, word_2, word_3, words_list, "little"
+                word_1, word_2, word_3, words_list_with_index.keys(), "little"
             )
         return bytes_to_string(entropy)

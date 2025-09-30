@@ -52,9 +52,15 @@ class BIP39Seed(ISeed):
         return "BIP39"
 
     @classmethod
-    def from_mnemonic(cls, mnemonic: Union[str, IMnemonic], passphrase: Optional[str] = None) -> str:
-        """
-        Converts a mnemonic phrase to its corresponding seed.
+    def from_mnemonic(
+        cls,
+        mnemonic: Union[str, IMnemonic],
+        passphrase: Optional[str] = None,
+        language: Optional[str] = None
+    ) -> str:
+        """Converts a canonical mnemonic phrase to its corresponding seed.  Since a mnemonic string
+        may contain abbreviations, we canonicalize it by round-tripping it through the appropriate
+        IMnemonic type; this raises a MnemonicError exception for invalid mnemonics or languages.
 
         BIP39 stretches a prefix + (passphrase or "") + normalized mnemonic to produce the 512-bit seed.
 
@@ -66,16 +72,14 @@ class BIP39Seed(ISeed):
 
         :return: The decoded seed as a string.
         :rtype: str
-        """
 
-        mnemonic = (
-            mnemonic.mnemonic() if isinstance(mnemonic, IMnemonic) else mnemonic
-        )
-        if not BIP39Mnemonic.is_valid(mnemonic=mnemonic):
-            raise MnemonicError(f"Invalid {cls.name()} mnemonic words")
+        """
+        if not isinstance(mnemonic, IMnemonic):
+            mnemonic = BIP39Mnemonic(mnemonic=mnemonic, language=language)
+        assert isinstance(mnemonic, IMnemonic)
 
         # Normalize mnemonic to NFKD for seed generation as required by BIP-39 specification
-        normalized_mnemonic: str = unicodedata.normalize("NFKD", mnemonic)
+        normalized_mnemonic: str = unicodedata.normalize("NFKD", mnemonic.mnemonic())
         
         # Salt normalization should use NFKD as per BIP-39 specification  
         salt: str = unicodedata.normalize("NFKD", (

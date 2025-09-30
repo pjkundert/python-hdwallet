@@ -152,6 +152,9 @@ def cli_mnemonic(**kwargs) -> None:
     "-m", "--mnemonic", multiple=True, help="Set Seed mnemonic(s)"
 )
 @click.option(
+    "-l", "--language", type=str, default=None, help="Set Mnemonic language", show_default=True
+)
+@click.option(
     "-p", "--passphrase", type=str, default=None, help="Set Seed passphrase", show_default=True
 )
 @click.option(

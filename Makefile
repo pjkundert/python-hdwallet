@@ -16,7 +16,7 @@ export PYTHON		?= $(shell python3 --version >/dev/null 2>&1 && echo python3 || e
 PYTHON_V		= $(shell $(PYTHON) -c "import sys; print('-'.join((('venv' if sys.prefix != sys.base_prefix else next(iter(filter(None,sys.base_prefix.split('/'))))),sys.platform,sys.implementation.cache_tag)))" 2>/dev/null )
 
 export PYTEST		?= $(PYTHON) -m pytest
-export PYTEST_OPTS	?= # -vv --capture=no --mypy
+export PYTEST_OPTS	?= -vv --capture=no # --mypy
 
 
 VERSION			= $(shell $(PYTHON) -c "exec(open('hdwallet/info.py').read()); print(__version__[1:])" )

@@ -156,12 +156,17 @@ class AlgorandMnemonic(IMnemonic):
         word_indexes: Optional[List[int]] = convert_bits(entropy, 8, 11)
         assert word_indexes is not None
 
-        words_list: list = cls.normalize(cls.get_words_list_by_language(language=language))
+        words_list: list = cls.get_words_list_by_language(language=language)
         indexes: list = word_indexes + [checksum_word_indexes[0]]
-        return " ".join(cls.normalize([words_list[index] for index in indexes]))
+        return " ".join( words_list[index] for index in indexes )
 
     @classmethod
-    def decode(cls, mnemonic: str, **kwargs) -> str:
+    def decode(
+        cls,
+        mnemonic: str,
+        language: Optional[str] = None,
+        **kwargs
+    ) -> str:
         """
         Decodes a mnemonic phrase into entropy data.
 
@@ -177,10 +182,7 @@ class AlgorandMnemonic(IMnemonic):
         if len(words) not in cls.words_list:
             raise MnemonicError("Invalid mnemonic words count", expected=cls.words_list, got=len(words))
 
-        words_list, language = cls.find_language(mnemonic=words)
-        words_list_with_index: dict = {
-            words_list[i]: i for i in range(len(words_list))
-        }
+        words_list_with_index, language = cls.find_language(mnemonic=words, language=language)
         word_indexes = [words_list_with_index[word] for word in words]
         entropy_list: Optional[List[int]] = convert_bits(word_indexes[:-1], 11, 8)
         assert entropy_list is not None
@@ -191,7 +193,7 @@ class AlgorandMnemonic(IMnemonic):
         assert checksum_word_indexes is not None
         if checksum_word_indexes[0] != word_indexes[-1]:
             raise ChecksumError(
-                "Invalid checksum", expected=words_list[checksum_word_indexes[0]], got=words_list[word_indexes[-1]]
+                "Invalid checksum", expected=words_list_with_index.keys()[checksum_word_indexes[0]], got=words_list_with_index.keys()[word_indexes[-1]]
             )
 
         return bytes_to_string(entropy)

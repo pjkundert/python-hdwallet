@@ -24,6 +24,7 @@
         python311Env = mkPythonEnv pkgs.python311;
         python312Env = mkPythonEnv pkgs.python312;
         python313Env = mkPythonEnv pkgs.python313;
+        python314Env = mkPythonEnv pkgs.python314;
 
       in {
         # Single development shell with all Python versions
@@ -42,16 +43,18 @@
             python311Env
             python312Env
             python313Env
+            #python314Env
           ];
 
           shellHook = ''
             echo "Welcome to the multi-Python development environment!"
             echo "Available Python interpreters:"
             echo "  python (default): $(python --version 2>&1 || echo 'not available')"
-            #echo "  python3.10: $(python3.10 --version 2>&1 || echo 'not available')"
+           #echo "  python3.10: $(python3.10 --version 2>&1 || echo 'not available')"
             echo "  python3.11: $(python3.11 --version 2>&1 || echo 'not available')"
             echo "  python3.12: $(python3.12 --version 2>&1 || echo 'not available')"
             echo "  python3.13: $(python3.13 --version 2>&1 || echo 'not available')"
+           #echo "  python3.14: $(python3.14 --version 2>&1 || echo 'not available')"
             echo ""
             echo "All versions have pytest, coincurve, scikit-learn, pycryptodome, and pynacl installed."
           '';

@@ -77,29 +77,29 @@ class BIP39Mnemonic(IMnemonic):
     +-----------------------+----------------------+
     | Name                  | Value                |
     +=======================+======================+
-    | CHINESE_SIMPLIFIED    | chinese-simplified   |
-    +-----------------------+----------------------+
-    | CHINESE_TRADITIONAL   | chinese-traditional  |
-    +-----------------------+----------------------+
-    | CZECH                 | czech                |
-    +-----------------------+----------------------+
     | ENGLISH               | english              |
     +-----------------------+----------------------+
     | FRENCH                | french               |
     +-----------------------+----------------------+
+    | SPANISH               | spanish              |
+    +-----------------------+----------------------+
     | ITALIAN               | italian              |
-    +-----------------------+----------------------+
-    | JAPANESE              | japanese             |
-    +-----------------------+----------------------+
-    | KOREAN                | korean               |
-    +-----------------------+----------------------+
-    | PORTUGUESE            | portuguese           |
     +-----------------------+----------------------+
     | RUSSIAN               | russian              |
     +-----------------------+----------------------+
-    | SPANISH               | spanish              |
+    | PORTUGUESE            | portuguese           |
+    +-----------------------+----------------------+
+    | CZECH                 | czech                |
     +-----------------------+----------------------+
     | TURKISH               | turkish              |
+    +-----------------------+----------------------+
+    | KOREAN                | korean               |
+    +-----------------------+----------------------+
+    | CHINESE_SIMPLIFIED    | chinese-simplified   |
+    +-----------------------+----------------------+
+    | CHINESE_TRADITIONAL   | chinese-traditional  |
+    +-----------------------+----------------------+
+    | JAPANESE              | japanese             |
     +-----------------------+----------------------+
     """
 
@@ -120,32 +120,32 @@ class BIP39Mnemonic(IMnemonic):
         BIP39_MNEMONIC_WORDS.TWENTY_FOUR: BIP39_ENTROPY_STRENGTHS.TWO_HUNDRED_FIFTY_SIX
     }
     languages: List[str] = [
-        BIP39_MNEMONIC_LANGUAGES.CHINESE_SIMPLIFIED,
-        BIP39_MNEMONIC_LANGUAGES.CHINESE_TRADITIONAL,
-        BIP39_MNEMONIC_LANGUAGES.CZECH,
         BIP39_MNEMONIC_LANGUAGES.ENGLISH,
         BIP39_MNEMONIC_LANGUAGES.FRENCH,
-        BIP39_MNEMONIC_LANGUAGES.ITALIAN,
-        BIP39_MNEMONIC_LANGUAGES.JAPANESE,
-        BIP39_MNEMONIC_LANGUAGES.KOREAN,
-        BIP39_MNEMONIC_LANGUAGES.PORTUGUESE,
-        BIP39_MNEMONIC_LANGUAGES.RUSSIAN,
         BIP39_MNEMONIC_LANGUAGES.SPANISH,
-        BIP39_MNEMONIC_LANGUAGES.TURKISH
+        BIP39_MNEMONIC_LANGUAGES.ITALIAN,
+        BIP39_MNEMONIC_LANGUAGES.RUSSIAN,
+        BIP39_MNEMONIC_LANGUAGES.PORTUGUESE,
+        BIP39_MNEMONIC_LANGUAGES.CZECH,
+        BIP39_MNEMONIC_LANGUAGES.TURKISH,
+        BIP39_MNEMONIC_LANGUAGES.KOREAN,
+        BIP39_MNEMONIC_LANGUAGES.CHINESE_SIMPLIFIED,
+        BIP39_MNEMONIC_LANGUAGES.CHINESE_TRADITIONAL,
+        BIP39_MNEMONIC_LANGUAGES.JAPANESE,
     ]
     wordlist_path: Dict[str, str] = {
-        BIP39_MNEMONIC_LANGUAGES.CHINESE_SIMPLIFIED: "bip39/wordlist/chinese_simplified.txt",
-        BIP39_MNEMONIC_LANGUAGES.CHINESE_TRADITIONAL: "bip39/wordlist/chinese_traditional.txt",
-        BIP39_MNEMONIC_LANGUAGES.CZECH: "bip39/wordlist/czech.txt",
         BIP39_MNEMONIC_LANGUAGES.ENGLISH: "bip39/wordlist/english.txt",
         BIP39_MNEMONIC_LANGUAGES.FRENCH: "bip39/wordlist/french.txt",
-        BIP39_MNEMONIC_LANGUAGES.ITALIAN: "bip39/wordlist/italian.txt",
-        BIP39_MNEMONIC_LANGUAGES.JAPANESE: "bip39/wordlist/japanese.txt",
-        BIP39_MNEMONIC_LANGUAGES.KOREAN: "bip39/wordlist/korean.txt",
-        BIP39_MNEMONIC_LANGUAGES.PORTUGUESE: "bip39/wordlist/portuguese.txt",
-        BIP39_MNEMONIC_LANGUAGES.RUSSIAN: "bip39/wordlist/russian.txt",
         BIP39_MNEMONIC_LANGUAGES.SPANISH: "bip39/wordlist/spanish.txt",
-        BIP39_MNEMONIC_LANGUAGES.TURKISH: "bip39/wordlist/turkish.txt"
+        BIP39_MNEMONIC_LANGUAGES.ITALIAN: "bip39/wordlist/italian.txt",
+        BIP39_MNEMONIC_LANGUAGES.RUSSIAN: "bip39/wordlist/russian.txt",
+        BIP39_MNEMONIC_LANGUAGES.PORTUGUESE: "bip39/wordlist/portuguese.txt",
+        BIP39_MNEMONIC_LANGUAGES.CZECH: "bip39/wordlist/czech.txt",
+        BIP39_MNEMONIC_LANGUAGES.TURKISH: "bip39/wordlist/turkish.txt",
+        BIP39_MNEMONIC_LANGUAGES.KOREAN: "bip39/wordlist/korean.txt",
+        BIP39_MNEMONIC_LANGUAGES.CHINESE_SIMPLIFIED: "bip39/wordlist/chinese_simplified.txt",
+        BIP39_MNEMONIC_LANGUAGES.CHINESE_TRADITIONAL: "bip39/wordlist/chinese_traditional.txt",
+        BIP39_MNEMONIC_LANGUAGES.JAPANESE: "bip39/wordlist/japanese.txt",
     }
 
     @classmethod
@@ -282,7 +282,8 @@ class BIP39Mnemonic(IMnemonic):
         if not words_list_with_index:
             wordlist_path: Optional[Dict[str, Union[str, List[str]]]] = None
             if words_list:
-                assert language, f"Must provide language with words_list"
+                if not language:
+                    raise Error( f"Must provide language with words_list" )
                 wordlist_path = { language: words_list }
             words_list_with_index, language = cls.find_language(mnemonic=words, language=language, wordlist_path=wordlist_path)
             if len(set(words_list_with_index.values())) != cls.words_list_number:
