@@ -7,7 +7,7 @@
 from abc import (
     ABC, abstractmethod
 )
-from typing import Union
+from typing import Optional, Union
 
 import re
 
@@ -58,6 +58,11 @@ class ISeed(ABC):
         """
         Retrieves the seed associated with the current instance.
 
+        :param mnemonic: The mnemonic phrase to be decoded. Can be a string or an instance of `IMnemonic`.
+        :type mnemonic: Union[str, IMnemonic]
+        :param language: The preferred language, if known
+        :type language: Optional[str]
+        
         :return: The seed as a string.
         :rtype: str
         """
@@ -66,5 +71,5 @@ class ISeed(ABC):
 
     @classmethod
     @abstractmethod
-    def from_mnemonic(cls, mnemonic: Union[str, IMnemonic], **kwargs) -> str:
+    def from_mnemonic(cls, mnemonic: Union[str, IMnemonic], language: Optional[str], **kwargs) -> str:
         pass

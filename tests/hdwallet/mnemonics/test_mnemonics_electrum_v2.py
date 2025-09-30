@@ -35,28 +35,35 @@ def test_electrum_v2_mnemonics(data):
             for language in __["mnemonic-types"][mnemonic_type].keys():
 
                 assert ElectrumV2Mnemonic.is_valid_language(language=language)
+                mnemonic_words=__["mnemonic-types"][mnemonic_type][language]["mnemonic"]
+                try:
+                    print( ElectrumV2Mnemonic.decode(mnemonic=mnemonic_words, language=language, mnemonic_type=mnemonic_type) )
+                except Exception as exc:
+                    import traceback
+                    print( f"Failed for {mnemonic_words}: {traceback.format_exc()}" )
                 assert ElectrumV2Mnemonic.is_valid(
-                    mnemonic=__["mnemonic-types"][mnemonic_type][language]["mnemonic"], mnemonic_type=mnemonic_type
+                    mnemonic=mnemonic_words, language=language, mnemonic_type=mnemonic_type
                 )
 
                 mnemonic = ElectrumV2Mnemonic.from_words(words=__["words"], language=language, mnemonic_type=mnemonic_type)
                 assert len(mnemonic.split()) == __["words"]
-                assert ElectrumV2Mnemonic(mnemonic=mnemonic, mnemonic_type=mnemonic_type).language().lower() == language
+                assert ElectrumV2Mnemonic(mnemonic=mnemonic, language=language, mnemonic_type=mnemonic_type).language().lower() == language
 
                 assert ElectrumV2Mnemonic.from_entropy(
                     entropy=__["entropy-not-suitable"], mnemonic_type=mnemonic_type, language=language
                 ) == __["mnemonic-types"][mnemonic_type][language]["mnemonic"]
 
                 assert ElectrumV2Mnemonic.decode(
-                    mnemonic=__["mnemonic-types"][mnemonic_type][language]["mnemonic"], mnemonic_type=mnemonic_type
+                    mnemonic=__["mnemonic-types"][mnemonic_type][language]["mnemonic"], language=language, mnemonic_type=mnemonic_type
                 ) == __["mnemonic-types"][mnemonic_type][language]["entropy-suitable"]
 
                 mnemonic = ElectrumV2Mnemonic(
-                    mnemonic=__["mnemonic-types"][mnemonic_type][language]["mnemonic"], mnemonic_type=mnemonic_type
+                    mnemonic=__["mnemonic-types"][mnemonic_type][language]["mnemonic"], language=language, mnemonic_type=mnemonic_type
                 )
                 assert mnemonic.name() == __["name"]
                 assert mnemonic.language().lower() == language
                 assert mnemonic.mnemonic_type() == mnemonic_type
+                
 
     with pytest.raises(Exception, match="Invalid mnemonic words"): 
         ElectrumV2Mnemonic(

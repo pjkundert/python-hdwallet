@@ -5,7 +5,7 @@
 # file COPYING or https://opensource.org/license/mit
 
 from typing import (
-    Dict, List, Union, Optional
+    Dict, List, Mapping, Union, Optional
 )
 
 from ....entropies import (
@@ -75,13 +75,13 @@ class ElectrumV2Mnemonic(IMnemonic):
     +-----------------------+----------------------+
     | Name                  | Value                |
     +=======================+======================+
-    | CHINESE_SIMPLIFIED    | chinese-simplified   |
-    +-----------------------+----------------------+
     | ENGLISH               | english              |
+    +-----------------------+----------------------+
+    | SPANISH               | spanish              |
     +-----------------------+----------------------+
     | PORTUGUESE            | portuguese           |
     +-----------------------+----------------------+
-    | SPANISH               | spanish              |
+    | CHINESE_SIMPLIFIED    | chinese-simplified   |
     +-----------------------+----------------------+
 
     Here are available ``ELECTRUM_V2_MNEMONIC_TYPES``:
@@ -100,6 +100,7 @@ class ElectrumV2Mnemonic(IMnemonic):
     """
 
     word_bit_length: int = 11
+    words_list_number: int = 2048
     words_list: List[int] = [
         ELECTRUM_V2_MNEMONIC_WORDS.TWELVE,
         ELECTRUM_V2_MNEMONIC_WORDS.TWENTY_FOUR
@@ -109,16 +110,16 @@ class ElectrumV2Mnemonic(IMnemonic):
         ELECTRUM_V2_MNEMONIC_WORDS.TWENTY_FOUR: ELECTRUM_V2_ENTROPY_STRENGTHS.TWO_HUNDRED_SIXTY_FOUR
     }
     languages: List[str] = [
-        ELECTRUM_V2_MNEMONIC_LANGUAGES.CHINESE_SIMPLIFIED,
         ELECTRUM_V2_MNEMONIC_LANGUAGES.ENGLISH,
+        ELECTRUM_V2_MNEMONIC_LANGUAGES.SPANISH,
         ELECTRUM_V2_MNEMONIC_LANGUAGES.PORTUGUESE,
-        ELECTRUM_V2_MNEMONIC_LANGUAGES.SPANISH
+        ELECTRUM_V2_MNEMONIC_LANGUAGES.CHINESE_SIMPLIFIED,
     ]
     wordlist_path: Dict[str, str] = {
-        ELECTRUM_V2_MNEMONIC_LANGUAGES.CHINESE_SIMPLIFIED: "electrum/v2/wordlist/chinese_simplified.txt",
         ELECTRUM_V2_MNEMONIC_LANGUAGES.ENGLISH: "electrum/v2/wordlist/english.txt",
+        ELECTRUM_V2_MNEMONIC_LANGUAGES.SPANISH: "electrum/v2/wordlist/spanish.txt",
         ELECTRUM_V2_MNEMONIC_LANGUAGES.PORTUGUESE: "electrum/v2/wordlist/portuguese.txt",
-        ELECTRUM_V2_MNEMONIC_LANGUAGES.SPANISH: "electrum/v2/wordlist/spanish.txt"
+        ELECTRUM_V2_MNEMONIC_LANGUAGES.CHINESE_SIMPLIFIED: "electrum/v2/wordlist/chinese_simplified.txt",
     }
     mnemonic_types: Dict[str, str] = {
         ELECTRUM_V2_MNEMONIC_TYPES.STANDARD: "01",
@@ -218,25 +219,18 @@ class ElectrumV2Mnemonic(IMnemonic):
 
         if ElectrumV2Entropy.are_entropy_bits_enough(entropy):
 
-            words_list: List[str] = cls.normalize(cls.get_words_list_by_language(
+            words_list: List[str] = cls.get_words_list_by_language(
                 language=language, wordlist_path=cls.wordlist_path
-            ))
-            bip39_words_list: List[str] = cls.normalize(cls.get_words_list_by_language(
+            )
+            bip39_words_list: List[str] = cls.get_words_list_by_language(
                 language=language, wordlist_path=BIP39Mnemonic.wordlist_path
-            ))
-            bip39_words_list_with_index: dict = {
-                bip39_words_list[i]: i for i in range(len(bip39_words_list))
-            }
+            )
             try:
-                electrum_v1_words_list: List[str] = cls.normalize(cls.get_words_list_by_language(
+                electrum_v1_words_list: List[str] = cls.get_words_list_by_language(
                     language=language, wordlist_path=ElectrumV1Mnemonic.wordlist_path
-                ))
-                electrum_v1_words_list_with_index: dict = {
-                    electrum_v1_words_list[i]: i for i in range(len(electrum_v1_words_list))
-                }
+                )
             except KeyError:
-                electrum_v1_words_list: List[str] = [ ]
-                electrum_v1_words_list_with_index: dict = { }
+                electrum_v1_words_list: Optional[List[str]] = None
 
             entropy: int = bytes_to_integer(entropy)
             for index in range(max_attempts):
@@ -248,9 +242,9 @@ class ElectrumV2Mnemonic(IMnemonic):
                         mnemonic_type=mnemonic_type,
                         words_list=words_list,
                         bip39_words_list=bip39_words_list,
-                        bip39_words_list_with_index=bip39_words_list_with_index,
+                        bip39_words_list_with_index=None,
                         electrum_v1_words_list=electrum_v1_words_list,
-                        electrum_v1_words_list_with_index=electrum_v1_words_list_with_index
+                        electrum_v1_words_list_with_index=None,
                     )
                 except EntropyError:
                     continue
@@ -265,9 +259,9 @@ class ElectrumV2Mnemonic(IMnemonic):
         mnemonic_type: str = ELECTRUM_V2_MNEMONIC_TYPES.STANDARD,
         words_list: Optional[List[str]] = None,
         bip39_words_list: Optional[List[str]] = None,
-        bip39_words_list_with_index: Optional[dict] = None,
+        bip39_words_list_with_index: Optional[Mapping[str, int]] = None,
         electrum_v1_words_list: Optional[List[str]] = None,
-        electrum_v1_words_list_with_index: Optional[dict] = None
+        electrum_v1_words_list_with_index: Optional[Mapping[str, int]] = None
     ) -> str:
         """
         Generates a mnemonic phrase from entropy data.
@@ -302,14 +296,21 @@ class ElectrumV2Mnemonic(IMnemonic):
 
         mnemonic: List[str] = []
         if not words_list:
-            words_list = cls.normalize(cls.get_words_list_by_language(language=language))
-        while entropy > 0:
-            word_index: int = entropy % len(words_list)
-            entropy //= len(words_list)
+            words_list = cls.get_words_list_by_language(language=language)
+        if len(words_list) != cls.words_list_number:
+            raise Error(
+                "Invalid number of loaded words list", expected=cls.words_list_number, got=len(words_list)
+            )
+
+        # Produces mnemonics of valid length, even if entropy has trailing zero value
+        while entropy > 0 or len(mnemonic) not in set(self.words_list):
+            word_index: int = entropy % cls.words_list_numbrer
+            entropy //= cls.words_list_number
             mnemonic.append(words_list[word_index])
 
         if not cls.is_valid(
             mnemonic=mnemonic,
+            language=language,
             mnemonic_type=mnemonic_type,
             bip39_words_list=bip39_words_list,
             bip39_words_list_with_index=bip39_words_list_with_index,
@@ -318,10 +319,15 @@ class ElectrumV2Mnemonic(IMnemonic):
         ):
             raise EntropyError("Entropy bytes are not suitable for generating a valid mnemonic")
 
-        return " ".join(cls.normalize(mnemonic))
+        return " ".join(mnemonic)  # mnemonic words already NFKC normalized
 
     @classmethod
-    def decode(cls, mnemonic: str, mnemonic_type: str = ELECTRUM_V2_MNEMONIC_TYPES.STANDARD) -> str:
+    def decode(
+        cls,
+        mnemonic: str,
+        language: Optional[str] = None,
+        mnemonic_type: str = ELECTRUM_V2_MNEMONIC_TYPES.STANDARD
+    ) -> str:
         """
         Decodes a mnemonic phrase into its original entropy value.
 
@@ -341,17 +347,18 @@ class ElectrumV2Mnemonic(IMnemonic):
         if len(words) not in cls.words_list:
             raise MnemonicError("Invalid mnemonic words count", expected=cls.words_list, got=len(words))
 
-        if not cls.is_valid(mnemonic, mnemonic_type=mnemonic_type):
-            raise MnemonicError(f"Invalid {mnemonic_type} mnemonic type words")
+        # if not cls.is_valid(mnemonic, language=language, mnemonic_type=mnemonic_type):
+        #     raise MnemonicError(f"Invalid {mnemonic_type} mnemonic type words")
 
-        words_list, language = cls.find_language(mnemonic=words)
-        words_list_with_index: dict = {
-            words_list[i]: i for i in range(len(words_list))
-        }
+        words_list_with_index, language = cls.find_language(mnemonic=words, language=language)
+        if len(words_list_with_index) != cls.words_list_number:
+            raise Error(
+                "Invalid number of loaded words list", expected=cls.words_list_number, got=len(words_list_with_index)
+            )
 
         entropy: int = 0
         for word in reversed(words):
-            entropy: int = (entropy * len(words_list)) + words_list_with_index[word]
+            entropy: int = (entropy * len(words_list_with_index)) + words_list_with_index[word]
 
         return bytes_to_string(integer_to_bytes(entropy))
 
@@ -359,11 +366,12 @@ class ElectrumV2Mnemonic(IMnemonic):
     def is_valid(
         cls,
         mnemonic: Union[str, List[str]],
+        language: Optional[str] = None,
         mnemonic_type: str = ELECTRUM_V2_MNEMONIC_TYPES.STANDARD,
         bip39_words_list: Optional[List[str]] = None,
-        bip39_words_list_with_index: Optional[dict] = None,
+        bip39_words_list_with_index: Optional[Mapping[str, int]] = None,
         electrum_v1_words_list: Optional[List[str]] = None,
-        electrum_v1_words_list_with_index: Optional[dict] = None
+        electrum_v1_words_list_with_index: Optional[Mapping[str, int]] = None
     ) -> bool:
         """
         Checks if the given mnemonic is valid according to the specified mnemonic type.
@@ -389,9 +397,9 @@ class ElectrumV2Mnemonic(IMnemonic):
         """
 
         if BIP39Mnemonic.is_valid(
-            mnemonic, words_list=bip39_words_list, words_list_with_index=bip39_words_list_with_index
+            mnemonic, language=language, words_list=bip39_words_list, words_list_with_index=bip39_words_list_with_index
         ) or ElectrumV1Mnemonic.is_valid(
-            mnemonic, words_list=electrum_v1_words_list, words_list_with_index=electrum_v1_words_list_with_index
+            mnemonic, language=language, words_list=electrum_v1_words_list, words_list_with_index=electrum_v1_words_list_with_index
         ):
             return False
         return cls.is_type(

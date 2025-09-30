@@ -6,6 +6,7 @@
 # file COPYING or https://opensource.org/license/mit
 
 import json
+import unicodedata
 
 from hdwallet.cli.__main__ import cli_main
 
@@ -19,24 +20,38 @@ def check_mnemonics(
     entropy,
     mnemonic
 ):
+    def json_parser( json_i ):
+        json_s = ''.join( json_i )
+        try:
+            data = json.loads(json_s)
+        except Exception as exc:
+            print( f"Failed to parse JSON: {exc} from:\n{json_s}" )
+            raise
+        return data
 
-    output_word = json.loads(cli_word.output)
-    output_entropy = json.loads(cli_entropy.output)
+    try:
 
-    assert cli_word.exit_code == 0
-    assert cli_entropy.exit_code == 0
+        output_word = json_parser( cli_word.output )
+        output_entropy = json_parser( cli_entropy.output )
+        
+        assert cli_word.exit_code == 0
+        assert cli_entropy.exit_code == 0
+    
+        assert output_word["client"] == client
+        assert output_entropy["client"] == client
+    
+        assert output_word["words"] == words
+        assert output_entropy["words"] == words
+    
+        assert output_word["language"].lower() == language
+        assert output_entropy["language"].lower() == language
+    
+        # Mnemonics recovered will be in 
+        assert unicodedata.normalize( "NFC", mnemonic ) == unicodedata.normalize( "NFC", output_entropy["mnemonic"] )
 
-    assert output_word["client"] == client
-    assert output_entropy["client"] == client
-
-    assert output_word["words"] == words
-    assert output_entropy["words"] == words
-
-    assert output_word["language"].lower() == language
-    assert output_entropy["language"].lower() == language
-
-    assert output_entropy["mnemonic"] == mnemonic
-
+    except Exception as exc:
+        print( f"Failed {client} w/ {language} mnemonic: {mnemonic}: {exc}" )
+        raise
 
 def test_cli_mnemonic(data, cli_tester):
 

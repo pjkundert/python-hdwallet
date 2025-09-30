@@ -658,9 +658,9 @@ class SLIP39Mnemonic(IMnemonic):
             mnemonic_list: List[str] = mnemonic
 
         # Regardless of the Mnemonic source; the total number of words must be a valid multiple of
-        # the SLIP-39 mnemonic word lengths.  Fortunately, the LCM of (20, 33 and 59) is 38940, so
-        # we cannot encounter a sufficient body of mnemonics to ever run into an uncertain SLIP-39
-        # Mnemonic length in words.
+        # the SLIP-39 mnemonic word lengths.  Fortunately, the LCM(20, 33) is 660, and LCM(20, 33
+        # and 59) is 38940, so we are unlikely to encounter a sufficient body of mnemonics to ever
+        # run into an uncertain SLIP-39 Mnemonic length in words.
         word_lengths = list(filter(lambda w: len(mnemonic_list) % w == 0, cls.words_list))
         if not word_lengths:
             errors.append( "Mnemonics not a multiple of valid length, or a single hex entropy value" )
