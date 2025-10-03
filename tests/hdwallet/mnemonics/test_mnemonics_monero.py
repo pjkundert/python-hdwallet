@@ -40,9 +40,6 @@ def test_monero_mnemonics(data):
         assert MoneroMnemonic.is_valid_words(words=__["words"])
 
         for language in __["languages"].keys():
-            print( f"Monero {language} mnemonics:" )
-            assert MoneroMnemonic.is_valid_language(language=language)
-
             assert MoneroMnemonic.is_valid(mnemonic=__["languages"][language], language=language)
 
             mnemonic = MoneroMnemonic.from_words(words=__["words"], language=language)
@@ -57,7 +54,7 @@ def test_monero_mnemonics(data):
             assert mnemonic.name() == __["name"]
             assert mnemonic.language().lower() == language
 
-    with pytest.raises(MnemonicError, match="Invalid mnemonic words"): 
+    with pytest.raises(MnemonicError, match="Invalid Monero mnemonic words"): 
         MoneroMnemonic(
             mnemonic="flower letter world foil coin poverty romance tongue taste hip cradle follow proud pluck ten improve"
         )

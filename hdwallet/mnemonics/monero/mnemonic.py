@@ -3,6 +3,7 @@
 # Copyright © 2020-2024, Meheret Tesfaye Batu <meherett.batu@gmail.com>
 # Distributed under the MIT software license, see the accompanying
 # file COPYING or https://opensource.org/license/mit
+import unicodedata
 
 from typing import (
     Union, Dict, List, Optional
@@ -248,7 +249,7 @@ class MoneroMnemonic(IMnemonic):
 
         if checksum:
             unique_prefix_length = cls.language_unique_prefix_lengths[language]
-            prefixes = "".join(word[:unique_prefix_length] for word in mnemonic)
+            prefixes = "".join(unicodedata.normalize("NFD", word)[:unique_prefix_length] for word in mnemonic)
             checksum_word = mnemonic[
                 bytes_to_integer(crc32(prefixes)) % len(mnemonic)
             ]
@@ -289,7 +290,7 @@ class MoneroMnemonic(IMnemonic):
         if len(words) in cls.words_checksum:
             mnemonic: list = words[:-1]
             unique_prefix_length = cls.language_unique_prefix_lengths[language]
-            prefixes = "".join(word[:unique_prefix_length] for word in mnemonic)
+            prefixes = "".join(unicodedata.normalize("NFD", word)[:unique_prefix_length] for word in mnemonic)
             checksum_word = mnemonic[
                 bytes_to_integer(crc32(prefixes)) % len(mnemonic)
             ]
