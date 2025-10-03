@@ -11,12 +11,13 @@ from collections import (
     abc
 )
 from typing import (
-    Any, Callable, Dict, Generator, List, Mapping, Optional, Set, Tuple, Union
+    Any, Callable, Dict, Generator, List, Mapping, Optional, Sequence, Set, Tuple, Union
 )
 
 import os
 import string
 import unicodedata
+from functools import lru_cache
 
 from collections import defaultdict
 
@@ -241,7 +242,7 @@ class WordIndices( abc.Mapping ):
         <WordIndices>.keys()[int(index)]
 
     """
-    def __init__(self, sequence):
+    def __init__(self, sequence: Sequence[str]):
         """Insert a sequence of Unicode words (and optionally value(s)) into a Trie, making the
         "unmarked" version an alias of the regular Unicode version.
 
@@ -269,6 +270,8 @@ class WordIndices( abc.Mapping ):
                         assert n.children[c_un] is n.children[c], \
                             f"Attempting to alias {c_un!r} to {c!r} but already exists as a non-alias"
                     n.children[c] = n.children[c_un]
+
+        #print( f"Created Mapping for {len(self)} words {', '.join(self._words[:min(len(self),3)])}...{self._words[-1]}" )
 
     def __getitem__(self, key: Union[str, int]) -> int:
         """A Mapping from "word" to index, or the reverse.
@@ -512,20 +515,41 @@ class IMnemonic(ABC):
         return words_list
 
     @classmethod
+    @lru_cache(maxsize=32)
+    def _get_cached_word_indices(cls, wordlist_tuple: tuple[str]) -> WordIndices:
+        """Create and cache WordIndices for a given language and wordlist.
+
+        :param language: The language name for identification
+        :type language: str
+        :param wordlist_tuple: Tuple of words (hashable for caching)
+        :type wordlist_tuple: tuple
+
+        :return: Cached WordIndices object
+        :rtype: WordIndices
+        """
+        return WordIndices(wordlist_tuple)
+
+    @classmethod
     def wordlist_indices(
-        cls, wordlist_path: Optional[Dict[str, Union[str, List[str]]]] = None,
+        cls, wordlist_path: Optional[Dict[str, Union[str, List[str]]]] = None, language: Optional[str] = None,
     ) -> Tuple[str, List[str], WordIndices]:
         """Yields each 'candidate' language, its NFKC-normalized words List, and its WordIndices
-        Mapping supporting indexing by 'int' word index, or 'str' with optional accents and all
-        unique abbreviations.
+
+        Optionally restricts to the preferred language, if available.
+
+        The WordIndices Mapping supporting indexing by 'int' word index, or 'str' with optional
+        accents and all unique abbreviations.
 
         """
         for candidate in (wordlist_path.keys() if wordlist_path else cls.languages):
+            if language and candidate != language:
+                continue
             # Normalized NFC, so characters and accents are combined
             words_list: List[str] = cls.get_words_list_by_language(
                 language=candidate, wordlist_path=wordlist_path
             )
-            word_indices = WordIndices( words_list )
+            # Convert to tuple for hashing, cache the WordIndices creation
+            word_indices = cls._get_cached_word_indices(tuple(words_list))
             yield candidate, words_list, word_indices
 
     @classmethod
@@ -640,8 +664,8 @@ class IMnemonic(ABC):
     def is_valid(cls, mnemonic: Union[str, List[str]], language: Optional[str] = None, **kwargs) -> bool:
         """Checks if the given mnemonic is valid.
 
-        Catches mnemonic-validity related Exceptions and returns False, but lets others through;
-        asserts, hdwallet.exceptions.Error, general programming errors, etc.
+        Catches mnemonic-validity related or word indexing Exceptions and returns False, but lets
+        others through; asserts, hdwallet.exceptions.Error, general programming errors, etc.
 
         :param mnemonic: The mnemonic to check.
         :type mnemonic: str
@@ -657,7 +681,7 @@ class IMnemonic(ABC):
         try:
             cls.decode(mnemonic=mnemonic, language=language, **kwargs)
             return True
-        except (ValueError, MnemonicError, ChecksumError) as exc:
+        except (ValueError, KeyError, MnemonicError, ChecksumError) as exc:
             # print(
             #     f"Invalid mnemonic: {exc}"
             #     # f" w/ indices:\n{words_indices}"

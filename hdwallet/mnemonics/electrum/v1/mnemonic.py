@@ -213,10 +213,10 @@ class ElectrumV1Mnemonic(IMnemonic):
                 assert language, f"Must provide language with words_list"
                 wordlist_path = { language: words_list }
             words_list_with_index, language = cls.find_language(mnemonic=words, language=language, wordlist_path=wordlist_path)
-            if len(set(words_list_with_index.values())) != cls.words_list_number:
-                raise Error(
-                    "Invalid number of loaded words list", expected=cls.words_list_number, got=len(words_list)
-                )
+        if len(words_list_with_index) != cls.words_list_number:
+            raise Error(
+                "Invalid number of loaded words list", expected=cls.words_list_number, got=len(words_list)
+            )
 
         entropy: bytes = b""
         for index in range(len(words) // 3):

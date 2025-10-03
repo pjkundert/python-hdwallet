@@ -224,15 +224,13 @@ class ElectrumV2Mnemonic(IMnemonic):
             words_list: List[str] = cls.get_words_list_by_language(
                 language=language, wordlist_path=cls.wordlist_path
             )
-            bip39_words_list: List[str] = cls.get_words_list_by_language(
-                language=language, wordlist_path=BIP39Mnemonic.wordlist_path
-            )
+            bip39_words_indices: Optional[List[str]] = None
+            (_, _ ,bip39_words_indices), = BIP39Mnemonic.wordlist_indices(language=language)
+            electrum_v1_words_indices: Optional[List[str]] = None
             try:
-                electrum_v1_words_list: List[str] = cls.get_words_list_by_language(
-                    language=language, wordlist_path=ElectrumV1Mnemonic.wordlist_path
-                )
-            except KeyError:
-                electrum_v1_words_list: Optional[List[str]] = None
+                (_, _, electrum_v1_words_indices), = ElectrumV1Mnemonic.wordlist_indices(language=language)
+            except ValueError:
+                pass
 
             entropy: int = bytes_to_integer(entropy)
             for index in range(max_attempts):
@@ -243,10 +241,8 @@ class ElectrumV2Mnemonic(IMnemonic):
                         language=language,
                         mnemonic_type=mnemonic_type,
                         words_list=words_list,
-                        bip39_words_list=bip39_words_list,
-                        bip39_words_list_with_index=None,
-                        electrum_v1_words_list=electrum_v1_words_list,
-                        electrum_v1_words_list_with_index=None,
+                        bip39_words_list_with_index=bip39_words_indices,
+                        electrum_v1_words_list_with_index=electrum_v1_words_indices,
                     )
                 except EntropyError:
                     continue
