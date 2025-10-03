@@ -98,16 +98,19 @@ def generate_mnemonic(**kwargs) -> None:
             if kwargs.get("mnemonic_client") == ElectrumV2Mnemonic.name():
                 entropy: str = ElectrumV2Mnemonic.decode(
                     mnemonic=kwargs.get("mnemonic"),
+                    language=kwargs.get("language"),
                     mnemonic_type=kwargs.get("mnemonic_type")
                 )
             elif kwargs.get("mnemonic_client") == SLIP39Mnemonic.name():
                 entropy: str = SLIPMnemonic.decode(
                     mnemonic=kwargs.get("mnemonic"),
+                    language=kwargs.get("language"),
                     passphrase=kwargs.get("mnemonic_passphrase") or "",
                 )
             else:
                 entropy: str = MNEMONICS.mnemonic(name=kwargs.get("mnemonic_client")).decode(
                     mnemonic=kwargs.get("mnemonic"),
+                    language=kwargs.get("language"),
                 )
             # Now, use the recovered 'entropy' in deriving the new 'client' mnemonic.
             kwargs["entropy"] = entropy
@@ -121,6 +124,7 @@ def generate_mnemonic(**kwargs) -> None:
                         mnemonic_type=kwargs.get("mnemonic_type"),
                         max_attempts=kwargs.get("max_attempts")
                     ),
+                    language=language,
                     mnemonic_type=kwargs.get("mnemonic_type")
                 )
             elif kwargs.get("client") == MoneroMnemonic.name():
@@ -129,7 +133,8 @@ def generate_mnemonic(**kwargs) -> None:
                         entropy=kwargs.get("entropy"),
                         language=language,
                         checksum=kwargs.get("checksum")
-                    )
+                    ),
+                    language=language,
                 )
             elif kwargs.get("client") == SLIP39Mnemonic.name():
                 # The supplied 'entropy', encoded w/ the SLIP-39 'language', and encrypted w/
@@ -151,7 +156,8 @@ def generate_mnemonic(**kwargs) -> None:
                 mnemonic: IMnemonic = MNEMONICS.mnemonic(name=kwargs.get("client")).__call__(
                     mnemonic=MNEMONICS.mnemonic(name=kwargs.get("client")).from_entropy(
                         entropy=kwargs.get("entropy"), language=language
-                    )
+                    ),
+                    language=language,
                 )
         else:
             if kwargs.get("client") == ElectrumV2Mnemonic.name():
@@ -162,13 +168,15 @@ def generate_mnemonic(**kwargs) -> None:
                         mnemonic_type=kwargs.get("mnemonic_type"),
                         max_attempts=kwargs.get("max_attempts")
                     ),
+                    language=language,
                     mnemonic_type=kwargs.get("mnemonic_type")
                 )
             else:
                 mnemonic: IMnemonic = MNEMONICS.mnemonic(name=kwargs.get("client")).__call__(
                     mnemonic=MNEMONICS.mnemonic(name=kwargs.get("client")).from_words(
                         words=words, language=language
-                    )
+                    ),
+                    language=language,
                 )
         output: dict = {
             "client": mnemonic.name(),
