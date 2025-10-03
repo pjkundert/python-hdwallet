@@ -32,11 +32,11 @@ def test_cli_seed(data, cli_tester):
                         else:
                             seed = data["seeds"][client][words][mnemonic_type][language]["non-passphrase-seed"]
 
-                        print(" ".join(cli_args))
+                        #print(" ".join(cli_args))
                         cli = cli_tester.invoke(
                             cli_main, cli_args
                         )
-                        print(f" --> {cli.output}")
+                        #print(f" --> {cli.output}")
                         output = json.loads(cli.output)
 
                         assert output["client"] == client
@@ -59,11 +59,11 @@ def test_cli_seed(data, cli_tester):
                         else:
                             seed = data["seeds"][client][words][cardano_type][language]["non-passphrase-seed"]
 
-                        print(" ".join(cli_args))
+                        #print(" ".join(cli_args))
                         cli = cli_tester.invoke(
                             cli_main, cli_args
                         )
-                        print(f" --> {cli.output}")
+                        #print(f" --> {cli.output}")
                         output = json.loads(cli.output)
 
                         assert output["client"] == client
@@ -84,11 +84,11 @@ def test_cli_seed(data, cli_tester):
                     else:
                         seed = data["seeds"][client][words][language]["non-passphrase-seed"]
 
-                    print(" ".join(cli_args))
+                    #print(" ".join(cli_args))
                     cli = cli_tester.invoke(
                         cli_main, cli_args
                     )
-                    print(f" --> {cli.output}")
+                    #print(f" --> {cli.output}")
                     output = json.loads(cli.output)
 
                     assert output["client"] == client

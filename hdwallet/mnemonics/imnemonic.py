@@ -656,6 +656,8 @@ class IMnemonic(ABC):
         if worse and matches == worse[0][1]:
             # There are more than one matching candidate languages -- and they are both equivalent
             # in quality.  We cannot know (or guess) the language with any certainty.
+            import traceback
+            print("\n".join(traceback.format_stack()))
             raise MnemonicError(f"Ambiguous languages {', '.join(c for c, w in worse)} or {candidate} for mnemonic; specify a preferred language")
 
         return language_indices[candidate], candidate

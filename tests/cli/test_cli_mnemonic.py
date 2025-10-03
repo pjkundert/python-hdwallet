@@ -9,7 +9,7 @@ import json
 import unicodedata
 
 from hdwallet.cli.__main__ import cli_main
-
+from hdwallet.mnemonics.imnemonic import unmark
 
 def check_mnemonics(
     cli_word,
@@ -20,6 +20,10 @@ def check_mnemonics(
     entropy,
     mnemonic
 ):
+    def nfc_unmarked_set( phrase ):
+        nfc = unicodedata.normalize( "NFC", phrase )
+        return set( (nfc, unmark( nfc )) )
+
     def json_parser( json_i ):
         json_s = ''.join( json_i )
         try:
@@ -46,8 +50,9 @@ def check_mnemonics(
         assert output_word["language"].lower() == language
         assert output_entropy["language"].lower() == language
     
-        # Mnemonics recovered will be in 
-        assert unicodedata.normalize( "NFC", mnemonic ) == unicodedata.normalize( "NFC", output_entropy["mnemonic"] )
+        # Mnemonics recovered will be in NFC form, and my be with or without Unicode Marks (for
+        # example, mnemonics that are ambiguous between English and French may not have accents).
+        assert nfc_unmarked_set( mnemonic ) & nfc_unmarked_set( output_entropy["mnemonic"] )
 
     except Exception as exc:
         print( f"Failed {client} w/ {language} mnemonic: {mnemonic}: {exc}" )
@@ -111,9 +116,11 @@ def test_cli_mnemonic(data, cli_tester):
                         entropy_args.append("--checksum")
                         entropy_args.append(str(mnemonic_data["checksum"]))
 
+                    #print(" ".join(entropy_args))
                     cli_entropy = cli_tester.invoke(
                         cli_main, entropy_args
                     )
+                    #print(f" --> {cli_entropy.output}")
 
                     check_mnemonics(
                         cli_word=cli_word,
