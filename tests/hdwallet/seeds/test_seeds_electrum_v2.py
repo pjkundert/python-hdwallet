@@ -24,7 +24,6 @@ def test_electrum_v2_seeds(data):
                     language=language,
                     mnemonic_type=mnemonic_type
                 )
-                print(f"language: {language}: {mnemonic}: {non_passphrase_seed}")
                 assert non_passphrase_seed == data["seeds"]["Electrum-V2"][words][mnemonic_type][language]["non-passphrase-seed"]
 
                 for passphrase in data["seeds"]["Electrum-V2"][words][mnemonic_type][language]["passphrases"].keys():

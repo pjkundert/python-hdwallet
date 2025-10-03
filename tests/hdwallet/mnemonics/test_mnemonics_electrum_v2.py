@@ -34,7 +34,6 @@ def test_electrum_v2_mnemonics(data):
 
         for mnemonic_type in __["mnemonic-types"].keys():
             for language in __["mnemonic-types"][mnemonic_type].keys():
-                print( f"Electrum {mnemonic_type} {language}:" )
                 assert ElectrumV2Mnemonic.is_valid_language(language=language)
                 mnemonic_words=__["mnemonic-types"][mnemonic_type][language]["mnemonic"]
 
