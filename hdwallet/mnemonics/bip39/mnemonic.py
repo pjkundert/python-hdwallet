@@ -286,10 +286,10 @@ class BIP39Mnemonic(IMnemonic):
                     raise Error( f"Must provide language with words_list" )
                 wordlist_path = { language: words_list }
             words_list_with_index, language = cls.find_language(mnemonic=words, language=language, wordlist_path=wordlist_path)
-            if len(set(words_list_with_index.values())) != cls.words_list_number:
-                raise Error(
-                    "Invalid number of loaded words list", expected=cls.words_list_number, got=len(words_list)
-                )
+        if len(words_list_with_index) != cls.words_list_number:
+            raise Error(
+                "Invalid number of loaded words list", expected=cls.words_list_number, got=len(words_list_with_index)
+            )
 
         mnemonic_bin: str = "".join(map(
             lambda word: integer_to_binary_string(
