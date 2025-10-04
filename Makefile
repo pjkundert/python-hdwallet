@@ -16,7 +16,7 @@ export PYTHON		?= $(shell python3 --version >/dev/null 2>&1 && echo python3 || e
 PYTHON_V		= $(shell $(PYTHON) -c "import sys; print('-'.join((('venv' if sys.prefix != sys.base_prefix else next(iter(filter(None,sys.base_prefix.split('/'))))),sys.platform,sys.implementation.cache_tag)))" 2>/dev/null )
 
 export PYTEST		?= $(PYTHON) -m pytest
-export PYTEST_OPTS	?= -vv --capture=no # --mypy
+export PYTEST_OPTS	?= -vv --capture=no
 
 
 VERSION			= $(shell $(PYTHON) -c "exec(open('hdwallet/info.py').read()); print(__version__[1:])" )
@@ -31,7 +31,7 @@ export NIX_OPTS		?=
 help:
 	@$(SPHINXBUILD) -M help "$(SOURCEDIR)" "$(BUILDDIR)" $(SPHINXOPTS) $(O)
 
-.PHONY: help wheel install test analyze venv Makefile FORCE
+.PHONY: help wheel install test analyze types venv Makefile FORCE
 
 
 wheel:			$(WHEEL)
@@ -59,6 +59,9 @@ analyze:
 	$(PYTHON) -m flake8 --color never -j 1 --max-line-length=250 \
 	  --ignore=W503,W504,E201,E202,E223,E226 \
 	  hdwallet
+
+types:
+	mypy .
 
 # 
 # Nix and VirtualEnv build, install and activate

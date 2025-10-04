@@ -37,11 +37,13 @@ class Ambiguous(TrieError):
 
 
 class TrieNode:
-    # Associates a value with a node in a trie.
-    #
-    # The EMPTY marker indicates that a word ending in this TrieNode was not inserted into the True;
-    # replace with something that will never be provided as a word's 'value', preferably something
-    # "Falsey".  An insert defaults to PRESENT, preferably something "Truthy".
+    """
+    Associates a value with a node in a trie.
+
+    The EMPTY marker indicates that a word ending in this TrieNode was not inserted into the True;
+    replace with something that will never be provided as a word's 'value', preferably something
+    "Falsey".  An insert defaults to PRESENT, preferably something "Truthy".
+    """
     EMPTY = None
     PRESENT = True
     def __init__(self):
@@ -52,9 +54,6 @@ class TrieNode:
 class Trie:
 
     def __init__(self, root=None):
-        """
-        Initialize your data structure here.
-        """
         self.root = root if root is not None else TrieNode()
 
     def insert(self, word: str, value: Optional[Any] = None) -> None:
@@ -68,7 +67,7 @@ class Trie:
             f"Attempt to re-insert {word!r}; already present with value {current.value!r}"
         current.value = current.PRESENT if value is None else value
 
-    def find(self, word: str, current: Optional[TrieNode] = None) -> Generator[Tuple[str, Optional[TrieNode]], None, None]:
+    def find(self, word: str, current: Optional[TrieNode] = None) -> Generator[Tuple[bool, str, Optional[TrieNode]], None, None]:
         """Finds all the TrieNode that match the word, optionally from the provided 'current' node.
 
         If the word isn't in the current Trie, terminates by producing None for the TrieNode.
@@ -85,7 +84,7 @@ class Trie:
                 break
             yield current.value is not current.EMPTY, letter, current
 
-    def complete(self, current: TrieNode) -> Generator[Tuple[str, TrieNode], None, None]:
+    def complete(self, current: TrieNode) -> Generator[Tuple[bool, str, TrieNode], None, None]:
         """Generate (<completed>, key, node) tuples along an unambiguous path starting from after
         the current TrieNode, until the next terminal TrieNode is encountered.
 
@@ -104,7 +103,7 @@ class Trie:
             terminal = current.value is not current.EMPTY
             yield terminal, key, current
 
-    def search(self, word: str, current: Optional[TrieNode] = None, complete: bool = False) -> Tuple[str, Optional[TrieNode]]:
+    def search(self, word: str, current: Optional[TrieNode] = None, complete: bool = False) -> Tuple[bool, str, Optional[TrieNode]]:
         """Returns the matched stem, and associated TrieNode if the word is in the trie (otherwise None)
 
         If 'complete' and 'word' is an unambiguous abbreviation of some word with a non-EMPTY value,
@@ -208,8 +207,9 @@ class Trie:
 
 def unmark( word_composed: str ) -> str:
     """This word may contain composite characters with accents like "é" that decompose "e" + "'".
+
     Most mnemonic encodings require that mnemonic words without accents match the accented word.
-    Remove the non-character symbols.
+    Remove the Mark symbols.
 
     """
     return ''.join(
@@ -270,8 +270,6 @@ class WordIndices( abc.Mapping ):
                         assert n.children[c_un] is n.children[c], \
                             f"Attempting to alias {c_un!r} to {c!r} but already exists as a non-alias"
                     n.children[c] = n.children[c_un]
-
-        #print( f"Created Mapping for {len(self)} words {', '.join(self._words[:min(len(self),3)])}...{self._words[-1]}" )
 
     def __getitem__(self, key: Union[str, int]) -> int:
         """A Mapping from "word" to index, or the reverse.

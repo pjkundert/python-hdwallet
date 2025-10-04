@@ -4,8 +4,6 @@ from hashlib import sha256
 from Crypto.Hash import keccak
 from typing import List
 
-import six
-
 
 __base58_alphabet = "123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz"
 
@@ -36,9 +34,9 @@ def string_to_int(data):
 
 
 def ensure_string(data):
-    if isinstance(data, six.binary_type):
+    if isinstance(data, bytes):
         return data.decode("utf-8")
-    elif not isinstance(data, six.string_types):
+    elif not isinstance(data, str):
         raise ValueError("Invalid value for string")
     return data
 
