@@ -60,6 +60,16 @@ def test_slip39_language():
         },
     }
 
+    assert language_parser("Fibonacci Defaults 3 / 5") == {
+        ("Fibonacci Defaults",(3,5)): {
+            0: (1,1),
+            1: (1,1),
+            2: (2,4),
+            3: (3,6),
+            4: (5,10),
+        },
+    }
+
 
 def test_slip39_mnemonics():
 
@@ -133,19 +143,6 @@ def test_slip39_mnemonics():
                 )
 
 
-def test_slip39_init():
-    """Details of the SLIP-39 specifications' 'language' and output 'tabulate' value must be kept,
-    so .mnemonic() reflects them.
-
-    """
-    for entropy in [
-        "ff" * (128//8),
-        "ff" * (256//8),
-        "ff" * (512//8),
-    ]:
-        pass
-
-
 class substitute( contextlib.ContextDecorator ):
     """The SLIP-39 standard includes random data in portions of the as share.  Replace the random
     function during testing to get determinism in resultant nmenomics.
@@ -167,13 +164,19 @@ class substitute( contextlib.ContextDecorator ):
 
 @substitute( shamir_mnemonic.shamir, 'RANDOM_BYTES', lambda n: b'\0' * n )
 def test_slip39_tabulate():
+    """Details of the SLIP-39 specifications' 'language' and output 'tabulate' value must be kept,
+    so .mnemonic() reflects them.
+
+    """
 
     entropy_128 = "ff"*(128//8)
     entropy_256 = "ff"*(256//8)
     entropy_512 = "ff"*(512//8)
 
+
+
     family = "Perry Kundert [ One 1/1, Two 1/1, Fam 2/4, Frens 3/6 ]"
-    assert SLIP39Mnemonic.encode(entropy=entropy_128, language=family, tabulate=None) == """\
+    family_tabulate_None = """\
 One 1/1    1st  ━  academic  agency  acrobat   romp     course    prune     deadline  umbrella  darkness  salt      bishop    impact    vanish    squeeze   moment    segment   privacy   bolt      making    enjoy
 
 Two 1/1    1st  ━  academic  agency  beard     romp     downtown  inmate    hamster   counter   rainbow   grocery   veteran   decorate  describe  bedroom   disease   suitable  peasant   editor    welfare   spider
@@ -197,6 +200,29 @@ Frens 3/6  1st  ┳  academic  agency  decision  round    academic  academic  ac
            5th  ┣  academic  agency  decision  snake    anxiety   acrobat   inform    home      patrol    alpha     erode     steady    cultural  juice     emerald   reject    flash     license   royal     plunge
                 ╏
            6th  ┗  academic  agency  decision  spider   earth     woman     gasoline  dryer     civil     deliver   laser     hospital  mountain  wrist     clinic    evidence  database  public    dwarf     lawsuit"""
+
+    family_tabulate_False = """\
+academic agency acrobat romp course prune deadline umbrella darkness salt bishop impact vanish squeeze moment segment privacy bolt making enjoy
+academic agency beard romp downtown inmate hamster counter rainbow grocery veteran decorate describe bedroom disease suitable peasant editor welfare spider
+academic agency ceramic roster crystal critical forbid sled building glad legs angry enlarge ting ranked round solution legend ending lips
+academic agency ceramic scared drink verdict funding dragon activity verify fawn yoga devote perfect jacket database picture genius process pipeline
+academic agency ceramic shadow avoid leaf fantasy midst crush fraction cricket taxi velvet gasoline daughter august rhythm excuse wrist increase
+academic agency ceramic sister capital flexible favorite grownup diminish sidewalk yelp blanket market class testify temple silent prevent born galaxy
+academic agency decision round academic academic academic academic academic academic academic academic academic academic academic academic academic phrase trust golden
+academic agency decision scatter desert wisdom birthday fatigue lecture detailed destroy realize recover lilac genre venture jacket mountain blessing pulse
+academic agency decision shaft birthday debut benefit shame market devote angel finger traveler analysis pipeline extra funding lawsuit editor guilt
+academic agency decision skin category skin alpha observe artwork advance earth thank fact material sheriff peaceful club evoke robin revenue
+academic agency decision snake anxiety acrobat inform home patrol alpha erode steady cultural juice emerald reject flash license royal plunge
+academic agency decision spider earth woman gasoline dryer civil deliver laser hospital mountain wrist clinic evidence database public dwarf lawsuit"""
+
+    assert SLIP39Mnemonic.encode(entropy=entropy_128, language=family, tabulate=None) == family_tabulate_None
+    assert SLIP39Mnemonic.encode(entropy=entropy_128, language=family) == family_tabulate_False
+
+    # Now, ensure that a SLIP39Mnemonic instance remembers its SLIP-39 encoding parameters and desired tabulation.
+    slip39 = SLIP39Mnemonic(mnemonic=family_tabulate_False, language=family, tabulate=None)
+    assert slip39.mnemonic() == family_tabulate_None
+
+
 
     assert SLIP39Mnemonic.encode(entropy=entropy_512, language=family, tabulate=None) == """\
 One 1/1    1st  ━  academic  agency  acrobat   romp     acid      airport   meaning   source    sympathy  junction  symbolic  lyrics    install   enjoy     remind    trend     blind     vampire   type      idle      kind      facility  venture   image     inherit   talent    burning   woman     devote    guest     prevent   news      rich      type      unkind    clay      venture   raisin    oasis     crisis    firefly   change    index     hanger    belong    true      floral    fawn      busy      fridge    invasion  member    hesitate  railroad  campus    edge      ocean     woman     spill
