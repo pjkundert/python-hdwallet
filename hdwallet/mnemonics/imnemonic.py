@@ -375,22 +375,25 @@ class IMnemonic(ABC):
         mnemonic_list: List[str] = self.normalize(mnemonic)
 
         # Attempt to unambiguously determine the Mnemonic's language using any preferred 'language'.
-        # Raises a MnemonicError if the words are not valid.
+        # Raises a MnemonicError if the words are not valid.  Note that the supplied preferred
+        # language is only a hint, and the actual language matching the mnemonic will be selected.
         self._word_indices, self._language = self.find_language(mnemonic_list, language=kwargs.get("language"))
         self._mnemonic_type = kwargs.get("mnemonic_type", None)
 
         # We now know with certainty that the list of Mnemonic words was valid in some language.
         # However, they may have been abbreviations, or had optional UTF-8 Marks removed.  So, use
         # the _word_indices mapping twice, from str (matching word/abbrev) -> int (index) -> str
-        # (canonical word)
+        # (canonical word from keys).  This will work with a find_languages that returns either a
+        # WordIndices Mapping or a simple dict (but not abbreviations or missing Marks will be
+        # supported)
         self._mnemonic: List[str] = [
-            self._word_indices[self._word_indices[word]]
+            self._word_indices.keys()[self._word_indices[word]]
             for word in mnemonic_list
         ]
         self._words = len(self._mnemonic)
 
-        # We have the canonical Mnemonic words.  Decode them, preserving the real MnemonicError
-        # details if the words do not form a valid Mnemonic.
+        # We have the canonical Mnemonic words.  Decode them for validation, thus preserving the
+        # real MnemonicError details if the words do not form a valid Mnemonic.
         self.decode(self._mnemonic, **kwargs)
 
     @classmethod
@@ -558,10 +561,11 @@ class IMnemonic(ABC):
         language: Optional[str] = None,
     ) -> Tuple[Mapping[str, int], str]:
         """Finds the language of the given mnemonic by checking against available word list(s),
-        preferring the specified 'language' if one is supplied.  If a 'wordlist_path' dict of
-        {language: path} is supplied, its languages are used.  If a 'language' (optional) is
-        supplied, any ambiguity is resolved by selecting the preferred language, if available and
-        the mnemonic matches.  If not, the least ambiguous language found is selected.
+        preferring the specified 'language' if supplied and exactly matches an available language.
+        If a 'wordlist_path' dict of {language: path} is supplied, its languages are used.  If a
+        'language' (optional) is supplied, any ambiguity is resolved by selecting the preferred
+        language, if available and the mnemonic matches.  If not, the least ambiguous language found
+        is selected.
 
         If an abbreviation match is found, then the language with the largest total number of
         symbols matched (least ambiguity) is considered best.  This handles the (rare) case where a

@@ -197,7 +197,7 @@ ordinal.suffixes		= {1: "st", 2: "nd", 3: "rd"}  # noqa: E305
 def tabulate_slip39(
     groups: Dict[Union[str, int], Tuple[int, int]],
     group_mnemonics: Sequence[Collection[str]],
-    columns=None,  # default: columnize, but no wrapping
+    columns: Optional[Union[bool, int]]=None,  # default: columnize, but no wrapping
 ) -> str:
     """Return SLIP-39 groups with group names/numbers, a separator, and tabulated mnemonics.
 
@@ -274,6 +274,7 @@ def tabulate_slip39(
                         yield ["", "", con] if con else [None]
 
     return tabulate( prefixed( groups, group_mnemonics ), tablefmt='plain' )
+
 tabulate_slip39.default		= 20  # noqa: E305
 
 
@@ -347,15 +348,22 @@ class SLIP39Mnemonic(IMnemonic):
     }
 
     def __init__(self, mnemonic: Union[str, List[str]], **kwargs) -> None:
-        # Record the mnemonics, and the specified language.  Computes _words simply for a standard
-        # single-phrase mnemonic.  The language string supplied will 
+        # Record the mnemonics, and the specified language.  First handle any custom keywords
+        self._tabulate = kwargs.pop("tabulate", False)
+
         super().__init__(mnemonic, **kwargs)
+
         # We know that normalize has already validated _mnemonic's length.  Compute the per-mnemonic
-        # words for SLIP-39.
+        # words for SLIP-39; exactly one of the available SLIP-39 words_list lengths will divide the
+        # mnemonics evenly.
         self._words, = filter(lambda w: len(self._mnemonic) % w == 0, self.words_list)
-        # If a certain tabulation is desired for human readability, remember it.
-        self._tabulate = kwargs.get("tabulate", False)
-    
+
+        # If a SLIP-39 language encoding and/or tabulation is desired, remember them.  The default
+        # behavior deduces and stores the Mnemonic language; we want to remember any custom
+        # encoding supplied.
+        if kwargs.get("language"):
+            self._language = kwargs.get("language")
+
     @classmethod
     def name(cls) -> str:
         """
@@ -367,27 +375,30 @@ class SLIP39Mnemonic(IMnemonic):
         return "SLIP39"
 
     def mnemonic(self) -> str:
-        """
-        Get the mnemonic as a single string.
+        """Get the mnemonic as a single string.
 
         SLIP-39 Mnemonics usually have multiple lines.  Iterates the _mnemonic words list by the
         computed self.words(), joining each length of words by spaces to for a line, and then joins
         by newlines.
+
+        If a non-default 'tabulate' (eg. True, None, <int>) was specified, attempt to use it and the
+        stored SLIP-39 encoding language to inform the tabulation.
 
         :return: The mnemonic as a single string joined by spaces and newlines.
         :rtype: str
 
         """
         if self._tabulate is not False:
-            # Output the mnemonics with their language details and desired tabulation.  We'll need
-            # to re-deduce the SLIP-39 secret and group specs from _language.  Only if we successfully
-            # compute the same number of expected mnemonics, will we assume that everything
-            # is OK (someone hasn't created a SLIP39Mnemonic by hand with a custom _language and _mnemonics),
-            # and we'll output the re-
-            ((s_name, (s_thresh, s_size)), groups), = language_parser(language).items()
-            mnemonic = iter( self._mnemonics )
+            # Output the SLIP-39 mnemonics with their encoding language details and desired
+            # tabulation.  We'll need to re-deduce the SLIP-39 secret and group specs from
+            # _language.  Only if we successfully compute the same number of expected mnemonics and
+            # exactly match the expected prefixes, will we assume that everything is OK (someone
+            # hasn't created a SLIP39Mnemonic by hand with a custom _language and _mnemonics), and
+            # we'll output the tabulated mnemonics.
+            ((s_name, (s_thresh, s_size)), groups), = language_parser(self._language).items()
+            mnemonic = iter( self._mnemonic )
             try:
-                group_mnemonics: List[List[str]] =[
+                group_mnemonics: List[List[str]] = [
                     [
                         " ".join( next( mnemonic ) for _ in range( self._words ))
                         for _ in range( g_size )
@@ -402,26 +413,31 @@ class SLIP39Mnemonic(IMnemonic):
                 extras = list(mnemonic)
                 if not extras:
                     # Exactly consumed all _mnemonics according to SLIP-39 language spec!  Success?
-                    # One final check; all group_mnemonics should have a common prefix.
+                    # Final check; each of the group_mnemonics lists should have a common prefix.
                     def common( strings: List[str] ) -> str:
                         prefix = None
                         for s in strings:
-                            if common is None:
+                            if prefix is None:
                                 prefix 	= s
                                 continue
-                            for i, (cp, cs) in zip(prefix, s):
+                            for i, (cp, cs) in enumerate(zip(prefix, s)):
                                 if cp != cs:
                                     prefix = prefix[:i]
+                                    break
                             if not prefix:
                                 break
                         return prefix
                     
                     if all( map( common, group_mnemonics )):
-                        return tabulate_slip39( groups, group_mnemonics, columns=self._tabulate )
+                        return tabulate_slip39(
+                            groups=groups,
+                            group_mnemonics=group_mnemonics,
+                            columns=self._tabulate
+                        )
 
                 # Either no common prefix in some group; Invalid deduction of group specs
-                # vs. mnemonics., or left-over Mnemonics!  Fall through and render it the
-                # old-fashioned way...
+                # vs. mnemonics, or left-over/insufficient Mnemonics!  Fall through and render it
+                # the old-fashioned way...
             
         mnemonic_chunks: Iterable[List[str]] = zip(*[iter(self._mnemonic)] * self._words)
         mnemonic: Iterable[str] = map(" ".join, mnemonic_chunks)
@@ -488,17 +504,34 @@ class SLIP39Mnemonic(IMnemonic):
         iteration_exponent: int = 1,
         tabulate: bool = False,  # False disables; any other value causes prefixing/columnization
     ) -> str:
-        """
-        Encodes entropy into a mnemonic phrase.
+        """Encodes entropy into a SLIP-39 mnemonic phrase according to the specified language.
 
-        This method converts a given entropy value into a mnemonic phrase according to the specified
-        language.
+        The language specifies the SLIP-39 encoding parameters, and not the mnemonic language (which
+        is always english).  The SLIP-39 encoding has A Name optionally followed by the number of
+        required groups / total groups (will be deduced if missing), followed by 1 or more comma
+        separated group names, each optionally with a number of mnemonics required to recover the
+        group, and optionally with a / followed by the total number of mnemonics to produce.
+
+            Family Name 3:    Home 1,   Office 1,   Fam 2, Frens 3, Other
+            Family Name 3/5 < Home 1/1, Office 1/1, Fam 2, Frens 3, Other >
+            Family Name 3/5 < Home 1/1, Office 1/1, Fam 2, Frens 3, Other 5/10>
+
 
         SLIP-39 mnemonics include a password.  This is normally empty, and is not well supported
         even on Trezor devices.  It is better to use SLIP-39 to encode a BIP-39 Mnemonic's entropy
         and then (after recovering it from SLIP-39), use a BIP-39 passphrase (which is well
-        supported across all devices), or use the "Passphrase Wallet" feature of your hardware wallet
-        device.
+        supported across all devices), or use the "Passphrase Wallet" feature of your hardware
+        wallet device.
+
+        When a password is supplied to encode, decode will always recover the original entropy with
+        the same password.  The 'extendable' feature (now default) of SLIP-39 provides for
+        deterministically recovering a deterministic entropy for each *different* password supplied.
+        This supports the use case where the original entropy and password is used (but different
+        SLIP-39 encoding parameters are supplied) -- but the same decoded wallet entropies are
+        desired for multiple different passwords.
+
+        Note that SLIP-39 includes additional entropy in the encoding process, so the same entropy
+        and password will always result in different output SLIP-39 mnemonics.
 
         :param entropy: The entropy to encode into a mnemonic phrase.
         :type entropy: Union[str, bytes]
@@ -506,6 +539,8 @@ class SLIP39Mnemonic(IMnemonic):
         :type language: str
         :param passphrase: The SLIP-39 passphrase (default: "")
         :type passphrase: str
+        :param extendable: Derive deterministic entropy for alternate passwords
+        :type extendable: bool
 
         :return: The encoded mnemonic phrase.
         :rtype: str
@@ -559,9 +594,6 @@ class SLIP39Mnemonic(IMnemonic):
         """
         mnemonic_list: List[str] = cls.normalize(mnemonic)
         try:
-            if language and language not in cls.languages:
-                raise ValueError( f"Invalid SLIP-39 language: {language}" )
-
             mnemonic_words, = filter(lambda words: len(mnemonic_list) % words == 0, cls.words_list)
             mnemonic_chunks: Iterable[List[str]] = zip(*[iter(mnemonic_list)] * mnemonic_words)
             mnemonic_lines: Iterable[str] = map(" ".join, mnemonic_chunks)
