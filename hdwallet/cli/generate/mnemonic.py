@@ -80,7 +80,7 @@ def generate_mnemonic(**kwargs) -> None:
 
         if kwargs.get("entropy") and kwargs.get("mnemonic"):
             click.echo(click.style(
-                f"Supply either --entropy or --mnemonic, not both, "
+                "Supply either --entropy or --mnemonic, not both"
             ), err=True)
             sys.exit()
 
@@ -102,7 +102,7 @@ def generate_mnemonic(**kwargs) -> None:
                     mnemonic_type=kwargs.get("mnemonic_type")
                 )
             elif kwargs.get("mnemonic_client") == SLIP39Mnemonic.name():
-                entropy: str = SLIPMnemonic.decode(
+                entropy: str = SLIP39Mnemonic.decode(
                     mnemonic=kwargs.get("mnemonic"),
                     language=kwargs.get("language"),
                     passphrase=kwargs.get("mnemonic_passphrase") or "",
@@ -143,11 +143,10 @@ def generate_mnemonic(**kwargs) -> None:
                 # can also contain specifics like the SLIP-39's overall name and groups' names.  Any
                 # 'tabulate' supplied influences the formatting of the groups of SLIP-39 Mnemonics.
                 mnemonic: IMnemonic = SLIP39Mnemonic(
-                    mnemonic=SLILP39Mnemonic.from_entropy(
+                    mnemonic=SLIP39Mnemonic.from_entropy(
                         entropy=kwargs.get("entropy"),
                         language=language,
                         passphrase=kwargs.get("passphrase") or "",
-                        checksum=kwargs.get("checksum")
                     ),
                     language=language,
                     tabulate=kwargs.get("tabulate", False),

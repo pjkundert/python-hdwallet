@@ -197,7 +197,7 @@ ordinal.suffixes		= {1: "st", 2: "nd", 3: "rd"}  # noqa: E305
 def tabulate_slip39(
     groups: Dict[Union[str, int], Tuple[int, int]],
     group_mnemonics: Sequence[Collection[str]],
-    columns: Optional[Union[bool, int]]=None,  # default: columnize, but no wrapping
+    columns: Optional[Union[bool, int]] = None,  # default: columnize, but no wrapping
 ) -> str:
     """Return SLIP-39 groups with group names/numbers, a separator, and tabulated mnemonics.
 
@@ -427,7 +427,7 @@ class SLIP39Mnemonic(IMnemonic):
                             if not prefix:
                                 break
                         return prefix
-                    
+
                     if all( map( common, group_mnemonics )):
                         return tabulate_slip39(
                             groups=groups,
@@ -438,7 +438,7 @@ class SLIP39Mnemonic(IMnemonic):
                 # Either no common prefix in some group; Invalid deduction of group specs
                 # vs. mnemonics, or left-over/insufficient Mnemonics!  Fall through and render it
                 # the old-fashioned way...
-            
+
         mnemonic_chunks: Iterable[List[str]] = zip(*[iter(self._mnemonic)] * self._words)
         mnemonic: Iterable[str] = map(" ".join, mnemonic_chunks)
         return "\n".join(mnemonic)
@@ -479,9 +479,9 @@ class SLIP39Mnemonic(IMnemonic):
         :rtype: str
         """
         if isinstance(entropy, str) or isinstance(entropy, bytes):
-            return cls.encode(entropy=entropy, language=language)
+            return cls.encode(entropy=entropy, language=language, **kwargs)
         elif isinstance(entropy, IEntropy) and entropy.strength() in SLIP39Entropy.strengths:
-            return cls.encode(entropy=entropy.entropy(), language=language)
+            return cls.encode(entropy=entropy.entropy(), language=language, **kwargs)
         raise EntropyError(
             "Invalid entropy instance", expected=[str, bytes,]+list(ENTROPIES.dictionary.values()), got=type(entropy)
         )
@@ -579,7 +579,7 @@ class SLIP39Mnemonic(IMnemonic):
         The passphrase has no verification; all derived entropies are considered equivalently valid
         (you can use several passphrases to recover multiple, distinct sets of entropy.)  So, it is
         solely your responsibility to remember your correct passphrase(s): this is a design feature
-        of SLIP-39.  The default "extendable" SLIP-39 
+        of SLIP-39.
 
         :param mnemonic: The mnemonic phrase to decode.
         :type mnemonic: str

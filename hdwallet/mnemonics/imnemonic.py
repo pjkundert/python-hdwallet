@@ -46,6 +46,7 @@ class TrieNode:
     """
     EMPTY = None
     PRESENT = True
+
     def __init__(self):
         self.children = defaultdict(self.__class__)
         self.value = self.__class__.EMPTY
@@ -138,7 +139,7 @@ class Trie:
         prefix: str = '',
         current: Optional[TrieNode] = None,
         depth: int = 0,
-        predicate: Optional[Callable[[TrieNode], bool]] = None, # default: terminal
+        predicate: Optional[Callable[[TrieNode], bool]] = None,  # default: terminal
     ) -> Generator[Tuple[str, TrieNode], None, None]:
         """Yields all strings and their TrieNode that match 'prefix' and satisfy 'predicate' (or are
         terminal), in depth-first order.
@@ -640,11 +641,7 @@ class IMnemonic(ABC):
                 # found to be unique abbreviations of words in the candidate, but it isn't the
                 # preferred language (or no preferred language was specified).  Keep track of its
                 # quality of match, but carry on testing other candidate languages.
-            except (MnemonicError, ValueError) as exc:
-                # print(
-                #     f"Unrecognized mnemonic: {exc}"
-                #     # f" w/ indices:\n{words_indices}"
-                # )
+            except (MnemonicError, ValueError):
                 continue
 
         # No unambiguous match to any preferred language found (or no language matched all words).
@@ -683,11 +680,7 @@ class IMnemonic(ABC):
         try:
             cls.decode(mnemonic=mnemonic, language=language, **kwargs)
             return True
-        except (ValueError, KeyError, MnemonicError, ChecksumError) as exc:
-            # print(
-            #     f"Invalid mnemonic: {exc}"
-            #     # f" w/ indices:\n{words_indices}"
-            # )
+        except (ValueError, KeyError, MnemonicError, ChecksumError):
             return False
 
     @classmethod

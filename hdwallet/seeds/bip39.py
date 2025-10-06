@@ -11,7 +11,6 @@ from typing import (
 import unicodedata
 
 from ..crypto import pbkdf2_hmac_sha512
-from ..exceptions import MnemonicError
 from ..utils import bytes_to_string
 from ..mnemonics import (
     IMnemonic, BIP39Mnemonic
@@ -80,8 +79,8 @@ class BIP39Seed(ISeed):
 
         # Normalize mnemonic to NFKD for seed generation as required by BIP-39 specification
         normalized_mnemonic: str = unicodedata.normalize("NFKD", mnemonic.mnemonic())
-        
-        # Salt normalization should use NFKD as per BIP-39 specification  
+
+        # Salt normalization should use NFKD as per BIP-39 specification
         salt: str = unicodedata.normalize("NFKD", (
             (cls.seed_salt_modifier + passphrase) if passphrase else cls.seed_salt_modifier
         ))

@@ -7,7 +7,6 @@
 from typing import Optional, Union
 
 from ...crypto import sha256
-from ...exceptions import MnemonicError
 from ...mnemonics import (
     IMnemonic, ElectrumV1Mnemonic
 )

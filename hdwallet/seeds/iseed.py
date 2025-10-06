@@ -62,7 +62,7 @@ class ISeed(ABC):
         :type mnemonic: Union[str, IMnemonic]
         :param language: The preferred language, if known
         :type language: Optional[str]
-        
+
         :return: The seed as a string.
         :rtype: str
         """

@@ -12,7 +12,7 @@ from ....entropies import (
     IEntropy, ElectrumV1Entropy, ELECTRUM_V1_ENTROPY_STRENGTHS
 )
 from ....exceptions import (
-    EntropyError, MnemonicError
+    Error, EntropyError, MnemonicError
 )
 from ....utils import (
     get_bytes, integer_to_bytes, bytes_to_integer, bytes_to_string
@@ -210,7 +210,8 @@ class ElectrumV1Mnemonic(IMnemonic):
         if not words_list_with_index:
             wordlist_path: Optional[Dict[str, Union[str, List[str]]]] = None
             if words_list:
-                assert language, f"Must provide language with words_list"
+                if not language:
+                    raise Error( "Must provide language with words_list" )
                 wordlist_path = { language: words_list }
             words_list_with_index, language = cls.find_language(mnemonic=words, language=language, wordlist_path=wordlist_path)
         if len(words_list_with_index) != cls.words_list_number:

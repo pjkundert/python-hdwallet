@@ -11,7 +11,6 @@ from typing import (
 import unicodedata
 
 from ...crypto import pbkdf2_hmac_sha512
-from ...exceptions import MnemonicError
 from ...utils import bytes_to_string
 from ...mnemonics import (
     IMnemonic, ElectrumV2Mnemonic, ELECTRUM_V2_MNEMONIC_TYPES
