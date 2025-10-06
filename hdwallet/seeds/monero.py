@@ -6,7 +6,6 @@
 
 from typing import Optional, Union
 
-from ..exceptions import MnemonicError
 from ..mnemonics import (
     IMnemonic, MoneroMnemonic
 )

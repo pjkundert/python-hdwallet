@@ -225,7 +225,7 @@ class ElectrumV2Mnemonic(IMnemonic):
                 language=language, wordlist_path=cls.wordlist_path
             )
             bip39_words_indices: Optional[List[str]] = None
-            (_, _ ,bip39_words_indices), = BIP39Mnemonic.wordlist_indices(language=language)
+            (_, _, bip39_words_indices), = BIP39Mnemonic.wordlist_indices(language=language)
             electrum_v1_words_indices: Optional[List[str]] = None
             try:
                 (_, _, electrum_v1_words_indices), = ElectrumV1Mnemonic.wordlist_indices(language=language)

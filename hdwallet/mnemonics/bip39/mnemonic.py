@@ -283,7 +283,7 @@ class BIP39Mnemonic(IMnemonic):
             wordlist_path: Optional[Dict[str, Union[str, List[str]]]] = None
             if words_list:
                 if not language:
-                    raise Error( f"Must provide language with words_list" )
+                    raise Error( "Must provide language with words_list" )
                 wordlist_path = { language: words_list }
             words_list_with_index, language = cls.find_language(mnemonic=words, language=language, wordlist_path=wordlist_path)
         if len(words_list_with_index) != cls.words_list_number:
