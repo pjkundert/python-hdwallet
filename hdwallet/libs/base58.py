@@ -60,8 +60,7 @@ def check_encode(raw, alphabet=__base58_alphabet):
 
 
 def decode(data, alphabet=__base58_alphabet):
-    if bytes != str:
-        data = bytes(data, "ascii")
+    data = bytes(data, "ascii")
 
     val = 0
     prefix = 0
