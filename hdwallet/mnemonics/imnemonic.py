@@ -11,7 +11,7 @@ from collections import (
     abc
 )
 from typing import (
-    Any, Callable, Dict, Generator, List, Mapping, Optional, Sequence, Set, Tuple, Union
+    Any, Callable, Dict, Generator, List, Mapping, MutableMapping, Optional, Sequence, Set, Tuple, Union
 )
 
 import os
@@ -48,8 +48,8 @@ class TrieNode:
     PRESENT = True
 
     def __init__(self):
-        self.children = defaultdict(self.__class__)
-        self.value = self.__class__.EMPTY
+        self.children: MutableMapping[str, TrieNode] = defaultdict(self.__class__)
+        self.value: Any = self.__class__.EMPTY
 
 
 class Trie:
@@ -223,6 +223,8 @@ def unmark( word_composed: str ) -> str:
 class WordIndices( abc.Mapping ):
     """A Mapping which holds a Sequence of Mnemonic words.
 
+    The underlying Trie is built during construction, but a WordIndices Mapping is not mutable.
+
     Acts like a basic { "word": index, ... } dict but with additional word flexibility.
 
     Also behaves like a ["word", "word", ...] list for iteration and indexing.
@@ -244,12 +246,12 @@ class WordIndices( abc.Mapping ):
 
     """
     def __init__(self, sequence: Sequence[str]):
-        """Insert a sequence of Unicode words (and optionally value(s)) into a Trie, making the
+        """Insert a sequence of Unicode words with a value equal to the enumeration, making the
         "unmarked" version an alias of the regular Unicode version.
 
         """
         self._trie = Trie()
-        self._words = []
+        self._words: List[str] = []
         for i, word in enumerate( sequence ):
             self._words.append( word )
             word_unmarked = unmark( word )
@@ -265,14 +267,15 @@ class WordIndices( abc.Mapping ):
             # never get a None (lose the plot) because we've just inserted 'word'!  This will
             # "alias" each glyph with a mark, to the .children entry for the non-marked glyph.
             self._trie.insert( word_unmarked, i )
-            for c, c_un, (_, _, n) in zip( word, word_unmarked, self._trie.find( word )):
+            for c, c_un, (_, _, n) in zip( word, word_unmarked, self._trie.find( word_unmarked )):
+                assert n is not None
                 if c != c_un:
                     if c in n.children and c_un in n.children:
                         assert n.children[c_un] is n.children[c], \
-                            f"Attempting to alias {c_un!r} to {c!r} but already exists as a non-alias"
+                            f"Attempting to alias {c!r} to {c_un!r} but already exists as a non-alias"
                     n.children[c] = n.children[c_un]
 
-    def __getitem__(self, key: Union[str, int]) -> int:
+    def __getitem__(self, key: Union[str, int]) -> Union[int, str]:
         """A Mapping from "word" to index, or the reverse.
 
         Any unique abbreviation with/without UTF-8 "Marks" is accepted.  We keep this return value
@@ -296,11 +299,11 @@ class WordIndices( abc.Mapping ):
             # The key'th word (or IndexError)
             return self._words[key], key, set()
 
-        terminal, prefix, node = self._trie.search( key, complete=Trie )
+        terminal, prefix, node = self._trie.search( key, complete=True )
         if not terminal:
             # We're nowhere in the Trie with this word
             raise KeyError(f"{key!r} does not match any word")
-
+        assert node is not None
         return self._words[node.value], node.value, set(node.children)
 
     def __len__(self):
@@ -352,7 +355,7 @@ class IMnemonic(ABC):
     _words: int
     _language: str
     _mnemonic_type: Optional[str]
-    _word_indices: Dict[str, int]
+    _word_indices: Mapping[str, int]
 
     words_list: List[int]  # The valid mnemonic length(s) available, in words
     languages: List[str]
@@ -385,10 +388,11 @@ class IMnemonic(ABC):
         # However, they may have been abbreviations, or had optional UTF-8 Marks removed.  So, use
         # the _word_indices mapping twice, from str (matching word/abbrev) -> int (index) -> str
         # (canonical word from keys).  This will work with a find_languages that returns either a
-        # WordIndices Mapping or a simple dict (but not abbreviations or missing Marks will be
-        # supported)
+        # WordIndices Mapping or a simple dict word->index Mapping (but abbreviations or missing
+        # Marks will not be supported)
+        canonical_words = list(self._word_indices)
         self._mnemonic: List[str] = [
-            self._word_indices.keys()[self._word_indices[word]]
+            canonical_words[self._word_indices[word]]
             for word in mnemonic_list
         ]
         self._words = len(self._mnemonic)
