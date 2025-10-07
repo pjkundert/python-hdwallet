@@ -11,7 +11,7 @@ from collections import (
     abc
 )
 from typing import (
-    Any, Callable, Dict, Generator, List, Mapping, MutableMapping, Optional, Sequence, Set, Tuple, Union
+    Any, Callable, Collection, Dict, Generator, List, Mapping, MutableMapping, Optional, Sequence, Set, Tuple, Union
 )
 
 import os
@@ -162,6 +162,25 @@ class Trie:
             for char, child in current.children.items():
                 for suffix, found in self.scan( current=child, depth=max(0, depth-1), predicate=predicate ):
                     yield prefix + char + suffix, found
+
+    def options(
+        self,
+        prefix: str = '',
+        current: Optional[TrieNode] = None,
+    ) -> Generator[Tuple[bool, Set[str]], str, None]:
+        """With each symbol provided, yields the next available symbol options.
+
+        Doesn't advance unless a truthy symbol is provided via <generator>send(symbol).
+
+        Completes when the provided symbol doesn't match one of the available options.
+        """
+        last: str = ''
+        *_, (terminal, _, current) = self.find(prefix, current=current) 
+        while current is not None:
+            terminal = current.value is not current.EMPTY
+            symbol: str = yield (terminal, set(current.children))
+            if symbol:
+                current = current.children.get(symbol)
 
     def dump_lines(
         self,
@@ -342,6 +361,9 @@ class WordIndices( abc.Mapping ):
             if node.value is node.EMPTY:
                 # Only abbreviations (not terminal words) that led to a unique terminal word
                 yield abbrev
+
+    def options(self, *args, **kwargs):
+        return self._trie.options(*args, **kwargs)
 
     def __str__(self):
         return str(self._trie)
@@ -662,6 +684,46 @@ class IMnemonic(ABC):
             raise MnemonicError(f"Ambiguous languages {', '.join(c for c, w in worse)} or {candidate} for mnemonic; specify a preferred language")
 
         return language_indices[candidate], candidate
+
+    @classmethod
+    def collect(
+        cls,
+        languages: Optional[Collection[str]] = None,
+        wordlist_path: Optional[Dict[str, Union[str, List[str]]]] = None,
+    ) -> Generator[Tuple[Set[str], bool, Set[str]], str, None]:
+        """A generator taking input symbols, and producing a sequence of sets of possible next
+        characters in all remaining languages.
+
+        With each symbol provided, yields the remaining candidate languages, whether the symbol
+        indicated a terminal word in some language, and the available next symbols in all remaining
+        languages.
+
+        """
+        candidates: Dict[str, WordIndices] = dict(
+            (candidate, words_indices)
+            for candidate, _, words_indices in cls.wordlist_indices( wordlist_path=wordlist_path )
+            if languages is None or candidate in languages
+        )
+
+        word: str = ''
+        updaters = {
+            candidate: words_indices.options()
+            for candidate, words_indices in candidates.items()
+        }
+
+        symbol = None
+        complete = set()
+        while complete < set(updaters):
+            terminal = False
+            possible = set()
+            for candidate, updater in updaters.items():
+                try:
+                    done, available = updater.send(symbol)
+                except StopIteration:
+                    complete.add( candidate )
+                terminal |= done
+                possible |= available
+            symbol = yield (set(updaters) - complete, terminal, possible)
 
     @classmethod
     def is_valid(cls, mnemonic: Union[str, List[str]], language: Optional[str] = None, **kwargs) -> bool:

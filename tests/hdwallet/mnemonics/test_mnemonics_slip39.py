@@ -2,8 +2,11 @@ import contextlib
 import pytest
 
 from hdwallet.exceptions import MnemonicError
+from hdwallet.mnemonics.imnemonic import (
+     Trie, WordIndices,
+)
 from hdwallet.mnemonics.slip39.mnemonic import (
-    SLIP39Mnemonic, language_parser, group_parser
+    SLIP39Mnemonic, language_parser, group_parser,
 )
 
 import shamir_mnemonic
@@ -69,7 +72,6 @@ def test_slip39_language():
             4: (5,10),
         },
     }
-
 
 def test_slip39_mnemonics():
 

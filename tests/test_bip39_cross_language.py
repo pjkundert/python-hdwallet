@@ -135,7 +135,7 @@ class TestBIP39CrossLanguage:
             except ChecksumError as exc:
                 # Skip invalid mnemonics (e.g., checksum failures)
                 continue
-        
+
         success_rate = len(successful_both_languages) / total_attempts
 
         print(f"{words}-word mnemonics: {len(successful_both_languages)}/{total_attempts} successful ({success_rate:.6f})")
@@ -438,7 +438,22 @@ a     b     a     n     d     o     n                        == 0
                   o     u     n     t                        == 16
                   u     s     e                              == 17
             h     i     e     v     e                        == 18"""
-        
+
+
+
+        options = trie.options()
+
+        assert next( options )     == (False, set( 'a' ))
+        assert options.send( 'a' ) == (False, set( 'bcd' ))
+        assert options.send( 'd' ) == (False, set( 'dj' ))
+        assert options.send( 'd' ) == (True, set( 'ir' ))
+        assert options.send( 'i' ) == (False, set( 'c' ))
+        assert options.send( 'c' ) == (False, set( 't' ))
+        assert next(options)       == (False, set( 't' ))
+        assert options.send('')    == (False, set( 't' ))
+        assert options.send( 't' ) == (True, set())
+
+
     def test_ambiguous_languages(self):
         """Test that find_language correctly detects and raises errors for ambiguous mnemonics.
 
@@ -520,6 +535,18 @@ a     b     a     n     d     o     n                        == 0
                     #print(f"✓ Abbreviation mnemonic resolved with preferred language: {detected_language}")
                 else:
                     raise  # Re-raise unexpected errors
+
+
+def test_bip39_collection():
+
+    languages = {'english', 'french', 'spanish', 'russian'}
+
+    collect = BIP39Mnemonic.collect(languages=languages)
+    assert collect.send(None) == (languages, False, set('abcedefghijklmnopqrstuvwxyzáéíóúабвгдежзиклмнопрстуфхцчшщэюя'))
+    assert collect.send('a') == ({'english', 'french', 'spanish'}, False, set('bcedefghijlmnpqrstuvwxyzéñ'))
+    assert collect.send('d') == ({'english', 'french', 'spanish'}, False, set('adehijmoruvé'))
+    assert collect.send('d') == ({'english'},                      True , set('ir'))
+    
 
 
 def test_bip39_korean():
