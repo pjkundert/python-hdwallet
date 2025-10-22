@@ -345,9 +345,6 @@ class ElectrumV2Mnemonic(IMnemonic):
         if len(words) not in cls.words_list:
             raise MnemonicError("Invalid mnemonic words count", expected=cls.words_list, got=len(words))
 
-        # if not cls.is_valid(mnemonic, language=language, mnemonic_type=mnemonic_type):
-        #     raise MnemonicError(f"Invalid {mnemonic_type} mnemonic type words")
-
         words_list_with_index, language = cls.find_language(mnemonic=words, language=language)
         if len(words_list_with_index) != cls.words_list_number:
             raise Error(
