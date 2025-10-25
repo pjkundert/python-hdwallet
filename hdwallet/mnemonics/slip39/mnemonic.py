@@ -502,7 +502,7 @@ class SLIP39Mnemonic(IMnemonic):
         passphrase: str = "",
         extendable: bool = True,
         iteration_exponent: int = 1,
-        tabulate: bool = False,  # False disables; any other value causes prefixing/columnization
+        tabulate: Optional[Union[bool, int]] = False,  # False disables; other values control prefixing/columnization
     ) -> str:
         """Encodes entropy into a SLIP-39 mnemonic phrase according to the specified language.
 
@@ -569,7 +569,10 @@ class SLIP39Mnemonic(IMnemonic):
 
     @classmethod
     def decode(
-        cls, mnemonic: str, passphrase: str = "", language: Optional[str] = None,
+        cls,
+        mnemonic: str,
+        passphrase: str = "",
+        language: Optional[str] = None,
     ) -> str:
         """Decodes SLIP-39 mnemonic phrases into its corresponding entropy.
 

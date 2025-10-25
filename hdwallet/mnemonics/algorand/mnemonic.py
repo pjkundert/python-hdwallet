@@ -5,7 +5,7 @@
 # file COPYING or https://opensource.org/license/mit
 
 from typing import (
-    Union, Dict, List, Optional
+    Union, Dict, List, Mapping, Optional
 )
 
 from ...entropies import (
@@ -60,6 +60,7 @@ class AlgorandMnemonic(IMnemonic):
     """
 
     checksum_length: int = 2
+    words_list_number: int = 2048
     words_list: List[int] = [
         ALGORAND_MNEMONIC_WORDS.TWENTY_FIVE
     ]
@@ -165,6 +166,8 @@ class AlgorandMnemonic(IMnemonic):
         cls,
         mnemonic: str,
         language: Optional[str] = None,
+        words_list: Optional[List[str]] = None,
+        words_list_with_index: Optional[Mapping[str, int]] = None,
         **kwargs
     ) -> str:
         """
@@ -182,18 +185,41 @@ class AlgorandMnemonic(IMnemonic):
         if len(words) not in cls.words_list:
             raise MnemonicError("Invalid mnemonic words count", expected=cls.words_list, got=len(words))
 
-        words_list_with_index, language = cls.find_language(mnemonic=words, language=language)
-        word_indexes = [words_list_with_index[word] for word in words]
-        entropy_list: Optional[List[int]] = convert_bits(word_indexes[:-1], 11, 8)
-        assert entropy_list is not None
-        entropy: bytes = bytes(entropy_list)[:-1]
+        candidates: Mapping[str, Mapping[str, int]] = cls.word_indices_candidates(
+            words=words, language=language, words_list=words_list,
+            words_list_with_index=words_list_with_index
+        )
 
-        checksum: bytes = sha512_256(entropy)[:cls.checksum_length]
-        checksum_word_indexes: Optional[List[int]] = convert_bits(checksum, 8, 11)
-        assert checksum_word_indexes is not None
-        if checksum_word_indexes[0] != word_indexes[-1]:
-            raise ChecksumError(
-                "Invalid checksum", expected=words_list_with_index.keys()[checksum_word_indexes[0]], got=words_list_with_index.keys()[word_indexes[-1]]
-            )
+        exception = None
+        entropies: Mapping[Optional[str], str] = {}
+        for language, word_indices in candidates.items():
+            try:
+                word_indexes = [word_indices[word] for word in words]
+                entropy_list: Optional[List[int]] = convert_bits(word_indexes[:-1], 11, 8)
+                assert entropy_list is not None
+                entropy: bytes = bytes(entropy_list)[:-1]
+        
+                checksum: bytes = sha512_256(entropy)[:cls.checksum_length]
+                checksum_word_indexes: Optional[List[int]] = convert_bits(checksum, 8, 11)
+                assert checksum_word_indexes is not None
+                if checksum_word_indexes[0] != word_indexes[-1]:
+                    raise ChecksumError(
+                        "Invalid checksum", expected=words_list_with_index.keys()[checksum_word_indexes[0]], got=words_list_with_index.keys()[word_indexes[-1]]
+                    )
+        
+                entropies[language] = bytes_to_string(entropy)
 
-        return bytes_to_string(entropy)
+            except Exception as exc:
+                # Collect first Exception; highest quality languages are first.
+                if exception is None:
+                    exception = exc
+
+        if entropies:
+            (candidate, entropy), *extras = entropies.items()
+            if extras:
+                exception = MnemonicError(
+                    f"Ambiguous languages {', '.join(c for c, _ in extras)} or {candidate} for mnemonic; specify a preferred language"
+                )
+            else:
+                return entropy
+        raise exception

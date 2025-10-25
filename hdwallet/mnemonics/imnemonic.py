@@ -18,6 +18,7 @@ import os
 import string
 import unicodedata
 from functools import lru_cache
+from fractions import Fraction
 
 from collections import defaultdict
 
@@ -581,66 +582,19 @@ class IMnemonic(ABC):
             yield candidate, words_list, word_indices
 
     @classmethod
-    def find_language(
+    def rank_languages(
         cls,
         mnemonic: List[str],
-        wordlist_path: Optional[Dict[str, Union[str, List[str]]]] = None,
         language: Optional[str] = None,
-    ) -> Tuple[Mapping[str, int], str]:
-        """Finds the language of the given mnemonic by checking against available word list(s),
-        preferring the specified 'language' if supplied and exactly matches an available language.
-        If a 'wordlist_path' dict of {language: path} is supplied, its languages are used.  If a
-        'language' (optional) is supplied, any ambiguity is resolved by selecting the preferred
-        language, if available and the mnemonic matches.  If not, the least ambiguous language found
-        is selected.
+        wordlist_path: Optional[Dict[str, Union[str, List[str]]]] = None,
+    ) -> Generator[Tuple[int, Mapping[str, int], str], None, None]:
+        """Finds all languages that can satisfy the given mnemonic.
 
-        If an abbreviation match is found, then the language with the largest total number of
-        symbols matched (least ambiguity) is considered best.  This handles the (rare) case where a
-        mnemonic is valid in multiple languages, either directly or as an abbreviation (or
-        completely valid in both languages):
-
-          english: abandon about   badge machine minute ozone salon science ...
-          french:  abandon aboutir badge machine minute ozone salon science ...
-
-        Clearly, it is /possible/ to specify a Mnemonic which for which it is impossible to uniquely
-        determine the language!  However, this Mnemonic would probably be encoding very poor
-        entropy, so is quite unlikely to occur in a Mnemonic storing true entropy.  But, it is
-        certainly possible (see above).  However, especially with abbreviations, it is possible for
-        this to occur.  For these Mnemonics, it is /impossible/ to know (or guess) which language
-        the Mnemonic was intended to be {en,de}coded with.  Since an incorrect "guess" would lead to
-        a different seed and therefore different derived wallets -- a match to multiple languages
-        with the same quality and with no preferred 'language' leads to an Exception.
-
-        Even the final word (which encodes some checksum bits) cannot determine the language with
-        finality, because it is only a statistical checksum!  For 128-bit 12-word encodings, only 4
-        bits of checksum are represented.  Therefore, there is a 1/16 chance that any entropy that
-        encodes to words in both languages will *also* have the same 4 bits of checksum!  24-word
-        BIP-39 Mnemonics only encode 8 bits of checksum, so 1/256 of random entropy that encodes to
-        words common to both languages will pass the checksum test.
-
-        Therefore, specifying a 'language' is necessary to eliminate the possibility of erroneously
-        recognizing the wrong language for some Mnemonic, and therefore producing the wrong derived
-        cryptographic keys.
-
-
-        The returned Mapping[str, int] contains all accepted word -> index mappings, including all
-        acceptable abbreviations, with and without character accents.  This is typically the
-        expected behavior for most Mnemonic encodings ('café' == 'cafe' for Mnemonic word matching).
-
-        :param mnemonic: The mnemonic to check, represented as a list of words.
-        :type mnemonic: List[str]
-        :param wordlist_path: Optional dictionary mapping language names to file paths of their word lists, or the word list.
-        :type wordlist_path: Optional[Dict[str, Union[str, List[str]]]]
-        :param language: The preferred language, used if valid and mnemonic matches.
-        :type mnemonic: Optional[str]
-
-        :return: A tuple containing the language's word indices and the language name.
-        :rtype: Tuple[[str, int], str]
-
-        """
+        Returns a sequence of their relative quality, and the Mapping of words/abbreviations to
+        indices, and the language.  """
 
         language_indices: Dict[str, Mapping[str, int]] = {}
-        quality: Dict[str, int] = defaultdict(int)  # How many language symbols were matched
+        quality: Dict[str, Fraction] = defaultdict(Fraction)  # What ratio of canonical language symbols were matched
         for candidate, words_list, words_indices in cls.wordlist_indices( wordlist_path=wordlist_path ):
             language_indices[candidate] = words_indices
             try:
@@ -655,13 +609,18 @@ class IMnemonic(ABC):
                             quality.pop(candidate)
                         raise MnemonicError(f"Unable to find word {word} in {candidate}") from ex
                     word_canonical = words_indices.keys()[index]
-                    quality[candidate] += len( word_canonical )
+                    # The quality of a match is the ratio of symbols provided that exactly match,
+                    # vs. total symbols in the canonical words.  So, more abbreviations and missing
+                    # symbols with Marks (accents) penalizes the candidate language.
+                    len_exact = sum(c1 == c2 for c1, c2 in zip( word_composed, word_canonical ))
+                    quality[candidate] += Fraction( len_exact, len( word_canonical ))
 
                 if candidate == language:
                     # All words exactly matched word with or without accents, complete or uniquely
                     # abbreviated words in the preferred language!  We're done - we don't need to
                     # test further candidate languages.
-                    return words_indices, candidate
+                    yield quality[candidate], words_indices, candidate
+                    return
 
                 # All words exactly matched words in this candidate language, or some words were
                 # found to be unique abbreviations of words in the candidate, but it isn't the
@@ -674,16 +633,141 @@ class IMnemonic(ABC):
         if not quality:
             raise MnemonicError(f"Invalid {cls.name()} mnemonic words")
 
-        # Select the best available.  Sort by the number of characters matched (more is better -
-        # less ambiguous).  This is a statistical method; it is still dangerous, and we should fail
-        # instead of returning a bad guess!
-        (candidate, matches), *worse = sorted(quality.items(), key=lambda k_v: k_v[1], reverse=True )
-        if worse and matches == worse[0][1]:
+        # Select the best available, of the potentially matching Mnemonics.  Sort by the number of
+        # canonical symbols exactly matched (more is better - less ambiguous).  However, unless we now test
+        # for is_valid, this would still be a statistical method, and thus still dangerous -- we should
+        # fail instead of returning a bad guess!
+        for ratio, candidate in sorted(((v, k) for k, v in quality.items()), reverse=True):
+            yield ratio, language_indices[candidate], candidate
+
+    @classmethod
+    def find_language(
+        cls,
+        mnemonic: List[str],
+        language: Optional[str] = None,
+        wordlist_path: Optional[Dict[str, Union[str, List[str]]]] = None,
+    ) -> Tuple[Mapping[str, int], str]:
+        """The traditional statistical method for deducing the language of a Mnemonic.
+
+        Finds the language of the given mnemonic by checking against available word list(s),
+        preferring the specified 'language' if supplied and exactly matches an available language.
+        If a 'wordlist_path' dict of {language: path} is supplied, its languages are used.  If a
+        'language' (optional) is supplied, any ambiguity is resolved by selecting the preferred
+        language, if available and the mnemonic matches.  If not, the least ambiguous language found
+        is selected.
+
+        If an abbreviation match is found, then the language with the largest total number of
+        symbols matched (least ambiguity) is considered best.  This handles the (rare) case where a
+        mnemonic is valid in multiple languages, either directly or as an abbreviation (or
+        completely valid in both languages):
+
+            english: abandon about   badge machine minute ozone salon science ...
+            french:  abandon aboutir badge machine minute ozone salon science ...
+
+        or the classics, where the first is valid in both languages (due to abbreviations),
+        but only one language yields a BIP-39 Mnemonic that passes is_valid:
+
+          Entropy == 00000000000000000000000000000000:
+            english: abandon abandon ... abandon about    (valid)
+            french:  abandon abandon ... abandon aboutir  (invalid)
+
+          Entropy == 00200400801002004008010020040080:
+            english  abandon abandon ... abandon absurd   (invalid)
+            french:  abandon abandon ... abandon absurde  (valid)
+
+        or, completely ambiguous mnemonics that are totally valid in both languages, composed of
+        canonical words and passing internal checksums, but yielding different seeds, of course:
+
+            essence capable figure noble distance fruit intact amateur surprise distance vague unique
+            lecture orange stable romance aspect junior fatal prison voyage globe village figure mobile badge usage social correct jaguar bonus science aspect question service crucial
+
+        Clearly, it is /possible/ to specify a Mnemonic which for which it is impossible to uniquely
+        determine the language!  However, this Mnemonic would probably be encoding very poor
+        entropy, so is quite unlikely to occur in a Mnemonic storing true entropy.  But, it is
+        certainly possible (see above); especially with abbreviations.
+
+        For these Mnemonics, it is /impossible/ to know (or guess) which language the Mnemonic was
+        intended to be {en,de}coded with.  Since an incorrect "guess" would lead to a different seed
+        and therefore different derived wallets -- a match to multiple languages with the same
+        quality ranking and with no preferred 'language' raises an Exception.
+
+        Even the final word (which encodes some checksum bits) cannot determine the language with
+        finality, because it is only a statistical checksum!  For 128-bit 12-word encodings, only 4
+        bits of checksum are represented.  Therefore, there is a 1/16 chance that any entropy that
+        encodes to words in both languages will *also* have the same 4 bits of checksum!  24-word
+        BIP-39 Mnemonics only encode 8 bits of checksum, so 1/256 of random entropy that encodes to
+        words common to both languages will pass the checksum test.
+
+        Therefore, specifying a 'language' is necessary to eliminate the possibility of erroneously
+        recognizing the wrong language for some Mnemonic, and therefore producing the wrong derived
+        cryptographic keys.
+
+        Furthermore, for implementing .decode, it is recommended that you use .rank_languages, and
+        actually attempt to decode each matching language, raising an Exception unless there is
+        exactly one mnemonic language found that passes validity checks.
+
+        The returned Mapping[str, int] contains all accepted word -> index mappings, including all
+        acceptable abbreviations, with and without character accents.  This is typically the
+        expected behavior for most Mnemonic encodings ('café' == 'cafe' for Mnemonic word matching).
+
+        :param mnemonic: The mnemonic to check, represented as a list of words.
+        :type mnemonic: List[str]
+        :param wordlist_path: Optional dictionary mapping language names to file paths of their word lists, or the word list.
+        :type wordlist_path: Optional[Dict[str, Union[str, List[str]]]]
+        :param language: The preferred language, used if valid and mnemonic matches.
+        :type mnemonic: Optional[str]
+
+        :return: A tuple containing the matching language's quality ratio, word indices and language name.
+        :rtype: Tuple[Fraction, Mapping[str, int], str]
+
+        """
+
+        (ratio, word_indices, candidate), *worse = cls.rank_languages( mnemonic, language=language, wordlist_path=wordlist_path )
+            
+        if worse and ratio == worse[0][0]:
             # There are more than one matching candidate languages -- and they are both equivalent
             # in quality.  We cannot know (or guess) the language with any certainty.
-            raise MnemonicError(f"Ambiguous languages {', '.join(c for c, w in worse)} or {candidate} for mnemonic; specify a preferred language")
+            raise MnemonicError(f"Ambiguous languages {', '.join(c for _r, _w, c in worse)} or {candidate} for mnemonic; specify a preferred language")
 
-        return language_indices[candidate], candidate
+        return word_indices, candidate
+
+    @classmethod
+    def word_indices_candidates(
+        cls,
+        words: List[str],          # normalized mnemonic words
+        language: Optional[str],   # required, if words_list provided
+        words_list: Optional[List[str]] = None,
+        words_list_with_index: Optional[Mapping[str, int]] = None,
+    ) -> Mapping[str, Mapping[str, int]]:
+        """Collect candidate language(s) and their word_indices.
+
+        Uses .rank_languages to determine all the candidate languages that may match the mnemonic.
+
+        Raises Exceptions on word_indices that don't match cls.words_list_number, so it must be
+        defined for each IMnemonic-derived class that uses this.
+
+        """
+
+        candidates: Mapping[str, Mapping[str, int]] = {}
+        if words_list_with_index:
+            candidates[language] = words_list_with_index
+        else:
+            wordlist_path: Optional[Dict[str, Union[str, List[str]]]] = None
+            if words_list:
+                if not language:
+                    raise Error( "Must provide language with words_list" )
+                wordlist_path = { language: words_list }
+            for _rank, word_indices, language in cls.rank_languages(
+                    mnemonic=words, language=language, wordlist_path=wordlist_path
+            ):
+                candidates[language] = word_indices
+            assert candidates  # rank_languages will always return at least one
+        indices_lens = set( map( len, candidates.values() ))
+        if indices_lens != {cls.words_list_number}:
+            raise Error(
+                "Invalid number of loaded words list", expected=cls.words_list_number, got=indices_lens
+            )
+        return candidates
 
     @classmethod
     def collect(
@@ -726,7 +810,12 @@ class IMnemonic(ABC):
             symbol = yield (set(updaters) - complete, terminal, possible)
 
     @classmethod
-    def is_valid(cls, mnemonic: Union[str, List[str]], language: Optional[str] = None, **kwargs) -> bool:
+    def is_valid(
+        cls,
+        mnemonic: Union[str, List[str]],
+        language: Optional[str] = None,
+        **kwargs
+    ) -> bool:
         """Checks if the given mnemonic is valid.
 
         Catches mnemonic-validity related or word indexing Exceptions and returns False, but lets

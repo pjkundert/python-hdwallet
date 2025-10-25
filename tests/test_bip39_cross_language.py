@@ -69,9 +69,9 @@ class TestBIP39CrossLanguage:
         for language, words, indices in BIP39Mnemonic.wordlist_indices():
             language_data[language] = dict(
                 indices = indices,
-                words = set( indices.keys() ),
-                unique = set( indices.unique() ),
-                abbrevs = set( indices.abbreviations() ),
+                words = set( indices.keys() ),             # canonical words
+                unique = set( indices.unique() ),          # unique words with/without UTF-8 Marks
+                abbrevs = set( indices.abbreviations() ),  # unique abbreviations
             )
             if language not in languages:
                 continue
@@ -84,10 +84,12 @@ class TestBIP39CrossLanguage:
 
         # Find common words across all languages - only process requested languages
         requested_data = {lang: language_data[lang] for lang in languages if lang in language_data}
-        all_word_sets = [data['unique'] for data in requested_data.values()]
+        all_word_sets = [data['words'] for data in requested_data.values()]
+        all_unique_sets = [data['unique'] for data in requested_data.values()]
         all_abbrev_lists = [data['abbrevs'] for data in requested_data.values()]
 
         cls.common_words = set.intersection(*all_word_sets) if all_word_sets else set()
+        cls.common_unique = set.intersection(*all_unique_sets) if all_unique_sets else set()
         cls.common_abbrevs = set.intersection(*all_abbrev_lists) if all_abbrev_lists else set()
 
         # Print statistics.  Given that UTF-8 marks may or may not be supplied, there may be more
@@ -95,8 +97,10 @@ class TestBIP39CrossLanguage:
         for lang, data in requested_data.items():
             print(f"{lang.capitalize()} UTF-8 words base: {len(data['words'])} unique: {len(data['unique'])}, abbreviations: {len(data['abbrevs'])}")
 
-        print(f"Common words found: {len(cls.common_words)}")
-        print(f"First 20 common words: {sorted(cls.common_words)[:20]}")
+        print(f"Common canonical words found: {len(cls.common_words)}")
+        print(f"First 20 common canonical words: {sorted(cls.common_words)[:20]}")
+        print(f"Common unique words found: {len(cls.common_unique)}")
+        print(f"First 20 common unique words: {sorted(cls.common_unique)[:20]}")
         print(f"Common abbrevs found: {len(cls.common_abbrevs)}")
         print(f"First 20 common abbrevs: {sorted(cls.common_abbrevs)[:20]}")
 
@@ -120,7 +124,7 @@ class TestBIP39CrossLanguage:
         successful_english: int = 0
         for _ in range(total_attempts):
             try:
-                # Generate a random N-word mnemonic from common words
+                # Generate a random N-word mnemonic from common canonical words
                 mnemonic = self.create_random_mnemonic_from_common_words(words)
 
                 # Try to decode as both English and French - both must succeed (pass checksum)
@@ -156,32 +160,52 @@ class TestBIP39CrossLanguage:
     def test_cross_language_12_word_mnemonics(self):
         """Test 12-word mnemonics that work in both English and French.
 
-        For example:
+        For example, these match in terms of unique words (missing UTF-8 marks):
             'ocean correct rival double theme village crucial veteran salon tunnel question minute'
             'puzzle mobile video pelican bicycle ocean effort train junior brave effort theme'
             'elegant cruel science guide fortune nation humble lecture ozone dragon question village'
             'innocent prison romance jaguar voyage depart fruit crucial video salon reunion fatigue'
             'position dragon correct question figure notable service vague civil public distance emotion'
 
+        But completely ambiguous mnemonics in multiple languages (no UTF-8 Marks to make one
+        slightly less of a match) are somewhat rare, but *certainly* not unlikely:
+            'essence capable figure noble distance fruit intact amateur surprise distance vague unique'
+            'nature crucial aspect mobile nation muscle surface usage valve concert impact label'
+            'animal double noble volume innocent fatigue abandon minute panda vague label stable'
+            'surface client simple junior volume palace amateur brave surprise bonus talent million'
+
         """
-        with pytest.raises(MnemonicError, match="Ambiguous languages french or english"):
-            BIP39Mnemonic.decode(
-                'ocean correct rival double theme village crucial veteran salon tunnel question minute'
-            )
+        # Make sure trying to decode a completely ambiguous BIP-39 Mnemonic reports as Ambiguous,
+        # but providing a preferred language works
+        ambiguous = 'essence capable figure noble distance fruit intact amateur surprise distance vague unique'
+        with pytest.raises(MnemonicError, match="Ambiguous languages"):
+            BIP39Mnemonic.decode( mnemonic=ambiguous )
+        assert BIP39Mnemonic.decode( mnemonic=ambiguous, language="french" ) == "5aa5219a52a47adc20e858e528f7d5f9"
+        assert BIP39Mnemonic.decode( mnemonic=ambiguous, language="english" ) == "4d443d584ad3fabb9d603dda67f7c2f6"
+
         candidates = self.dual_language_N_word_mnemonics(words=12, expected_rate=1/16)
 
     def test_cross_language_24_word_mnemonics(self):
         """Test 24-word mnemonics that work in both English and French.
 
-        For example:
+        For example (ambiguous in unique words):
             'pelican pelican minute intact science figure vague civil badge rival pizza fatal sphere nation simple ozone canal talent emotion wagon ozone valve voyage angle'
             'pizza intact noble fragile piece suspect legal badge vital guide coyote volume nature wagon badge festival danger train desert intact opinion veteran romance metal'
+
+        Totally ambiguous in canonical words:
+            'lecture orange stable romance aspect junior fatal prison voyage globe village figure mobile badge usage social correct jaguar bonus science aspect question service crucial'
+            'aspect loyal stable bonus label question effort virus digital fruit junior nature abandon concert crucial brave double aspect capable figure orange unique unique machine'
         """
-        with pytest.raises(MnemonicError, match="Ambiguous languages french or english"):
-            BIP39Mnemonic.decode(
-                'pelican pelican minute intact science figure vague civil badge rival pizza fatal'
-                ' sphere nation simple ozone canal talent emotion wagon ozone valve voyage angle'
-            )
+        # Make sure trying to decode a completely ambiguous BIP-39 Mnemonic reports as Ambiguous,
+        # but providing a preferred language works
+        ambiguous = (
+            'lecture orange stable romance aspect junior fatal prison voyage globe village figure'
+            ' mobile badge usage social correct jaguar bonus science aspect question service crucial'
+        )
+        with pytest.raises(MnemonicError, match="Ambiguous languages"):
+            BIP39Mnemonic.decode( mnemonic=ambiguous )
+        assert BIP39Mnemonic.decode( mnemonic=ambiguous, language="french" ) == "8c75af88e8a1291158de0cfeee5fec3349d62fbd16f13870b8836bf1298b36e1"
+        assert BIP39Mnemonic.decode( mnemonic=ambiguous, language="english" ) == "7f137b4f5dc0d6f254e558f60c6bd02b08e622fbe66f308ee465e070d75f3109"
 
         candidates = self.dual_language_N_word_mnemonics(words=24, expected_rate=1/256)
 
@@ -459,7 +483,32 @@ a     b     a     n     d     o     n                        == 0
 
         This test verifies that when a mnemonic contains words common to multiple languages
         with equal quality scores, find_language raises a MnemonicError indicating the ambiguity.
+
+        
         """
+        # Try some problematic ones; not completely ambiguous, but guessing based on symbol matching
+        # fails, while validating all candidate languages succeeds:
+        for problem, language, entropy  in [
+                (
+                    "abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon about",
+                    "english",  # guessed by .find_language; correct!
+                    "00000000000000000000000000000000",
+                ),
+                (
+                    "abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon absurd",
+                    "english",  # guessed by .find_language; wrong!
+                    "00200400801002004008010020040080",  # but .decode finds correct french entropy by checksum
+                ),
+        ]:
+            # for rank, indices, candidate in BIP39Mnemonic.rank_languages( BIP39Mnemonic.normalize( problem )):
+            #     print( f"{str(rank):12} == {float(rank):8.4f} {candidate}" )
+            _indices, guessed = BIP39Mnemonic.find_language( BIP39Mnemonic.normalize( problem ))
+            assert guessed == language, \
+                f"Wrong language {guessed} for: {problem}"
+            recovered = BIP39Mnemonic.decode( problem )
+            assert recovered == entropy, \
+                f"Wrong entropy {recovered} for: {problem}"
+
         from hdwallet.exceptions import MnemonicError
 
         # Create a test mnemonic using only common words between languages
@@ -480,7 +529,8 @@ a     b     a     n     d     o     n                        == 0
             # This is the expected behavior for truly ambiguous mnemonics
             #assert "Ambiguous languages" in str(e), f"Expected ambiguity error, got: {e}"
             #assert "specify a preferred language" in str(e), f"Expected preference suggestion, got: {e}"
-            print(f"✓ Correctly detected ambiguous mnemonic: {e}")
+            #print(f"✓ Correctly detected ambiguous mnemonic: {e}")
+            pass
 
         # Test 2: Verify that specifying a preferred language resolves the ambiguity
         # Try with each available language that contains these common words
@@ -547,6 +597,8 @@ def test_bip39_collection():
     assert collect.send('d') == ({'english', 'french', 'spanish'}, False, set('adehijmoruvé'))
     assert collect.send('d') == ({'english'},                      True , set('ir'))
     
+
+
 
 
 def test_bip39_korean():

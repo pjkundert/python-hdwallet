@@ -6,7 +6,7 @@
 import unicodedata
 
 from typing import (
-    Union, Dict, List, Optional
+    Union, Dict, List, Mapping, Optional
 )
 
 from ...entropies import (
@@ -262,6 +262,8 @@ class MoneroMnemonic(IMnemonic):
         cls,
         mnemonic: str,
         language: Optional[str] = None,
+        words_list: Optional[List[str]] = None,
+        words_list_with_index: Optional[Mapping[str, int]] = None,
         **kwargs
     ) -> str:
         """
@@ -281,28 +283,45 @@ class MoneroMnemonic(IMnemonic):
         if len(words) not in cls.words_list:
             raise MnemonicError("Invalid mnemonic words count", expected=cls.words_list, got=len(words))
 
-        words_list_with_index, language = cls.find_language(mnemonic=words, language=language)
-        if len(words_list_with_index) != cls.words_list_number:
-            raise Error(
-                "Invalid number of loaded words list", expected=cls.words_list_number, got=len(words_list_with_index)
-            )
+        candidates: Mapping[str, Mapping[str, int]] = cls.word_indices_candidates(
+            words=words, language=language, words_list=words_list,
+            words_list_with_index=words_list_with_index
+        )
 
-        if len(words) in cls.words_checksum:
-            mnemonic: list = words[:-1]
-            unique_prefix_length = cls.language_unique_prefix_lengths[language]
-            prefixes = "".join(unicodedata.normalize("NFD", word)[:unique_prefix_length] for word in mnemonic)
-            checksum_word = mnemonic[
-                bytes_to_integer(crc32(prefixes)) % len(mnemonic)
-            ]
-            if words[-1] != checksum_word:
-                raise ChecksumError(
-                    "Invalid checksum", expected=checksum_word, got=words[-1]
+        exception = None
+        entropies: Mapping[Optional[str], str] = {}
+        for language, word_indices in candidates.items():
+            try:
+                if len(words) in cls.words_checksum:
+                    mnemonic: list = words[:-1]
+                    unique_prefix_length = cls.language_unique_prefix_lengths[language]
+                    prefixes = "".join(unicodedata.normalize("NFD", word)[:unique_prefix_length] for word in mnemonic)
+                    checksum_word = mnemonic[
+                        bytes_to_integer(crc32(prefixes)) % len(mnemonic)
+                    ]
+                    if words[-1] != checksum_word:
+                        raise ChecksumError(
+                            "Invalid checksum", expected=checksum_word, got=words[-1]
+                        )
+                
+                entropy: bytes = b""
+                for index in range(len(words) // 3):
+                    word_1, word_2, word_3 = words[index * 3:(index * 3) + 3]
+                    entropy += words_to_bytes_chunk(
+                        word_1, word_2, word_3, word_indices.keys(), "little"
+                    )
+                entropies[language] = bytes_to_string(entropy)
+            except Exception as exc:
+                # Collect first Exception; highest quality languages are first.
+                if exception is None:
+                    exception = exc
+
+        if entropies:
+            (candidate, entropy), *extras = entropies.items()
+            if extras:
+                exception = MnemonicError(
+                    f"Ambiguous languages {', '.join(c for c, _ in extras)} or {candidate} for mnemonic; specify a preferred language"
                 )
-
-        entropy: bytes = b""
-        for index in range(len(words) // 3):
-            word_1, word_2, word_3 = words[index * 3:(index * 3) + 3]
-            entropy += words_to_bytes_chunk(
-                word_1, word_2, word_3, words_list_with_index.keys(), "little"
-            )
-        return bytes_to_string(entropy)
+            else:
+                return entropy
+        raise exception

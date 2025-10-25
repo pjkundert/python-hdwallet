@@ -278,47 +278,63 @@ class BIP39Mnemonic(IMnemonic):
         if len(words) not in cls.words_list:
             raise MnemonicError("Invalid mnemonic words count", expected=cls.words_list, got=len(words))
 
-        # May optionally provide a word<->index Mapping, or a language + words_list; if neither, the Mnemonic defaults are used.
-        if not words_list_with_index:
-            wordlist_path: Optional[Dict[str, Union[str, List[str]]]] = None
-            if words_list:
-                if not language:
-                    raise Error( "Must provide language with words_list" )
-                wordlist_path = { language: words_list }
-            words_list_with_index, language = cls.find_language(mnemonic=words, language=language, wordlist_path=wordlist_path)
-        if len(words_list_with_index) != cls.words_list_number:
-            raise Error(
-                "Invalid number of loaded words list", expected=cls.words_list_number, got=len(words_list_with_index)
-            )
+        # May optionally provide a word<->index Mapping, or a language + words_list; if neither, the
+        # Mnemonic defaults are used.  Providing words_list_with_index avoids needing find_language.
 
-        mnemonic_bin: str = "".join(map(
-            lambda word: integer_to_binary_string(
-                words_list_with_index[word], cls.word_bit_length
-            ), words
-        ))
-
-        mnemonic_bit_length: int = len(mnemonic_bin)
-        checksum_length: int = mnemonic_bit_length // 33
-        checksum_bin: str = mnemonic_bin[-checksum_length:]
-        entropy: bytes = binary_string_to_bytes(
-            mnemonic_bin[:-checksum_length], checksum_length * 8
+        candidates: Mapping[str, Mapping[str, int]] = cls.word_indices_candidates(
+            words=words, language=language, words_list=words_list,
+            words_list_with_index=words_list_with_index
         )
-        entropy_hash_bin: str = bytes_to_binary_string(
-            sha256(entropy), 32 * 8
-        )
-        checksum_bin_got: str = entropy_hash_bin[:checksum_length]
-        if checksum_bin != checksum_bin_got:
-            raise ChecksumError(
-                "Invalid checksum", expected=checksum_bin, got=checksum_bin_got
-            )
 
-        if checksum:
-            pad_bit_len: int = (
-                mnemonic_bit_length
-                if mnemonic_bit_length % 8 == 0 else
-                mnemonic_bit_length + (8 - mnemonic_bit_length % 8)
-            )
-            return bytes_to_string(
-                binary_string_to_bytes(mnemonic_bin, pad_bit_len // 4)
-            )
-        return bytes_to_string(entropy)
+        # Ensure exactly one candidate language produces validated entropy
+        exception = None
+        entropies: Mapping[Optional[str], str] = {}
+        for language, word_indices in candidates.items():
+            try:
+                mnemonic_bin: str = "".join(map(
+                    lambda word: integer_to_binary_string(
+                        word_indices[word], cls.word_bit_length
+                    ), words
+                ))
+            
+                mnemonic_bit_length: int = len(mnemonic_bin)
+                checksum_length: int = mnemonic_bit_length // 33
+                checksum_bin: str = mnemonic_bin[-checksum_length:]
+                entropy: bytes = binary_string_to_bytes(
+                    mnemonic_bin[:-checksum_length], checksum_length * 8
+                )
+                entropy_hash_bin: str = bytes_to_binary_string(
+                    sha256(entropy), 32 * 8
+                )
+                checksum_bin_got: str = entropy_hash_bin[:checksum_length]
+                if checksum_bin != checksum_bin_got:
+                    raise ChecksumError(
+                        f"Invalid {language or '(custom word list)'} checksum", expected=checksum_bin, got=checksum_bin_got
+                    )
+            
+                if checksum:
+                    pad_bit_len: int = (
+                        mnemonic_bit_length
+                        if mnemonic_bit_length % 8 == 0 else
+                        mnemonic_bit_length + (8 - mnemonic_bit_length % 8)
+                    )
+                    entropies[language] = bytes_to_string(
+                        binary_string_to_bytes(mnemonic_bin, pad_bit_len // 4)
+                    )
+                else:
+                    entropies[language] = bytes_to_string(entropy)
+
+            except Exception as exc:
+                # Collect first Exception; highest quality languages are first.
+                if exception is None:
+                    exception = exc
+
+        if entropies:
+            (candidate, entropy), *extras = entropies.items()
+            if extras:
+                exception = MnemonicError(
+                    f"Ambiguous languages {', '.join(c for c, _ in extras)} or {candidate} for mnemonic; specify a preferred language"
+                )
+            else:
+                return entropy
+        raise exception

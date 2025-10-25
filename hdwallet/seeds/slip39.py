@@ -39,7 +39,12 @@ class SLIP39Seed(ISeed):
         return "SLIP39"
 
     @classmethod
-    def from_mnemonic(cls, mnemonic: Union[str, IMnemonic], passphrase: Optional[str] = None, language: Optional[str] = None) -> str:
+    def from_mnemonic(
+        cls,
+        mnemonic: Union[str, IMnemonic],
+        passphrase: Optional[str] = None,
+        language: Optional[str] = None,
+    ) -> str:
         """Converts a mnemonic phrase to its corresponding raw entropy.
 
         The Mnemonic representation for SLIP-39 seeds is simple hex, and must be of the supported

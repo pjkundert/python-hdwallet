@@ -324,7 +324,9 @@ class ElectrumV2Mnemonic(IMnemonic):
         cls,
         mnemonic: str,
         language: Optional[str] = None,
-        mnemonic_type: str = ELECTRUM_V2_MNEMONIC_TYPES.STANDARD
+        mnemonic_type: str = ELECTRUM_V2_MNEMONIC_TYPES.STANDARD,
+        words_list: Optional[List[str]] = None,
+        words_list_with_index: Optional[Mapping[str, int]] = None
     ) -> str:
         """
         Decodes a mnemonic phrase into its original entropy value.
@@ -345,17 +347,35 @@ class ElectrumV2Mnemonic(IMnemonic):
         if len(words) not in cls.words_list:
             raise MnemonicError("Invalid mnemonic words count", expected=cls.words_list, got=len(words))
 
-        words_list_with_index, language = cls.find_language(mnemonic=words, language=language)
-        if len(words_list_with_index) != cls.words_list_number:
-            raise Error(
-                "Invalid number of loaded words list", expected=cls.words_list_number, got=len(words_list_with_index)
-            )
+        candidates: Mapping[str, Mapping[str, int]] = cls.word_indices_candidates(
+            words=words, language=language, words_list=words_list,
+            words_list_with_index=words_list_with_index
+        )
 
-        entropy: int = 0
-        for word in reversed(words):
-            entropy: int = (entropy * len(words_list_with_index)) + words_list_with_index[word]
+        exception = None
+        entropies: Mapping[Optional[str], str] = {}
+        for language, word_indices in candidates.items():
+            try:
+                entropy: int = 0
+                for word in reversed(words):
+                    entropy: int = (entropy * len(word_indices)) + word_indices[word]
+        
+                entropies[language] = bytes_to_string(integer_to_bytes(entropy))
 
-        return bytes_to_string(integer_to_bytes(entropy))
+            except Exception as exc:
+                # Collect first Exception; highest quality languages are first.
+                if exception is None:
+                    exception = exc
+
+        if entropies:
+            (candidate, entropy), *extras = entropies.items()
+            if extras:
+                exception = MnemonicError(
+                    f"Ambiguous languages {', '.join(c for c, _ in extras)} or {candidate} for mnemonic; specify a preferred language"
+                )
+            else:
+                return entropy
+        raise exception
 
     @classmethod
     def is_valid(

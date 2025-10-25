@@ -206,32 +206,43 @@ class ElectrumV1Mnemonic(IMnemonic):
         if len(words) not in cls.words_list:
             raise MnemonicError("Invalid mnemonic words count", expected=cls.words_list, got=len(words))
 
-        # May optionally provide a word<->index Mapping, or a language + words_list; if neither, the Mnemonic defaults are used.
-        if not words_list_with_index:
-            wordlist_path: Optional[Dict[str, Union[str, List[str]]]] = None
-            if words_list:
-                if not language:
-                    raise Error( "Must provide language with words_list" )
-                wordlist_path = { language: words_list }
-            words_list_with_index, language = cls.find_language(mnemonic=words, language=language, wordlist_path=wordlist_path)
-        if len(words_list_with_index) != cls.words_list_number:
-            raise Error(
-                "Invalid number of loaded words list", expected=cls.words_list_number, got=len(words_list)
-            )
+        candidates: Mapping[str, Mapping[str, int]] = cls.word_indices_candidates(
+            words=words, language=language, words_list=words_list,
+            words_list_with_index=words_list_with_index
+        )
 
-        entropy: bytes = b""
-        for index in range(len(words) // 3):
-            word_1, word_2, word_3 = words[index * 3:(index * 3) + 3]
+        exception = None
+        entropies: Mapping[Optional[str], str] = {}
+        for language, word_indices in candidates.items():
+            try:
+                entropy: bytes = b""
+                for index in range(len(words) // 3):
+                    word_1, word_2, word_3 = words[index * 3:(index * 3) + 3]
+        
+                    word_1_index: int = word_indices[word_1]
+                    word_2_index: int = word_indices[word_2] % cls.words_list_number
+                    word_3_index: int = word_indices[word_3] % cls.words_list_number
+        
+                    chunk: int = (
+                        word_1_index +
+                        (cls.words_list_number * ((word_2_index - word_1_index) % cls.words_list_number)) +
+                        (cls.words_list_number * cls.words_list_number * ((word_3_index - word_2_index) % cls.words_list_number))
+                    )
+                    entropy += integer_to_bytes(chunk, bytes_num=4, endianness="big")
+        
+                entropies[language] = bytes_to_string(entropy)
 
-            word_1_index: int = words_list_with_index[word_1]
-            word_2_index: int = words_list_with_index[word_2] % cls.words_list_number
-            word_3_index: int = words_list_with_index[word_3] % cls.words_list_number
+            except Exception as exc:
+                # Collect first Exception; highest quality languages are first.
+                if exception is None:
+                    exception = exc
 
-            chunk: int = (
-                word_1_index +
-                (cls.words_list_number * ((word_2_index - word_1_index) % cls.words_list_number)) +
-                (cls.words_list_number * cls.words_list_number * ((word_3_index - word_2_index) % cls.words_list_number))
-            )
-            entropy += integer_to_bytes(chunk, bytes_num=4, endianness="big")
-
-        return bytes_to_string(entropy)
+        if entropies:
+            (candidate, entropy), *extras = entropies.items()
+            if extras:
+                exception = MnemonicError(
+                    f"Ambiguous languages {', '.join(c for c, _ in extras)} or {candidate} for mnemonic; specify a preferred language"
+                )
+            else:
+                return entropy
+        raise exception
