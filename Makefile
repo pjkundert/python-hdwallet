@@ -20,7 +20,7 @@ export PYTEST_OPTS	?= # -vv --capture=no
 
 
 VERSION			= $(shell $(PYTHON) -c "exec(open('hdwallet/info.py').read()); print(__version__[1:])" )
-WHEEL			= dist/hdwallet-$(VERSION)-py3-none-any.whl
+WHEEL			= dist/hdwallet_slip39-$(VERSION)-py3-none-any.whl
 VENV			= $(CURDIR)-$(VERSION)-$(PYTHON_V)
 
 # Force export of variables that might be set from command line

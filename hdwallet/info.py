@@ -6,15 +6,17 @@
 
 from typing import List
 
-__name__: str = "hdwallet"
-__version__: str = "v3.7.0"
+#__name__: str = "hdwallet"
+__name__: str = "hdwallet-slip39"
+__version__: str = "v4.0.0"
 __license__: str = "MIT"
 __author__: str = "Meheret Tesfaye Batu"
 __email__: str = "meherett.batu@gmail.com"
 __documentation__: str = "https://hdwallet.readthedocs.com"
 __description__: str = "Python-based library implementing a Hierarchical Deterministic (HD) Wallet generator for 200+ cryptocurrencies."
 __url__: str = "https://hdwallet.io"
-__source__: str = "https://github.com/hdwallet-io/python-hdwallet"
+#__source__: str = "https://github.com/hdwallet-io/python-hdwallet"
+__source__: str = "https://github.com/pjkundert/python-hdwallet"
 __changelog__: str = f"{__source__}/blob/master/CHANGELOG.md"
 __tracker__: str = f"{__source__}/issues"
 __keywords__: List[str] = [
