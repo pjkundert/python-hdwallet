@@ -8,7 +8,7 @@ from typing import List
 
 #__name__: str = "hdwallet"
 __name__: str = "hdwallet-slip39"
-__version__: str = "v4.0.0"
+__version__: str = "v4.0.1"
 __license__: str = "MIT"
 __author__: str = "Meheret Tesfaye Batu"
 __email__: str = "meherett.batu@gmail.com"

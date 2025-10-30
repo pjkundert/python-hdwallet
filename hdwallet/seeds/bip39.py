@@ -5,7 +5,7 @@
 # file COPYING or https://opensource.org/license/mit
 
 from typing import (
-    Optional, Union
+    List, Optional, Union
 )
 
 import unicodedata
@@ -37,7 +37,7 @@ class BIP39Seed(ISeed):
     seed_salt_modifier: str = "mnemonic"
     seed_pbkdf2_rounds: int = 2048
 
-    length = 128
+    lengths: List[int] = [128]
 
     @classmethod
     def name(cls) -> str:

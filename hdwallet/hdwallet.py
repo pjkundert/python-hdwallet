@@ -441,22 +441,32 @@ class HDWallet:
             ).from_mnemonic(
                 mnemonic=self._mnemonic.mnemonic()
             )
-        return self.from_seed(
-            seed=SEEDS.seed(
-                name=(
-                    "Cardano" if self._hd.name() == "Cardano" else self._mnemonic.name()
+        if self._hd.name() == "Cardano":
+            # We have to retain the specified Cardano seed type
+            return self.from_seed(
+                seed=SEEDS.seed(
+                    name="Cardano"
+                ).__call__(
+                    seed=seed,
+                    cardano_type=self._cardano_type
                 )
-            ).__call__(
-                seed=seed
             )
-        )
+        else:
+            return self.from_seed(
+                seed=SEEDS.seed(
+                    name=self._mnemonic.name()
+                ).__call__(
+                    seed=seed
+                )
+            )
 
-    def from_seed(self, seed: ISeed) -> "HDWallet":
+    def from_seed(self, seed: Union[ISeed,bytes,str]) -> "HDWallet":
         """
         Initialize the HDWallet from a seed.
 
-        :param seed: The seed instance to initialize the HD wallet.
-        :type seed: ISeed
+
+        :param seed: The seed instance or data to initialize the HD wallet.
+        :type seed: Union[ISeed,bytes,str]
 
         :return: The initialized HDWallet instance.
         :rtype: HDWallet
@@ -481,6 +491,26 @@ class HDWallet:
         | Monero         | https://github.com/hdwallet-io/python-hdwallet/blob/master/examples/hdwallet/monero/from_seed.py          |
         +----------------+-----------------------------------------------------------------------------------------------------------+
         """
+        if not isinstance(seed, ISeed):
+            # Convert raw hex seed data to the appropriate default ISeed for the HDWallet cryptocurrency.
+            # Certain Seed types require additional sub-type information
+            if type(seed) is bytes:
+                seed = seed.hex()
+            try:
+                seed_cls = SEEDS.seed(
+                    name=self._cryptocurrency.SEEDS.get_seeds()[0]
+                )
+                if seed_cls.name() == "Cardano":
+                    seed = seed_cls(
+                        seed=seed,
+                        cardano_type=self._cardano_type
+                    )
+                else:
+                    seed = seed_cls(
+                        seed=seed
+                    )
+            except Exception as exc:
+                raise Error(f"Invalid seed for {self._cryptocurrency.NAME} cryptocurrency") from exc
 
         if seed.name() not in self._cryptocurrency.SEEDS.get_seeds():
             raise Error(f"Invalid seed class {seed.name()} for {self._cryptocurrency.NAME} cryptocurrency")
