@@ -17,7 +17,7 @@ class NestedNamespace(SimpleNamespace):
     """Implements a NestedNamespace with support for sub-NestedNamespaces.
 
     Processes the positional data in order, followed by any kwargs in order.  As a result, the
-    __dict__ order reflects the order of the provided data and **kwargs.
+    __dict__ order reflects the order of the provided data and **kwargs (if they are ordered).
 
     """
     def __init__(self, data: Union[set, tuple, dict], **kwargs):

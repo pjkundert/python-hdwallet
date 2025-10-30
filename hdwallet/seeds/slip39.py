@@ -5,7 +5,7 @@
 # file COPYING or https://opensource.org/license/mit
 
 from typing import (
-    Optional, Union
+    List, Optional, Union
 )
 
 from ..exceptions import EntropyError
@@ -27,6 +27,8 @@ class SLIP39Seed(ISeed):
         This class inherits from the ``ISeed`` class, thereby ensuring that all functions are accessible.
 
     """
+    lengths: List[int] = [32, 64, 128]
+
     @classmethod
     def name(cls) -> str:
         """

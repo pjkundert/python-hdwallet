@@ -9,7 +9,7 @@ from typing import (
 )
 
 import os
-import re
+import string
 
 from ..exceptions import EntropyError
 from ..utils import (
@@ -104,9 +104,11 @@ class IEntropy:
         :rtype: bool
         """
 
-        return isinstance(entropy, str) and bool(re.fullmatch(
-            r'^[0-9a-fA-F]+$', entropy
-        )) and cls.is_valid_strength(len(entropy) * 4)
+        return (
+            isinstance(entropy, str)
+            and all(c in string.hexdigits for c in entropy)
+            and cls.is_valid_strength(len(entropy) * 4)
+        )
 
     @classmethod
     def is_valid_strength(cls, strength: int) -> bool:

@@ -4,7 +4,9 @@
 # Distributed under the MIT software license, see the accompanying
 # file COPYING or https://opensource.org/license/mit
 
-from typing import Optional, Union
+from typing import (
+    List, Optional, Union
+)
 
 from ...crypto import sha256
 from ...mnemonics import (
@@ -27,7 +29,7 @@ class ElectrumV1Seed(ISeed):
 
     hash_iteration_number: int = 10 ** 5
 
-    length = 64
+    lengths: List[int] = [64]
 
     @classmethod
     def name(cls) -> str:

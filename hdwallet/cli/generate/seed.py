@@ -61,7 +61,8 @@ def generate_seed(**kwargs) -> None:
                     passphrase=kwargs.get("passphrase"),
                     language=kwargs.get("language"),
                     cardano_type=kwargs.get("cardano_type")
-                )
+                ),
+                cardano_type=kwargs.get("cardano_type")
             )
         elif kwargs.get("client") == ElectrumV2Seed.name():
             seed: ISeed = ElectrumV2Seed(
