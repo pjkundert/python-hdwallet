@@ -7,23 +7,25 @@
 from abc import (
     ABC, abstractmethod
 )
-from typing import Optional, Union
+from typing import (
+    List, Optional, Union
+)
 
-import re
+import string
 
 from ..mnemonics import IMnemonic
-
+from ..exceptions import SeedError
 
 class ISeed(ABC):
 
     _name: str
     _seed: str
 
-    length: int
+    lengths: List[int]  # valid seed lengths, in hex symbols
 
     def __init__(self, seed: str, **kwargs) -> None:
         """
-        Initialize an object with a seed value.
+        Initialize an object with a hex seed value.
 
         :param seed: The seed value used for initialization.
         :type seed: str
@@ -31,7 +33,19 @@ class ISeed(ABC):
         :return: No return
         :rtype: NoneType
         """
-
+        if not self.is_valid(seed, **kwargs):
+            raise SeedError(
+                f"Invalid {self.name()} seed: {seed}",
+                expected=(
+                    ", ".join(f"{nibbles*4}-" for nibbles in sorted(self.lengths))
+                    + "bit"
+                ),
+                got=(
+                    f"{len(seed)*4}-bit "
+                    + ("non-" if not all(c in string.hexdigits for c in seed) else "")
+                    + "hex"
+                )
+            )
         self._seed = seed
 
     @classmethod
@@ -50,9 +64,11 @@ class ISeed(ABC):
         :rtype: bool
         """
 
-        return isinstance(seed, str) and bool(re.fullmatch(
-            r'^[0-9a-fA-F]+$', seed
-        )) and len(seed) * 4 == cls.length
+        return (
+            isinstance(seed, str)
+            and all(c in string.hexdigits for c in seed)
+            and len(seed) in set(cls.lengths)
+        )
 
     def seed(self) -> str:
         """

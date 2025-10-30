@@ -110,11 +110,20 @@ def dump(**kwargs) -> None:
                     f"Wrong seed client, (expected={SEEDS.names()}, got='{kwargs.get('seed_client')}')"
                 ), err=True)
                 sys.exit()
-            hdwallet.from_seed(
-                seed=SEEDS.seed(name=kwargs.get("seed_client")).__call__(
-                    seed=kwargs.get("seed")
+            if kwargs.get("seed_client") == "Cardano" and kwargs.get("cardano_type"):
+                # If a specific cardano_type is specified, we must override the CardanoSeed default
+                hdwallet.from_seed(
+                    seed=SEEDS.seed(name=kwargs.get("seed_client")).__call__(
+                        seed=kwargs.get("seed"),
+                        cardano_type=kwargs.get("cardano_type")
+                    )
                 )
-            )
+            else:
+                hdwallet.from_seed(
+                    seed=SEEDS.seed(name=kwargs.get("seed_client")).__call__(
+                        seed=kwargs.get("seed")
+                    )
+                )
         elif kwargs.get("xprivate_key"):
             hdwallet.from_xprivate_key(
                 xprivate_key=kwargs.get("xprivate_key"),

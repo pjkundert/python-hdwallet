@@ -4,7 +4,9 @@
 # Distributed under the MIT software license, see the accompanying
 # file COPYING or https://opensource.org/license/mit
 
-from typing import Optional, Union
+from typing import (
+    List, Optional, Union
+)
 
 from ..mnemonics import (
     IMnemonic, MoneroMnemonic
@@ -19,11 +21,13 @@ class MoneroSeed(ISeed):
     phrases and converting them into a binary seed used for hierarchical
     deterministic wallets.
 
+    Monero Mnemonic entropy is used directly as the private key, without modification.
+
     .. note::
         This class inherits from the ``ISeed`` class, thereby ensuring that all functions are accessible.
     """
 
-    length = 32
+    lengths: List[int] = [32, 64]
 
     @classmethod
     def name(cls) -> str:

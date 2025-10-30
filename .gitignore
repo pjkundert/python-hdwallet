@@ -12,7 +12,7 @@ experiment/
 # Setuptools stuff
 build/
 dist/
-hdwallet.egg-info/
+hdwallet*.egg-info/
 
 # Python stuff
 __pycache__/
