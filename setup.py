@@ -57,6 +57,7 @@ setup(
     include_package_data=True,
     extras_require=dict(
         cli=get_requirements(name="requirements/cli"),
+        coincurve=get_requirements(name="requirements/coincurve"),
         docs=get_requirements(name="requirements/docs"),
         tests=get_requirements(name="requirements/tests")
     ),
