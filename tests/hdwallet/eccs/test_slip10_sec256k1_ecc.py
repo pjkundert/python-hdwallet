@@ -5,13 +5,18 @@
 # Distributed under the MIT software license, see the accompanying
 # file COPYING or https://opensource.org/license/mit
 
+import pytest
+
 from ecdsa import (
     SigningKey, VerifyingKey
 )
 from ecdsa.ellipticcurve import PointJacobi
-from coincurve import (
-    PrivateKey, PublicKey
-)
+try:
+    from coincurve import (
+        PrivateKey, PublicKey
+    )
+except ImportError:  # coincurve is optional; the ECDSA backend is used instead
+    PrivateKey = PublicKey = None
 
 from hdwallet.eccs import (
     IPoint, IPublicKey, IPrivateKey
@@ -31,6 +36,10 @@ from hdwallet.eccs.slip10.secp256k1.private_key import (
 from hdwallet.utils import get_bytes
 
 
+requires_coincurve = pytest.mark.skipif( PrivateKey is None, reason="coincurve not installed" )
+
+
+@requires_coincurve
 def test_slip10_secp256k1_ecc_coincurve(data):
 
     assert SLIP10Secp256k1ECC.NAME == data["eccs"]["SLIP10-Secp256k1"]["name"]
@@ -41,6 +50,7 @@ def test_slip10_secp256k1_ecc_coincurve(data):
     assert isinstance(SLIP10Secp256k1ECC.PRIVATE_KEY, type(SLIP10Secp256k1PrivateKeyCoincurve))
 
 
+@requires_coincurve
 def test_slip10_secp256k1_ecc_point_coincurve(data):
 
     assert SLIP10Secp256k1PointCoincurve.name() == data["eccs"]["SLIP10-Secp256k1"]["name"]
@@ -80,6 +90,7 @@ def test_slip10_secp256k1_ecc_point_coincurve(data):
             assert point_add.y() == point_radd.y() == point_mul.y() == point_rmul.y()
 
 
+@requires_coincurve
 def test_slip10_secp256k1_ecc_public_key_coincurve(data):
 
     assert SLIP10Secp256k1PublicKeyCoincurve.name() == data["eccs"]["SLIP10-Secp256k1"]["name"]
@@ -98,6 +109,7 @@ def test_slip10_secp256k1_ecc_public_key_coincurve(data):
         assert isinstance(public_key.point(), SLIP10Secp256k1PointCoincurve)
 
 
+@requires_coincurve
 def test_slip10_secp256k1_ecc_private_key_coincurve(data):
 
     assert SLIP10Secp256k1PrivateKeyCoincurve.name() == data["eccs"]["SLIP10-Secp256k1"]["name"]

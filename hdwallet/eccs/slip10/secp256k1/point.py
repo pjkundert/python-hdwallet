@@ -4,6 +4,8 @@
 # Distributed under the MIT software license, see the accompanying
 # file COPYING or https://opensource.org/license/mit
 
+from __future__ import annotations
+
 from typing import Any
 from ecdsa.ecdsa import curve_secp256k1
 from ecdsa.ellipticcurve import (
@@ -11,7 +13,10 @@ from ecdsa.ellipticcurve import (
 )
 from ecdsa import keys
 
-import coincurve
+try:
+    import coincurve
+except ImportError:  # Optional; SLIP10_SECP256K1_CONST.USE falls back to 'ecdsa'
+    coincurve = None
 
 from ....consts import SLIP10_SECP256K1_CONST
 from ...iecc import IPoint

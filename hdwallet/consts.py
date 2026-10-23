@@ -7,6 +7,7 @@
 from typing import (
     Optional, Union, Literal, List, Any
 )
+from importlib.util import find_spec
 from types import SimpleNamespace
 
 from .exceptions import NetworkError
@@ -106,7 +107,8 @@ class SLIP10_SECP256K1_CONST:
     +-------------------------------------+-------------+
     """
 
-    USE: Literal["coincurve", "ecdsa"] = "coincurve"
+    # Prefer the (much faster) libsecp256k1 binding, if it is installed
+    USE: Literal["coincurve", "ecdsa"] = "coincurve" if find_spec( "coincurve" ) else "ecdsa"
     POINT_COORDINATE_BYTE_LENGTH: int = 32
     PRIVATE_KEY_BYTE_LENGTH: int = 32
     PRIVATE_KEY_UNCOMPRESSED_PREFIX: int = 0x00
